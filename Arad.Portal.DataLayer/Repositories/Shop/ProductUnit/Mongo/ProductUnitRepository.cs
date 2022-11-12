@@ -17,6 +17,7 @@ using System.Web;
 using System.Collections.Specialized;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Microsoft.AspNetCore.Hosting;
+using Arad.Portal.DataLayer.Entities.General.Role;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
 {
@@ -80,15 +81,21 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                 #endregion
                 if (allowDeletion)
                 {
-                    var delResult = await _productContext.ProductUnitCollection.DeleteOneAsync(_ => _.ProductUnitId == productUnitId);
-                    if (delResult.IsAcknowledged)
+                    var unitEntity = _productContext.ProductUnitCollection.Find(_ => _.ProductUnitId == productUnitId).FirstOrDefault();
+                    if(unitEntity != null)
                     {
-                        result.Message = ConstMessages.SuccessfullyDone;
-                        result.Succeeded = true;
-                    }
-                    else
-                    {
-                        result.Message = ConstMessages.GeneralError;
+                        unitEntity.IsDeleted = true;
+                        var updateRes = await _productContext.ProductUnitCollection.ReplaceOneAsync(_ => _.ProductUnitId == productUnitId, unitEntity);
+
+                        if (updateRes.IsAcknowledged)
+                        {
+                            result.Message = ConstMessages.SuccessfullyDone;
+                            result.Succeeded = true;
+                        }
+                        else
+                        {
+                            result.Message = ConstMessages.GeneralError;
+                        }
                     }
                 }
                 else
@@ -197,12 +204,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                     var lan = _languageContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
                     filter.Set("LanguageId", lan.LanguageId);
                 }
+                if (string.IsNullOrWhiteSpace(filter["Name"]))
+                {
+                    filter.Set("Name", "");
+                }
                 var langId = filter["LanguageId"].ToString();
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
-
+                var filterName = filter["Name"].ToString();
                 long totalCount = await _productContext.ProductUnitCollection.Find(c => true).CountDocumentsAsync();
-                var list = _productContext.ProductUnitCollection.AsQueryable().Skip((page - 1) * pageSize)
+                var list = _productContext.ProductUnitCollection.AsQueryable().Where(_=>_.UnitNames.Any( a => a.Name.Contains(filterName))).Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ProductUnitViewModel()
                    {
                       ProductUnitId = _.ProductUnitId,
@@ -232,6 +243,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
         public async Task<Result> Restore(string productUnitId)
         {
             var result = new Result();
+           
             var entity = _productContext.ProductUnitCollection
               .Find(_ => _.ProductUnitId == productUnitId).FirstOrDefault();
             if(entity != null)

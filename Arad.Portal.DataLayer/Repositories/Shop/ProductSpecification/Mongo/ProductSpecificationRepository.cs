@@ -210,18 +210,28 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                     var lan = _languageContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
                     filter.Set("LanguageId", lan.LanguageId);
                 }
+                if (string.IsNullOrWhiteSpace(filter["Name"]))
+                {
+                    filter.Set("Name", "");
+                }
+
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var langId = filter["LanguageId"].ToString();
+                var filterName = filter["Name"].ToString();
+
+
                 long totalCount = await _productContext.SpecificationCollection.Find(c => true).CountDocumentsAsync();
-                var list = _productContext.SpecificationCollection.AsQueryable().Where(_=>!_.IsDeleted).Skip((page - 1) * pageSize)
+                var list = _productContext.SpecificationCollection.AsQueryable()
+                    .Where(_ => _.SpecificationNameValues.Any(a => a.Name.Contains(filterName)) && _.SpecificationNameValues.Any(a => a.LanguageId == langId)).Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ProductSpecificationViewModel()
                    {
                       ProductSpecificationId = _.ProductSpecificationId,
                       SpecificationGroupId = _.SpecificationGroupId,
-                      SpecificationNameValues = _.SpecificationNameValues.Any(a=>a.LanguageId == langId) ?
+                      SpecificationNameValues = _.SpecificationNameValues.Any(a=> a.LanguageId == langId) ?
                       _.SpecificationNameValues.First(a => a.LanguageId == langId) : 
-                      _.SpecificationNameValues.First()
+                      _.SpecificationNameValues.First(),
+                      IsDeleted = _.IsDeleted
                    }).ToList();
 
                 result.CurrentPage = page;

@@ -69,7 +69,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Authorization
                 string path = $"{route?.Values["controller"]}/{route?.Values["action"]}".ToLower();
 
 
-                var roleDto = _roleRepository.FetchRole(user.UserRoleId).Result;
+                var roleDto = _roleRepository.FetchRole(user.UserRoleId);
                 List<Permission> roots = _permissionRepository.GetAllListViewCustom().Result;
 
                 if(path.Contains("home/Index", StringComparison.OrdinalIgnoreCase))

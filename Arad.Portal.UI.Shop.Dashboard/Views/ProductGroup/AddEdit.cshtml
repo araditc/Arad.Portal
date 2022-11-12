@@ -155,7 +155,7 @@
                                     <input accept="image/x-png,image/jpeg" type="file" class="btn btn-sm float-end" name="image" id="image" onchange="getURL(this)">
                                 </div>
                                 <div class="py-2 row">
-                                <input type="button" id="btnDeleteImageUpload" value="@Language.GetString("btn_ImageUploadDelete")" class="d-none btn btn-outline-danger bg-gradient" /> 
+                                    <input type="button" id="btnDeleteImageUpload" value="@Language.GetString("btn_ImageUploadDelete")" class="@(Model.GroupImage != null && Model.GroupImage.Url != null ? "" : "d-none") btn btn-outline-danger bg-gradient" />
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -290,7 +290,7 @@
         var cropper;
         var currentFileSize;
         var currentFileName;
-        var modelUrl;
+        var modelUrl = "";
     
         $(document).ready(function () {
             debugger;
@@ -305,7 +305,11 @@
              color : "red"
         });
             var entity =  @Json.Serialize(@Model.GroupImage);
-            modelUrl = entity.url;
+            if(entity != null)
+            {
+               modelUrl = entity.url;
+            }
+        
             if ("@Model.ProductGroupId" != "" && "@Model.ParentId" != "") {
                 $("#ParentId").val("@Model.ParentId");
             }
@@ -424,11 +428,13 @@
 
 
             $("#btnDeleteImageUpload").click(function(){
+                debugger;
                 $("#groupImage").attr('src', "/imgs/NoImage.png");
                 $("#groupImage").attr("imgid", "");
                 fileContent = "";
                 fileName = "";
                 $("#btnDeleteImageUpload").addClass("d-none");
+                modelUrl = "";
                 $("#image").val("");
             });
         });

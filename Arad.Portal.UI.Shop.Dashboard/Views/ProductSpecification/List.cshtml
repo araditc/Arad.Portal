@@ -8,13 +8,21 @@
     bool isSearch = false;
     System.Collections.Specialized.NameValueCollection queryString = null;
     var langId = "";
+    var name = "";
     if (!string.IsNullOrWhiteSpace(Model.QueryString))
     {
         queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
-        isSearch = !string.IsNullOrWhiteSpace(queryString["LanguageId"]);
+        isSearch = !string.IsNullOrWhiteSpace(queryString["LanguageId"]) || !string.IsNullOrWhiteSpace(queryString["Name"]);
         if (isSearch)
         {
-            langId = queryString["LanguageId"].ToString();
+            if (!string.IsNullOrWhiteSpace(queryString["LanguageId"]))
+            {
+                langId = queryString["LanguageId"].ToString();
+            }
+            if (!string.IsNullOrWhiteSpace(queryString["Name"]))
+            {
+                name = queryString["Name"].ToString();
+            }
         }
         queryString.Remove("page");
     }
@@ -46,6 +54,15 @@
                     <label class="form-label">@Language.GetString("LanguageName")</label>
                     <select class="form-control selectpicker" data-live-search="true" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                     </select>
+                </div>
+                  <div class="form-group col-12 col-md-3">
+                    <label class="form-label">@Language.GetString("tbl_SpecificationName")</label>
+                    <input type="text" id="txtName" value="" class="form-control" />
+                </div>
+                <div class="form-group col-12 col-md-3 d-flex align-items-center justify-content-end">
+                    <button  class="btn btn-sm btn-primary bg-gradient" id="btnSearch">
+                        <i class="fas fa-search"></i>@Language.GetString("btn_Search")
+                    </button>
                 </div>
             </div>
         </div>
@@ -143,11 +160,24 @@
           
             if ("@langId" != "") {
                 $("#cmbLangIdFilter").val("@langId");
+                $("#cmbLangIdFilter").selectpicker("refresh");
             }
+            $("#txtName").val('@name');
 
-           $("#cmbLangIdFilter").change(function () {
+           $("#btnSearch").click(function () {
             debugger;
-               var queryString = '?LanguageId=' + $("#cmbLangIdFilter").val();
+                var queryString = "";
+                if ($("#cmbLangIdFilter").val() != "" && $("#cmbLangIdFilter").val() != "-1") {
+                    queryString = '?LanguageId=' + $("#cmbLangIdFilter").val();
+                }
+                if ($("#txtName").val() != "") {
+                    if (queryString == "") {
+                        queryString = "?Name=" + $("#txtName").val();
+                    }
+                    else {
+                        queryString += "&Name=" + $("#txtName").val();
+                    }
+                }
                window.location.href = '@Url.Action("List", "ProductSpecification")' + queryString;
             });
         });

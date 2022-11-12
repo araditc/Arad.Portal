@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Microsoft.AspNetCore.Authorization;
+using static Lucene.Net.Util.Fst.Util;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -36,7 +37,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             ViewBag.LangId = lan.LanguageId;
-            ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
+           
+            var langs = _lanRepository.GetAllActiveLanguage();
+            langs.Insert(0, new SelectListModel() { Text = Language.GetString("Choose"), Value = "-1" });
+            ViewBag.LangList = langs;
             PagedItems<ProductUnitViewModel> list = await _unitRepository.List(Request.QueryString.ToString());
             return View(list);
         }

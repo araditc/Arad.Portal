@@ -174,18 +174,24 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                     var lan = _languageContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
                     filter.Set("LanguageId", lan.LanguageId);
                 }
-
+                if (string.IsNullOrWhiteSpace(filter["Name"]))
+                {
+                    filter.Set("Name", "");
+                }
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var langId = filter["LanguageId"].ToString();
+                var filterName = filter["Name"].ToString();
+
                 long totalCount = await _productContext.SpecGroupCollection.Find(c => true).CountDocumentsAsync();
-                var list = _productContext.SpecGroupCollection.AsQueryable().Skip((page - 1) * pageSize)
-                   .Take(pageSize).Select(_ => new SpecificationGroupViewModel()
-                   {
-                       SpecificationGroupId = _.SpecificationGroupId,
-                       IsDeleted = _.IsDeleted,
-                       GroupName = _.GroupNames.Any(a => a.LanguageId == langId) ? _.GroupNames.First(a => a.LanguageId == langId) : _.GroupNames.First()
-                   }).ToList();
+                var list = _productContext.SpecGroupCollection.AsQueryable()
+                       .Where(a => a.GroupNames.Any(b => b.Name.Contains(filterName)) && a.GroupNames.Any(a => a.LanguageId == langId)).Skip((page - 1) * pageSize)
+                       .Take(pageSize).Select(_ => new SpecificationGroupViewModel()
+                       {
+                           SpecificationGroupId = _.SpecificationGroupId,
+                           IsDeleted = _.IsDeleted,
+                           GroupName = _.GroupNames.Any(a => a.LanguageId == langId) ? _.GroupNames.First(a => a.LanguageId == langId) : _.GroupNames.First()
+                       }).ToList();
 
                 result.CurrentPage = page;
                 result.Items = list;

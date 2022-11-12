@@ -40,7 +40,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 list = await _productSpecGrpRepository.List(Request.QueryString.ToString());
                 ViewBag.DefLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
-                ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
+                var langs = _lanRepository.GetAllActiveLanguage();
+                langs.Insert(0, new SelectListModel() { Text = Language.GetString("Choose"), Value = "-1" });
+                ViewBag.LangList = langs;
             }
             catch (Exception)
             {
@@ -205,7 +207,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
 
-        [HttpDelete]
+        [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _productSpecGrpRepository.Delete(id, "delete");

@@ -294,7 +294,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                 var filterName = filter["Name"].ToString();
                 long totalCount = await _productContext.ProductGroupCollection.Find(c => true).CountDocumentsAsync();
                 var lst = _productContext.ProductGroupCollection.AsQueryable()
-                    .Where(_=>_.MultiLingualProperties.Any(a => a.Name.Contains(filterName))).Skip((page - 1) * pageSize)
+                   .Where(_=>_.MultiLingualProperties.Any(a => a.Name.Contains(filterName)) && _.MultiLingualProperties.Any(_=> _.LanguageId == langId))
+                   .Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ProductGroupViewModel()
                    {
                        ProductGroupId = _.ProductGroupId,

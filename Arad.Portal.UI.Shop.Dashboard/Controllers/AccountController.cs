@@ -238,7 +238,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var page = 1;
             var result = new PagedItems<UserListView>();
 
-
            
             FilterDefinitionBuilder<ApplicationUser> builder = new();
             FilterDefinition<ApplicationUser> filterDef = builder.Empty; 
@@ -299,11 +298,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     LastName = _.Profile.LastName,
                     UserName = _.UserName,
                     UserRoleId = _.UserRoleId,
-                    RoleName = !string.IsNullOrWhiteSpace(_.UserRoleId) ? _roleRepository.FetchRole(_.UserRoleId).Result.RoleName : "",
+                    //RoleName = _.UserRoleId != null ? _roleRepository.FetchRole(_.UserRoleId).RoleName : "",
                     CreateDate = _.CreationDate,
                     //persianCreateDate = _.CreationDate,
                     IsDelete = _.IsDeleted
                 }).ToList().OrderByDescending(_=>_.CreateDate).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                foreach (var user in lst)
+                {
+                    user.RoleName = user.UserRoleId != null ? _roleRepository.FetchRole(user.UserRoleId).RoleName : "";
+                }
 
                 result = new PagedItems<UserListView>()
                 {

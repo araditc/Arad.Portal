@@ -93,11 +93,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             try
             {
                 var domainId = User.GetClaimValue("RelatedDomain");
-                var domainName = _domainRepository.FetchDomain(domainId);
+                var domainEntity = _domainRepository.FetchDomain(domainId);
                 result = await _productRepository.List(Request.QueryString.ToString());
                 var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var defLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
+                var languageEntity = _lanRepository.GetDefaultLanguage(currentUserId);
+                var defLangId = languageEntity.LanguageId;
                 ViewBag.DefLangId = defLangId;
+                var langSymbol = CultureInfo.CurrentCulture.Name != null ? CultureInfo.CurrentCulture.Name.ToLower() : languageEntity.Symbol.ToLower();
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
                 var contentRoot = _webHostEnvironment.ContentRootPath;
                 //ViewBag.Path = contentRoot;
@@ -105,7 +107,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ViewBag.Path = staticFileStorageURL;
                 var groupList = await _productGroupRepository.GetAlActiveProductGroup(defLangId, currentUserId);
                 ViewBag.ProductGroupList = groupList;
-                ViewBag.ShopUrl = domainName;
+                var scheme = HttpContext.Request.Scheme;
+                ViewBag.ShopUrl = scheme + "://" + domainEntity.ReturnValue.DomainName+"/"+ langSymbol;
                 var unitList = _unitRepository.GetAllActiveProductUnit(defLangId);
                 ViewBag.ProductUnitList = unitList;
             }

@@ -237,9 +237,8 @@
                                 <td dir="ltr">@(item.MultiLingualProperties.Any(_=>_.LanguageId == langId) ? item.MultiLingualProperties.First(_ => _.LanguageId == langId).UrlFriend : "")</td>
                                 <td>
                                     <button class="btn btn-sm btn-dark bg-gradient" 
-                                    data-url=@((item.MultiLingualProperties.Any(_=>_.LanguageId == langId) && 
-                                    !string.IsNullOrWhiteSpace(item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == langId).UrlFriend)) ?
-                                    $"{item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == langId).UrlFriend}" : $"/product/{item.ProductCode}") onclick="ShowProduct(this)">
+                                    data-code = "@item.ProductCode"
+                                    onclick="ShowProduct(this)">
                                     
                                         <i class="fa fa-eye"></i>@Language.GetString("btn_Show")
                                     </button>
@@ -364,8 +363,9 @@
 
         function ShowProduct(sender)
         {
-            var url = $(sender).attr("data-url");
-            var final = `${'@ViewBag.ShopUrl'}/${url}`;
+            debugger;
+            var code = $(sender).attr("data-code");
+            var final = `${'@ViewBag.ShopUrl'}/product/${code}`;
             window.open(final);
         }
         function EntityDelete(id) {

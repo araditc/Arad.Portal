@@ -33,10 +33,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly UserExtensions _userExtensions;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
-        
+
 
         public RoleController(IRoleRepository repository, IPermissionRepository permissionRepository,
-            UserExtensions userExtensions,IMapper mapper,
+            UserExtensions userExtensions, IMapper mapper,
             UserManager<ApplicationUser> userManager)
         {
             _roleRepository = repository;
@@ -344,14 +344,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(string id)
+        public IActionResult Edit(string id)
         {
-            var roleDto = await _roleRepository.FetchRole(id);
+            var roleDto = _roleRepository.FetchRole(id);
             if (roleDto == null)
             {
                 return RedirectToAction("PageOrItemNotFound", "Account");
             }
-           
+
             return View("Upsert", roleDto);
         }
 
@@ -366,15 +366,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     ModelStateEntry modelStateVal = ModelState[modelStateKey];
                     errors.AddRange(modelStateVal.Errors
-                        .Select(error => new AjaxValidationErrorModel 
+                        .Select(error => new AjaxValidationErrorModel
                         { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
                 }
 
                 return Ok(new { Status = "ModelError", ModelStateErrors = errors });
             }
-           var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var dbUser = await _userManager.FindByIdAsync(currentUserId);
-            
+
             //if (dbUser.IsSystemAccount)
             //{
             //    List<string> currentUserPermission = await _permissionRepository.GetAllNestedPermissionIds();
@@ -387,7 +387,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             Result saveResult;
             if (!string.IsNullOrWhiteSpace(dto.RoleId))
             {
-                var roleDto = await _roleRepository.FetchRole(dto.RoleId);
+                var roleDto = _roleRepository.FetchRole(dto.RoleId);
 
                 if (roleDto == null)
                 {
@@ -401,7 +401,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 saveResult = await _roleRepository.Add(dto);
             }
-           
+
             return Ok(saveResult.Succeeded ? new { Status = "Success", saveResult.Message } : new { Status = "Error", saveResult.Message });
         }
 
@@ -436,8 +436,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> ListPermissions(string id = "")
         {
-            var roleDto = await _roleRepository.FetchRole(id);
-            List<DataLayer.Entities.General.Permission.Permission> permissions =  _permissionRepository.GetAllPermissions();
+            var roleDto = _roleRepository.FetchRole(id);
+            List<DataLayer.Entities.General.Permission.Permission> permissions = _permissionRepository.GetAllPermissions();
             List<JsTree> jsTrees = ConvertToJsTree(permissions);
 
             List<JsTree> ConvertToJsTree(List<DataLayer.Entities.General.Permission.Permission> list)
@@ -445,8 +445,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 List<JsTree> trees = new();
                 foreach (DataLayer.Entities.General.Permission.Permission permission in list.OrderBy(p => p.Priority))
                 {
-                    JsTree jsTree = new() { Id = permission.PermissionId, Text = Language.GetString($"PermissionTitle_{permission.Title}"),
-                        State = new State(), Children = ConvertToJsTree(permission.Children) };
+                    JsTree jsTree = new()
+                    {
+                        Id = permission.PermissionId,
+                        Text = Language.GetString($"PermissionTitle_{permission.Title}"),
+                        State = new State(),
+                        Children = ConvertToJsTree(permission.Children)
+                    };
 
                     foreach (DataLayer.Entities.General.Permission.Action action in permission.Actions)
                     {
@@ -482,7 +487,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var res = await _roleRepository.ChangeActivation(id);
                 if (res.Succeeded)
                 {
-                    var role = await _roleRepository.FetchRole(id);
+                    var role = _roleRepository.FetchRole(id);
                     result = Json(new { Status = "success", Message = res.Message, result = role.IsActive.ToString() });
                 }
                 else
@@ -496,6 +501,27 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             return result;
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Restore(string id)
+        {
+            JsonResult result;
+            try
+            {
+                var res = await _roleRepository.Restore(id);
+                result = new JsonResult(new { Status = res.Succeeded ? "success" : "error", 
+                     Message = res.Succeeded ? Language.GetString("AlertAndMessage_SuccessfullyDone") : Language.GetString("AlertAndMessage_TryLator") });
+               
+            }
+            catch (Exception e)
+            {
+                result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+            }
+            return result;
+           
+        }
+
 
     }
 }

@@ -143,16 +143,16 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             return result;
         }
 
-        public async Task<RoleDTO> FetchRole(string roleId)
+        public RoleDTO FetchRole(string roleId)
         {
             var result = new RoleDTO();
             try
             {
-                var role = await _context.Collection
-                    .Find(c => c.RoleId == roleId).FirstOrDefaultAsync();
+                var role =  _context.Collection
+                    .Find(c => c.RoleId == roleId).FirstOrDefault();
                 if(role != null)
                 {
-                    result = _mapper.Map<RoleDTO>(role);
+                    result = new RoleDTO() { RoleName = role.RoleName, RoleId = role.RoleId };
                     result.PermissionIds = string.Join(',', role.PermissionIds);
                 }
                 
@@ -348,6 +348,40 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             catch (Exception e)
             {
                 result = null;
+            }
+            return result;
+        }
+
+        public async Task<Result> Restore(string roleId)
+        {
+            var result = new Result();
+            try
+            {
+
+                var roleEntity = _context.Collection.Find(_ => _.RoleId == roleId).FirstOrDefault();
+                if (roleEntity != null)
+                {
+                    roleEntity.IsDeleted = false;
+
+                    var updateResult = await _context.Collection.ReplaceOneAsync(_ => _.RoleId == roleId, roleEntity);
+                    if (updateResult.IsAcknowledged)
+                    {
+                        result.Succeeded = true;
+                        result.Message = ConstMessages.SuccessfullyDone;
+                    }
+                    else
+                    {
+                        result.Message = ConstMessages.ErrorInSaving;
+                    }
+                }
+                else
+                {
+                    result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
+                }
+            }
+            catch (Exception e)
+            {
+                result.Message = ConstMessages.ErrorInSaving;
             }
             return result;
         }
