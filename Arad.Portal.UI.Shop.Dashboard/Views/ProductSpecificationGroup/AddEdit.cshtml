@@ -134,7 +134,8 @@
                 },
                 success: function (result) {
                     debugger;
-                    if (result.status === "Success") {
+                    if (result.status === "Success")
+                    {
                        
                           document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                             document.getElementById('mainToastBody').classList.add('alert-success');
@@ -147,31 +148,41 @@
                                  window.location.href = '@Url.Action("List")';
                             },
                             3000);
-                    }else
-                    if (result.status === "ModelError") {
-                        var spanErrorList = $('span[data-val-result]');
-                        if (spanErrorList.length > 1) {
-                            spanErrorList.each(function() {
-                                $(this).html("");
-                                $(this).parent().removeClass("has-error");
+                    }
+                    else
+                    if (result.status === "ModelError")
+                    {
+                            var spanErrorList = $('span[data-val-result]');
+                            if (spanErrorList.length > 1)
+                            {
+                                spanErrorList.each(function() {
+                                    $(this).html("");
+                                    $(this).parent().removeClass("has-error");
+                                });
+                            } 
+                            else
+                            {
+                                spanErrorList.html("");
+                                spanErrorList.parent().removeClass("has-error");
+                            }
+                           if (result.modelStateErrors != null && result.modelStateErrors.length > 0) 
+                           { 
+                            result.modelStateErrors.forEach(function(value, index) 
+                            {
+                                $('[data-val-result=' + value.key + ']').append(value.errorMessage);
+                                $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
                             });
-                        } else {
-                            spanErrorList.html("");
-                            spanErrorList.parent().removeClass("has-error");
-                        }
-                       if (result.modelStateErrors != null && result.modelStateErrors.length > 0) {
-                            debugger;
-                                    result.modelStateErrors.forEach(function(value, index) {
-                                    $('[data-val-result=' + value.key + ']').append(value.errorMessage);
-                                    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                                    });
-                                    }
-                                    else
-                                    {
-                                        showError(result.message);
-                                   }
-                                   }
-                    },
+                           }
+                          else
+                           {
+                               showError(result.message);
+                           }
+                     }
+                     else if(result.status == "Error")
+                     {
+                         showError(result.message);
+                     }
+                },
                 @*error: function (xhr, ajaxOptions, thrownError) {
                     alert("@error");
                     alert(xhr.status);

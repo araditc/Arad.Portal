@@ -452,10 +452,10 @@
                                 <label class="form-label">
                                     @Language.GetString("tbl_ProductGroup")
                                 </label>
-                                <select class="form-control selectpicker" data-live-search="true" id="groupIds"
+                                <select class="form-control selectpicker" data-live-search="true" id="GroupIds" multiple
                                         asp-items="@(new MultiSelectList(ViewBag.ProductGroupList,"Value","Text"))">
                                 </select>
-                                <span data-val-result="groupIds" class="text-danger"></span>
+                                <span data-val-result="GroupIds" class="text-danger"></span>
 
                             </div>
                             <div class="form-group col-12 col-md-3">
@@ -711,7 +711,11 @@
                     $("span[data-val-result='ContentProviderName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
                 }
-                
+                if($("#UrlFriend").val() == "") //content url
+                {
+                     $("span[data-val-result='UrlFriend']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
                 var urlFriend =$("#UrlFriend").val(); 
                  var contentId = '@Model.ContentId' == '' ? "" : '@Model.ContentId' ;
                 if (!flag) {
@@ -720,7 +724,8 @@
                         type: 'Get',
                         dataType: 'json',
                         success: function(result) {
-                            if (result.status == "Success") {
+                            if (result.status == "Success") 
+                            {
                                 var dto = FillDataToSend();
                                 $.ajax({
                                     url: "@Model.ContentId" != "" ? '@Url.Action("Edit", "Content")' : '@Url.Action("Add", "Content")',
@@ -746,31 +751,41 @@
                                                 1500);
                                         }
                                         else
-                                            if (result.status === "ModelError") {
+                                            if (result.status === "ModelError")
+                                            {
                                                 var spanErrorList = $('span[data-val-result]');
-                                                if (spanErrorList.length > 1) {
+                                                if (spanErrorList.length > 1)
+                                                {
                                                     spanErrorList.each(function() {
                                                         $(this).html("");
                                                         $(this).parent().removeClass("has-error");
                                                     });
                                                 }
-                                                else {
+                                                else
+                                                {
                                                     spanErrorList.html("");
                                                     spanErrorList.parent().removeClass("has-error");
                                                 }
-                                                if (result.modelStateErrors !== null) {
-                                                    $('[data-val-result=' + result.key + ']').html(result.errorMessage);
-                                                    $('[data-val-result=' + result.key + ']').parent().addClass("has-error");
+                                                if (result.modelStateErrors !== null && result.modelStateErrors.length > 0)
+                                                {
+                                                    result.modelStateErrors.forEach(function(value, index) 
+                                                    {
+                                                        $('[data-val-result=' + result.key + ']').html(result.errorMessage);
+                                                        $('[data-val-result=' + result.key + ']').parent().addClass("has-error");
+                                                    });
                                                 }
                                             }
-                                            else if (result.status === "Error") {
+                                            else if (result.status === "Error") 
+                                            {
                                                 showError(result.message);
                                             }
                                     },
 
                                 });
-                            } else {
-                                $("span[data-val-result='urlFriend']").html('@Language.GetString("AlertAndMessage_UrlFriendIsNotUnique")');
+                            } 
+                            else
+                            {
+                                $("span[data-val-result='UrlFriend']").html('@Language.GetString("AlertAndMessage_UrlFriendIsNotUnique")');
                             }
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
@@ -782,9 +797,9 @@
             });
 
             $("#productType").change(function() {
-
+                debugger;
                 var typeId = $("#productType").val();
-                if (typeId = "2") //file
+                if (typeId == "2") //file
                 {
                     $(".downloadType").removeClass("d-none");
                     $(".productFileUpload").removeClass("d-none");
@@ -931,9 +946,15 @@
             $("#btn_SaveProduct").click(function() {
                 debugger;
                 var flag = false;
-                if ($("#groupIds").val().length == 0) {
-                    $("span[data-val-result='groupIds']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
+                if ($("#GroupIds").val().length == 0) {
+                    $("span[data-val-result='GroupIds']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
                     flag = true;
+                }
+                //name as title
+                if($("#Title").val() == "")
+                {
+                   $("span[data-val-result='Title']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                   flag = true;
                 }
                 if ($("#inventory").val() == "0") {
                     $("span[data-val-result='inventory']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
@@ -943,11 +964,8 @@
                     $("span[data-val-result='productUnitId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
                 }
-                
-               
-               
-                if ($("#priceList tr").length == 0) {
-                    $("span[data-val-result='priceList']").html('@Language.GetString("AlertAndMessage_FillPriceList")');
+                if ($("#price").val() == "1" || $("#price").val() == "") {
+                    $("span[data-val-result='price']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
                 }
 
@@ -979,69 +997,102 @@
                     $("span[data-val-result='productFileContent']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
                 }
-
-
-
+                if($("#urlFriend").val() == "") //product url
+                {
+                     $("span[data-val-result='urlFriend']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
                 debugger;
-                if (!flag) {
-                    var dto = FillProductDataToSend();
-                    debugger;
-                    $.ajax({
-                        url:  '@Url.Action("Add", "Product")'+"?isFromContent=true",
-                        contentType: 'application/json',
-                        data: JSON.stringify(dto),
-                        type: 'Post',
-                        dataType: 'json',
-                        beforeSend: function() {
-                            /* AddLoading($("#addProductCard"));*/
-                        },
-                        success: function(result) {
+                if (!flag)
+                {
+                     $.ajax({
+                       url: '@Url.Action("CheckUrlFriendUniqueness", "Product")'+"?id="+ '' +"&url=" + $("#urlFriend").val(),
+                       type: 'Get',
+                       dataType: 'json',
+                       success: function(result)
+                       {
+                           if(result.status == "Success")
+                           {
+                                var dto = FillProductDataToSend();
+                                $.ajax({
+                                    url:  '@Url.Action("Add", "Product")'+"?isFromContent=true",
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(dto),
+                                    type: 'Post',
+                                    dataType: 'json',
+                                    beforeSend: function() {
+                                    },
+                                    success: function(result) {
 
-                            if (result.status === "Success") {
-                                debugger;
-                                document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + result.message;
-                                document.getElementById('mainToastBody').classList.add('alert-success');
-                                $("#toastPanel").show();
-                                var bsAlert = new bootstrap.Toast($("#mainToast"));
-                                bsAlert.show();
-                                setTimeout(function() {
-                                    $("#toastPanel").hide();
-                                },
-                                    3000);
-                            } else
-                                if (result.status === "ModelError") {
-                                    var spanErrorList = $('span[data-val-result]');
-                                    if (spanErrorList.length > 1) {
-                                        spanErrorList.each(function() {
-                                            $(this).html("");
-                                            $(this).parent().removeClass("has-error");
-                                        });
-                                    } else {
-                                        spanErrorList.html("");
-                                        spanErrorList.parent().removeClass("has-error");
-                                    }
+                                        if (result.status === "Success")
+                                        {
+                                            debugger;
+                                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + result.message;
+                                            document.getElementById('mainToastBody').classList.add('alert-success');
+                                            $("#toastPanel").show();
+                                            var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                            bsAlert.show();
+                                            setTimeout(function() {
+                                                $("#toastPanel").hide();
+                                            },3000);
+                                    
+                                        } 
+                                        else
+                                        if (result.status === "ModelError") 
+                                        {
+                                            var spanErrorList = $('span[data-val-result]');
+                                            if (spanErrorList.length > 1)
+                                            {
+                                                spanErrorList.each(function() 
+                                                {
+                                                    $(this).html("");
+                                                    $(this).parent().removeClass("has-error");
+                                                });
+                                            } 
+                                            else
+                                            {
+                                                spanErrorList.html("");
+                                                spanErrorList.parent().removeClass("has-error");
+                                            }
 
-                                    if (result.modelStateErrors != null && result.modelStateErrors.length > 0) {
-                                        debugger;
-                                        result.modelStateErrors.forEach(function(value, index) {
-                                            $('[data-val-result=' + value.key + ']').append(value.errorMessage);
-                                            $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                                        });
+                                            if (result.modelStateErrors != null && result.modelStateErrors.length > 0) 
+                                            {
+                                                debugger;
+                                                result.modelStateErrors.forEach(function(value, index) {
+                                                    $('[data-val-result=' + value.key + ']').append(value.errorMessage);
+                                                    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                                });
+                                            }
+                                            else
+                                            {
+                                                showError(result.message);
+                                            }
+                                        }
+                                        else
+                                        if(result.status == "Error")
+                                        {
+                                            showError(result.message);
+                                        }
+                                    },
+                                    error: function(xhr, ajaxOptions, thrownError) {
+                                        alert("@error");
+                                        alert(xhr.status);
+                                        alert(thrownError);
+                                    },
+                                    complete: function() {
+                                        /* removeLoading($("#addProductCard"));*/
                                     }
-                                    else {
-                                        showError(result.message);
-                                    }
-                                }
-                        },
-                        error: function(xhr, ajaxOptions, thrownError) {
-                            alert("@error");
-                            alert(xhr.status);
-                            alert(thrownError);
-                        },
-                        complete: function() {
-                            /* removeLoading($("#addProductCard"));*/
+                                });
+                           }
+                           else
+                           {
+                              $("span[data-val-result='urlFriend']").html('@Language.GetString("AlertAndMessage_UrlFriendIsNotUnique")');
+                           }
+                       },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            return false;
                         }
-                    });
+                     });
                 }
             });
         });
@@ -1095,13 +1146,13 @@
                 debugger;
                 dto.GroupIds.push($("#GroupIds").val()[i]);
             }
+            
 
             //GroupNames
             for (var i = 0; i < $("#GroupIds option:selected").length; i++) {
 
                 dto.GroupNames.push($("#GroupIds option:selected")[i].innerText);
             }
-
 
             //downloadLimitation
             debugger;
@@ -1125,45 +1176,46 @@
 
             //ProductFile
             var file = $("#productFileContent").prop("files")[0];
-            dto.ProductFileContent = productFileContent
-            dto.ProductFileName = file.name;
-
-
+            if(file != undefined)
+            {
+                dto.ProductFileContent = productFileContent
+                dto.ProductFileName = file.name;
+            }
             //price
             var priceObj = {};
             priceObj.CurrencyId = $("#currencyId").val();
             priceObj.CurrencyName = $("#currencyId option:selected").text();
             priceObj.PriceValue = parseFloat($("#price").val());
 
-            obj.Prices.push(priceObj);
+            dto.Prices.push(priceObj);
 
             //multilingualProperties
             var multi = {};
             multi.Name = $("#Title").val();
             multi.BodyContent = CKEDITOR.instances.editorCk.getData();
+            multi.LanguageId = $("#LanguageId").val();
             multi.Description = $("#Description").val();
             multi.SeoTitle = $("#SeoTitle").val();
             multi.SeoDescription = $("#SeoDescription").val();
 
-            obj.MultiLingualProperties.push(multi);
+            dto.MultiLingualProperties.push(multi);
 
             //pictures
             $("#imageList tr").each(function() {
                 debugger;
-                var item = {}
+                var id = $(this).find("td:eq(1)").text();
+                var item = images.find(_ => _.ImageId == id);
+                index = images.indexOf(item);
 
                 item.IsMain = $(this).find("td:eq(6) .rdbIsMain").is(":checked");
                 item.Title = $(this).find("td:eq(2) .txtTitle").val();
                 item.Description = $(this).find("td:eq(3) .txtDesc").val();
                 item.ImageRatioId = parseInt($(this).find("td:eq(4)").text());
                 item.ImageRatio = parseInt($(this).find("td:eq(4)").text());
-
-
-                dto.Pictures.push(item);
+                item.ImageId = item.ImageId.toString();
+                images[index] = item;
+               dto.Pictures.push(item);
             });
-
-
-
 
             dto.UniqueCode = $("#uniqueCode").val();
             dto.Inventory = parseInt($("#inventory").val());

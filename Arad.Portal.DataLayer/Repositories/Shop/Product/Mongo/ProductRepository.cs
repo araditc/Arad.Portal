@@ -507,7 +507,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     IsActive = !string.IsNullOrWhiteSpace(price.PriceId) ? price.IsActive : true,
                     Prefix = price.Prefix,
                     PriceValue = price.PriceValue,
-                    StartDate = DateHelper.ToEnglishDate(price.StartDate.Split(" ")[0]),
+                    StartDate = price.SDate.Value,
                     EndDate = !string.IsNullOrWhiteSpace(price.EndDate) ?
                     GeneralLibrary.Utilities.DateHelper.ToEnglishDate(price.EndDate.Split(" ")[0]) : null
                 };
@@ -1025,16 +1025,15 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 {
                     if (dto.IsDefault)
                     {
-                        //test comment domain
                         productEntity = _context.ProductCollection
-                           .Find(_ => (_.AssociatedDomainId == dto.DomainId && _.ProductCode == codeNumber)
-                        || (_.ProductCode == codeNumber && _.IsPublishedOnMainDomain)).FirstOrDefault();
+                           .Find(_ => ((_.AssociatedDomainId == dto.DomainId && _.ProductCode == codeNumber) || (_.ProductCode == codeNumber && _.IsPublishedOnMainDomain)) && !_.IsDeleted).FirstOrDefault();
+
                     }
                     else
                     {
-                        //test comment domain
+                        
                         productEntity = _context.ProductCollection
-                          .Find(_ => _.AssociatedDomainId == dto.DomainId && _.ProductCode == codeNumber).FirstOrDefault();
+                          .Find(_ => _.AssociatedDomainId == dto.DomainId && _.ProductCode == codeNumber && !_.IsDeleted).FirstOrDefault();
 
                     }
                 }
@@ -1047,13 +1046,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     if (dto.IsDefault)
                     {
                         productEntity = _context.ProductCollection
-                           .Find(_ => (_.AssociatedDomainId == dto.DomainId && _.MultiLingualProperties.Any(a => a.UrlFriend == $"/product/{slugOrCode}"))
-                        || (_.MultiLingualProperties.Any(a => a.UrlFriend == $"/product/{slugOrCode}") && _.IsPublishedOnMainDomain)).FirstOrDefault();
+                           .Find(_ => ((_.AssociatedDomainId == dto.DomainId && _.MultiLingualProperties.Any(a => a.UrlFriend == $"/product/{slugOrCode}"))
+                                 || (_.MultiLingualProperties.Any(a => a.UrlFriend == $"/product/{slugOrCode}") && _.IsPublishedOnMainDomain)) && !_.IsDeleted).FirstOrDefault();
                     }
                     else
                     {
                         productEntity = _context.ProductCollection
-                          .Find(_ => _.AssociatedDomainId == dto.DomainId && _.MultiLingualProperties.Any(a => a.UrlFriend == $"/product/{slugOrCode}")).FirstOrDefault();
+                          .Find(_ => _.AssociatedDomainId == dto.DomainId && _.MultiLingualProperties.Any(a => a.UrlFriend == $"/product/{slugOrCode}") && !_.IsDeleted).FirstOrDefault();
 
                     }
                 }
@@ -1420,6 +1419,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             FilterDefinition<Entities.Shop.Product.Product> filterDef;
 
             filterDef = _builder.Eq(nameof(Entities.Shop.Product.Product.IsActive), true);
+            filterDef &= _builder.Eq(nameof(Entities.Shop.Product.Product.IsDeleted), false);
             if (!domainEntity.IsDefault)
             {
                 filterDef = _builder.And(filterDef, _builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId));

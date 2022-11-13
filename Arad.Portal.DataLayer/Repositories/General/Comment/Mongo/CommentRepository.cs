@@ -242,7 +242,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
         {
             var result = new CommentDTO();
             var entity = await _commentContext.Collection
-                .Find(_ => _.CommentId == commentId).FirstOrDefaultAsync();
+                .Find(_ => _.CommentId == commentId && !_.IsDeleted).FirstOrDefaultAsync();
 
             if (entity != null)
             {

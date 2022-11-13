@@ -508,133 +508,146 @@
       });
 
 
-     $("#btnAddPromotion").click(function () {
-        debugger;
-        var flag = false;
+         $("#btnAddPromotion").click(function () 
+         {
+            debugger;
+            var flag = false;
 
-          if($("#AsUserCoupon").is(":checked") && $("#CouponCode").val() == "")
-            {
-                $("span[data-val-result='CouponCode']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-            }
-         if ($("#title").val() == "") {
-              $("span[data-val-result='title']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                    flag = true;
-         }
-         if ($("#currencyId").val() == "-1") {
-              $("span[data-val-result='currencyId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
-                    flag = true;
-         }
-         if (!$("#AsUserCoupon").is(":checked") && $("#promotionTypeId").val() == "-1") {
-             $("span[data-val-result='promotionTypeId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
-                    flag = true;
-         }
-         if ($("#discountTypeId").val() == "-1") {
-             $("span[data-val-result='discountTypeId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
-                    flag = true;
-         }
-         if ($("#PriceOrDiscount").css("display") == "block" && $("#value").val() == "") {
-              $("span[data-val-result='value']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                    flag = true;
-         }
-         if ($("#dtpFromDate").val() == "")
-         {
-             $("span[data-val-result='FromDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                    flag = true;
-         }
-          if ($("#dtpToDate").val() == "")
-         {
-             $("span[data-val-result='ToDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                    flag = true;
-         }
-         if ($("#promotionTypeId").val() == "1") {
-             if ($("#productGroupId").val() == "-1") {
-                 $("span[data-val-result='productGroupId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
-                 flag = true;
-             }
-         }
-         if ($("#promotionTypeId").val() == "2")
-         {
-             if ($("#productId").val() == "-1") {
-                 $("span[data-val-result='productId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                 flag = true;
-             }
-         }
+                 if($("#AsUserCoupon").is(":checked") && $("#CouponCode").val() == "")
+                    {
+                        $("span[data-val-result='CouponCode']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    }
+                 if ($("#title").val() == "") {
+                      $("span[data-val-result='title']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                            flag = true;
+                 }
+                 if ($("#currencyId").val() == "-1") {
+                      $("span[data-val-result='currencyId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
+                            flag = true;
+                 }
+                 if (!$("#AsUserCoupon").is(":checked") && $("#promotionTypeId").val() == "-1") {
+                     $("span[data-val-result='promotionTypeId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
+                            flag = true;
+                 }
+                 if ($("#discountTypeId").val() == "-1") {
+                     $("span[data-val-result='discountTypeId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
+                            flag = true;
+                 }
+                 if ($("#PriceOrDiscount").css("display") == "block" && $("#value").val() == "") {
+                      $("span[data-val-result='value']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                            flag = true;
+                 }
+                 if ($("#dtpFromDate").val() == "")
+                 {
+                     $("span[data-val-result='FromDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                            flag = true;
+                 }
+                  if ($("#dtpToDate").val() == "")
+                 {
+                     $("span[data-val-result='ToDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                            flag = true;
+                 }
+                 if ($("#promotionTypeId").val() == "1") {
+                     if ($("#productGroupId").val() == "-1") {
+                         $("span[data-val-result='productGroupId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
+                         flag = true;
+                     }
+                 }
+                 if ($("#promotionTypeId").val() == "2")
+                 {
+                     if ($("#productId").val() == "-1") {
+                         $("span[data-val-result='productId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                         flag = true;
+                     }
+                 }
 
-         if (!$("#AsUserCoupon").is(":checked") && $("#discountTypeId").val() == "2")
-         {
-             if ($("#ProductIdType").val() == "-1") {
-                 $("span[data-val-result='ProductIdType']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
-                 flag = true;
-             }
-             if ($("#boughtCount").val() == "") {
-                 $("span[data-val-result='boughtCount']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-             }
-             if ($("#promotedCountofUnit").val() == "") {
-                 $("span[data-val-result='promotedCountofUnit']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-             }
-         }
+                 if (!$("#AsUserCoupon").is(":checked") && $("#discountTypeId").val() == "2")
+                 {
+                     if ($("#ProductIdType").val() == "-1") {
+                         $("span[data-val-result='ProductIdType']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
+                         flag = true;
+                     }
+                     if ($("#boughtCount").val() == "") {
+                         $("span[data-val-result='boughtCount']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                     }
+                     if ($("#promotedCountofUnit").val() == "") {
+                         $("span[data-val-result='promotedCountofUnit']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                     }
+                 }
           
-         if (!flag) {
-             var dataModel = FillDataToSend();
-            $.ajax({
-                url: "@Model.PromotionId" != "" ? '@Url.Action("Edit", "Promotion")' : '@Url.Action("Add", "Promotion")',
-                    contentType: 'application/json',
-                    data: JSON.stringify(dataModel),
-                type: 'Post',
-                beforeSend: function () {
-                    debugger;
-                  
-                },
-                success: function (result) {
-                    debugger;
-                   /* AddLoading($("#addPromotionCard"));*/
-                    if (result.status === "Success") {
-                      
-                          document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
-                            document.getElementById('mainToastBody').classList.add('alert-success');
-                            var bsAlert = new bootstrap.Toast($("#mainToast"));
-                            $("#toastPanel").show();
-                                bsAlert.show();
-                            setTimeout(function()
-                            {
-                                $("#toastPanel").hide();
-                                 window.location.href = '@Url.Action("List")';
-                            },
-                            3000);
-                    }else
-                    if (result.status === "ModelError") {
-                        var spanErrorList = $('span[data-val-result]');
-                        if (spanErrorList.length > 1) {
-                            spanErrorList.each(function() {
-                                $(this).html("");
-                                $(this).parent().removeClass("has-error");
-                            });
-                        } else {
-                            spanErrorList.html("");
-                            spanErrorList.parent().removeClass("has-error");
-                        }
-                       if (result.modelStateErrors != null && result.modelStateErrors.length > 0) {
+                 if (!flag)
+                 {
+                     var dataModel = FillDataToSend();
+                    $.ajax({
+                        url: "@Model.PromotionId" != "" ? '@Url.Action("Edit", "Promotion")' : '@Url.Action("Add", "Promotion")',
+                            contentType: 'application/json',
+                            data: JSON.stringify(dataModel),
+                        type: 'Post',
+                        beforeSend: function () {
                             debugger;
-                                    result.modelStateErrors.forEach(function(value, index) {
-                                    $('[data-val-result=' + value.key + ']').append(value.errorMessage);
-                                    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                                    });
+                  
+                        },
+                        success: function (result) {
+                            debugger;
+                           /* AddLoading($("#addPromotionCard"));*/
+                            if (result.status === "Success")
+                            {
+                      
+                                  document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                                    document.getElementById('mainToastBody').classList.add('alert-success');
+                                    var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                    $("#toastPanel").show();
+                                        bsAlert.show();
+                                    setTimeout(function()
+                                    {
+                                        $("#toastPanel").hide();
+                                         window.location.href = '@Url.Action("List")';
+                                    },
+                                    3000);
+                            }
+                            else
+                            if (result.status === "ModelError")
+                            {
+                                    var spanErrorList = $('span[data-val-result]');
+                                    if (spanErrorList.length > 1) {
+                                        spanErrorList.each(function() {
+                                            $(this).html("");
+                                            $(this).parent().removeClass("has-error");
+                                        });
+                                    } 
+                                    else
+                                    {
+                                        spanErrorList.html("");
+                                        spanErrorList.parent().removeClass("has-error");
+                                    }
+                                    if (result.modelStateErrors != null && result.modelStateErrors.length > 0)
+                                    {
+                                        result.modelStateErrors.forEach(function(value, index)
+                                        {
+                                            $('[data-val-result=' + value.key + ']').append(value.errorMessage);
+                                            $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                        });
                                     }
                                     else
                                     {
                                         showError(result.message);
                                     }
-                                   }
-                    },
+                            }
+                            else
+                            if(result.status == "Error")
+                            {
+                                showError(result.message);
+                            }
+                       },
               
-                complete: function () {
-                    //removeLoading($("#addProductSpecificationGroupCard"));
-                }
-                });
-                }
+                        complete: function () {
+                            //removeLoading($("#addProductSpecificationGroupCard"));
+                        }
+                      });
+                 }
 
-            });
-        });
+          });
+   });
     function generateVendorSection() {
         debugger;
         var vendorSelect = "";

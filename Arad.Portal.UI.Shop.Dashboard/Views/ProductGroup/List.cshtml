@@ -9,13 +9,21 @@
     bool isSearch = false;
     System.Collections.Specialized.NameValueCollection queryString = null;
     var langId = "";
+    var name = "";
     if (!string.IsNullOrWhiteSpace(Model.QueryString))
     {
         queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
-        isSearch = !string.IsNullOrWhiteSpace(queryString["LanguageId"]);
+        isSearch = !string.IsNullOrWhiteSpace(queryString["LanguageId"]) || !string.IsNullOrWhiteSpace(queryString["Name"]);
         if (isSearch)
         {
-            langId = queryString["LanguageId"].ToString();
+           if (!string.IsNullOrWhiteSpace(queryString["LanguageId"]))
+            {
+                langId = queryString["LanguageId"].ToString();
+            }
+            if (!string.IsNullOrWhiteSpace(queryString["Name"]))
+            {
+                name = queryString["Name"].ToString();
+            }
         }
         queryString.Remove("page");
     }
@@ -160,8 +168,9 @@
            
             if ("@langId" != "") {
                 $("#cmbLangIdFilter").val("@langId");
+                $("#cmbLangIdFilter").selectpicker("refresh");
             }
-
+            $("#txtFilter").val("@name");
             $("#btnSearch").click(function () {
                 debugger;
                 var queryString = "?LanguageId=" + $("#cmbLangIdFilter").val();

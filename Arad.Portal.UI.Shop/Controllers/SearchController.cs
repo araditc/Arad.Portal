@@ -95,18 +95,24 @@ namespace Arad.Portal.UI.Shop.Controllers
                             }
                             else
                             {
-                                cat = await _categoryRepository.ContentCategoryFetch(item.GroupIds[i]);
-                                id = cat.CategoryCode.ToString();
-                                name = cat.CategoryNames.Any(_ => _.LanguageId == lanId) ? cat.CategoryNames.FirstOrDefault(_ => _.LanguageId == lanId).Name : cat.CategoryNames.FirstOrDefault().Name;
+                                cat = await _categoryRepository.ContentCategoryFetch(item.GroupIds[i], false);
+                                if(!string.IsNullOrWhiteSpace(cat.ContentCategoryId))
+                                {
+                                    id = cat.CategoryCode.ToString();
+                                    name = cat.CategoryNames.Any(_ => _.LanguageId == lanId) ? cat.CategoryNames.FirstOrDefault(_ => _.LanguageId == lanId).Name : cat.CategoryNames.FirstOrDefault().Name;
+                                }
+                                
                             }
-                            item.SuggestionObjs.Add(new SuggestionObject()
+                            if(id != "" && name != string.Empty)
                             {
-
-                                Phrase = $"{key} {GeneralLibrary.Utilities.Language.GetString("Search_IN")} {name}",
-                                IsProduct = item.IsProduct,
-                                UrlParameter = id
-                            }) ;
-
+                                var suggest = new SuggestionObject()
+                                {
+                                    Phrase = $"{key} {GeneralLibrary.Utilities.Language.GetString("Search_IN")} {name}",
+                                    IsProduct = item.IsProduct,
+                                    UrlParameter = id
+                                };
+                                item.SuggestionObjs.Add(suggest);
+                            }
                         };
                     }
                     var list = lst.SelectMany(_ => _.SuggestionObjs).ToList();

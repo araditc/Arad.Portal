@@ -52,10 +52,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                 //    baseAddress = "/Admin";
                 //}
                 ViewBag.BasePath = baseAddress;
-                var req = _accessor.HttpContext.Request;
                 var obj = new RequestMenuModel()
                 {
-                    PathString = req.Path,
+                    PathString = $"/{route?.Values["controller"]}/{route?.Values["action"]}".ToLower(),
                     Domain = $"{_accessor.HttpContext.Request.Host}"
                 };
 

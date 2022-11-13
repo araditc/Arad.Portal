@@ -128,7 +128,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             FilterDefinition<Entities.General.Content.Content> filterDef;
            
             filterDef = builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), dbEntity.DomainId);
-           
+            filterDef &= builder.Eq(nameof(Entities.General.Content.Content.IsDeleted), false);
+
             //TODO : doesnt work
             var cursor = await _contentContext.Collection.DistinctAsync<string>("ContentCategoryId", filterDef);
             var lst = await cursor.ToListAsync();
@@ -156,13 +157,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             return finalList;
         }
 
-        public async Task<ContentCategoryDTO> ContentCategoryFetch(string contentCategoryId)
+        public async Task<ContentCategoryDTO> ContentCategoryFetch(string contentCategoryId, bool isDeleted = true)
         {
             var result = new ContentCategoryDTO();
             try
             {
                 var category = await _categoryContext.Collection
-                    .Find(_ => _.ContentCategoryId == contentCategoryId).FirstOrDefaultAsync();
+                    .Find(_ => _.ContentCategoryId == contentCategoryId && _.IsDeleted == isDeleted).FirstOrDefaultAsync();
                 if(category != null)
                 {
                     result = _mapper.Map<ContentCategoryDTO>(category);
@@ -238,11 +239,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             if (long.TryParse(slugOrCode, out codeNumber))
             {
                 entity = _categoryContext.Collection
-                 .Find(_ => _.CategoryCode == codeNumber).FirstOrDefault();
+                 .Find(_ => _.CategoryCode == codeNumber && !_.IsDeleted).FirstOrDefault();
             }else
             {
                 entity = _categoryContext.Collection
-                       .Find(_ => _.CategoryNames.Any(a => a.UrlFriend == $"/category/{slugOrCode}")).FirstOrDefault();
+                       .Find(_ => _.CategoryNames.Any(a => a.UrlFriend == $"/category/{slugOrCode}") && !_.IsDeleted).FirstOrDefault();
             }
 
             if (entity != null)
@@ -289,10 +290,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             List<Entities.General.Content.Content> lst = new List<Entities.General.Content.Content>();
             if(count != null)
             {
-               lst = _contentContext.Collection.Find(_ => _.ContentCategoryId == contentCategoryId && _.AssociatedDomainId == domainId).SortByDescending(_ => _.CreationDate).Skip(0).Limit(count).ToList();
+               lst = _contentContext.Collection.Find(_ => _.ContentCategoryId == contentCategoryId && _.AssociatedDomainId == domainId && !_.IsDeleted).SortByDescending(_ => _.CreationDate).Skip(0).Limit(count).ToList();
             }else
             {
-                lst = _contentContext.Collection.Find(_ => _.ContentCategoryId == contentCategoryId && _.AssociatedDomainId == domainId).SortByDescending(_ => _.CreationDate).ToList();
+                lst = _contentContext.Collection.Find(_ => _.ContentCategoryId == contentCategoryId && _.AssociatedDomainId == domainId && !_.IsDeleted).SortByDescending(_ => _.CreationDate).ToList();
             }
             result = _mapper.Map<List<ContentViewModel>>(lst);
 
@@ -312,11 +313,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             List<DataLayer.Entities.General.ContentCategory.ContentCategory> lst;
             if(count != null)
             {
-                lst = _categoryContext.Collection.Find(_ => _.ParentCategoryId == contentCategoryId).Skip(skip).Limit(count.Value).ToList();
+                lst = _categoryContext.Collection.Find(_ => _.ParentCategoryId == contentCategoryId && !_.IsDeleted).Skip(skip).Limit(count.Value).ToList();
             }
             else
             {
-                lst = _categoryContext.Collection.Find(_ => _.ParentCategoryId == contentCategoryId).ToList();
+                lst = _categoryContext.Collection.Find(_ => _.ParentCategoryId == contentCategoryId && !_.IsDeleted).ToList();
             }
             var catList = 
 

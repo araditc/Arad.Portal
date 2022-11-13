@@ -14,7 +14,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             _sliderRepository = sliderRepository;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string sliderId)
+        public IViewComponentResult Invoke(string sliderId)
         {
             var slider = _sliderRepository.GetSlider(sliderId);
             Log.Fatal($"find slider={slider.SliderId}");

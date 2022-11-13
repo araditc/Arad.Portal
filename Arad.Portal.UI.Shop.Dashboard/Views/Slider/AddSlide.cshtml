@@ -324,41 +324,43 @@ else
                     success: function(result) {
                         debugger;
 
-                       
-
-                        if (result.status === "success") {
+                        if (result.status === "success")
+                        {
                             list();
-                        
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            $("#toastPanel").show();
+                            var bsAlert = new bootstrap.Toast($("#mainToast"));
+                            bsAlert.show();
 
-                        document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
-                        document.getElementById('mainToastBody').classList.add('alert-success');
-                        $("#toastPanel").show();
-                        var bsAlert = new bootstrap.Toast($("#mainToast"));
-                        bsAlert.show();
+                            setTimeout(function(){
+                                $("#toastPanel").hide();
+                            }, 2500);
 
-                        setTimeout(function(){
-                            $("#toastPanel").hide();
-                        }, 2500);
+                             $("#add").removeClass("show");
 
-                         $("#add").removeClass("show");
-
-                        } else if (result.status === "error") {
-                            if (spanErrorList.length > 1) {
+                        } else if (result.status === "error")
+                        {
+                            if (spanErrorList.length > 1) 
+                            {
                                 spanErrorList.each(function() {
                                     $(this).html("");
                                     $(this).parent().removeClass("has-error");
                                 });
                             }
 
-                            if (result.modelStateErrors !== null) {
+                            if (result.modelStateErrors !== null)
+                            {
                                 console.log(result);
-                                result.modelStateErrors.forEach(function(value, index) {
+                                result.modelStateErrors.forEach(function(value, index)
+                                {
                                     $("#addSlide").find('[data-val-result=' + value.key + ']')
                                         .html(value.errorMessage);
                                     $("#addSlide").find('[data-val-result=' + value.key + ']').parent()
                                         .addClass("has-error");
                                 });
-                            } else {
+                            } else 
+                            {
 
                                 showError(result.message);
                             }
@@ -381,7 +383,8 @@ else
                         $("#loading").css("display", "block");
                     },
                     success: function(result) {
-                        if (result.status === "success") {
+                        if (result.status === "success")
+                        {
                             list();
 
                              document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
@@ -399,14 +402,16 @@ else
                             }, 2500);
 
                             
-                        } else if (result.status === "error") {
+                        } else if (result.status === "error")
+                        {
                             if (spanErrorList.length > 1) {
                                 spanErrorList.each(function() {
                                     $(this).html("");
                                     $(this).parent().removeClass("has-error");
                                 });
                             }
-                            if (result.modelStateErrors !== null) {
+                            if (result.modelStateErrors !== null) 
+                            {
 
                                 result.modelStateErrors.forEach(function(value, index) {
                                     $("#addSlide").find('[data-val-result=' + value.key + ']')
@@ -414,8 +419,8 @@ else
                                     $("#addSlide").find('[data-val-result=' + value.key + ']').parent()
                                         .addClass("has-error");
                                 });
-                            } else {
-
+                            } else
+                            {
                                 showError(result.message)
                             }
                         }

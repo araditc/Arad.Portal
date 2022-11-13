@@ -204,6 +204,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
         {
             var result = new List<StoreMenuVM>();
             string finalLangId;
+            FilterDefinitionBuilder<Entities.General.Menu.Menu> builder = new();
+            FilterDefinition<Entities.General.Menu.Menu> filterDef = builder.Eq(nameof(Entities.General.Menu.Menu.IsDeleted), false);
+           
             var domainEntity = _domainContext.Collection.Find(Builders<Entities.General.Domain.Domain>.Filter.Eq(_ => _.DomainId, domainId)).FirstOrDefault();
             if(domainEntity != null)
             {
@@ -215,7 +218,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 {
                     finalLangId = domainEntity.DefaultLanguageId;
                 }
-                result = _context.Collection.Find(_ => _.AssociatedDomainId == domainId && _.ParentId == null)
+                result = _context.Collection.Find(_ => _.AssociatedDomainId == domainId && _.ParentId == null && !_.IsDeleted)
                     .Project(_ => new StoreMenuVM()
                     {
                         MenuId = _.MenuId,
@@ -293,7 +296,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             {
                 if (_context.Collection.Find(_ => _.ParentId == menuId).CountDocuments() > 0)
                 {
-                    result = _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId && _.ParentId == menuId)
+                    result = _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId && _.ParentId == menuId && !_.IsDeleted)
 
                         .Project(_ => new StoreMenuVM()
                         {
@@ -487,7 +490,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
 
             if(userEntity.IsSystemAccount)
             {
-                result = _context.Collection.Find(_ => _.IsActive)
+                result = _context.Collection.Find(_ => _.IsActive && !_.IsDeleted)
                 .Project(_ => new SelectListModel()
                 {
                     Value = _.MenuId,

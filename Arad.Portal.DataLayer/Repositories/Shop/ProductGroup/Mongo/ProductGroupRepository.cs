@@ -474,7 +474,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         {
             var result = new List<ProductOutputDTO>();
             var list = _productContext.ProductCollection
-                 .Find(_ => _.GroupIds.Contains(productGroupId)).SortByDescending(_ => _.CreationDate).Skip(skip).Limit(count).ToList();
+                 .Find(_ => _.GroupIds.Contains(productGroupId) && !_.IsDeleted).SortByDescending(_ => _.CreationDate).Skip(skip).Limit(count).ToList();
 
             result = _mapper.Map<List<ProductOutputDTO>>(list);
             foreach (var pro in result)

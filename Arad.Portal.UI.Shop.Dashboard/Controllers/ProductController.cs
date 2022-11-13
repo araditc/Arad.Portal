@@ -278,8 +278,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         {
                             item.SDate = DateTime.UtcNow;
                         }
+                        else
+                        {
+                            item.SDate = CultureInfo.CurrentCulture.Name == "fa-IR" ? DateHelper.ToEnglishDate(item.StartDate) : DateTime.Parse(item.StartDate);
+                        }
                         item.Prefix = cur.ReturnValue.Symbol;
-                        item.SDate = CultureInfo.CurrentCulture.Name == "fa-IR" ?  DateHelper.ToEnglishDate(item.StartDate) : DateTime.Parse(item.StartDate);
                         item.IsActive = true;
                     }
 
@@ -397,8 +400,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             }
                         }
                         #endregion 
-
-                        _codeGenerator.SaveToDB(dto.ProductCode);
+                        if(!isFromContent)
+                        {
+                            _codeGenerator.SaveToDB(dto.ProductCode);
+                        }
                     }
                     result = Json(saveResult.Succeeded && luceneResult.Succeeded ? new { Status = "Success", saveResult.Message }
                     : new { Status = "Error", saveResult.Message });

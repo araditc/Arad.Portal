@@ -1,4 +1,4 @@
-﻿using Arad.Portal.DataLayer.Contracts.General.Comment;
+﻿                                                                                                                                                     using Arad.Portal.DataLayer.Contracts.General.Comment;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
@@ -172,19 +172,26 @@ namespace Arad.Portal.UI.Shop.Controllers
                 var userId = User.GetUserId();
                 var domaindto = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
                 var entity = _productRepository.FetchByCode(code.ToString(), domaindto, userId);
-                var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var filePath = System.IO.Path.Combine(localStaticFileStorageURL, entity.ProductFileUrl);
-               
-                //update download count for this user
-                if (entity.DownloadLimitationType == Enums.DownloadLimitationType.TimeDurationWithCnt ||
-                      entity.DownloadLimitationType == Enums.DownloadLimitationType.DownloadCount)
+                if(!string.IsNullOrWhiteSpace(entity.ProductId))
                 {
-                    await _productRepository.UpdateDownloadLimitationCount(userId, entity.ProductId);
+                    var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
+                    var filePath = System.IO.Path.Combine(localStaticFileStorageURL, entity.ProductFileUrl);
+
+                    //update download count for this user
+                    if (entity.DownloadLimitationType == Enums.DownloadLimitationType.TimeDurationWithCnt ||
+                          entity.DownloadLimitationType == Enums.DownloadLimitationType.DownloadCount)
+                    {
+                        await _productRepository.UpdateDownloadLimitationCount(userId, entity.ProductId);
+                    }
+
+                    byte[] fileContent = await System.IO.File.ReadAllBytesAsync(filePath);
+                    var test = GetMimeTypeForFileExtension(filePath);
+                    return File(fileContent, GetMimeTypeForFileExtension(filePath), entity.ProductFileName);
+                }else
+                {
+                    return Json(null);
                 }
                 
-                byte[] fileContent = await System.IO.File.ReadAllBytesAsync(filePath);
-                var test = GetMimeTypeForFileExtension(filePath);
-                return File(fileContent, GetMimeTypeForFileExtension(filePath), entity.ProductFileName);
             }
             else
                 return Json(null);
@@ -248,15 +255,18 @@ namespace Arad.Portal.UI.Shop.Controllers
             
             var userId = User.GetUserId();
             var dto = _productRepository.FetchByCode(code.ToString(), domainEntity, userId);
-            if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
+            if(!string.IsNullOrWhiteSpace(dto.ProductId))
             {
-                compareList = HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}");
+                if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
+                {
+                    compareList = HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}");
+                }
+                if (!compareList.Contains(dto.ProductId) && compareList.Count <= 4)
+                {
+                    compareList.Add(dto.ProductId);
+                }
+                HttpContext.Session.SetComplexData($"compareList_{remoteIpAddress}_{domainEntity.DomainId}", compareList);
             }
-            if (!compareList.Contains(dto.ProductId) && compareList.Count <= 4)
-            {
-                compareList.Add(dto.ProductId);
-            }
-            HttpContext.Session.SetComplexData($"compareList_{remoteIpAddress}_{domainEntity.DomainId}", compareList);
             return Redirect($"/{lanIcon}/Product/Compare");
 
         }
@@ -280,15 +290,19 @@ namespace Arad.Portal.UI.Shop.Controllers
             var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString().Replace(".", "");
             var userId = User.GetUserId();
             var dto = _productRepository.FetchByCode(code.ToString(), domainEntity, userId);
-            if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
+            if(!string.IsNullOrWhiteSpace(dto.ProductId))
             {
-                compareList = HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}");
+                if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
+                {
+                    compareList = HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}");
+                }
+                if (compareList.Contains(dto.ProductId))
+                {
+                    compareList.Remove(dto.ProductId);
+                }
+                HttpContext.Session.SetComplexData($"compareList_{remoteIpAddress}_{domainEntity.DomainId}", compareList);
             }
-            if (compareList.Contains(dto.ProductId))
-            {
-                compareList.Remove(dto.ProductId);
-            }
-            HttpContext.Session.SetComplexData($"compareList_{remoteIpAddress}_{domainEntity.DomainId}", compareList);
+            
             return Redirect($"/{lanIcon}/Product/Compare");
         }
         [HttpGet]

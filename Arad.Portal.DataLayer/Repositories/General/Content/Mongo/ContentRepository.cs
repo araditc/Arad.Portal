@@ -106,6 +106,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             return result;
         }
 
+        /// <summary>
+        /// call in dashboard
+        /// </summary>
+        /// <param name="contentId"></param>
+        /// <returns></returns>
         public async Task<ContentDTO> ContentFetch(string contentId)
         {
             var result = new ContentDTO();
@@ -167,12 +172,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             if (long.TryParse(slugOrCode, out codeNumber))
             {
                 contentEntity = _contentContext.Collection
-                   .Find(_ => _.ContentCode == codeNumber).FirstOrDefault();
+                   .Find(_ => _.ContentCode == codeNumber && !_.IsDeleted).FirstOrDefault();
             }
             else
             {
                 contentEntity = _contentContext.Collection
-                     .Find(_=>_.UrlFriend == $"/blog/{slugOrCode}").FirstOrDefault();
+                     .Find(_=>_.UrlFriend == $"/blog/{slugOrCode}" && !_.IsDeleted).FirstOrDefault();
             }
 
             if(contentEntity != null)
@@ -233,7 +238,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             var result = new ContentDTO();
             var urlFriend = $"{domainName}/blog/{slug}";
             var contentEntity = _contentContext.Collection
-                .Find(_ => _.UrlFriend == urlFriend).FirstOrDefault();
+                .Find(_ => _.UrlFriend == urlFriend && !_.IsDeleted).FirstOrDefault();
             if(contentEntity != null)
             {
                 result = _mapper.Map<ContentDTO>(contentEntity);
@@ -282,7 +287,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             {
                 if(!string.IsNullOrWhiteSpace(categoryId))
                 {
-                    result = _contentContext.Collection.Find(_ => _.ContentCategoryId == categoryId && _.IsActive && _.LanguageId == domainEntity.DefaultLanguageId)
+                    result = _contentContext.Collection
+                        .Find(_ => _.ContentCategoryId == categoryId && _.IsActive && !_.IsDeleted && _.LanguageId == domainEntity.DefaultLanguageId)
                   .Project(_ => new SelectListModel()
                   {
                       Text = _.Title,
@@ -291,7 +297,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 }
                 else
                 {
-                    result = _contentContext.Collection.Find(_ => _.IsActive && _.LanguageId == domainEntity.DefaultLanguageId)
+                    result = _contentContext.Collection.Find(_ => _.IsActive && _.LanguageId == domainEntity.DefaultLanguageId && !_.IsDeleted)
                   .Project(_ => new SelectListModel()
                   {
                       Text = _.Title,
@@ -500,7 +506,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             }
             
             FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
-            FilterDefinition<Entities.General.Content.Content> filterDef = builder.Empty;
+            FilterDefinition<Entities.General.Content.Content> filterDef = builder.Eq(nameof(Entities.General.Content.Content.IsDeleted), false);
             
 
             if(selectionType == SelectionType.CustomizedSelection && selectedIds != null && selectedIds.Count > 0)
@@ -631,7 +637,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             }
 
             FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
-            FilterDefinition<Entities.General.Content.Content> filterDef = builder.Empty;
+            FilterDefinition<Entities.General.Content.Content> filterDef = builder.Eq(nameof(Entities.General.Content.Content.IsDeleted), false);
             filterDef &= builder.Eq(nameof(Entities.General.Content.Content.ContentCategoryId), contentCategoryId);
             filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.UtcNow);
             filterDef &= builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.UtcNow);
@@ -738,7 +744,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
                 FilterDefinition<Entities.General.Content.Content> filterDef = builder.Empty;
 
-                //??? should be uncommented in development mode
                 filterDef = builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainId);
                 filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.General.Content.Content.LanguageId), languageId));
                 filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.General.Content.Content.IsDeleted), false));

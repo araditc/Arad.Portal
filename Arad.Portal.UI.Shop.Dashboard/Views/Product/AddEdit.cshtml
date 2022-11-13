@@ -162,12 +162,12 @@
                     <input accept=".zip,.rar" class="form-control"  id="ProductFileContent"   type="file" />
                     <span data-val-result="ProductFileContent" class="text-danger"></span>
                 </div>
-                @if(Model.ProductFileName != string.Empty)
+                @if(!string.IsNullOrWhiteSpace(Model.ProductFileName))
                 {
                      <div class="form-group col-12 col-md-3">
                           <label class="form-label" asp-for="@Model.ProductFileName">
-                        @Language.GetString("ProductFileName")
-                    </label>
+                              @Language.GetString("ProductFileName")
+                        </label>
                        <input type="text" min="1" class="form-control" asp-for="@Model.ProductFileName" />
                     </div>
                 }
@@ -177,7 +177,7 @@
                 <div class="row">
                     <div class="form-group col-12 col-md-3">
                         <label asp-for="@Model.GroupIds" class="form-label">@Language.GetString("tbl_ProductGroup")</label>
-                        <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.GroupIds" asp-items="@(new MultiSelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                        <select class="form-control selectpicker" data-live-search="true" multiple asp-for="@Model.GroupIds" asp-items="@(new MultiSelectList(ViewBag.ProductGroupList,"Value","Text"))">
                         </select>
                         <span data-val-result="GroupIds" class="text-danger"></span>
                     </div>
@@ -711,6 +711,8 @@ else
 
 
     $(document).ready(function () {
+        debugger;
+        
         $("#seoTitle").characterCounter({
              //opacity : ".8",
              max: 70,
@@ -877,8 +879,6 @@ else
                 flag = true;
             }
 
-
-
               debugger;
                 if (!flag) {
                     var dto = FillDataToSend();
@@ -901,38 +901,51 @@ else
                                 $("#toastPanel").show();
                                 var bsAlert = new bootstrap.Toast($("#mainToast"));
                                 bsAlert.show();
-                                //setTimeout(function()
-                                //{
-                                //    $("#toastPanel").hide();
-                                //     window.location.href = '@Url.Action("List")';
-                                //},
-                                //3000);
-                            }else
-                            if (result.status === "ModelError") {
-                                var spanErrorList = $('span[data-val-result]');
-                                if (spanErrorList.length > 1) {
-                                    spanErrorList.each(function() {
-                                        $(this).html("");
-                                        $(this).parent().removeClass("has-error");
-                                    });
-                                } else {
-                                    spanErrorList.html("");
-                                    spanErrorList.parent().removeClass("has-error");
-                                }
+                                setTimeout(function()
+                                {
+                                    $("#toastPanel").hide();
+                                     window.location.href = '@Url.Action("List")';
+                                },
+                                3000);
+                            }
+                            else
+                            if (result.status === "ModelError")
+                            {
+                                    var spanErrorList = $('span[data-val-result]');
+                                    if (spanErrorList.length > 1)
+                                    {
+                                        spanErrorList.each(function() 
+                                        {
+                                            $(this).html("");
+                                            $(this).parent().removeClass("has-error");
+                                        });
+                                    } 
+                                    else
+                                    {
+                                        spanErrorList.html("");
+                                        spanErrorList.parent().removeClass("has-error");
+                                    }
 
-                            if (result.modelStateErrors != null && result.modelStateErrors.length > 0) {
-                            debugger;
-                                    result.modelStateErrors.forEach(function(value, index) {
-                                    $('[data-val-result=' + value.key + ']').append(value.errorMessage);
-                                    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                                    });
+                                    if (result.modelStateErrors != null && result.modelStateErrors.length > 0)
+                                    {
+                                        debugger;
+                                        result.modelStateErrors.forEach(function(value, index)
+                                        {
+                                            $('[data-val-result=' + value.key + ']').append(value.errorMessage);
+                                            $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                        });
                                     }
                                     else
                                     {
-                                        showError(result.message);
-                                   }
-                                   }
-                            },
+                                            showError(result.message);
+                                    }
+                            }
+                            else
+                            if(result.status == "Error")
+                            {
+                                showError(result.message);
+                            }
+                        },
                         error: function (xhr, ajaxOptions, thrownError) {
                             alert("@error");
                             alert(xhr.status);
@@ -1089,7 +1102,7 @@ else
         $("#ProductType").change(function(){
 
             var typeId = $("#ProductType").val();
-            if(typeId = "2") //file
+            if(typeId == "2") //file
             {
                 $(".downloadType").removeClass("d-none");
                 $(".productFileUpload").removeClass("d-none");
@@ -1340,8 +1353,12 @@ else
 
         //ProductFile
         var file = $("#ProductFileContent").prop("files")[0];
-        dto.ProductFileContent = productFileContent
-        dto.ProductFileName = file.name ;
+        if(file != undefined)
+        {
+            dto.ProductFileContent = productFileContent
+            dto.ProductFileName = file.name ;
+        }
+        
 
         //prices
         $("#priceList tr").each(function () {
@@ -1439,6 +1456,11 @@ else
                     $("span[data-val-result='productName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
                 flag = true;
             }
+            if($("#urlFriend").val() == "")
+            {
+                $("span[data-val-result='urlFriend']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
 
             if (!flag)
             {
@@ -1448,8 +1470,8 @@ else
                 type: 'Get',
                 dataType: 'json',
                         success: function(result) {
-                            debugger;
-                            if (result.status == "Success") {
+                            if (result.status == "Success") 
+                            {
                                 var obj = {};
                                 var urlFriend = $("#urlFriend").val();
                                 var finalUrl = "";

@@ -513,38 +513,55 @@
                                 debugger;
                               /*  AddLoading($("#addDomainCard"));*/
                             },
-                            success: function (result) {
+                            success: function (result)
+                            {
                                 debugger;
-                                if (result.status === "Success") {
+                                if (result.status === "Success")
+                                {
                                     $("#mainToastBody").html('<i class="far fa-check-circle"></i>' + result.message);
                                     $("#mainToastBody").addClass('alert-success');
                                     $("#toastPanel").show();
                                     var bsAlert = new bootstrap.Toast($('#mainToast'));
                                     bsAlert.show();
-                                 //   setTimeout(function()
-                                 //   {
-                                 //       $("#toastPanel").hide();
-                                 //        window.location.href = '@Url.Action("List")';
-                                 //   },
-                                 //1500);
-                                }else
-                                if (result.status === "ModelError") {
+                                         //   setTimeout(function()
+                                         //   {
+                                         //       $("#toastPanel").hide();
+                                         //        window.location.href = '@Url.Action("List")';
+                                         //   },
+                                         //1500);
+                                }
+                                else
+                                if (result.status === "ModelError")
+                                {
                                     var spanErrorList = $('span[data-val-result]');
-                                    if (spanErrorList.length > 1) {
-                                        spanErrorList.each(function() {
+                                    if (spanErrorList.length > 1)
+                                    {
+                                        spanErrorList.each(function() 
+                                        {
                                             $(this).html("");
                                             $(this).parent().removeClass("has-error");
                                         });
-                                    } else {
+                                    } 
+                                    else 
+                                    {
                                         spanErrorList.html("");
                                         spanErrorList.parent().removeClass("has-error");
                                     }
-                                    if (result.modelStateErrors !== null) {
+                                    if (result.modelStateErrors !== null)
+                                    {
+                                        result.modelStateErrors.forEach(function (value, index)
+                                        {
                                             $('[data-val-result=' + value.key + ']').html(value.errorMessage);
                                             $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                                        }
+                                        });
                                     }
                                 }
+                                else
+                                if(result.status == "Error")
+                                {
+                                    showError(result.message);
+                                }
+                          }
                     });
                 }
 

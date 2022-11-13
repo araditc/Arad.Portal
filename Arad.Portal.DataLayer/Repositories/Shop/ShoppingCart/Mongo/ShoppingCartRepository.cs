@@ -88,7 +88,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             var result = new Result<CartItemsCount>();
             result.ReturnValue = new CartItemsCount();
             var productEntity = _productContext.ProductCollection
-                .Find(_ => _.ProductId == productId).FirstOrDefault();
+                .Find(_ => _.ProductId == productId && !_.IsDeleted).FirstOrDefault();
             var userId = base.GetUserId();
             var userCartEntity = _context.Collection
                 .Find(_ => _.CreatorUserId == userId && !_.IsDeleted && _.IsActive).FirstOrDefault();

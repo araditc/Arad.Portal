@@ -108,11 +108,34 @@
                                     window.location.href = '@Url.Action("List")';
                                 },
                                 1500);
-                        } else
-                            if (result.status === "Error")
-                            {
-                                showError(result.message);
-                            }
+                        } 
+                        else
+                        if(result.status =="ModelError")
+                        {
+                                var spanErrorList = $('span[data-val-result]');
+
+                                if (spanErrorList.length > 0) {
+                                    spanErrorList.each(function () {
+                                        $(this).html("");
+                                        $(this).parent().removeClass("has-error");
+                                    });
+                                }
+                                else {
+                                    spanErrorList.html("");
+                                    spanErrorList.parent().removeClass("has-error");
+                                }
+
+                                if (result.modelStateErrors.length > 0) {
+                                    debugger;
+                                    result.modelStateErrors.forEach(function (value, index) {
+                                        $('[data-val-result=' + value.key + ']').append(value.errorMessage);
+                                        $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                    });
+                        }else
+                        if (result.status === "Error")
+                        {
+                            showError(result.message);
+                        }
                     },
                     complete: function () {
                         /*removeLoading($("#addEditCommentCardBody"));*/
