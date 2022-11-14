@@ -6,6 +6,12 @@
 }
 @section Styles{
     <link href="@Url.Content($"~/lib/intl-tel-input/css/intlTelInput.css")" rel="stylesheet" />
+    <style>
+        .iti.iti--allow-dropdown.iti--separate-dial-code
+        {
+            width : 100% !important;
+        }
+    </style>
 
 }
 
@@ -24,8 +30,8 @@
                     <div class="row">
                         <div class="form-group col-12 col-md-4 p-2">
                             <input asp-for="Id" type="hidden" class="form-control" />
-                            <label asp-for="PhoneNumber" class="form-label"></label>
-                            <input asp-for="PhoneNumber" type="tel" class="form-control" style="direction:ltr;" />
+                            <label asp-for="PhoneNumber" class="form-label"></label><br/>
+                            <input asp-for="PhoneNumber" type="tel" class="form-control w-100" style="direction:ltr;" />
                             <span data-val-result="PhoneNumber" class="text-danger"></span>
                         </div>
                         <div class="form-group col-12 col-md-4 p-2">
@@ -49,11 +55,27 @@
                         </div>
                         <div class="form-group col-12 col-md-3 p-2">
                             <label asp-for="DefaultLanguageId" class="form-label">@Language.GetString("DefaultLanguage")</label>
+                                <br />
                             <select class="form-select  selectpicker" asp-for="DefaultLanguageId" data-live-search="true" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                             </select>
                             <span data-val-result="DefaultLanguageId" class="text-danger"></span>
                         </div>
-                        <div class="form-group col-md-3 col-12 pt-4 pb-2">
+                            @{
+                            if (Convert.ToBoolean(ViewBag.IsSystem))
+                            {
+                                <div class="form-group col-12 col-md-4 p-2">
+                                    <label asp-for="DomainId" class="form-label">@Language.GetString("AssociatedDomain")</label>
+                                    <br/>
+                                    <select class="form-select selectpicker" asp-for="DomainId" asp-items="@(new SelectList(ViewBag.DomainList, "Value", "Text"))" data-live-search="true">
+                                    </select>
+                                    <span data-val-result="DomainId" class="text-danger"></span>
+                                </div>
+                            }else
+                            {
+                                <input type="hidden" asp-for="DomainId" />
+                            }
+                           }
+                        <div class="form-group col-md-2 col-12 pt-4 pb-2">
                             <div class="form-check m-auto d-inline-block pt-3">
                                 <input class="form-check-input" type="checkbox" value="IsVendor" asp-for="IsVendor">
                                 <label class="form-check-label" for="IsVendor">
@@ -61,7 +83,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group col-md-3 col-12 pt-4 pb-2">
+                        <div class="form-group col-md-2 col-12 pt-4 pb-2">
                             <div class="form-check m-auto d-inline-block pt-3">
                                 <input class="form-check-input" type="checkbox" value="IsSiteUser" asp-for="IsSiteUser">
                                 <label class="form-check-label" asp-for="IsSiteUser">

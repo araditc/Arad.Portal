@@ -14,7 +14,7 @@ namespace Arad.Portal.DataLayer.Models.Role
         public List<string> PermissionIds { get; set; } = new List<string>();
         public bool IsEditView { get; set; }
 
-        [CustomErrorMessage("AlertAndMessage_FieldEssential")]
+        [ErrorMessage("AlertAndMessage_FieldEssential")]
         public string RoleName { get; set; }
         public List<string> SelectedPermissions { get; set; }
         //public List<PerSelect> AllAllowedPermissions { get; set; }

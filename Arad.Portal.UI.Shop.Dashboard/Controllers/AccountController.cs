@@ -40,6 +40,7 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using Arad.Portal.DataLayer.Contracts.General.User;
 using Arad.Portal.DataLayer.Contracts.General.CountryParts;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -367,8 +368,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> AddUser()
         {
             var model = new RegisterUserModel();
-            //var superRole = list.Items.FirstOrDefault(_ => _.RoleName == "سوپر ادمین");
-            //list.Items.Remove(superRole);
+           
             ViewBag.LangList = _languageRepository.GetAllActiveLanguage();
             var currentUserId = _httpContextAccessor.HttpContext.User
                 .Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
@@ -384,8 +384,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             else
             {
                 ViewBag.IsSystem = false;
+                model.DomainId = currentUser.DomainId;
             }
-            model.Roles = _roleRepository.GetActiveRoles();
+            var roles = _roleRepository.GetActiveRoles();
+            roles.Insert(0, new RoleListView()
+            {
+                Id = "",
+                Title = Language.GetString("Choose")
+            });
+            model.Roles = roles;
             return View(model);
         }
 
@@ -407,7 +414,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         var obj = new ClientValidationErrorModel
                         {
                             Key = modelStateKey,
-                            ErrorMessage = error.ErrorMessage,
+                            ErrorMessage = error.ErrorMessage == "AlertAndMessage_MinLength" ? 
+                            (modelStateKey == "UserName" ? 
+                            Language.GetString(error.ErrorMessage).Replace("0", Language.GetString("AlertAndMessage_Username")).Replace("1", "3") :
+                            Language.GetString(error.ErrorMessage).Replace("0", Language.GetString("AlertAndMessage_Password")).Replace("1", "6") ) : 
+                            Language.GetString(error.ErrorMessage)
                         };
 
                         errors.Add(obj);
@@ -423,6 +434,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             try
             {
                 var existUser = _userExtension.GetUsersByPhoneNumber(model.FullMobile.Replace("+", ""));
+                #region check mobile uniqueness
+                if(existUser == null)
+                {
+                    //maybe this user register with its mobile in website
+                    existUser = await _userManager.FindByNameAsync(model.FullMobile);
+                }
+                #endregion
 
                 #region Fetch currency from language
                 var lan = _languageRepository.FetchLanguage(model.DefaultLanguageId);
@@ -551,6 +569,20 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 else isVendor = false;
                 ViewBag.IsSystem = userDb.IsSystemAccount;
                 ViewBag.LangList = _languageRepository.GetAllActiveLanguage();
+                var currentUserId = _httpContextAccessor.HttpContext.User
+                .Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                var currentUser = await _userManager.FindByIdAsync(currentUserId);
+                if (currentUser.IsSystemAccount)
+                {
+                    ViewBag.IsSystem = true;
+                    ViewBag.DomainList = _domainRepository.GetAllActiveDomains();
+
+                }
+                else
+                {
+                    ViewBag.IsSystem = false;
+                    model.DomainId = currentUser.DomainId;
+                }
                 model = new UserEdit()
                 {
                     Id = userDb.Id.ToString(),
@@ -559,10 +591,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     LastName = userDb.Profile.LastName,
                     UserRoleId = userDb.UserRoleId,
                     DefaultLanguageId = userDb.Profile.DefaultLanguageId,
+                    DefaultCurrencyId = userDb.Profile.DefaultCurrencyId,
+                    IsSiteUser = userDb.IsSiteUser,
                     IsVendor = isVendor
                 };
 
-                ViewBag.Roles = _roleRepository.GetActiveRoles();
+                var roles = _roleRepository.GetActiveRoles();
+                roles.Insert(0, new RoleListView()
+                {
+                    Id = "-1",
+                    Title = Language.GetString("Choose")
+                });
+                ViewBag.Roles = roles;
             }
             catch (Exception e)
             {
@@ -586,7 +626,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 if (user == null)
                 {
-                    ModelState.AddModelError("Name", Language.GetString("AlertAndMessage_NoUserWasFound"));
+                    ModelState.AddModelError("FirstName", Language.GetString("AlertAndMessage_NoUserWasFound"));
                 }
 
                 var state = _userExtension.IsPhoneNumberUnique(model.FullMobile.Replace("+", ""), user.PhoneNumber);
@@ -688,7 +728,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         var obj = new ClientValidationErrorModel
                         {
                             Key = modelStateKey,
-                            ErrorMessage = error.ErrorMessage,
+                            ErrorMessage = Language.GetString(error.ErrorMessage),
                         };
 
                         errors.Add(obj);

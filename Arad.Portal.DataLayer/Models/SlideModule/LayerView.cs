@@ -17,10 +17,10 @@ namespace Arad.Portal.DataLayer.Models.SlideModule
         public string LayerId { get; set; }
         public string Id { get; set; }
         [Required]
-        [CustomErrorMessage("AlertAndMessage_FieldEssential")]
+        [ErrorMessage("AlertAndMessage_FieldEssential")]
         public LayerType Type { get; set; }
         [Required]
-        [CustomErrorMessage("AlertAndMessage_FieldEssential")]
+        [ErrorMessage("AlertAndMessage_FieldEssential")]
         public string Content { get; set; }
         public string Link { get; set; }
         public Target Target { get; set; }

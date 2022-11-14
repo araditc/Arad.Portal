@@ -24,7 +24,12 @@ namespace Arad.Portal.GeneralLibrary.CustomAttributes
         }
         public override bool IsValid(object value)
         {
-            return value.ToString().Length >= Length;
+            if (value != null)
+            {
+                return value.ToString().Length >= Length;
+            }
+            else
+                return false;
         }
     }
 }

@@ -125,7 +125,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
 
                 if (count == 0)
                 {
-                    result = true;
+                    user = _userManager.Users.Where(_ => _.UserName == modelPhone).ToList();
+                    count = user.Count;
+                    if (user.Count == 0)
+                    {
+                        result = true;
+                    }
                 }
 
                 if (count == 1)

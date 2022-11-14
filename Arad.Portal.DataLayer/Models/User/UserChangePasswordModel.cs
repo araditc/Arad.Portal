@@ -11,13 +11,13 @@ namespace Arad.Portal.DataLayer.Models.User
     {
         public string UserId { get; set; }
 
-        [CustomErrorMessage("AlertAndMessages_InputRequiredErrorMessage")]
+        [ErrorMessage("AlertAndMessages_InputRequiredErrorMessage")]
         public string OldPass { get; set; }
 
-        [CustomErrorMessage("AlertAndMessages_InputRequiredErrorMessage")]
+        [ErrorMessage("AlertAndMessages_InputRequiredErrorMessage")]
         public string NewPass { get; set; }
 
-        [CustomErrorMessage("AlertAndMessages_InputRequiredErrorMessage")]
+        [ErrorMessage("AlertAndMessages_InputRequiredErrorMessage")]
         public string RepNewPass { get; set; }
     }
 }

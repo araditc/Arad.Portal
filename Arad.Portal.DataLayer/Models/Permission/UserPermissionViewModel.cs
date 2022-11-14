@@ -21,7 +21,7 @@ namespace Arad.Portal.DataLayer.Models.Permission
         //[CustomErrorMessage("AlertAndMessage_FieldEssential")]
         //public Enums.PermissionMethod Method { get; set; }
 
-        [CustomErrorMessage("AlertAndMessage_FieldEssential")]
+        [ErrorMessage("AlertAndMessage_FieldEssential")]
         public string Title { get; set; }
 
         public string MenuIdOfModule { get; set; }

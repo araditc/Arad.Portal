@@ -14,7 +14,7 @@ namespace Arad.Portal.DataLayer.Models.SlideModule
         public string Id { get; set; }
         public string SliderId { get; set; }
         [Required]
-        [CustomErrorMessage("AlertAndMessage_FieldEssential")]
+        [ErrorMessage("AlertAndMessage_FieldEssential")]
         public string ImageUrl { get; set; }
         public string ColoredBackground { get; set; }
         public string VideoUrl { get; set; }
@@ -32,7 +32,7 @@ namespace Arad.Portal.DataLayer.Models.SlideModule
         public string PersianExpireDate { get; set; }
         public bool IsActive { get; set; }
         [Required]
-        [CustomErrorMessage("AlertAndMessage_FieldEssential")]
+        [ErrorMessage("AlertAndMessage_FieldEssential")]
         public string Title { get; set; }
         public string Alt { get; set; }
     }

@@ -897,6 +897,10 @@
     "Key": "Validation_MobileNumberInvalid2"
   },
   {
+    "Value": "invalid cellphone number",
+    "Key": "Validation_CellPhoneNumber"
+  },
+  {
     "Value": "this field is required",
     "Key": "AlertAndMessage_IdRequired"
   },
@@ -1118,6 +1122,10 @@
     "Key": "AlertAndMessage_UserNameRequired"
   },
   {
+    "Value": "Please select user domain",
+    "Key": "AlertAndMessage_DomainRequired"
+  },
+  {
     "Value": "Please fill Name.",
     "Key": "AlertAndMessage_NameRequired"
   },
@@ -1127,7 +1135,7 @@
   },
   {
     "Value": "Please fill PhoneNumber.",
-    "Key": "AlertAndMessage_PhonenumberRequired"
+    "Key": "AlertAndMessage_PhoneNumberRequired"
   },
   {
     "Value": "Please Select UserRole.",
@@ -1206,7 +1214,7 @@
     "Key": "AlertAndMessage_UserCreatedSuccessfully"
   },
   {
-    "Value": "There is a user account with this mobilePhone.",
+    "Value": "duplicate phonenumber",
     "Key": "AlertAndMessage_DuplicatePhoneNumber"
   },
   {

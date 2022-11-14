@@ -10,16 +10,16 @@ namespace Arad.Portal.DataLayer.Models.User
 {
     public class ChangePassword
     {
-        [CustomErrorMessage("AlertAndMessage_PasswordRequired")]
+        [ErrorMessage("AlertAndMessage_PasswordRequired")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
        
-        [CustomErrorMessage("AlertAndMessage_NewPasswordRequired")]
+        [ErrorMessage("AlertAndMessage_NewPasswordRequired")]
         public string NewPassword { get; set; }
 
        
-        [CustomErrorMessage("AlertAndMessage_ReNewPasswordRequired")]
+        [ErrorMessage("AlertAndMessage_ReNewPasswordRequired")]
         public string ReNewPassword { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Arad.Portal.DataLayer.Models.User;
+using Arad.Portal.GeneralLibrary.Utilities;
 using PhoneNumbers;
 
 namespace Arad.Portal.DataLayer.Models.Validator
@@ -19,7 +20,7 @@ namespace Arad.Portal.DataLayer.Models.Validator
                 RegisterUserModel user = (RegisterUserModel)validationContext.ObjectInstance;
                 if (string.IsNullOrEmpty(user.PhoneNumber))
                 {
-                    return new ValidationResult("لطفا تلفن همراه را وارد کنید.");
+                    return new ValidationResult("AlertAndMessage_PhoneNumberRequired");
                 }
 
                 PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
@@ -38,7 +39,7 @@ namespace Arad.Portal.DataLayer.Models.Validator
 
                 if (!isValidNumber)
                 {
-                    return new ValidationResult("شماره همراه وارد شده معتبر نیست.");
+                    return new ValidationResult("Validation_MobileNumberInvalid1");
                 }
 
 
@@ -50,14 +51,12 @@ namespace Arad.Portal.DataLayer.Models.Validator
                 }
                 else
                 {
-                    return new ValidationResult(" شماره وارد شده مربوط به تلفن ثابت می باشد.");
+                    return new ValidationResult("Validation_MobileNumberInvalid2");
                 }
             }
-#pragma warning disable CS0168 // The variable 'e' is declared but never used
             catch (Exception e)
-#pragma warning restore CS0168 // The variable 'e' is declared but never used
             {
-                return new ValidationResult(" شماره همراه وارد شده معتبر نیست.");
+                return new ValidationResult("Validation_CellPhoneNumber");
             }
         }
     }

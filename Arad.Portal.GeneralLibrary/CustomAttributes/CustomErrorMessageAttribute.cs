@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.GeneralLibrary.CustomAttributes
 {
-    public class CustomErrorMessageAttribute : ValidationAttribute
+    public class ErrorMessage : ValidationAttribute
     {
-        public CustomErrorMessageAttribute(string key)
+        public ErrorMessage(string key)
         {
             Key = key;
         }

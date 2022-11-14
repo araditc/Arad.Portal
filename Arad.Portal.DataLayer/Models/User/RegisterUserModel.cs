@@ -7,6 +7,7 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using System.Security.AccessControl;
 using System.Text;
 using Arad.Portal.GeneralLibrary.CustomAttributes;
+using System.Net.Mail;
 
 namespace Arad.Portal.DataLayer.Models.User
 {
@@ -17,14 +18,17 @@ namespace Arad.Portal.DataLayer.Models.User
             Roles = new List<RoleListView>();
         }
         
-        [CustomErrorMessage("AlertAndMessage_UserNameRequired")]
-        [CustomMinLength(3, "AlertAndMessage_MinLength")]
+        //[ErrorMessage("AlertAndMessage_UserNameRequired")]
+        [Required(ErrorMessage = "AlertAndMessage_UserNameRequired")]
+        [MinLength(3, ErrorMessage ="AlertAndMessage_MinLength")]
         public string UserName { get; set; }
 
-        [CustomErrorMessage("AlertAndMessage_NameRequired")]
+        //[ErrorMessage("AlertAndMessage_NameRequired")]
+        [Required(ErrorMessage = "AlertAndMessage_NameRequired")]
         public string Name { get; set; }
 
-        [CustomErrorMessage("AlertAndMessage_LastName")]
+       // [ErrorMessage("AlertAndMessage_LastName")]
+        [Required(ErrorMessage = "AlertAndMessage_LastName")]
         public string LastName { get; set; }
 
         public string FatherName { get; set; }
@@ -32,13 +36,15 @@ namespace Arad.Portal.DataLayer.Models.User
         public Gender Gender { get; set; }
 
         [MobilePhoneValidator]
-        [CustomErrorMessage("AlertAndMessage_PhoneNumberRequired")]
+        //[ErrorMessage("AlertAndMessage_PhoneNumberRequired")]
+        //[Required(ErrorMessage = "AlertAndMessage_PhoneNumberRequired")]
         public string PhoneNumber { get; set; }
 
         public string FullMobile { get; set; }
 
 
-        [CustomErrorMessage("AlertAndMessage_DefaultLanguageRequired")]
+        //[ErrorMessage("AlertAndMessage_DefaultLanguageRequired")]
+        [Required(ErrorMessage = "AlertAndMessage_DefaultLanguageRequired")]
         public string DefaultLanguageId { get; set; }
 
         public string DefaultLanguageName { get; set; }
@@ -53,20 +59,24 @@ namespace Arad.Portal.DataLayer.Models.User
 
         public bool  IsSiteUser { get; set; }
 
+        [Required(ErrorMessage = "AlertAndMessage_DomainRequired")]
         public string DomainId { get; set; }
 
-        [CustomErrorMessage("AlertAndMessage_UserRoleRequired")]
+        //[ErrorMessage("AlertAndMessage_UserRoleRequired")]
+        [Required(ErrorMessage = "AlertAndMessage_UserRoleRequired")]
         public string UserRoleId { get; set; }
 
         [DataType(DataType.Password)]
-        [CustomErrorMessage("AlertAndMessage_PasswordRequired")]
-        [CustomRegularExpression("^(?=.*[A-Za-z])(?=.*[0-9]).{4,}$", "AlertAndMessage_PasswordValidation")]
+        //[ErrorMessage("AlertAndMessage_PasswordRequired")]
+        [Required(ErrorMessage = "AlertAndMessage_PasswordRequired")]
+        
+        [RegularExpression("^(?=.*[A-Za-z])(?=.*[0-9]).{4,}$", ErrorMessage= "AlertAndMessage_PasswordValidation")]
 
-        [CustomMinLength(6, "AlertAndMessage_MinLength")]
+        [MinLength(6, ErrorMessage = "AlertAndMessage_MinLength")]
         public string Password { get; set; }
 
-        [CustomErrorMessage("AlertAndMessage_RePasswordRequired")]
-        //[CustomCompare("Password", "AlertAndMessage_PasswordRepassWordCompare")]
+        [Required(ErrorMessage = "AlertAndMessage_RePasswordRequired")]
+        [Compare(nameof(Password), ErrorMessage = "AlertAndMessage_PasswordRepassWordCompare")]
         public string RePassword { get; set; }
 
         public List<RoleListView> Roles { get; set; }

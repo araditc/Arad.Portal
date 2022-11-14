@@ -885,6 +885,10 @@
     "Key": "Validation_MobileNumberInvalid2"
   },
   {
+    "Value": "شماره همراه وارد شده معتبر نیست",
+    "Key": "Validation_CellPhoneNumber"
+  },
+  {
     "Value": "این فیلد اجباریست",
     "Key": "AlertAndMessage_IdRequired"
   },
@@ -1101,6 +1105,10 @@
     "Key": "AlertAndMessage_UserNameRequired"
   },
   {
+    "Value": "لطفا دامنه کاربر را انتخاب کنید.",
+    "Key": "AlertAndMessage_DomainRequired"
+  },
+  {
     "Value": "لطفا نام کاربر را وارد کنید.",
     "Key": "AlertAndMessage_NameRequired"
   },
@@ -1110,7 +1118,7 @@
   },
   {
     "Value": "لطفا شماره موبایل را وارد نمایید.",
-    "Key": "AlertAndMessage_PhonenumberRequired"
+    "Key": "AlertAndMessage_PhoneNumberRequired"
   },
   {
     "Value": "لطفانقش کاربر را انتخاب کنید.",

@@ -17,32 +17,34 @@ namespace Arad.Portal.DataLayer.Models.User
         public string Id { get; set; }
 
         [CustomDisplayName("User_FirstName")]
-        [CustomErrorMessage("AlertAndMessage_NameRequired")]
+        [Required(ErrorMessage ="AlertAndMessage_NameRequired")]
         public string FirstName { get; set; }
 
         [CustomDisplayName("User_LastName")]
-        [CustomErrorMessage("AlertAndMessage_LastName")]
+        [Required(ErrorMessage = "AlertAndMessage_LastName")]
         public string LastName { get; set; }
 
         [MobilePhoneUserEditValidator]
         [CustomDisplayName("User_PhoneNumber")]
-        //[Required(ErrorMessage = "لطفا شماره موبایل را وارد نمایید.")]
-        [CustomErrorMessage("AlertAndMessage_PhoneNumberRequired")]
+        [Required(ErrorMessage = "AlertAndMessage_PhoneNumberRequired")]
+      
         public string PhoneNumber { get; set; }
        
         public bool IsVendor { get; set; }
-
         public bool  IsSiteUser { get; set; }
+
+        [Required(ErrorMessage = "AlertAndMessage_DomainRequired")]
+        public string DomainId { get; set; }
 
         [CustomDisplayName("User_FullMobile")]
         public string FullMobile { get; set; }
 
         [CustomDisplayName("User_Role")]
-        [CustomErrorMessage("AlertAndMessage_UserRoleRequired")]
+        [Required(ErrorMessage = "AlertAndMessage_UserRoleRequired")]
         public string UserRoleId { get; set; }
 
         [CustomDisplayName("DefaultLanguage")]
-        [CustomErrorMessage("AlertAndMessage_DefaultLanguageRequired")]
+        [Required(ErrorMessage = "AlertAndMessage_DefaultLanguageRequired")]
         public string DefaultLanguageId { get; set; }
 
         [CustomDisplayName("DefaultLanguage")]

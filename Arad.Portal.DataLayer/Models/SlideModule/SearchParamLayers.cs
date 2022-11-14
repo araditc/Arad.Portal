@@ -15,7 +15,7 @@ namespace Arad.Portal.DataLayer.Models.SlideModule
         public int PageSize { get; set; }
 
         [Required]
-        [CustomErrorMessage("AlertAndMessage_FieldEssential")]
+        [ErrorMessage("AlertAndMessage_FieldEssential")]
         public int CurrentPage { get; set; }
     }
 }

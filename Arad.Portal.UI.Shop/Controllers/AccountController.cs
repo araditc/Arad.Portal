@@ -160,7 +160,10 @@ namespace Arad.Portal.UI.Shop.Controllers
             await HttpContext.SignOutAsync();
             model.FullUserName = model.FullUserName.Replace("+", "");
             ApplicationUser user = await _userManager.FindByNameAsync(model.FullUserName.Trim());
-
+            if(user == null)
+            {
+                user = _userManager.Users.FirstOrDefault(_ => _.PhoneNumber == model.FullUserName.Trim());
+            }
             if (user != null)
             {
                 if (await _userManager.CheckPasswordAsync(user, model.Password) != true)
@@ -426,7 +429,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 }
             }
 
-            if (_userManager.Users.Any(c => c.PhoneNumber == model.FullCellPhoneNumber))
+            if (_userManager.Users.Any(c => c.PhoneNumber == model.FullCellPhoneNumber || c.UserName == model.CellPhoneNumber))
             {
                 ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_MobileNumberAlreadyRegistered"));
             }
@@ -502,7 +505,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 DomainId = domainId
             };
             
-            string pass = Shop.Helpers.Utilities.GenerateRandomPassword(new() { RequireDigit = true, RequireLowercase = true, 
+            string pass = Helpers.Utilities.GenerateRandomPassword(new() { RequireDigit = true, RequireLowercase = true, 
                 RequireNonAlphanumeric = false, RequireUppercase = true, RequiredLength = 6, RequiredUniqueChars = 0 });
             IdentityResult insertResult = await _userManager.CreateAsync(user, pass);
 

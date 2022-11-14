@@ -23,27 +23,27 @@ namespace Arad.Portal.DataLayer.Models.User
 
         public string UserId { get; set; }
 
-        [CustomErrorMessage("AlertAndMessage_UserNameRequired")]
+        [ErrorMessage("AlertAndMessage_UserNameRequired")]
         public string UserName { get; set; }
         public bool IsSystemAccount { get; set; }
         public bool IsDomainAdmin { get; set; }
         public bool IsActive { get; set; }
 
         [MobilePhoneUserDTOValidator]
-        [CustomErrorMessage("AlertAndMessage_PhonenumberRequired")]
+        [ErrorMessage("AlertAndMessage_PhonenumberRequired")]
         public string PhoneNumber { get; set; }
 
         public string  FullMobile { get; set; }
 
-        [CustomErrorMessage("AlertAndMessage_PhonenumberRequired")]
+        [ErrorMessage("AlertAndMessage_PhonenumberRequired")]
         public string FirstName { get; set; }
 
-        [CustomErrorMessage("AlertAndMessage_LastNameRequired")]
+        [ErrorMessage("AlertAndMessage_LastNameRequired")]
         public string LastName { get; set; }
         public Profile UserProfile { get; set; }
         public List<Address> Addresses { get; set; }
 
-        [CustomErrorMessage("AlertAndMessage_UserRoleRequired")]
+        [ErrorMessage("AlertAndMessage_UserRoleRequired")]
         public string UserRoleId { get; set; }
         public OTP Otp { get; set; }
         public bool IsDeleted { get; set; }

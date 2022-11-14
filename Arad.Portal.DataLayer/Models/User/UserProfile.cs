@@ -10,10 +10,10 @@ namespace Arad.Portal.DataLayer.Models.User
 {
     public class UserProfile
     {
-        [CustomErrorMessage("AlertAndMessage_NameRequired")]
+        [ErrorMessage("AlertAndMessage_NameRequired")]
         public string Name { get; set; }
 
-        [CustomErrorMessage("AlertAndMessage_LastName")]
+        [ErrorMessage("AlertAndMessage_LastName")]
         public string LastName { get; set; }
     }
 }
