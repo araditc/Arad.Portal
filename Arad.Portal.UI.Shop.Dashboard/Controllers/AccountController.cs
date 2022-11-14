@@ -155,6 +155,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             await HttpContext.SignOutAsync();
             ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
 
+            //only users who isSiteUser = false can login in site admin
             if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true || (user != null && user.IsSiteUser))
             {
                 ViewBag.Message = Language.GetString("AlertAndMessage_InvalidUsernameOrPassword");
@@ -366,7 +367,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> AddUser()
         {
             var model = new RegisterUserModel();
-            var list = await _roleRepository.List("");
             //var superRole = list.Items.FirstOrDefault(_ => _.RoleName == "سوپر ادمین");
             //list.Items.Remove(superRole);
             ViewBag.LangList = _languageRepository.GetAllActiveLanguage();
@@ -385,11 +385,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 ViewBag.IsSystem = false;
             }
-            model.Roles = list.Items.Select(_ => new RoleListView()
-            {
-                Title = _.RoleName,
-                Id = _.RoleId,
-            }).ToList();
+            model.Roles = _roleRepository.GetActiveRoles();
             return View(model);
         }
 
@@ -566,14 +562,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     IsVendor = isVendor
                 };
 
-                var list = await _roleRepository.List("");
-                //var superRole = list.Items.FirstOrDefault(_ => _.RoleName == "سوپر ادمین");
-                //list.Items.Remove(superRole);
-                ViewBag.Roles = list.Items.Select(_ => new RoleListView()
-                {
-                    Title = _.RoleName,
-                    Id = _.RoleId
-                }).ToList();
+                ViewBag.Roles = _roleRepository.GetActiveRoles();
             }
             catch (Exception e)
             {

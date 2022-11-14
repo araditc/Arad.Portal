@@ -341,18 +341,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 {
                     totalList = totalList.Where(_ => _.ContentCategoryId == filter["catId"]);
                 }
-                //if (!string.IsNullOrWhiteSpace(filter["from"]))
-                //{
-                   
-                //    totalList = totalList
-                //        .Where(_ => _.StartShowDate >= filter["from"].ToString().ToEnglishDate().ToUniversalTime());
-                //}
-                //if (!string.IsNullOrWhiteSpace(filter["to"]))
-                //{
-                    
-                //    totalList = totalList
-                //        .Where(_ => _.EndShowDate <= filter["to"].ToString().ToEnglishDate().ToUniversalTime());
-                //}
+                
                 if(!string.IsNullOrWhiteSpace(filter["filter"]))
                 {
                     totalList = totalList.Where(_ => _.TagKeywords.Contains(filter["filter"]) || _.Contents.Contains(filter["filter"]));

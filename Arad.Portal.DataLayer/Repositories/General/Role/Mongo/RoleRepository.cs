@@ -152,7 +152,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                     .Find(c => c.RoleId == roleId).FirstOrDefault();
                 if(role != null)
                 {
-                    result = new RoleDTO() { RoleName = role.RoleName, RoleId = role.RoleId };
+                    result = new RoleDTO() { RoleName = role.RoleName, RoleId = role.RoleId, IsActive = role.IsActive };
                     result.PermissionIds = string.Join(',', role.PermissionIds);
                 }
                 
@@ -205,9 +205,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
-                long totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
-                var list = _context.Collection.Find(_=> true)
-                   .Project(_ => new RoleDTO()
+                long totalCount = await _context.Collection.Find(c =>true).CountDocumentsAsync();
+                var list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
+                   .Take(pageSize)
+                   .Select(_ => new RoleDTO()
                    { 
                      RoleId = _.RoleId,
                      RoleName = _.RoleName,
@@ -334,8 +335,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             return _context.Collection.AsQueryable().Any();
         }
 
-        
-
         public async Task<Entities.General.Role.Role> FetchRoleEntity(string roleId)
         {
             var result = new Entities.General.Role.Role();
@@ -383,6 +382,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             {
                 result.Message = ConstMessages.ErrorInSaving;
             }
+            return result;
+        }
+
+        public List<RoleListView> GetActiveRoles()
+        {
+            var result = new List<RoleListView>();
+            result = _context.Collection.AsQueryable()
+                .Where(_ => _.IsActive && !_.IsDeleted)
+                .Select(_ => new RoleListView() { Title = _.RoleName, Id = _.RoleId }).ToList();
             return result;
         }
     }

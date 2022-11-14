@@ -23,6 +23,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Role
         Task<Result> Restore(string roleId);
         Task<Result> Delete(string roleId, string modificationReason);
         Task<Result> ChangeActivation(string roleId);
+        List<RoleListView> GetActiveRoles();
         //Task<List<RoleDTO>> ListRoles();
         
     }
