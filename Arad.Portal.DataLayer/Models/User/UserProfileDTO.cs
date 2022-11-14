@@ -23,6 +23,7 @@ namespace Arad.Portal.DataLayer.Models.User
         public string FullName { get; set; }
         public string FatherName { get; set; }
         public Gender Gender { get; set; }
+        public string Email { get; set; }
         public string GenderId { get; set; }
         public List<AddressDto> Addresses { get; set; }
         //???

@@ -180,16 +180,30 @@
                     </div>
                     @{
                                 @foreach (var spec in @Model.Specifications.Where(_ => _.LanguageId == ViewBag.CurLanguageId))
-                        {
-                                    <div class="row border-top m-1 py-2">
-                                        <div class="col-6">
-                                            <span>@spec.SpecificationName :</span>
-                                        </div>
-                                        <div class="col-6">
-                                            <span>@spec.Values.Replace("|",",")</span>
-                                        </div>
-                                    </div>
-                        }
+                                {
+                                            var arr = spec.Values.Split("|");
+                                            <div class="row border-top m-1 py-2">
+                                                <div class="col-12 col-md-3">
+                                                    <span>@spec.SpecificationName :</span>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                <div class="d-flex flex-row">
+                                                 @foreach(var item in arr)
+                                                 {
+                                                     <div>
+                                                         <div class="form-check m-auto d-inline-block pe-3">
+                                                            <input class="form-check-input" type="radio" name="@spec.SpecificationId" value="@item">
+                                                            <label class="form-check-label">
+                                                                @item
+                                                            </label>
+                                                         </div>
+                                                     </div>
+                                                 }
+                                                 </div>
+                                                    @*<span>@spec.Values.Replace("|",",")</span>*@
+                                                </div>
+                                            </div>
+                                }
 
                         if (Model.Inventory > 0)
                         {

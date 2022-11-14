@@ -484,7 +484,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         UserRoleId = model.UserRoleId,
                         CreationDate = DateTime.UtcNow,
                         CreatorId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
-                        DomainId = associatedDomainId
+                        DomainId = associatedDomainId,
+                        Email = model.Email
                        
                     };
                     if(model.IsVendor)
@@ -593,6 +594,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     DefaultLanguageId = userDb.Profile.DefaultLanguageId,
                     DefaultCurrencyId = userDb.Profile.DefaultCurrencyId,
                     IsSiteUser = userDb.IsSiteUser,
+                    Email = userDb.Email,
                     IsVendor = isVendor
                 };
 
@@ -672,6 +674,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         user.PhoneNumber = model.FullMobile.Replace("+", "");
                         user.UserRoleId = model.UserRoleId;
                         user.IsSiteUser = model.IsSiteUser;
+                        user.DomainId = model.DomainId;
+                        user.Email = model.Email;
+                       
+                        
                         if (model.IsVendor)
                         {
                             user.Claims.Add(new IdentityUserClaim<string>

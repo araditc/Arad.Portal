@@ -27,11 +27,13 @@ namespace Arad.Portal.DataLayer.Models.User
         [MobilePhoneUserEditValidator]
         [CustomDisplayName("User_PhoneNumber")]
         [Required(ErrorMessage = "AlertAndMessage_PhoneNumberRequired")]
-      
         public string PhoneNumber { get; set; }
-       
+
         public bool IsVendor { get; set; }
         public bool  IsSiteUser { get; set; }
+
+        [DataType(DataType.EmailAddress, ErrorMessage = "AlertAndMessage_EmailInvalid")]
+        public string Email { get; set; }
 
         [Required(ErrorMessage = "AlertAndMessage_DomainRequired")]
         public string DomainId { get; set; }

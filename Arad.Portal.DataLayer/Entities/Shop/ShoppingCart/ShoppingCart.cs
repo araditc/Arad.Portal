@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.Shared;
+﻿using Arad.Portal.DataLayer.Models.Product;
+using Arad.Portal.DataLayer.Models.Shared;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
@@ -69,10 +70,16 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
     }
     public class ShoppingCartDetail : BaseEntity
     {
+        public ShoppingCartDetail()
+        {
+            ProductSpecValues = new();
+        }
 
         public string ShoppingCartDetailId { get; set; }
 
         public string ProductId { get; set; }
+
+        public List<SpecValue> ProductSpecValues { get; set; }
 
         public string ProductName { get; set; }
 

@@ -889,6 +889,10 @@
     "Key": "Validation_CellPhoneNumber"
   },
   {
+    "Value": "پست الکترونیکی نامعتبر است.",
+    "Key": "AlertAndMessage_EmailInvalid"
+  },
+  {
     "Value": "این فیلد اجباریست",
     "Key": "AlertAndMessage_IdRequired"
   },

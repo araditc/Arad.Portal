@@ -21,7 +21,7 @@ namespace Arad.Portal.DataLayer.Models.Product
         public string SpecificationGroupName { get; set; }
         public string SpecificationName { get; set; }
         /// <summary>
-        /// all avalable values for this specification on this product
+        /// all available values for this specification on this product
         ///  | seperated values
         /// </summary>
         public string Values { get; set; }

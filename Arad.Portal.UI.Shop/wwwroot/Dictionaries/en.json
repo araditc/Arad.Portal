@@ -901,6 +901,10 @@
     "Key": "Validation_CellPhoneNumber"
   },
   {
+    "Value": "email is invalid",
+    "Key": "AlertAndMessage_EmailInvalid"
+  },
+  {
     "Value": "this field is required",
     "Key": "AlertAndMessage_IdRequired"
   },

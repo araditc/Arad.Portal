@@ -49,6 +49,9 @@ namespace Arad.Portal.DataLayer.Models.User
 
         public string DefaultLanguageName { get; set; }
 
+        [DataType(DataType.EmailAddress, ErrorMessage= "AlertAndMessage_EmailInvalid")]
+        public string Email { get; set; }
+
         public string DefaultCurrencyId { get; set; }
 
         public string DefaultCurrencyName { get; set; }
