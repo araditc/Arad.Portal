@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.Shared;
+﻿using Arad.Portal.DataLayer.Models.Product;
+using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.ShoppingCart;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart
 {
     public interface IShoppingCartRepository
     {
-        Task<Result<CartItemsCount>> AddOrChangeProductToUserCart(string productId, int orderCount);
+        Task<Result<CartItemsCount>> AddOrChangeProductToUserCart(string productId, int orderCount, List<SpecValue> specValues);
 
         Task<Result> InsertUserShoppingCart(string userId);
 

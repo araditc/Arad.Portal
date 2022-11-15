@@ -41,9 +41,9 @@ namespace Arad.Portal.UI.Shop.Middlewares
         }
         public async Task Invoke(HttpContext context)
         {
-            Log.Fatal($"In middleware context.Request.PathBase : {context.Request.PathBase}");
-            Log.Fatal($"In middleware context.Request.Path : {context.Request.Path}");
-            Log.Fatal($"domainName context.Request.Host : {context.Request.Host}");
+            //Log.Fatal($"In middleware context.Request.PathBase : {context.Request.PathBase}");
+            //Log.Fatal($"In middleware context.Request.Path : {context.Request.Path}");
+            //Log.Fatal($"domainName context.Request.Host : {context.Request.Host}");
             string defLangSymbol = "";
             string pathRequest = "";
             var langSymbolList = _languageContext.Collection.Find(_ => _.IsActive).Project(_ => _.Symbol.ToLower()).ToList();
@@ -70,7 +70,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
                  context.Request.Path.ToString().Contains("/js/", StringComparison.OrdinalIgnoreCase) ||
                  context.Request.Path.ToString().Contains("/plugins/", StringComparison.OrdinalIgnoreCase))
             {
-                Log.Fatal("skiiiiiiiiiiiiiiip");
+                //Log.Fatal("skiiiiiiiiiiiiiiip");
                 await _next.Invoke(context);
             }
             else
@@ -79,14 +79,14 @@ namespace Arad.Portal.UI.Shop.Middlewares
 
                 //first step checke whether this cookie exist or not
                 var cookieName = CookieRequestCultureProvider.DefaultCookieName;
-                Log.Fatal($"cookiename is:{cookieName}");
+                //Log.Fatal($"cookiename is:{cookieName}");
                 if (context.Request.Cookies[cookieName] != null)
                 {
-                    Log.Fatal("context.Request.Cookies[cookieName] isnt null;");
+                    //Log.Fatal("context.Request.Cookies[cookieName] isnt null;");
                     var cookieValue = context.Request.Cookies[cookieName];
-                    Log.Fatal($"cookieValue : {cookieValue}");
+                    //Log.Fatal($"cookieValue : {cookieValue}");
                     defLangSymbol = cookieValue.Split("|")[0][2..];
-                    Log.Fatal($"find default lang symbole from cookie: {defLangSymbol}");
+                    //Log.Fatal($"find default lang symbole from cookie: {defLangSymbol}");
                 }
                 else if (false)
                 {
@@ -97,21 +97,21 @@ namespace Arad.Portal.UI.Shop.Middlewares
                 else
                 if (defLangSymbol == "")
                 {
-                    Log.Fatal("defLangSymbol is empty");
+                    //Log.Fatal("defLangSymbol is empty");
                     DataLayer.Entities.General.Domain.Domain result = null;
                     if (_domainContext.Collection.Find(_ => _.DomainName == $"{domainName}").Any())
                     {
                         result = _domainContext.Collection.Find(_ => _.DomainName == $"{domainName}").FirstOrDefault();
-                        Log.Fatal("domainEntity with domainName found");
+                        //Log.Fatal("domainEntity with domainName found");
                     }
                     else
                     {
                         result = _domainContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
-                        Log.Fatal("first default domain Found");
+                        //Log.Fatal("first default domain Found");
                     }
                     var lanEntity = _languageContext.Collection.Find(_ => _.LanguageId == result.DefaultLanguageId).FirstOrDefault();
                     defLangSymbol = lanEntity.Symbol;
-                    Log.Fatal($"defLangSymbol is: {defLangSymbol}");
+                    //Log.Fatal($"defLangSymbol is: {defLangSymbol}");
                 }
 
                 //if cookie is null we write the cookie
@@ -120,14 +120,14 @@ namespace Arad.Portal.UI.Shop.Middlewares
                     context.Response.Cookies.Append(cookieName,
                         CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(defLangSymbol)),
                         new CookieOptions() { Domain = domainName, Expires = DateTime.Now.AddDays(7) });
-                    Log.Fatal("coockie set because it was null");
+                    //Log.Fatal("coockie set because it was null");
                 }
                 
                 
                 if (context.Request.Path.Value.Length == 1)
                 {
                     newPath = context.Request.Path + defLangSymbol.ToLower();
-                    Log.Fatal($"FirstRedirect redirecting to newpath pathlength equal one :{newPath}");
+                    //Log.Fatal($"FirstRedirect redirecting to newpath pathlength equal one :{newPath}");
                     context.Response.Redirect(newPath, true);
                 }
                 else
@@ -167,7 +167,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
                 }
                 else
                 {
-                    Log.Fatal($"Second Skiiiiiiiiiiiiiiip when it has langsymbol is path :{context.Request.Path}");
+                    //Log.Fatal($"Second Skiiiiiiiiiiiiiiip when it has langsymbol is path :{context.Request.Path}");
                     await _next.Invoke(context);
                 }
             }

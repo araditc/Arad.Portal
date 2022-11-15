@@ -24,6 +24,8 @@ using Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo;
 using Arad.Portal.DataLayer.Helpers;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
 using System.Globalization;
+using Arad.Portal.DataLayer.Models.Product;
+using Arad.Portal.DataLayer.Entities.Shop.Product;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
 {
@@ -83,7 +85,23 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             }
             return result;
         }
-        public async Task<Result<CartItemsCount>> AddOrChangeProductToUserCart(string productId, int orderCount)
+        private InventoryDetail FindProductSpecValuesRecord(string productId, List<SpecValue> specValues)
+        {
+            var entity = _productContext.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
+            InventoryDetail inventoryDetail = null;
+            List<InventoryDetail> lst = entity.Inventory;
+            foreach (var item in specValues)
+            {
+                lst = lst.Where(_ => _.SpecValues.Any(a => a.SpecificationId == item.SpecificationId &&
+                                      a.SpecificationValue == item.SpecificationValue)).ToList();
+            }
+            if (lst.Count > 0) //surely lst have just one
+            {
+                inventoryDetail = lst[0];
+            }
+            return inventoryDetail;
+        }
+        public async Task<Result<CartItemsCount>> AddOrChangeProductToUserCart(string productId, int orderCount, List<SpecValue> specValues)
         {
             var result = new Result<CartItemsCount>();
             result.ReturnValue = new CartItemsCount();
@@ -109,7 +127,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             {
                 if (userCartEntity.Details.Any(_ => _.Products.Any(a => a.ProductId == productId)))
                 {
-                    var res = await ChangeProductCountInUserCart(userId, productId, orderCount);
+                    var res = await ChangeProductCountInUserCart(userId, productId, orderCount, specValues);
                     result.Message = res.Message;
                     result.Succeeded = res.Succeeded;
                 }
@@ -118,9 +136,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     var currentPriceValue = GetCurrentPrice(productEntity);
                     var res = await GetCurrentDiscountPerUnit(productEntity, currentPriceValue);
 
-                    if (productEntity.Inventory > 0)
+                    if (productEntity.Inventory.Sum(_=>_.Count) > 0)
                     {
-                        int finalOrderCnt = productEntity.Inventory > orderCount ? orderCount : productEntity.Inventory;
+                        var inventoryDetail = FindProductSpecValuesRecord(productId, specValues);
+                        int finalOrderCnt = inventoryDetail.Count > orderCount ? orderCount : inventoryDetail.Count;
                         var shopCartDetail = new ShoppingCartDetail()
                         {
                             ShoppingCartDetailId = Guid.NewGuid().ToString(),
@@ -216,7 +235,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             }
             return totalCount;
         }
-        public async Task<Result> ChangeProductCountInUserCart(string userId, string productId, int newCount)
+        public async Task<Result> ChangeProductCountInUserCart(string userId, string productId, int newCount, List<SpecValue> specValues)
         {
             var result = new Result();
             var domainName = base.GetCurrentDomainName();
@@ -228,6 +247,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     && _.AssociatedDomainId == domainEntity.DomainId && _.IsActive).FirstOrDefault();
 
                 var productEntity = _productContext.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
+                var inventoryDetail = FindProductSpecValuesRecord(productId, specValues);
                 if (userCartEntity == null)
                 {
                     var res = await InsertUserShoppingCart(userId);
@@ -244,7 +264,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     var productRow = sellerObj.Products.FirstOrDefault(_ => _.ProductId == productId);
 
                     var index = sellerObj.Products.IndexOf(productRow);
-                    if (productEntity.Inventory > 0 && productEntity.Inventory >= newCount)
+                    if (inventoryDetail.Count > 0 && inventoryDetail.Count >= newCount)
                     {
                         if (productRow != null)
                         {
@@ -434,9 +454,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                         var productId = pro.ProductId;
                         var productEntity = _productContext.ProductCollection
                        .Find(_ => _.ProductId == productId).FirstOrDefault();
+                       var inventoryDetail = FindProductSpecValuesRecord(productId, pro.ProductSpecValues);
                         ShoppingCartDetailDTO det = new ShoppingCartDetailDTO();
                         if (productEntity != null && productEntity.IsActive 
-                            && !productEntity.IsDeleted && productEntity.Inventory > 0 )
+                            && !productEntity.IsDeleted && inventoryDetail != null && inventoryDetail.Count > 0 )
                         {
                             var activePriceValue = GetCurrentPrice(productEntity);
                             var discountPerUnit = await GetCurrentDiscountPerUnit(productEntity, activePriceValue);
@@ -967,12 +988,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     shoppingDetail.ShoppingCartDetailId = Guid.NewGuid().ToString();
                     var productEntity = _productContext.ProductCollection
                           .Find(_ => _.ProductId == pro.ProductId).FirstOrDefault();
-                    if (productEntity.Inventory >= 0)
+
+                    var inventoryDetail = FindProductSpecValuesRecord(productEntity.ProductId, pro.ProductSpecValues);
+                    if (inventoryDetail.Count >= 0)
                     {
                         shoppingDetail.ProductId = pro.ProductId;
                         shoppingDetail.ProductName = pro.ProductName;
                         shoppingDetail.SellerId = pro.SellerId;
-                        shoppingDetail.OrderCount = productEntity.Inventory >= pro.OrderCount ? pro.OrderCount : productEntity.Inventory;
+                        shoppingDetail.OrderCount = inventoryDetail.Count >= pro.OrderCount ? pro.OrderCount : inventoryDetail.Count;
 
                         var activePriceValue = GetCurrentPrice(productEntity);
                         var discountPerUnit = await GetCurrentDiscountPerUnit(productEntity, activePriceValue);

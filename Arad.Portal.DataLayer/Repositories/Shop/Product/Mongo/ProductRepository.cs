@@ -36,6 +36,7 @@ using System.Globalization;
 using Arad.Portal.DataLayer.Contracts.General.Notification;
 using Arad.Portal.DataLayer.Entities.General.Notify;
 using Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo;
+using Arad.Portal.DataLayer.Entities.Shop.Product;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
@@ -541,7 +542,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 .Find(_ => _.ProductId == productId).FirstOrDefault();
             if (entity != null)
             {
-                result = entity.Inventory;
+                result = entity.Inventory.Sum(_ => _.Count);
             }
             return result;
         }
@@ -651,7 +652,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 if (!string.IsNullOrWhiteSpace(filter["inventory"]))
                 {
                     totalList = totalList
-                        .Where(_ => _.Inventory <= int.Parse(filter["inventory"].ToString()));
+                        .Where(_ => _.Inventory.Sum(_=>_.Count) <= int.Parse(filter["inventory"].ToString()));
                 }
                 if (!string.IsNullOrWhiteSpace(filter["promotion"]) && Convert.ToBoolean(filter["promotion"].ToString()))
                 {
@@ -663,7 +664,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 if (!string.IsNullOrWhiteSpace(filter["exist"]) && Convert.ToBoolean(filter["exist"].ToString()))
                 {
                     totalList = totalList
-                        .Where(_ => _.Inventory > 0);
+                        .Where(_ => _.Inventory.Sum(_=>_.Count) > 0);
                 }
                 if (string.IsNullOrWhiteSpace(filter["LanguageId"]))
                 {
@@ -714,9 +715,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             var product = _context.ProductCollection.Find(_ => _.ProductId == dto.ProductId).FirstOrDefault();
             if (product != null)
             {
-                preInventory = product.Inventory; 
+                preInventory = product.Inventory.Sum(_=>_.Count); 
                 var equallentModel = MappingProduct(dto);
-                if(preInventory == 0 && equallentModel.Inventory > 0)
+                if(preInventory == 0 && equallentModel.Inventory.Sum(_=>_.Count) > 0)
                 {
                     changeUnavailableToAvailable = true;
                 }
@@ -730,7 +731,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     if(changeUnavailableToAvailable)
                     {
                         var userId = _httpContextAccessor.HttpContext.User.Claims
-                   .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                           .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                         await AddReminderProductNotify("ProductAvailibilityNotify", equallentModel, userId, Enums.NotificationType.Sms);
                     }
                     result.Succeeded = true;
@@ -1300,21 +1301,49 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<Result> UpdateProductInventory(string productId, bool isIncreament, int count)
+        public async Task<Result> UpdateProductInventory(string productId, bool isIncreament, int count, List<SpecValue> specValues)
         {
             var result = new Result();
             var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
-            if (isIncreament)
-                entity.Inventory += count;
-            else
-                entity.Inventory -= count;
+            var inventoryDetail = new InventoryDetail();
+            List<InventoryDetail> lst = entity.Inventory;
 
-            var updateResult = await _context.ProductCollection.ReplaceOneAsync(_ => _.ProductId == productId, entity);
-            if (updateResult.IsAcknowledged)
+            foreach (var item in specValues)
             {
-                result.Succeeded = true;
+                lst = lst.Where(_ => _.SpecValues.Any(a => a.SpecificationId == item.SpecificationId && a.SpecificationValue == item.SpecificationValue)).ToList();
+            }
+            if (lst.Count > 0)
+            {
+                inventoryDetail = lst[0];
+
+                if (isIncreament)
+                    entity.Inventory.FirstOrDefault(_ => _.SpecValuesId == inventoryDetail.SpecValuesId).Count += count;
+                else
+                    entity.Inventory.FirstOrDefault(_ => _.SpecValuesId == inventoryDetail.SpecValuesId).Count -= count;
+
+                var updateResult = await _context.ProductCollection.ReplaceOneAsync(_ => _.ProductId == productId, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                }
             }
             return result;
+        }
+        public InventoryDetail FindProductSpecValuesRecord(string productId, List<SpecValue> specValues)
+        {
+            var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
+            var inventoryDetail = new InventoryDetail();
+            List<InventoryDetail> lst = entity.Inventory;
+            foreach (var item in specValues)
+            {
+                lst = lst.Where(_ => _.SpecValues.Any(a => a.SpecificationId == item.SpecificationId && 
+                                      a.SpecificationValue == item.SpecificationValue)).ToList();
+            }
+            if(lst.Count > 0) //surely lst have just one
+            {
+                inventoryDetail = lst[0];
+            }
+            return inventoryDetail;
         }
 
         public async Task<Result> ImportFromExcel(List<ProductExcelImport> lst)
@@ -1373,7 +1402,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
 
                     product.UniqueCode = pro.UniqueCode;
-                    product.Inventory = pro.Inventory;
+                    product.Inventory = new List<Entities.Shop.Product.InventoryDetail>();
                     product.ShowInLackOfInventory = pro.ShowInLackOfInventory;
                     product.SellerUserId = base.GetUserId();
                     product.SellerUserName = base.GetUserName();
@@ -2066,7 +2095,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-      
+       
     }
 }
 

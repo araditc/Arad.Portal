@@ -150,7 +150,7 @@ namespace Arad.Portal.UI.Shop
                 {
                     options.Cookie.HttpOnly = true;
                     options.Cookie.IsEssential = true;
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.SameSite = SameSiteMode.Strict;
                     options.Cookie.Name = "IdentityCookie";
                 }

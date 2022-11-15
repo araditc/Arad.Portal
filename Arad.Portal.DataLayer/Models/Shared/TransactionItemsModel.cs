@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Arad.Portal.DataLayer.Models.Product;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,13 @@ namespace Arad.Portal.DataLayer.Models.Shared
     }
     public class ProductOrder
     {
+        public ProductOrder()
+        {
+            SpecValues = new();
+        }
         public string ProductId { get; set; }
+
+        public List<SpecValue> SpecValues { get; set; }
 
         public int OrderCount { get; set; }
     }

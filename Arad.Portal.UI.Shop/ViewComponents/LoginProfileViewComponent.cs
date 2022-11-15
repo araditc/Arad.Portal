@@ -23,8 +23,10 @@ namespace Arad.Portal.UI.Shop.ViewComponents
         {
             Log.Fatal($"Hit ViewComponent with domainId ={domainId}");
             var domainObj = _domainRepository.FetchDomain(domainId).ReturnValue;
-            if(User.Identity.IsAuthenticated)
+            Log.Fatal("is user authenticated :" + User.Identity.IsAuthenticated);
+            if (User.Identity.IsAuthenticated)
             {
+                
                 var currentUserId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
                 var user = await _userManager.FindByIdAsync(currentUserId);
                 //ViewBag.UserName = user.UserName;

@@ -2,6 +2,7 @@
 using Arad.Portal.DataLayer.Entities.General.Comment;
 using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Entities.Shop.Product;
 using Arad.Portal.DataLayer.Models.DesignStructure;
 using Arad.Portal.DataLayer.Models.Domain;
 using Arad.Portal.DataLayer.Models.Product;
@@ -59,7 +60,9 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         /// <param name="isIncreament">if equals to false then it is decreament</param>
         /// <param name="count"></param>
         /// <returns></returns>
-        Task<Result> UpdateProductInventory(string productId, bool isIncreament, int count);
+        Task<Result> UpdateProductInventory(string productId, bool isIncreament, int count, List<SpecValue> specValues);
+
+        InventoryDetail FindProductSpecValuesRecord(string productId, List<SpecValue> specValues);
        
         ProductOutputDTO FetchByCode(string slugOrCode, DomainDTO dto, string userId);
 

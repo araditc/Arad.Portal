@@ -18,8 +18,8 @@
 
             <li class="d-flex justify-content-center">
                 @{
-
-                        @if (!@User.Identity.IsAuthenticated)
+                    
+                    @if (!@User.Identity.IsAuthenticated)
                     {
                             <a asp-controller="account" asp-action="Login" class="d-inline-block">
                                 <span class="title text-secondary">

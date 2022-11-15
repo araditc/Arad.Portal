@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Entities.Shop.ProductUnit;
+﻿using Arad.Portal.DataLayer.Entities.Shop.Product;
+using Arad.Portal.DataLayer.Entities.Shop.ProductUnit;
 using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,14 @@ namespace Arad.Portal.DataLayer.Models.Product
             MultiLingualProperties = new List<MultiLingualProperty>();
             Images = new List<Image>();
             Prices = new List<Price>();
+            Inventory = new();
         }
         public string ProductId { get; set; }
         public List<string> GroupNames { get; set; }
         public List<string> GroupIds { get; set; }
         public string UniqueCode { get; set; }
         public long ProductCode { get; set; }
-        public int Inventory { get; set; }
+        public List<InventoryDetail> Inventory { get; set; }
         public List<MultiLingualProperty> MultiLingualProperties { get; set; }
         public List<Image> Images { get; set; }
         public List<Price> Prices { get; set; }

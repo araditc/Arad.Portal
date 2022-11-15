@@ -205,7 +205,7 @@
                                             </div>
                                 }
 
-                        if (Model.Inventory > 0)
+                        if (Model.TotalInventory > 0)
                         {
                                     <div class="mt-4 p-2 bg-secondary bg-opacity-10 border rounded-3">
                                         <div class="row  mt-2">
@@ -278,7 +278,7 @@
                                                 <input type="number" class="form-control" id="orderCnt" name="orderCnt" min="0" value="1" />
                                             </div>
                                             <div class="col-6 col-md-4 d-flex justify-content-center">
-                                                <button type="button" id="btnAddToCart" class="btn btn-success  @(@Model.Inventory <= 0 ? "disabled" : "")" prid="@Model.ProductId">
+                                                <button type="button" id="btnAddToCart" class="btn btn-success  @(@Model.TotalInventory <= 0 ? "disabled" : "")" prid="@Model.ProductId">
                                                     <span class="shopping-cart">
                                                         <em class="fa fa-shopping-basket"></em>
                                                     </span>

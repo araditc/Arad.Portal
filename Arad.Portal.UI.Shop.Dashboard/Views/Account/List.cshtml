@@ -72,11 +72,11 @@
 
                             foreach (var role in roles)
                             {
-                                <option selected="@(queryString != null && !string.IsNullOrWhiteSpace(queryString["role"])
+                                    <option selected="@(queryString != null && !string.IsNullOrWhiteSpace(queryString["role"])
                                         && queryString["role"] == role.Id ? "selected" : null)"
                                         value="@role.Id">
-                                    @role.Title
-                                </option>
+                                        @role.Title
+                                    </option>
                             }
                         }
                     </select>
@@ -94,6 +94,53 @@
     </div>
 </div>
 
+<div aria-hidden="true" aria-labelledby="confirmChangePasswordModalLabel" class="modal fade" id="confirmChangePasswordModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmChangePasswordModalLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmChangePasswordModalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onChangePassword()" type="button">
+                    @Language.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div aria-hidden="true" aria-labelledby="showChangePasswordModalLabel" class="modal fade" id="showChangePasswordModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="showChangePasswordModalLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="showChangePasswordModalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="copyToClipboard()" type="button">
+                    @Language.GetString("btn_Copy")
+                </button>
+                <button class="btn btn-success" onclick="SendPassword()" type="button">
+                    @Language.GetString("Action_Send")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_Close")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="card">
     <div class="card-header alert alert-secondary">
@@ -101,11 +148,17 @@
             <div class="col-12 col-md-3">
                 <h5 class="card-title">@Language.GetString("PermissionTitle_UserManagement")</h5>
             </div>
-            <div class="col-12 col-md-3 offset-md-6">
+            <div class="col-6 col-md-4 offset-md-5">
                 <div class="card-tools float-end">
                         <a asp-action="AddUser" asp-controller="Account" class="btn btn-success bg-gradient btn-sm">
                             <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
                         </a>
+                </div>
+           
+                <div class="card-tools float-end">
+                    <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-warning bg-gradient btn-sm py-1">
+                        <i @*style="position: relative; left: 5px; top: 2px;"*@ class="fas fa-edit pt-1"></i>&nbsp; @Language.GetString("btn_ChangePass")
+                    </a>
                 </div>
             </div>
         </div>
@@ -140,22 +193,23 @@
                                 @{
                                     if (item.IsActive)
                                     {
-                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success bg-gradient">@Language.GetString("Active")</button>
+                                            <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success bg-gradient">@Language.GetString("Active")</button>
                                     }
                                     else
                                     {
-                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
+                                            <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
                                     }
                                 }
                             </td>
                             <td class="ListCell">
-                               
+                                
                                     <a id=@($"editRecord_{@item.Id}") asp-action="EditUser" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-sm btn-warning bg-gradient">
                                         @Language.GetString("btn_Edit")
                                     </a>
-                                       <a id=@($"resetPass_{@item.Id}") asp-action="ChangePassword" asp-controller="Account"  class="btn btn-sm btn-danger bg-gradient">
-                                        @Language.GetString("btn_ChangePass")
-                                    </a>
+
+                                <button class="btn btn-sm btn-primary" data-placement="bottom" data-toggle="tooltip" onclick="changePassword('@item.Id')" title="@Language.GetString("btn_ChangePass")">
+                                    <i class="fa fa-key"></i>
+                                </button>
                                
                                 @if (item.IsDelete)
                                 {
@@ -163,6 +217,7 @@
                                         @Language.GetString("btn_Restore")
                                     </button>
                                 }
+                                
                             </td>
                         </tr>
                     }
@@ -226,6 +281,8 @@
 @section Scripts
     {
     <script>
+        var password;
+        var userId;
         $(document).ready(function () {
             debugger;
          
@@ -295,14 +352,99 @@
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
 			$('#confirmModal').modal('show');
         }
-       
+
+        function onChangePassword() {
+            $('#confirmChangePasswordModal').modal('hide');
+
+            $.ajax({
+                type: typeOfRequest,
+                url: confirmUrl,
+                statusCode: {
+                    200: function (resultData) {
+                        if (resultData.result) {
+                            password = resultData.data;
+                            document.getElementById('showChangePasswordModalLabel').innerHTML = '@Language.GetString("btn_ChangePassword")';
+                            document.getElementById('showChangePasswordModalBody').innerHTML = resultData.data;
+                            $('#showChangePasswordModal').modal('show');
+                        }
+                        else {
+                            showError(resultData.message);
+                        }
+                    },
+                    404: function () {
+                        showError('@Language.GetString("AlertAndMessage_UserNotFound")');
+                    },
+                    403: function () {
+                        showError('@Language.GetString("AlertAndMessage_NotAllowed")');
+                    }
+                }
+            });
+        }
+
         function changePassword(id) {
-            entityId = id;
-			typeOfRequest = 'PUT';
-			confirmUrl = '@Url.Action("ChangePassword", "Account")' + "/" + id,
-			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_ChangePass")';
-			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_ChangePassSureness")';
-			$('#confirmModal').modal('show');
+            userId = id;
+            typeOfRequest = 'Put';
+            confirmUrl = `@Url.Action("ChangePassword")?id=${id}`;
+            document.getElementById('confirmChangePasswordModalLabel').innerHTML = '@Language.GetString("btn_ChangePassword")';
+            document.getElementById('confirmChangePasswordModalBody').innerHTML = '@Language.GetString("AlertAndMessage_ChangePassConfirmation")';
+            $('#confirmChangePasswordModal').modal('show');
+        }
+
+        function copyToClipboard() {
+
+            navigator.clipboard.writeText(password).then(() => {
+
+                $('#showChangePasswordModal').modal('hide');
+                $("#toastPanel").show();
+                document.getElementById('mainToastBody').classList.remove('alert-danger');
+                document.getElementById('mainToastBody').classList.remove('alert-success');
+                document.getElementById('mainToastBody').classList.add('alert-success');
+                document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessage_CopyDone")';
+
+                setTimeout(function () {
+                    window.location.reload();
+                },
+                    1500);
+                bsAlert.show();
+            });
+        }
+
+        function SendPassword() {
+            $('#showChangePasswordModal').modal('hide');
+            $("#toastPanel").show();
+            document.getElementById('mainToastBody').classList.remove('alert-danger');
+            document.getElementById('mainToastBody').classList.remove('alert-success');
+
+            $.ajax({
+                type: "Get",
+                url: `@Url.Action("CreatePasswordNotification")?id=${entityId}&password=${password}`,
+                statusCode: {
+                    200: function (resultData) {
+                        if (resultData.result) {
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessage_SuccessfullyDone")';
+                        }
+                        else {
+                            var msg = '@Language.GetString("AlertAndMessage_ErrorTryAgain")';
+                            document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
+                            document.getElementById('mainToastBody').classList.add('alert-danger');
+                        }
+
+                        bsAlert.show();
+
+                        setTimeout(function () {
+                            $("#toastPanel").hide();
+                        },
+                            1500);
+                    },
+                    404: function () {
+                        showError('@Language.GetString("AlertAndMessage_UserNotFound")');
+                    },
+                    403: function () {
+                        showError('@Language.GetString("AlertAndMessage_NotAllowed")');
+                    }
+                }
+            });
         }
         
     </script>

@@ -56,7 +56,7 @@ namespace Arad.Portal.UI.Shop.Helpers
             {
                 foreach (var order in transactionItemsObj.Orders)
                 {
-                    result &= (await _productRepository.UpdateProductInventory(order.ProductId, true, order.OrderCount)).Succeeded;
+                    result &= (await _productRepository.UpdateProductInventory(order.ProductId, true, order.OrderCount, order.SpecValues)).Succeeded;
                 }
             }
             else

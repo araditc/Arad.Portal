@@ -893,6 +893,10 @@
     "Key": "AlertAndMessage_EmailInvalid"
   },
   {
+    "Value": "عملیات کپی انجام شد.",
+    "Key": "AlertAndMessage_CopyDone"
+  },
+  {
     "Value": "این فیلد اجباریست",
     "Key": "AlertAndMessage_IdRequired"
   },
@@ -1251,6 +1255,10 @@
   {
     "Value": "امکان حذف وجود ندارد.",
     "Key": "AlertAndMessage_DeletionNotAllowed"
+  },
+  {
+    "Value": "عملیات مجاز نمیباشد.",
+    "Key": "AlertAndMessage_NotAllowed"
   },
   {
     "Value": "متوجه شدم",
@@ -2476,6 +2484,14 @@
   {
     "Value": "ابتدا وارد حساب کاربری خود شوید.",
     "Key": "AlertAndMessage_LoginFirst"
+  },
+  {
+    "Value": "کاربری با این مشخصات یافت نشد.",
+    "Key": "AlertAndMessage_UserNotFound"
+  },
+  {
+    "Value": "آیا برای تغییر کلمه عبور کاربر اطمینان دارید؟",
+    "Key": "AlertAndMessage_ChangePassConfirmation"
   },
   {
     "Value": "این محصول به سبد خرید شما اضافه گردید.",

@@ -25,6 +25,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
             Prices = new ();
             Comments = new ();
             MultiLingualProperties = new ();
+            Inventory = new();
         }
 
 
@@ -81,7 +82,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
         /// <summary>
         /// count of product which is avalable for sale
         /// </summary>
-        public int Inventory { get; set; }
+        public List<InventoryDetail> Inventory { get; set; }
 
         /// <summary>
         /// how many of this product entity has been saled
@@ -139,6 +140,17 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
 
         public List<Comment> Comments { get; set; }
         
+    }
+
+    public class InventoryDetail
+    {
+        public InventoryDetail()
+        {
+            SpecValues = new();
+        }
+        public string SpecValuesId { get; set; }
+        public int Count { get; set; }
+        public List<SpecValue> SpecValues { get; set; }
     }
     
 }

@@ -105,6 +105,14 @@
     "Key": "btn_Restore"
   },
   {
+    "Value": "Close",
+    "Key": "btn_Close"
+  },
+  {
+    "Value": "Copy",
+    "Key": "btn_Copy"
+  },
+  {
     "Value": "Delete",
     "Key": "btn_Delete"
   },
@@ -905,6 +913,10 @@
     "Key": "AlertAndMessage_EmailInvalid"
   },
   {
+    "Value": "Copy have done",
+    "Key": "AlertAndMessage_CopyDone"
+  },
+  {
     "Value": "this field is required",
     "Key": "AlertAndMessage_IdRequired"
   },
@@ -1272,6 +1284,10 @@
   {
     "Value": "Deletion not allowed.",
     "Key": "AlertAndMessage_DeletionNotAllowed"
+  },
+  {
+    "Value": "operation were not allowed",
+    "Key": "AlertAndMessage_NotAllowed"
   },
   {
     "Value": "Got it",
@@ -2483,6 +2499,14 @@
   {
     "Value": "You havent been logged,please  login first.",
     "Key": "AlertAndMessage_LoginFirst"
+  },
+  {
+    "Value": "No user were found with these information.",
+    "Key": "AlertAndMessage_UserNotFound"
+  },
+  {
+    "Value": "Are you sure you want to change the user password?",
+    "Key": "AlertAndMessage_ChangePassConfirmation"
   },
   {
     "Value": "this product has been added to your cart.",

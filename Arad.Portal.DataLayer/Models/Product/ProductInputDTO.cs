@@ -8,6 +8,7 @@ using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.Promotion;
 using Arad.Portal.DataLayer.Models.ProductSpecification;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
+using Arad.Portal.DataLayer.Entities.Shop.Product;
 
 namespace Arad.Portal.DataLayer.Models.Product
 {
@@ -20,6 +21,7 @@ namespace Arad.Portal.DataLayer.Models.Product
             Pictures = new ();
             //Comments = new ();
             Specifications = new ();
+            Inventory = new();
         }
         public string ProductId { get; set; }
 
@@ -35,7 +37,7 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public List<Image> Pictures { get; set; }
 
-        public int Inventory { get; set; }
+        public List<InventoryDetail> Inventory { get; set; }
 
         public int MinimumCount { get; set; }
 

@@ -34,6 +34,7 @@ using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -142,6 +143,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromForm] LoginDTO model)
         {
+            Log.Fatal("*************First Line of Login**********");
             if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
             {
                 ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIncorrectOrExpired"));
@@ -159,10 +161,14 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             await HttpContext.SignOutAsync();
             model.FullUserName = model.FullUserName.Replace("+", "");
+            Log.Fatal("***********" + model.FullUserName + "*********");
             ApplicationUser user = await _userManager.FindByNameAsync(model.FullUserName.Trim());
+            Log.Fatal("**** whethere user can find by username or not" + user is null ? "True" : "False");
             if(user == null)
             {
+               
                 user = _userManager.Users.FirstOrDefault(_ => _.PhoneNumber == model.FullUserName.Trim());
+                Log.Fatal("**** user is null whether user name can find by phone number or not" + user is null ? "True" : "False");
             }
             if (user != null)
             {
@@ -175,33 +181,26 @@ namespace Arad.Portal.UI.Shop.Controllers
                 {
                     ModelState.AddModelError("Username", Language.GetString("AlertAndMessage_AccountHasDeactivated"));
                 }
-
-                //List<User> upAdmins = await _userExtension.GetUpUsers(user.Id);
-
-                //if (upAdmins.Any(x => !x.IsActive))
-                //{
-                //    ModelState.AddModelError("Username", Language.GetString("AlertAndMessage_AccountHasDeactivated"));
-                //}
-                
             }
             else
             {
                 ModelState.AddModelError("Username", Language.GetString("AlertAndMessage_UsernameIncorrect"));
             }
 
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || user == null)
             {
+                Log.Fatal("******* modelstate.isvalid Or user is null " + ModelState.IsValid + "*********" + user is null ? "True" : "False");
                 return View(model);
             }
 
-            if (user == null)
+            Log.Fatal("going to PasswordSignInAsync with password:" + model.Password);
+            var res = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+            if(res.Succeeded)
             {
-                return View(model);
+                Log.Fatal("end of passwordsigninAsync successfully");
             }
-
            
-            await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
-
+            
             user.LastLoginDate = DateTime.Now;
             await _userManager.UpdateAsync(user);
 
@@ -219,7 +218,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             //TempData["LoginUser"] = string.Format(Language.GetString("AlertAndMessage_WelcomeUser"), user.FullName);
             var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
            
-            return Redirect($"/{lanIcon}/Home/Index");
+            return Redirect($"/{lanIcon}");
         }
 
         [HttpGet]

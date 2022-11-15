@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.Comment;
+using Arad.Portal.DataLayer.Entities.Shop.Product;
 using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 using Arad.Portal.DataLayer.Models.Promotion;
 using Arad.Portal.DataLayer.Models.Shared;
@@ -21,6 +22,7 @@ namespace Arad.Portal.DataLayer.Models.Product
             Specifications = new();
             Prices = new List<Price>();
             MultiLingualProperties = new();
+            Inventory = new();
         }
         public string ProductId { get; set; }
 
@@ -49,7 +51,9 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public List<Image> Images { get; set; }
 
-        public int Inventory { get; set; }
+        public List<InventoryDetail> Inventory { get; set; }
+
+        public int TotalInventory { get; set; }
 
         public int MinimumCount { get; set; }
 

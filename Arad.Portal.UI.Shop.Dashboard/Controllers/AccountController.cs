@@ -65,7 +65,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly ICountryRepository _countryRepository;
-       
+        
 
 
         public AccountController(UserManager<ApplicationUser> userManager,
@@ -343,27 +343,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             return View();
         }
-
-        //private List<RoleListView>  RoleList()
-        //{
-        //    var result = new List<RoleListView>();
-        //    try
-        //    {
-        //        var pagedItems =_roleRepository.List("");
-        //        result = pagedItems.Result.Items.Select(_ => new RoleListView()
-        //        {
-        //            Title = _.RoleName,
-        //            Id = _.RoleId,
-        //            IsActive = _.IsActive
-        //        }).ToList();
-
-        //    }
-        //    catch (Exception e)
-        //    {
-
-        //    }
-        //    return result;
-        //}
 
         public async Task<IActionResult> AddUser()
         {
@@ -864,123 +843,45 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ChangePassword()
+        public async Task<IActionResult> CreatePasswordNotification(string userId, string password)
         {
-            RegisterDTO registerDto = new();
+            ApplicationUser user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-            return View(registerDto);
+            Result result = await _createNotification.Send("AutomatedPasswordReset", user, password);
+
+            return Ok(new { Result = result });
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword([FromForm] RegisterDTO model)
+        [HttpPut]
+        public async Task<IActionResult> ChangePassword(string id)
         {
-            #region Validate
-            if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
+            string currentUserId = User.GetUserId();
+
+            string pass = Helpers.Utilities.GenerateRandomPassword(new() { RequireDigit = false, RequireLowercase = true, RequireNonAlphanumeric = true, 
+                RequireUppercase = true, RequiredLength = 10, RequiredUniqueChars = 1 });
+
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            if (user == null)
             {
-                ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIncorrectOrExpired"));
+                return NotFound();
             }
 
-            model.FullCellPhoneNumber = model.FullCellPhoneNumber.Replace("+", "").Trim();
-
-
-            if (string.IsNullOrWhiteSpace(model.FullCellPhoneNumber))
+            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, token, pass);
+            if (!result.Succeeded)
             {
-                ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_EnterMobileNumber"));
-            }
-            else
-            {
-                PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
-
-                PhoneNumber phoneNumber = phoneUtil.Parse(model.FullCellPhoneNumber, "IR");
-
-                if (!phoneUtil.IsValidNumber(phoneNumber))
-                {
-                    ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_MobileNumberInvalid1"));
-                }
-                else
-                {
-                    PhoneNumberType numberType = phoneUtil.GetNumberType(phoneNumber); // Produces Mobile , FIXED_LINE 
-
-                    if (numberType != PhoneNumberType.MOBILE)
-                    {
-                        ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_MobileNumberInvalid2"));
-                    }
-                }
+                return Ok(new { Result = result.Succeeded });
             }
 
-            if (string.IsNullOrWhiteSpace(model.SecurityCode))
-            {
-                ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneError"));
-            }
+            user.Modifications.Add(new() { DateTime = DateTime.Now, ModificationReason = "user pass changes by admin", UserName = User.GetUserName(), UserId = currentUserId });
 
-            OTP otp = OtpHelper.Get(model.FullCellPhoneNumber);
+            result = await _userManager.UpdateAsync(user);
 
-            if (otp == null)
-            {
-                ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneError"));
-            }
-            else
-            {
-                if (otp.ExpirationDate >= DateTime.Now.AddMinutes(3))
-                {
-                    ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneTimeOut"));
-                }
-
-                if (!string.IsNullOrWhiteSpace(model.SecurityCode) && !model.SecurityCode.Equals(otp.Code))
-                {
-                    ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneTimeOut"));
-                }
-            }
-
-            if (!ModelState.IsValid)
-            {
-                List<AjaxValidationErrorModel> errors = new();
-
-                foreach (string modelStateKey in ModelState.Keys)
-                {
-                    ModelStateEntry modelStateVal = ModelState[modelStateKey];
-                    errors.AddRange(modelStateVal.Errors
-                        .Select(error => new AjaxValidationErrorModel { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
-                }
-
-                return Ok(new { Status = "ModelError", ModelStateErrors = errors });
-            }
-            #endregion
-
-            var currentUser = await _userManager.FindByNameAsync(model.Username);
-
-            string pass = Helpers.Utilities.GenerateRandomPassword(new()
-            {
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireNonAlphanumeric = false,
-                RequireUppercase = true,
-                RequiredLength = 6,
-                RequiredUniqueChars = 0
-            });
-            while (!Password.PasswordIsValid(true, true, true,
-                   true, false, pass))
-            {
-                pass = Password.GeneratePassword(true, true, true,
-                    true, false, 6);
-            }
-
-            Result result = await _createNotification.Send("AutomatedPasswordReset", currentUser, pass);
-            if (result.Succeeded)
-            {
-                var token = await _userManager.GeneratePasswordResetTokenAsync(currentUser);
-                var changePassResult =
-                    await _userManager.ResetPasswordAsync(currentUser, token, pass);
-
-                return Ok(changePassResult.Succeeded ?
-                    new { Status = "Success", Message = Language.GetString("AlertAndMessage_OperationSuccess") } :
-                    new { Status = "Error", Message = Language.GetString("AlertAndMessage_Error") });
-            }
-            else
-                return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_Error") });
+            return Ok(new { Result = result.Succeeded, Data = pass });
         }
 
         [HttpGet]

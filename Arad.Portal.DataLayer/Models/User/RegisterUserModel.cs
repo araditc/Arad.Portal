@@ -70,11 +70,8 @@ namespace Arad.Portal.DataLayer.Models.User
         public string UserRoleId { get; set; }
 
         [DataType(DataType.Password)]
-        //[ErrorMessage("AlertAndMessage_PasswordRequired")]
         [Required(ErrorMessage = "AlertAndMessage_PasswordRequired")]
-        
         [RegularExpression("^(?=.*[A-Za-z])(?=.*[0-9]).{4,}$", ErrorMessage= "AlertAndMessage_PasswordValidation")]
-
         [MinLength(6, ErrorMessage = "AlertAndMessage_MinLength")]
         public string Password { get; set; }
 
