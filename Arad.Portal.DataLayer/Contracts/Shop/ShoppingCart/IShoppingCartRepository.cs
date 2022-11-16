@@ -19,7 +19,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart
 
         int GetItemCountsInCart(Entities.Shop.ShoppingCart.ShoppingCart entity);
 
-        Task<Result> ChangeProductCountInUserCart(string userId, string productId, int newCount);
+        Task<Result> ChangeProductCountInUserCart(string userId, string productId, int newCount, List<SpecValue> specValues);
 
         Entities.Shop.ShoppingCart.ShoppingCart FetchShoppingCart(string shoppingCartId);
 

@@ -268,6 +268,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             }
                         }
                     }
+                    foreach (var item in dto.Inventory)
+                    {
+                        item.SpecValuesId = Guid.NewGuid().ToString();
+                    }
                     foreach (var item in dto.Prices)
                     {
                         var cur = _curRepository.FetchCurrency(item.CurrencyId);
@@ -463,6 +467,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         item.Symbol = cur.ReturnValue.Symbol;
                         item.Prefix = cur.ReturnValue.Symbol;
                         item.IsActive = true;
+                    }
+
+                    foreach (var item in dto.Inventory)
+                    {
+                        item.SpecValuesId = Guid.NewGuid().ToString();
                     }
                     
                     var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];

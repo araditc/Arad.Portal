@@ -63,7 +63,7 @@
                     }
                 </div>
 
-                <div class="row">
+                <div class="row mt-2">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
@@ -166,17 +166,17 @@
 
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label class="form-label" asp-for="@Model.ShippingCoupon.FromInvoiceExpense">@Language.GetString("tbl_FromInvoiceExpense")</label>
+                        <label class="form-label" asp-for="@Model.ShippingCoupon.FromInvoiceExpense">@Language.GetString("tbl_FreeShipping")</label>
                         <input type="number" class="form-control" asp-for="@Model.ShippingCoupon.FromInvoiceExpense"
                                value="@Model.ShippingCoupon.FromInvoiceExpense" min="0" />
                         <span data-val-result="fromInvoiceExpense" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                   @* <div class="form-group col-md-3">
                         <label class="form-label" asp-for="@Model.ShippingCoupon.ShippingExpense">@Language.GetString("tbl_ShippingExpense")</label>
                         <input type="number" class="form-control" asp-for="@Model.ShippingCoupon.ShippingExpense"
                                value="@Model.ShippingCoupon.ShippingExpense" min="0" />
-                        @*<span data-val-result="shippingExpense" class="text-danger"></span>*@
-                    </div>
+                        <span data-val-result="shippingExpense" class="text-danger"></span>
+                    </div>*@
                     <div class="form-group col-md-3">
                         <label class="form-label">@Language.GetString("StartDate")</label>
                         
@@ -466,17 +466,25 @@
 
             if ($("#ShippingCoupon_FromInvoiceExpense").val() != "0") {
                 obj.ShippingCoupon.FromInvoiceExpense = parseFloat($("#ShippingCoupon_FromInvoiceExpense").val());
-                obj.ShippingCoupon.ShippingExpense = parseFloat($("#ShippingCoupon_ShippingExpense").val());
-                if ($("#dtpStartDate").val() != "")
+                obj.ShippingCoupon.ShippingExpense = parseFloat(0);
+                if('@CultureInfo.CurrentCulture.Name.ToLower()' == "fa-ir")
                 {
-                    debugger;
-                    obj.ShippingCoupon.PersianStartDate = $("#dtpStartDate").val();
-                }
-                if ($("#dtpEndDate").val() != "")
+                    if ($("#dtpStartDate").val() != "")
+                    {
+                        debugger;
+                        obj.ShippingCoupon.PersianStartDate = $("#dtpStartDate").val();
+                    }
+                    if ($("#dtpEndDate").val() != "")
+                    {
+                        debugger;
+                        obj.ShippingCoupon.PersianEndDate = $("#dtpEndDate").val();
+                    }
+                }else
                 {
-                    debugger;
-                    obj.ShippingCoupon.PersianEndDate = $("#dtpEndDate").val();
+                    obj.obj.ShippingCoupon.StartDate = $("#dtpStartDate").val();
+                    obj.obj.ShippingCoupon.EndDate = $("#dtpEndDate").val();
                 }
+                
             }
             return obj;
         }

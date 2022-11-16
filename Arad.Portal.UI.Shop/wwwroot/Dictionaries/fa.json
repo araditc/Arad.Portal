@@ -724,6 +724,18 @@
     "Key": "tbl_Inventory"
   },
   {
+    "Value": "موجودی های محصول",
+    "Key": "Product_Inventories"
+  },
+  {
+    "Value": "تعداد موجودی",
+    "Key": "Product_InventoryCount"
+  },
+  {
+    "Value": "مجموعه خصوصسات و مقادیر",
+    "Key": "Product_SpecificationsWithValues"
+  },
+  {
     "Value": "نام",
     "Key": "tbl_RoleName"
   },
@@ -887,6 +899,18 @@
   {
     "Value": "شماره همراه وارد شده معتبر نیست",
     "Key": "Validation_CellPhoneNumber"
+  },
+  {
+    "Value": "لطفا موجودی محصول را وراد کنید.",
+    "Key": "AlertAndMessage_FillInventory"
+  },
+  {
+    "Value": "لطفا برای تمام خصوصیات مقدار انتخاب کنید",
+    "Key": "AlertAndMessage_FillSpecValues"
+  },
+  {
+    "Value": "لطفا پس از کامل کردن خصوصیات محصول موجودی محصول را وارد کنید (موجودی ها بر حسب خصوصیات محصول ساخنه میشود )",
+    "Key": "AlertAndMessage_SpecValuesInsertion"
   },
   {
     "Value": "پست الکترونیکی نامعتبر است.",

@@ -15,7 +15,9 @@ namespace Arad.Portal.DataLayer.Models.Product
         }
         public List<string> GroupIds { get; set; }
         public string ProductName { get; set; }
+
         //public int Inventory { get; set; }
+
         /// <summary>
         /// this prop with be generated in dashboard with codegeneraor.getNewId()
         /// </summary>

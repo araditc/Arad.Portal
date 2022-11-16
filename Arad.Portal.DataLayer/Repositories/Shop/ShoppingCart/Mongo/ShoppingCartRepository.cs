@@ -427,7 +427,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             userCartEntity = _context.Collection
                 .Find(_ => _.CreatorUserId == userId && !_.IsDeleted &&
                       _.IsActive && _.AssociatedDomainId == domainId).FirstOrDefault();
-            //surely we have an instance of ShoppingCart
+
+            //surely we have an active instance of ShoppingCart
                 dto.ShoppingCartCulture = userCartEntity.ShoppingCartCulture;
                 dto.ShoppingCartId = userCartEntity.ShoppingCartId;
                 dto.DomainId = domainId;
@@ -436,6 +437,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 result.ReturnValue.Details = new List<PurchasePerSellerDTO>();
                 int rowNumber = 1;
                 decimal finalPaymentPrice = 0;
+
                 //each time we fetch shoppingCart data should be updated in it
                 foreach (var sellerPurchase in userCartEntity.Details)
                 {
@@ -481,9 +483,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             finalPaymentPrice += det.TotalAmountToPay;
                             sellerFactor += det.TotalAmountToPay;
 
-                            #region changing in final amount pre unit
+                            #region changing in final amount per unit
                             decimal previousAmountPerUnit = pro.PricePerUnit - pro.DiscountPricePerUnit;
                             decimal currentAmountPerUnit = det.PricePerUnit - det.DiscountPricePerUnit;
+
                             if (previousAmountPerUnit != currentAmountPerUnit)
                             {
                                 det.PreviousFinalPricePerUnit = previousAmountPerUnit; 
@@ -505,16 +508,17 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
 
 
                             //check inventory if it is less than orderCount then change our order Count to our inventory
-                            if (pro.OrderCount > productEntity.Inventory)
+                            if (pro.OrderCount > inventoryDetail.Count)
                             {
-                                det.OrderCount = productEntity.Inventory;
+                                det.OrderCount = inventoryDetail.Count;
+
                                 det.Notifications.Add(Language.GetString("AlertAndMessage_ProductDecreaseInventory")
                                     .Replace("[0]", productEntity.Inventory.ToString()));
                             }
                            
                         }
                         else 
-                        if(productEntity.IsDeleted || productEntity.Inventory == 0)
+                        if(productEntity.IsDeleted || inventoryDetail.Count == 0)
                         {
                             det = new ShoppingCartDetailDTO
                             {
@@ -783,6 +787,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 result.ReturnValue.Details = new List<PurchasePerSeller>();
                 int rowNumber = 1;
                 decimal finalPaymentPrice = 0;
+
                 //each time we fetch cartshopping data should be updated in it
                 foreach (var sellerPurchase in userCartEntity.Details)
                 {
@@ -791,18 +796,21 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     purchasePerSeller.SellerId = sellerPurchase.SellerId;
                     purchasePerSeller.SellerUserName = sellerPurchase.SellerUserName;
                     purchasePerSeller.ShippingTypeId = sellerPurchase.ShippingTypeId;
-                    //??? update shippingExpense if seller change it
+
+                    // update shippingExpense if seller change it
                     //TODO
+
                     finalPaymentPrice += sellerPurchase.ShippingExpense;
                     sellerFactor += sellerPurchase.ShippingExpense;
                     foreach (var pro in sellerPurchase.Products)
                     {
                         var productId = pro.ProductId;
                         var productEntity = _productContext.ProductCollection
-                       .Find(_ => _.ProductId == productId).FirstOrDefault();
-                        //ShoppingCartDetail det = new ShoppingCartDetail();
-                        if (productEntity != null && productEntity.IsActive
-                            && !productEntity.IsDeleted && productEntity.Inventory > 0)
+                                            .Find(_ => _.ProductId == productId).FirstOrDefault();
+                        var inventoryDetail = FindProductSpecValuesRecord(pro.ProductId, pro.ProductSpecValues);
+                      
+                        if (inventoryDetail != null && productEntity.IsActive
+                            && !productEntity.IsDeleted && inventoryDetail.Count > 0)
                         {
                             var activePriceValue = GetCurrentPrice(productEntity);
                             var discountPerUnit = await GetCurrentDiscountPerUnit(productEntity, activePriceValue);
@@ -810,17 +818,17 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             pro.PricePerUnit = activePriceValue;
                             pro.DiscountPricePerUnit = discountPerUnit.DiscountPerUnit;
                             pro.TotalAmountToPay = (activePriceValue - discountPerUnit.DiscountPerUnit) * pro.OrderCount;
-                            
                             finalPaymentPrice += pro.TotalAmountToPay;
                             sellerFactor += pro.TotalAmountToPay;
+
                             //check inventory if it is less than orderCount then change our order Count to our inventory
-                            if (pro.OrderCount > productEntity.Inventory)
+                            if (pro.OrderCount > inventoryDetail.Count)
                             {
-                                pro.OrderCount = productEntity.Inventory;
+                                pro.OrderCount = inventoryDetail.Count;
                             }
                         }
                         else
-                        if (productEntity.IsDeleted || productEntity.Inventory == 0)
+                        if (productEntity.IsDeleted || inventoryDetail.Count == 0)
                         {
                             pro.OrderCount = 0;
                             pro.DiscountPricePerUnit = 0;
@@ -870,8 +878,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                    //price change shoppingCart is ready to go to paymentGateway
                     var proEntity = _productContext.ProductCollection
                         .Find(_ => _.ProductId == product.ProductId).FirstOrDefault();
-                    if(proEntity.IsDeleted || 
-                        proEntity.Inventory < product.OrderCount || 
+                    var inventoryDetail = FindProductSpecValuesRecord(product.ProductId, product.ProductSpecValues);
+                    if(proEntity.IsDeleted || inventoryDetail == null ||
+                        inventoryDetail.Count < product.OrderCount || 
                         GetCurrentPrice(proEntity) != product.PricePerUnit )
                     {
                         result = false;
@@ -896,14 +905,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     {
                         var productEntity = _productContext.ProductCollection
                             .Find(_ => _.ProductId == product.ProductId).FirstOrDefault();
-
-                        if (productEntity != null)
+                        var inventoryDetail = FindProductSpecValuesRecord(product.ProductId, product.ProductSpecValues);
+                        if (inventoryDetail != null)
                         {
-                            productEntity.Inventory -= product.OrderCount;
+                            productEntity.Inventory.FirstOrDefault(_ => _.SpecValuesId == inventoryDetail.SpecValuesId).Count -= product.OrderCount;
                             var upDateResult = await _productContext.ProductCollection
                                 .ReplaceOneAsync(_ => _.ProductId == product.ProductId, productEntity);
 
-                            if(productEntity.Inventory <= productEntity.MinimumCount)
+                            if(productEntity.Inventory.Sum(_=>_.Count) <= productEntity.MinimumCount)
                             {
                                 var productName = productEntity.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
                                     productEntity.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name :

@@ -167,15 +167,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         
                         dto.ProductName = productRow.Cell("A").GetString();
                         
-                        dto.Inventory = productRow.Cell("B").GetValue<int>();
-                        dto.ProductUnit = productRow.Cell("C").GetString();
-                        dto.IsPublishOnMainDomain = productRow.Cell("D").GetString() == "بله";
-                        dto.ShowInLackOfInventory = productRow.Cell("E").GetString() == "بله";
-                        dto.UniqueCode = productRow.Cell("F").GetString();
-                        dto.SeoTitle = productRow.Cell("G").GetString();
-                        dto.SeoDescription = productRow.Cell("H").GetString();
-                        dto.Price = productRow.Cell("I").GetValue<long>();
-                        dto.TagKeywords = productRow.Cell("J").GetString();
+                        //dto.Inventory = productRow.Cell("B").GetValue<int>();
+                        dto.ProductUnit = productRow.Cell("B").GetString();
+                        dto.IsPublishOnMainDomain = productRow.Cell("C").GetString() == Language.GetString("btn_Confirm");
+                        dto.ShowInLackOfInventory = productRow.Cell("D").GetString() == Language.GetString("btn_Confirm");
+                        dto.UniqueCode = productRow.Cell("E").GetString();
+                        dto.SeoTitle = productRow.Cell("F").GetString();
+                        dto.SeoDescription = productRow.Cell("G").GetString();
+                        dto.Price = productRow.Cell("H").GetValue<long>();
+                        dto.TagKeywords = productRow.Cell("I").GetString();
                         
                         if(Directory.Exists(tempUnzipFolderPath))
                         {

@@ -17,6 +17,7 @@ using Arad.Portal.DataLayer.Contracts.Shop.Product;
 using Arad.Portal.DataLayer.Contracts.Shop.Promotion;
 using Arad.Portal.DataLayer.Models.Shared;
 using System.Globalization;
+using Arad.Portal.DataLayer.Models.Product;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -44,13 +45,13 @@ namespace Arad.Portal.UI.Shop.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> AddProToBasket(string code, int cnt)
+        public async Task<IActionResult> AddProToBasket(string code, int cnt, List<SpecValue> specVals)
         {
             var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
             var productId = _productRepository.FetchIdByCode(Convert.ToInt64(code));
             if (User != null && User.Identity.IsAuthenticated)
             {
-                var res = await _shoppingCartRepository.AddOrChangeProductToUserCart(productId, cnt);
+                var res = await _shoppingCartRepository.AddOrChangeProductToUserCart(productId, cnt, specVals);
                 ViewBag.BasketCount = res.ReturnValue.ItemsCount;
                 return Json(new
                 {

@@ -1,4 +1,5 @@
-﻿@model Arad.Portal.DataLayer.Models.Product.ProductOutputDTO
+﻿@using System;
+@model Arad.Portal.DataLayer.Models.Product.ProductOutputDTO
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
@@ -186,11 +187,11 @@
                         <input type="text" class="form-control" asp-for="@Model.UniqueCode" value="@Model.UniqueCode" />
                         <span data-val-result="UniqueCode" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-12 col-md-3">
+                    @*<div class="form-group col-12 col-md-3">
                         <label asp-for="@Model.Inventory" class="form-label">@Language.GetString("tbl_Inventory")</label>
                         <input type="number" class="form-control" asp-for="@Model.Inventory" value="@Model.Inventory" min="0" />
                         <span data-val-result="Inventory" class="text-danger"></span>
-                    </div>
+                    </div>*@
                     <div class="form-group col-12 col-md-3">
                         <label asp-for="@Model.Unit.ProductUnitId" class="form-label">@Language.GetString("Menu_ProductUnit")</label>
                         <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.Unit.ProductUnitId" asp-items="@(new SelectList(ViewBag.ProductUnitList,"Value","Text"))">
@@ -335,6 +336,78 @@
                                 </div>
                             </div>
                            
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                         <p class="my-2 col">
+                            <i class="fas fa-info-circle"></i>
+                            @Language.GetString("AlertAndMessage_SpecValuesInsertion")
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card border border-dark m-2">
+                            <div class="card-header">
+                                <div class="card-title"></div>
+                                <div class="card-title">
+                                     <a class="btn btn-success" data-bs-toggle="collapse" href="#specValueSection" role="button" aria-expanded="false" aria-controls="specValueSection">
+                                       @Language.GetString("Product_Inventories")
+                                      </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row"><span data-val-result="specValues" class="text-danger"></span></div>
+                                <div class="row collapse" id="specValueSection">
+                                    <div class="row" id="specValuesFields"></div>
+                                    <div class="row" id="specValuesTable">
+                                        <div class="col-12">
+                                          <table class="table table-hover table-bordered">
+                                                <thead>
+                                                    <tr style="text-align:center;">
+                                                         <th>@Language.GetString("Product_SpecificationsWithValues")</th>
+                                                        <th>@Language.GetString("Product_InventoryCount")</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="InventoryList">
+                                                    @if (Model.Inventory.Count != 0)
+                                                    {
+                                                        @foreach (var item in Model.Inventory)
+                                                        {
+                                                            <tr style="text-align:center;">
+                                                                <td>
+                                                                    @foreach(var spec in item.SpecValues)
+                                                                    {
+                                                                        <span class="specSpan" specid="@spec.SpecificationId" specVal="@spec.SpecificationValue">@spec.SpecificationName : @spec.SpecificationValue</span>  <br/>
+                                                                    }
+                                                               
+                                                                </td>
+                                                                <td>@item.Count</td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-danger btnDel bg-gradient" key="@item.SpecValuesId"  onclick="deleteFromInventoryList(this);">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr style="text-align:center;">
+                                                            <td colspan="8">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+                                          </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -705,6 +778,7 @@ else
     var images = [];
     var cnt = @count ;
     var multiLingualArr = [];
+    var specIdValues = [];
     var counter = 1000;
     var active = '@Language.GetString("Active")';
     var inActive = '@Language.GetString("InActive")';
@@ -811,14 +885,10 @@ else
         $("#btnAddProduct").click(function () {
             debugger;
             var flag = false;
+
+
             if ($("#GroupIds").val().length == 0) {
                 $("span[data-val-result='GroupIds']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
-                flag = true;
-            }
-
-            if ($("#Inventory").val() == "0")
-            {
-                $("span[data-val-result='Inventory']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
             if (($("#ProductType").val() == "1" && $("#Unit_ProductUnitId").val() == "-1") || $("#Unit_ProductUnitId").val() == "" )
@@ -831,15 +901,15 @@ else
                 $("span[data-val-result='sellerUserId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-            if ($("#specificationList tr").length == 0) {
+            if ($("#specificationList tr").length == 0 || ($("#specificationList tr").length == 1 && $("#specificationList tr")[0].children.length == 1)) {
                 $("span[data-val-result='specifications']").html('@Language.GetString("AlertAndMessage_Specifications")');
                 flag = true;
             }
-            if ($("#multiLingualList tr").length == 0) {
+            if ($("#multiLingualList tr").length == 0 || ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1)) {
                 $("span[data-val-result='multiLinguals']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                 flag = true;
             }
-            if ($("#priceList tr").length == 0) {
+            if ($("#priceList tr").length == 0 || ($("#priceList tr").length == 1 && $("#priceList tr")[0].children.length == 1)) {
                  $("span[data-val-result='priceList']").html('@Language.GetString("AlertAndMessage_FillPriceList")');
                 flag = true;
             }
@@ -1306,6 +1376,7 @@ else
         dto.Specifications = [];
         dto.Pictures = [];
         dto.Prices = [];
+        dto.Inventory =[];
         dto.ProductId = $("#ProductId").val();
         dto.IsActive = true;
         dto.ProductCode = Number($("#ProductCode").val());
@@ -1394,6 +1465,25 @@ else
             dto.Specifications.push(innerModel);
         });
 
+        //inventory detail list
+        $("#InventoryList tr").each(function(){
+            var obj = {};
+            obj.SpecValues = [];
+            obj.SpecValuesId ='@Guid.NewGuid()';
+            $(this).find("td:eq(0)").find("span.specSpan")
+            .each(function()
+            {
+                var innerObj = {};
+                innerObj.SpecificationId = $(this).attr("specid");
+                innerObj.SpecificationValue = $(this).attr("specVal");
+                obj.SpecValues.push(innerObj);
+            });
+            obj.Count = parseInt($(this).find("td:eq(1)").text());
+            dto.Inventory.push(obj);
+        });
+
+
+
         //pictures
         $("#imageList tr").each(function () {
             debugger;
@@ -1415,7 +1505,7 @@ else
 
 
         dto.UniqueCode = $("#UniqueCode").val();
-        dto.Inventory = parseInt($("#Inventory").val());
+        //dto.Inventory = parseInt($("#Inventory").val());
         dto.MinimumCount = parseInt($("#MinimumCount").val());
         dto.ShowInLackOfInventory = $("#ShowInLackOfInventory").is(":checked");
         if ("@ViewBag.Vendors" != "-1") {
@@ -1654,6 +1744,85 @@ else
             $("#cropped_result").remove();
         }
     }
+    }
+
+
+    var CollapsibleSpecValuesSection = document.getElementById('specValueSection')
+    CollapsibleSpecValuesSection.addEventListener('show.bs.collapse', function () {
+        var html = "";
+        var currentLangId = '@ViewBag.LangId';
+       $("#specificationList tr").each(function () {
+            if($(this).find("td:eq(1)").text() == currentLangId)
+            {
+               var specId = $(this).find("td:eq(5)").text();
+               var specName = $(this).find("td:eq(4)").text();
+               specIdValues.push({ Id = specId, name = specName});
+               var specValues = $(this).find("td:eq(6)").text();
+               var temp = "<div class='row'><div class='col-12 col-md-3'><span>"
+                           + specName
+                           + "</span></div><div class='col-12 col-md-9'><div class='d-flex flex-row'>";
+               var array = specValues.split("|");
+
+               array.forEach(function(index, val)
+               {
+                   temp += "<div><div class='form-check m-auto d-inline-block pe-3'><input class='form-check-input' type='radio' name='"
+                           + specId + "' value='"+ val +"'><label class='form-check-label'>"+val+"</label></div></div>"
+               }); 
+               temp += "</div></div></div>";
+               html += temp;
+            }
+          
+        });
+        html += "<div class='row'><div class='col-4'><label>"
+                    + '@Language.GetString("Product_InventoryCount")'
+                    + "</label></div><div class='col-6'><input type='number' id='specValuesInventory' class='form-control' /></div><div class='col-2'>"
+                    + "<button type='button' class='btn btn-success bg-gradient btn-sm' onclick='addToInventoryList();'></div></div>";
+
+        $("#specValuesFields").html(html);
+    });
+
+    function addToInventoryList()
+    {
+        var flag = true;
+        specIdValues.foreach(function(index, obj){
+            if($("input[name='"+ obj.Id +"']:checked").val()== "")
+            {
+                $("span[data-val-result='specValues']").html('@Language.GetString("AlertAndMessage_FillSpecValues")');
+                flag = false;
+            }
+        });
+        if($("#specValuesInventory").val() == "0" || $("#specValuesInventory").val() == "")
+        {
+            var html = $("span[data-val-result='specValues']").html();
+            html += '@Language.GetString("AlertAndMessage_FillInventory")';
+            $("span[data-val-result='specValues']").html(html);
+            flag = false;
+        }
+        if(flag)
+        {
+           var tr = "<tr style='text-align:center;'><td>" ;
+           var tempHtml = "";
+            specIdValues.forEach(function(index, obj){
+               tempHtml += "<span class='specSpan'  specVal='" + $("input[name='"+obj.Id+"']:checked").val() + "' specid='"+ obj.Id +"'>"+obj.name+":"+ $("input[name='"+obj.Id+"']:checked").val() + "</span>"
+            });
+            tr += tempHtml + "</td><td>"+ $("#specValuesInventory").val() + "</td><td>"
+            +"<button type='button' class='btn btn-danger btnDel bg-gradient' key='-1'  onclick='deleteFromInventoryList(this);'><i class='fa fa-trash'></i></button>"
+            +"</td></tr>";
+
+            if ($("#InventoryList tr").length == 1 && 
+                $("#InventoryList tr")[0].children.length == 1) 
+                {
+                    $("#InventoryList tr")[0].remove();
+                }
+
+            $("#InventoryList").append(tr);
+        }
+    }
+
+    function deleteFromInventoryList(sender)
+    {
+         var tr = $(sender).parent().parent();
+        $(tr).remove();
     }
 </script>
 

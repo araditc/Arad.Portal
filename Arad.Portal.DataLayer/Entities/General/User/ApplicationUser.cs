@@ -62,10 +62,12 @@ namespace Arad.Portal.DataLayer.Entities.General.User
         /// we have soft deleted all deleted entities store with isdeleted = true
         /// </summary>
         public bool IsDeleted { get; set; }
-       
+
         /// <summary>
         /// the primary key of domain which user belongs to
         /// </summary>
+        /// //TODO
+        //public List<UserDomain> Domains { get; set; }
         public string DomainId { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
@@ -77,6 +79,15 @@ namespace Arad.Portal.DataLayer.Entities.General.User
         public List<LoginLogoutRecord> LoginData { get; set; } 
     }
 
+
+    public class UserDomain
+    {
+        public string DomainId { get; set; }
+
+        public string DomainName { get; set; }
+
+        public bool IsOwner { get; set; }
+    }
 
     public class ApplicationRole : MongoRole<string>
     {

@@ -734,6 +734,18 @@
     "Key": "tbl_Inventory"
   },
   {
+    "Value": "product inventories",
+    "Key": "Product_Inventories"
+  },
+  {
+    "Value": "Inventory Count",
+    "Key": "Product_InventoryCount"
+  },
+  {
+    "Value": "Specifications with their values",
+    "Key": "Product_SpecificationsWithValues"
+  },
+  {
     "Value": "Name",
     "Key": "tbl_RoleName"
   },
@@ -907,6 +919,18 @@
   {
     "Value": "invalid cellphone number",
     "Key": "Validation_CellPhoneNumber"
+  },
+  {
+    "Value": "Please fill inventory.",
+    "Key": "AlertAndMessage_FillInventory"
+  },
+  {
+    "Value": "Please select values for all specifications",
+    "Key": "AlertAndMessage_FillSpecValues"
+  },
+  {
+    "Value": "Please fill product inventories After compeleting product specification(inventories build based on specifications)",
+    "Key": "AlertAndMessage_SpecValuesInsertion"
   },
   {
     "Value": "email is invalid",
