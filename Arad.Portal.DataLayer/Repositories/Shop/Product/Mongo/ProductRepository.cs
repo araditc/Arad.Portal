@@ -509,8 +509,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     Prefix = price.Prefix,
                     PriceValue = price.PriceValue,
                     StartDate = price.SDate.Value,
-                    EndDate = !string.IsNullOrWhiteSpace(price.EndDate) ?
-                    GeneralLibrary.Utilities.DateHelper.ToEnglishDate(price.EndDate.Split(" ")[0]) : null
+                    EndDate = price.EDate
                 };
                 equallentModel.Prices.Add(p);
             }

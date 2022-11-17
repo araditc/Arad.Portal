@@ -732,7 +732,7 @@
     "Key": "Product_InventoryCount"
   },
   {
-    "Value": "مجموعه خصوصسات و مقادیر",
+    "Value": "مجموعه خصوصیات و مقادیر",
     "Key": "Product_SpecificationsWithValues"
   },
   {
@@ -901,6 +901,10 @@
     "Key": "Validation_CellPhoneNumber"
   },
   {
+    "Value": "برای جلوگیری از تناقض در موجودی لطفا موجودی محصول را بر حسب مشخصه جدید تغییر دهید.",
+    "Key": "AlertAndMessage_UpdateProductInventory"
+  },
+  {
     "Value": "لطفا موجودی محصول را وراد کنید.",
     "Key": "AlertAndMessage_FillInventory"
   },
@@ -909,7 +913,7 @@
     "Key": "AlertAndMessage_FillSpecValues"
   },
   {
-    "Value": "لطفا پس از کامل کردن خصوصیات محصول موجودی محصول را وارد کنید (موجودی ها بر حسب خصوصیات محصول ساخنه میشود )",
+    "Value": "لطفا پس از کامل کردن مشخصات محصول, موجودی محصول را وارد کنید (موجودی ها بر حسب مشخصات محصول ساخنه میشود )",
     "Key": "AlertAndMessage_SpecValuesInsertion"
   },
   {

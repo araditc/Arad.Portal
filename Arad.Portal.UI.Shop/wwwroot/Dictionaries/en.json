@@ -921,6 +921,10 @@
     "Key": "Validation_CellPhoneNumber"
   },
   {
+    "Value": "To prevent inventory inconsistensy please change product inventory based on new inserted specification",
+    "Key": "AlertAndMessage_UpdateProductInventory"
+  },
+  {
     "Value": "Please fill inventory.",
     "Key": "AlertAndMessage_FillInventory"
   },
