@@ -28,6 +28,18 @@
 
             <div class="card-body" id="addEditProductGroupCard">
                 <input type="hidden" value="@Model.SpecificationGroupId" asp-for="SpecificationGroupId" />
+                @if (@ViewBag.IsSysAcc)
+                {
+                    <div class="row">
+                        <div class="form-group col-12 col-md-3">
+                            <label asp-for="AssociatedDomainId" class="form-label">@Language.GetString("AssociatedDomain")</label>
+                            <select class="form-control selectpicker" data-live-search="true"
+                                asp-for="@Model.AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text", Model.AssociatedDomainId))">
+                            </select>
+                            <span data-val-result="AssociatedDomainId" class="text-danger"></span>
+                        </div>
+                    </div>
+                }
                 <div class="row">
                     <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="groupName">@Language.GetString("tbl_GroupName")</label><br />
@@ -200,6 +212,10 @@
         function FillDataToSend() {
             debugger;
             var obj = {};
+            if ($("#AssociatedDomainId") != undefined)
+            {
+                obj.AssociatedDomainId = $("#AssociatedDomainId").val();
+            }
             obj.GroupNames = [];
             obj.SpecificationGroupId = $("#SpecificationGroupId").val();
           /* obj.ModificationReason = $("#ModificationReason").val();*/

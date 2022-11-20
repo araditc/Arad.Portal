@@ -36,6 +36,7 @@ using DocumentFormat.OpenXml.Drawing.Charts;
 using Arad.Portal.GeneralLibrary.Utilities;
 using KeyVal = Arad.Portal.DataLayer.Models.Shared.KeyVal;
 using Arad.Portal.DataLayer.Contracts.General.BasicData;
+using AspNetCore.Identity.MongoDbCore.Models;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -143,11 +144,11 @@ namespace Arad.Portal.UI.Shop.Controllers
 
                 #region user
                 #region Set claim
-                List<IdentityUserClaim<string>> claims = new()
+                List<MongoClaim> claims = new()
                 {
-                    new() { ClaimType = ClaimTypes.GivenName, ClaimValue = model.FullMobile },
-                    new() { ClaimType = "IsActive", ClaimValue = true.ToString() },
-                    new() { ClaimType = "IsSystemAccount", ClaimValue = false.ToString() }
+                    new() { Type = ClaimTypes.GivenName, Value = model.FullMobile },
+                    new() { Type = "IsActive", Value = true.ToString() },
+                    new() { Type = "IsSystemAccount", Value = false.ToString() }
                 };
                 #endregion
                 ApplicationUser user = new()
@@ -155,7 +156,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                     UserName = model.UserName,
                     IsSystemAccount = true,
                     Id = Guid.NewGuid().ToString(),
-                    IsDomainAdmin = true,
+                    
                     Profile = new DataLayer.Models.User.Profile() { UserType = UserType.Admin, DefaultCurrencyId = model.CurrencyId, DefaultLanguageId = model.DefaultLanguageId },
                     IsDeleted = false,
                     CreatorId = Guid.NewGuid().ToString(),
@@ -166,10 +167,9 @@ namespace Arad.Portal.UI.Shop.Controllers
                     PhoneNumberConfirmed = true,
                     Modifications = new(),
                     Claims = claims,
-                    IsSiteUser = true,
-                    DomainId = domain.DomainId
+                    IsSiteUser = true
                 };
-
+                user.Domains.Add(new() { DomainId = domain.DomainId, IsOwner = true, DomainName = domain.DomainName });
                 IdentityResult insertResult = await _userManager.CreateAsync(user, model.Password);
                 #endregion
 

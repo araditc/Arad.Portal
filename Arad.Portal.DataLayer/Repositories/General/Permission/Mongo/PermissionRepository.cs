@@ -10,17 +10,17 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using System.Collections.Specialized;
 using System.Web;
-using Arad.Portal.GeneralLibrary;
+
 using System.Security.Claims;
-using AspNetCore.Identity.Mongo.Mongo;
+
 using MongoDB.Driver.Linq;
 using Arad.Portal.DataLayer.Contracts.General.Role;
-using Arad.Portal.DataLayer.Models.Role;
+
 using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
 using Microsoft.AspNetCore.Hosting;
 

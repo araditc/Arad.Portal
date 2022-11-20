@@ -5,6 +5,7 @@
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
     var lan = HelpersMethods.GetHtmlLang(CultureInfo.CurrentCulture);
+    var dir = HelpersMethods.GetDirection(CultureInfo.CurrentCulture);
     var count = @Model.MultiLingualProperties.Count + 1;
      var baseAdd = Config["BaseAddress"];
 }
@@ -133,6 +134,18 @@
 
             <div class="card-body" id="addEditProductCard">
                 <input type="hidden" value="@Model.ProductId" asp-for="ProductId" />
+                @if(@ViewBag.IsSysAcc)
+                {
+                    <div class="row">
+                         <div class="form-group col-12 col-md-3">
+                          <label asp-for="AssociatedDomainId" class="form-label">@Language.GetString("AssociatedDomain")</label>
+                          <select class="form-control selectpicker" data-live-search="true" 
+                             asp-for="@Model.AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text", Model.AssociatedDomainId))">
+                        </select>
+                        <span data-val-result="AssociatedDomainId" class="text-danger"></span>
+                    </div>
+                    </div>
+                }
                 <div class="row">
                     <div class="form-group col-12 col-md-3">
                           <label asp-for="ProductType" class="form-label">@Language.GetString("ProductType")</label>
@@ -371,7 +384,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody id="InventoryList">
-                                                    @if (Model.Inventory.Count != 0)
+                                                    @if (Model.Inventory != null && Model.Inventory.Count != 0)
                                                     {
                                                         @foreach (var item in Model.Inventory)
                                                         {
@@ -645,8 +658,8 @@
                                                         <tr style="text-align:center;">
                                                             <td>@price.CurrencyName</td>
                                                             <td style="display:none;">@price.CurrencyId</td>
-                                                            <td>@price.PriceValue</td>
-                                                            <td style="direction:ltr;">@price.StartDate</td>
+                                                            <td>@($"{Convert.ToInt64(@price.PriceValue):n0}")</td>
+                                                            <td style="direction: ltr;">@price.StartDate</td>
                                                             <td>@price.EndDate</td>
                                                             <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
                                                             <td>
@@ -797,6 +810,7 @@ else
         });
       
         var multiLingualList = @Json.Serialize(@Model.MultiLingualProperties);
+        
         for (var i = 0; i < multiLingualList.length; i++) {
            
             var obj = {};
@@ -1410,6 +1424,11 @@ else
         dto.IsActive = true;
         dto.ProductCode = Number($("#ProductCode").val());
 
+        //domainId
+        if($("#AssociatedDomainId") != undefined)
+           {
+               obj.AssociatedDomainId = $("#AssociatedDomainId").val();
+           }
         //groupIds
         for (var i = 0; i < $("#GroupIds").val().length; i++) {
             debugger;
@@ -1536,7 +1555,7 @@ else
 
 
         dto.UniqueCode = $("#UniqueCode").val();
-        //dto.Inventory = parseInt($("#Inventory").val());
+        
         dto.MinimumCount = parseInt($("#MinimumCount").val());
         dto.ShowInLackOfInventory = $("#ShowInLackOfInventory").is(":checked");
         if ("@ViewBag.Vendors" != "-1") {

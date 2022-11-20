@@ -20,6 +20,7 @@ using Arad.Portal.DataLayer.Repositories.General.Permission.Mongo;
 using Arad.Portal.GeneralLibrary.Utilities;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
 using Microsoft.AspNetCore.Identity;
+using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
 {
@@ -29,6 +30,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
         private readonly RoleContext _roleContext;
         private readonly PermissionContext _permissionContext;
         private readonly IMapper _mapper;
+        private readonly DomainContext _domainContext;
        // private readonly UserManager<ApplicationUser> _userManager;
         public UserRepository(UserContext userContext,
             RoleContext roleContext,
@@ -36,12 +38,14 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             PermissionContext permissionContext,
             IHttpContextAccessor httpContextAccessor,
             IWebHostEnvironment env,
+            DomainContext domainContext,
             IMapper mapper) : base(httpContextAccessor, env)
         {
             _context = userContext;
             _roleContext = roleContext;
             _permissionContext = permissionContext;
             _mapper = mapper;
+            _domainContext = domainContext;
            // _userManager = userManager;
         }
 
@@ -106,12 +110,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             return result;
         }
 
-        public ApplicationUser FindAdminOfDomain(string domainId)
-        {
-            //var domainAdminUser = _userManager.Users.Where(_ => _.DomainId == domainId && _.IsDomainAdmin).FirstOrDefault();
-            var domainAdminUser = _context.Collection.Find(_ => _.DomainId == domainId && _.IsDomainAdmin).FirstOrDefault();
-            return domainAdminUser;
-        }
 
         public List<string> GetAccessibleRoutsOfUser(ApplicationUser user)
         {

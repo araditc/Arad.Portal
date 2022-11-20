@@ -61,17 +61,16 @@ using Arad.Portal.UI.Shop.Authorization;
 using Arad.Portal.UI.Shop.Helpers;
 using Arad.Portal.UI.Shop.Middlewares;
 using Arad.Portal.UI.Shop.Scheduling;
-using AspNetCore.Identity.Mongo;
-using Enyim.Caching.Configuration;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.CookiePolicy;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
+
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Rewrite;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -84,13 +83,16 @@ using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-using System.Threading.Tasks;
+
 using Serilog;
 using MongoDB.Driver;
 using Arad.Portal.DataLayer.Services;
 using Lucene.Net.Index;
 using Lucene.Net.Store;
 using Microsoft.AspNetCore.Identity;
+using AspNetCore.Identity.MongoDbCore.Extensions;
+using AspNetCore.Identity.MongoDbCore.Infrastructure;
+using MongoDbGenericRepository;
 
 namespace Arad.Portal.UI.Shop
 {
@@ -162,21 +164,26 @@ namespace Arad.Portal.UI.Shop
                 options.Cookie.Name = ".web.Session";
             });
 
-            services.AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, string>(identityOptions =>
-            {
-                identityOptions.Password.RequiredLength = 6;
-                identityOptions.Password.RequireLowercase = true;
-                identityOptions.Password.RequireUppercase = false;
-                identityOptions.Password.RequireNonAlphanumeric = false;
-                identityOptions.Password.RequireDigit = true;
 
-            }, mongoIdentityOptions =>
-            {
-                mongoIdentityOptions.ConnectionString = Configuration["DatabaseConfig:ConnectionString"];
-            });
+            MongoDbContext mongoDbContext = new(Configuration["DatabaseConfig:ConnectionString"], Configuration["DatabaseConfig:DbName"]);
+            services.AddIdentity<ApplicationUser, ApplicationRole>().AddMongoDbStores<IMongoDbContext>(mongoDbContext).AddDefaultTokenProviders();
 
-           
-           
+            MongoDbIdentityConfiguration mongoDbIdentityConfiguration = new()
+            {
+                MongoDbSettings = new() { ConnectionString = databaseConfig.ConnectionString, DatabaseName = databaseConfig.DbName },
+                IdentityOptionsAction = options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 7;
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequireLowercase = true;
+                }
+            };
+            services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, string>(mongoDbIdentityConfiguration).AddDefaultTokenProviders();
+
+
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                  .AddCookie(opt =>
                  {

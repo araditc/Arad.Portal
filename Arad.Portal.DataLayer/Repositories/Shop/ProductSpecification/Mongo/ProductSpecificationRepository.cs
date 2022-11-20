@@ -224,6 +224,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                 long totalCount = await _productContext.SpecificationCollection.Find(c => true).CountDocumentsAsync();
                 var list = _productContext.SpecificationCollection.AsQueryable()
                     .Where(_ => _.SpecificationNameValues.Any(a => a.Name.Contains(filterName)) && _.SpecificationNameValues.Any(a => a.LanguageId == langId)).Skip((page - 1) * pageSize)
+                    .OrderByDescending(_=>_.CreationDate)
                    .Take(pageSize).Select(_ => new ProductSpecificationViewModel()
                    {
                       ProductSpecificationId = _.ProductSpecificationId,

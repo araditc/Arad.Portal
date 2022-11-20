@@ -1,7 +1,7 @@
 ﻿using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.User;
-using AspNetCore.Identity.Mongo.Model;
-using MongoDB.Bson.Serialization.Attributes;
+using AspNetCore.Identity.MongoDbCore.Models;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,13 +9,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using MongoDB.Bson.Serialization.Attributes;
+
+using MongoDbGenericRepository.Attributes;
+
 namespace Arad.Portal.DataLayer.Entities.General.User
 {
     /// <summary>
     /// all users of site whether they are site user or admin user will be store here 
     /// this entity inherit from mongoUser which inherit identityUser 
     /// </summary>
-    public class ApplicationUser : MongoUser<string>
+    /// 
+    [MongoDbGenericRepository.Attributes.CollectionName("Users")]
+    public class ApplicationUser : MongoIdentityUser<string>
     {
         public ApplicationUser()
         {
@@ -29,10 +35,7 @@ namespace Arad.Portal.DataLayer.Entities.General.User
         /// </summary>
         public bool IsSystemAccount { get; set; }
 
-        /// <summary>
-        /// defines whether this user is the admin of specific domain or not
-        /// </summary>
-        public bool IsDomainAdmin { get; set; }
+        
         /// <summary>
         /// inactive user cant login and work with its account
         /// </summary>
@@ -67,8 +70,8 @@ namespace Arad.Portal.DataLayer.Entities.General.User
         /// the primary key of domain which user belongs to
         /// </summary>
         /// //TODO
-        //public List<UserDomain> Domains { get; set; }
-        public string DomainId { get; set; }
+         public List<UserDomain> Domains { get; set; }
+        //public string DomainId { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime CreationDate { get; set; }
@@ -89,7 +92,7 @@ namespace Arad.Portal.DataLayer.Entities.General.User
         public bool IsOwner { get; set; }
     }
 
-    public class ApplicationRole : MongoRole<string>
+    public class ApplicationRole : MongoIdentityRole<string>
     {
 
     }

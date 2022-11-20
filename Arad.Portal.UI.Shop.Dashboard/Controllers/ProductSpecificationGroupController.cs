@@ -1,11 +1,15 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Currency;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Contracts.Shop.ProductSpecificationGroup;
+using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.ProductSpecificationGroup;
 using Arad.Portal.DataLayer.Models.Shared;
+using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.UI.Shop.Dashboard.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,12 +26,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _currencyRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IDomainRepository _domainRepository;
         public ProductSpecificationGroupController(IProductSpecGroupRepository productSpecGroupRepository,
-            ILanguageRepository lanRepository, ICurrencyRepository currencyRepository)
+            ILanguageRepository lanRepository, ICurrencyRepository currencyRepository,
+            IDomainRepository domainrepository, UserManager<ApplicationUser> userManager)
         {
             _productSpecGrpRepository = productSpecGroupRepository;
             _lanRepository = lanRepository;
             _currencyRepository = currencyRepository;
+            _userManager = userManager;
+            _domainRepository = domainrepository;
         }
 
         [HttpGet]
@@ -53,6 +62,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var model = new SpecificationGroupDTO();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var userDB = await _userManager.FindByIdAsync(currentUserId);
+            if (userDB.IsSystemAccount)
+            {
+
+                ViewBag.Domains = _domainRepository.GetAllActiveDomains();
+            }
+            ViewBag.IsSysAcc = userDB.IsSystemAccount;
+
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = await _productSpecGrpRepository.GroupSpecificationFetch(id);

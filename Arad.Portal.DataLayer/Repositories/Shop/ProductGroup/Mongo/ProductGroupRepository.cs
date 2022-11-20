@@ -512,14 +512,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
 
         public async Task<long> GetDircetChildrenCount(string domainName,string productGroupId, List<string> groupListWithProducts)
         {
-            
             var currentDomain = _domainRepository.FetchByName(domainName, false);
 
             var count = await  _productContext.ProductGroupCollection
-                    .Find(_ => _.AssociatedDomainId == currentDomain.ReturnValue.DomainId 
-                           && _.ParentId == productGroupId 
+                    .Find(_ => _.ParentId == productGroupId
                            && groupListWithProducts.Contains(_.ProductGroupId)).CountDocumentsAsync();
-
             return count;
         }
 

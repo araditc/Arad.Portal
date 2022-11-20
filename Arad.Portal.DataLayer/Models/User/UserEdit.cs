@@ -35,9 +35,6 @@ namespace Arad.Portal.DataLayer.Models.User
         [DataType(DataType.EmailAddress, ErrorMessage = "AlertAndMessage_EmailInvalid")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "AlertAndMessage_DomainRequired")]
-        public string DomainId { get; set; }
-
         [CustomDisplayName("User_FullMobile")]
         public string FullMobile { get; set; }
 

@@ -38,6 +38,7 @@ using Arad.Portal.DataLayer.Contracts.General.Content;
 using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
 using Arad.Portal.DataLayer.Contracts.General.BasicData;
 using Microsoft.AspNetCore.Http;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -116,7 +117,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var userDB = await _userManager.FindByIdAsync(currentUserId);
             if (userDB.IsSystemAccount)
             {
-                var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("AppRole", "True"));
+                var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("Vendor", "True"));
                 var vendors = vendorList.Select(_ => new SelectListModel()
                 {
                     Text = _.Profile.FullName,
@@ -243,6 +244,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
+                dto.DomainId = Guid.NewGuid().ToString();
+                #region DomainOwner user update
+                var ownerUser = await _userManager.FindByNameAsync(dto.OwnerUserName);
+                ownerUser.Domains.Add(new UserDomain() { DomainId = dto.DomainId, DomainName = dto.DomainName, IsOwner = true });
+                await _userManager.UpdateAsync(ownerUser);
+                #endregion
+
+
                 foreach (var item in dto.DomainPaymentProviders)
                 {
                     item.PspType = (PspType)Enum.Parse(typeof(PspType), item.Type);
@@ -265,15 +274,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
 
                 var supportedIds = dto.SupportedCultures;
-
-                var domainId = User.GetClaimValue("RelatedDomain");
+                
                 var i = 1;
                 foreach (var lanId in supportedIds)
                 {
                     var lanEntity = _lanRepository.FetchLanguage(lanId);
                     var basicObject = new DataLayer.Entities.General.BasicData.BasicData()
                     {
-                        AssociatedDomainId = domainId,
+                        AssociatedDomainId = dto.DomainId,
                         BasicDataId = Guid.NewGuid().ToString(),
                         GroupKey = "SupportedCultures",
                         Value = i.ToString(),

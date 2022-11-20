@@ -297,7 +297,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 {
                     list = list.Where(_ => _.Infoes.Any(_=> _.AffectedProductGroupId == groupId)).ToList();
                 }
-
+                list = list.OrderByDescending(_ => _.CreationDate).ToList();
                 if(list.Count > pageSize)
                 {
                     list = list.Skip((page - 1) * pageSize)

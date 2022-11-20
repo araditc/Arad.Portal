@@ -541,7 +541,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 .Find(_ => _.ProductId == productId).FirstOrDefault();
             if (entity != null)
             {
-                result = entity.Inventory.Sum(_ => _.Count);
+                result = entity.Inventory != null ? entity.Inventory.Sum(_ => _.Count) : 0;
             }
             return result;
         }
@@ -615,7 +615,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
-                long totalCount = await _context.ProductCollection.Find(c => true).CountDocumentsAsync();
+               // long totalCount = await _context.ProductCollection.Find(c => true).CountDocumentsAsync();
                 var totalList = _context.ProductCollection.AsQueryable();
                 if (!string.IsNullOrWhiteSpace(filter["groupIds"]))
                 {
@@ -671,7 +671,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     filter.Set("LanguageId", lan.LanguageId);
                 }
                 var langId = filter["LanguageId"].ToString();
-                var list = totalList.Skip((page - 1) * pageSize)
+                var list = totalList.OrderByDescending(_=>_.CreationDate).Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ProductViewModel()
                    {
                        ProductId = _.ProductId,
@@ -690,7 +690,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
                 result.Items = list;
                 result.CurrentPage = page;
-                result.ItemsCount = totalCount;
+                result.ItemsCount = totalList.Count();
                 result.PageSize = pageSize;
                 result.QueryString = queryString;
 
@@ -714,14 +714,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             var product = _context.ProductCollection.Find(_ => _.ProductId == dto.ProductId).FirstOrDefault();
             if (product != null)
             {
-                preInventory = product.Inventory.Sum(_=>_.Count); 
+                preInventory = product.Inventory != null ? product.Inventory.Sum(_=>_.Count) : 0; 
                 var equallentModel = MappingProduct(dto);
-                if(preInventory == 0 && equallentModel.Inventory.Sum(_=>_.Count) > 0)
+                if(preInventory == 0 && equallentModel.Inventory != null && equallentModel.Inventory.Sum(_=>_.Count) > 0)
                 {
                     changeUnavailableToAvailable = true;
                 }
                 equallentModel.CreationDate = product.CreationDate;
-
+                equallentModel.AssociatedDomainId = product.AssociatedDomainId;
                 var updateResult = await _context.ProductCollection
                     .ReplaceOneAsync(_ => _.ProductId == dto.ProductId, equallentModel);
 
@@ -1090,7 +1090,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                         item.ValueList.Add(obj);
                     }
                 }
-                var r = Helpers.Utilities.ConvertPopularityRate(productEntity.TotalScore, productEntity.ScoredCount);
+                var r = Utilities.ConvertPopularityRate(productEntity.TotalScore, productEntity.ScoredCount);
                 result.LikeRate = r.LikeRate;
                 result.DisikeRate = r.DisikeRate;
                 result.HalfLikeRate = r.HalfLikeRate;

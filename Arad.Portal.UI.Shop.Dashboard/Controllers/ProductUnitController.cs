@@ -13,6 +13,9 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Microsoft.AspNetCore.Authorization;
 using static Lucene.Net.Util.Fst.Util;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -21,12 +24,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     {
         private readonly IProductUnitRepository _unitRepository;
         private readonly ILanguageRepository _lanRepository;
-        //private readonly UserExtensions _userExtensions;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IDomainRepository _domainRepository;
         public ProductUnitController(IProductUnitRepository unitRepository,
-            ILanguageRepository lanRepository)
+            ILanguageRepository lanRepository,
+            UserManager<ApplicationUser> userManager,
+            IDomainRepository domainRepository)
         {
             _unitRepository = unitRepository;
             _lanRepository = lanRepository;
+            _userManager = userManager;
+            _domainRepository = domainRepository;
         }
 
 
@@ -44,11 +52,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             PagedItems<ProductUnitViewModel> list = await _unitRepository.List(Request.QueryString.ToString());
             return View(list);
         }
-        public IActionResult AddEdit(string id)
+        public async Task<IActionResult> AddEdit(string id)
         {
             var model = new ProductUnitDTO();
 
             var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var userDB = await _userManager.FindByIdAsync(currentUserId);
+            if (userDB.IsSystemAccount)
+            {
+
+                ViewBag.Domains = _domainRepository.GetAllActiveDomains();
+            }
+            ViewBag.IsSysAcc = userDB.IsSystemAccount;
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = _unitRepository.FetchUnit(id);

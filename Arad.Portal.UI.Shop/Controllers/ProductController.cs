@@ -444,6 +444,20 @@ namespace Arad.Portal.UI.Shop.Controllers
             return contentType;
         }
 
+        [HttpPost]
+        [Route("{language}/product/FindProductInventory")]
+        public async Task<IActionResult> FindProductInventory([FromBody]InventoryModel model)
+        {
+            var productEntity = await _productRepository.ProductFetch(model.ProductId);
+            var lst = productEntity.Inventory;
+            foreach (var item in model.SelectedSpecs)
+            {
+                lst = lst.Where(_ => _.SpecValues.Any(a => a.SpecificationId == item.Value && a.SpecificationValue == item.Text)).ToList();
+            }
+            var finalInventory = lst.Sum(_ => _.Count);
+            return Json(new { status = "success", cnt = finalInventory });
+        }
+
         [Route("{language}/product/{**slug}")]
         public async Task<IActionResult> Details(string slug)
         {
@@ -474,6 +488,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             
             if (!string.IsNullOrEmpty(entity.ProductId))
             {
+                entity.TotalInventory = entity.Inventory != null ? entity.Inventory.Sum(_ => _.Count) : 0;
                 var updateVisitCount = await _productRepository.UpdateVisitCount(entity.ProductId);
                 if (isLoggedUser)
                 {

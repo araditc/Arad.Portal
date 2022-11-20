@@ -901,6 +901,10 @@
     "Key": "Validation_CellPhoneNumber"
   },
   {
+    "Value": "لطفا تمام مقادیر مشخصات محصول را انتخاب کنید.",
+    "Key": "AlertAndMessage_SelectAllSpecificationValues"
+  },
+  {
     "Value": "برای جلوگیری از تناقض در موجودی لطفا موجودی محصول را بر حسب مشخصه جدید تغییر دهید.",
     "Key": "AlertAndMessage_UpdateProductInventory"
   },

@@ -9,9 +9,7 @@ using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Contracts.General.Permission;
 using Arad.Portal.DataLayer.Models.Shared;
 using System.Security.Claims;
-using System.Text;
-using AspNetCore.Identity.Mongo.Mongo;
-using MongoDB.Bson;
+
 using MongoDB.Driver;
 using Microsoft.AspNetCore.Routing;
 using Arad.Portal.DataLayer.Models.Permission;

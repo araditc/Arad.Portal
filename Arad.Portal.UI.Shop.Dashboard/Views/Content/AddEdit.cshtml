@@ -497,11 +497,11 @@
                         </select>
                         <span data-val-result="productUnitId" class="text-danger"></span>
                     </div>
-                             <div class="form-group col-12 col-md-4">
+                             @*<div class="form-group col-12 col-md-4">
                                 <label class="form-label">@Language.GetString("tbl_Inventory")</label>
                                 <input type="number" class="form-control" id="inventory" min="0" />
                                 <span data-val-result="inventory" class="text-danger"></span>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                 </div>
@@ -956,10 +956,10 @@
                    $("span[data-val-result='Title']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                    flag = true;
                 }
-                if ($("#inventory").val() == "0") {
-                    $("span[data-val-result='inventory']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                    flag = true;
-                }
+                //if ($("#inventory").val() == "0") {
+                //    $("span[data-val-result='inventory']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                //    flag = true;
+                //}
                 if ($("#productUnitId").val() == "-1" || $("#productUnitId").val() == "") {
                     $("span[data-val-result='productUnitId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
@@ -1218,7 +1218,7 @@
             });
 
             dto.UniqueCode = $("#uniqueCode").val();
-            dto.Inventory = parseInt($("#inventory").val());
+            dto.Inventory = [];
             dto.MinimumCount = parseInt($("#minimumCount").val());
             dto.ShowInLackOfInventory = $("#showInLackOfInventory").is(":checked");
             if ("@ViewBag.Vendors" != "-1") {

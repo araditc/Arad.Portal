@@ -15,14 +15,14 @@ using System.Threading.Tasks;
 using Arad.Portal.UI.Shop.Dashboard.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Arad.Portal.DataLayer.Contracts.General.Role;
-using Arad.Portal.UI.Shop.Dashboard.Authorization;
+
 using Arad.Portal.DataLayer.Contracts.General.Permission;
 using System.Security.Claims;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.Role;
 using Microsoft.Extensions.Options;
 using Arad.Portal.DataLayer.Contracts.General.Notification;
-using Arad.Portal.DataLayer.Models.Notification;
+
 using Arad.Portal.DataLayer.Contracts.General.MessageTemplate;
 using Arad.Portal.GeneralLibrary.Utilities;
 using System.Collections.Specialized;
@@ -31,7 +31,7 @@ using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using PhoneNumbers;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+
 using Arad.Portal.DataLayer.Helpers;
 using Arad.Portal.DataLayer.Entities.General.Error;
 using Arad.Portal.DataLayer.Contracts.General.Error;
@@ -40,7 +40,8 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using Arad.Portal.DataLayer.Contracts.General.User;
 using Arad.Portal.DataLayer.Contracts.General.CountryParts;
-using System.Diagnostics.CodeAnalysis;
+
+
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -147,6 +148,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIsExpired"));
             }
+            if(!string.IsNullOrWhiteSpace(model.Username))
+            {
+                ModelState.AddModelError("Username", Language.GetString("AlertAndMessage_UserNameRequired"));
+            }
+
+            if(!string.IsNullOrWhiteSpace(model.Password))
+            {
+                ModelState.AddModelError("Password", Language.GetString("AlertAndMessage_PasswordRequired"));
+            }
 
             if (!ModelState.IsValid)
             {
@@ -157,31 +167,46 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
 
             //only users who isSiteUser = false can login in site admin
-            if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true || (user != null && user.IsSiteUser))
+            //only owner of this domain can login in this part
+            var domainName = HttpContext.Request.Host.ToString();
+            var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
+            
+           if(user == null || !user.IsSystemAccount)
+            {
+                if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true
+                || (user != null && user.IsSiteUser) || (user != null && user.Domains.FirstOrDefault(a => a.IsOwner).DomainId != domainEntity.DomainId) )
+                {
+                    ViewBag.Message = Language.GetString("AlertAndMessage_InvalidUsernameOrPassword");
+                    return View(model);
+                }
+
+                if (!user.IsActive)
+                {
+                    ViewBag.Message = Language.GetString("AlertAndMessage_InActiveUserAccount");
+                    return View(model);
+                }
+            }
+            
+            var res = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+
+            if(res.Succeeded)
+            {
+                user.LastLoginDate = DateTime.Now;
+                await _userManager.UpdateAsync(user);
+
+                if (!string.IsNullOrWhiteSpace(model.ReturnUrl) && model.ReturnUrl != "/")
+                {
+                    return Redirect(model.ReturnUrl);
+                }
+
+                TempData["LoginUser"] = $"{user.Profile.FirstName} {user.Profile.LastName} {Language.GetString("AlertAndMessage_Welcome")}";
+                return RedirectToAction("Index", "Home");
+            }else
             {
                 ViewBag.Message = Language.GetString("AlertAndMessage_InvalidUsernameOrPassword");
                 return View(model);
             }
-
-            if (!user.IsActive)
-            {
-                ViewBag.Message = Language.GetString("AlertAndMessage_InActiveUserAccount");
-                return View(model);
-            }
             
-            user = await _userManager.FindByNameAsync(model.Username);
-            await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
-
-            user.LastLoginDate = DateTime.Now;
-            await _userManager.UpdateAsync(user);
-
-            if (!string.IsNullOrWhiteSpace(model.ReturnUrl) && model.ReturnUrl != "/")
-            {
-                return Redirect(model.ReturnUrl);
-            }
-
-            TempData["LoginUser"] = $"{user.Profile.FirstName} {user.Profile.LastName} {Language.GetString("AlertAndMessage_Welcome")}";
-            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -363,7 +388,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             else
             {
                 ViewBag.IsSystem = false;
-                model.DomainId = currentUser.DomainId;
             }
             var roles = _roleRepository.GetActiveRoles();
             roles.Insert(0, new RoleListView()
@@ -432,15 +456,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 model.DefaultCurrencyId = currencyDto.CurrencyId;
                 model.DefaultCurrencyName = currencyDto.CurrencyName;
                 var currentDomain = $"{_httpContextAccessor.HttpContext.Request.Host}";
-                string associatedDomainId = "";
-                if (!string.IsNullOrWhiteSpace(model.DomainId))
-                {
-                    associatedDomainId = model.DomainId;
-                }
-                else
-                {
-                    associatedDomainId = _domainRepository.FetchByName(currentDomain, false).ReturnValue.DomainId;
-                }
+                
                 if (existUser == null)
                 {
                     var user = new ApplicationUser()
@@ -463,24 +479,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         UserRoleId = model.UserRoleId,
                         CreationDate = DateTime.UtcNow,
                         CreatorId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
-                        DomainId = associatedDomainId,
                         Email = model.Email
                        
                     };
                     if(model.IsVendor)
                     {
-                        user.Claims.Add(new IdentityUserClaim<string>
-                        {
-                            ClaimType = "AppRole",
-                            ClaimValue = true.ToString()
-                        });
+                        user.Claims.Add(new AspNetCore.Identity.MongoDbCore.Models.MongoClaim() {Type = "Vendor", Value = true.ToString() });
+                       
                     }
-                    //add domain to its claims
-                    user.Claims.Add(new IdentityUserClaim<string> 
-                    {
-                        ClaimType = "RelatedDomain",
-                        ClaimValue = associatedDomainId
-                    });
+                    
                     var res = await _userManager.CreateAsync(user, model.Password);
 
                     if (!res.Succeeded)
@@ -544,7 +551,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 var userDb = await _userManager.FindByIdAsync(id);
                 bool isVendor;
-                if (userDb.Claims.Any(_ => _.ClaimType == "AppRole"))
+                if (userDb.Claims.Any(_ => _.Type == "Vendor"))
                     isVendor = true;
                 else isVendor = false;
                 ViewBag.IsSystem = userDb.IsSystemAccount;
@@ -561,7 +568,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 else
                 {
                     ViewBag.IsSystem = false;
-                    model.DomainId = currentUser.DomainId;
                 }
                 model = new UserEdit()
                 {
@@ -653,21 +659,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         user.PhoneNumber = model.FullMobile.Replace("+", "");
                         user.UserRoleId = model.UserRoleId;
                         user.IsSiteUser = model.IsSiteUser;
-                        user.DomainId = model.DomainId;
+                       
                         user.Email = model.Email;
                        
                         
                         if (model.IsVendor)
                         {
-                            user.Claims.Add(new IdentityUserClaim<string>
-                            {
-                                ClaimType = "AppRole",
-                                ClaimValue = true.ToString()
-                            });
+                            user.Claims.Add(new AspNetCore.Identity.MongoDbCore.Models.MongoClaim() { Type = "Vendor", Value = true.ToString() });
                         }
                         else
                         {
-                            var vendorClaim = user.Claims.Find(c => c.ClaimType == "AppRole");
+                            var vendorClaim = user.Claims.Find(c => c.Type == "Vendor");
                             if (vendorClaim != null)
                             {
                                 user.Claims.Remove(vendorClaim);

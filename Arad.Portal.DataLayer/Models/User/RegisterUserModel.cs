@@ -61,11 +61,7 @@ namespace Arad.Portal.DataLayer.Models.User
         public bool IsVendor { get; set; }
 
         public bool  IsSiteUser { get; set; }
-
-        [Required(ErrorMessage = "AlertAndMessage_DomainRequired")]
-        public string DomainId { get; set; }
-
-        //[ErrorMessage("AlertAndMessage_UserRoleRequired")]
+       
         [Required(ErrorMessage = "AlertAndMessage_UserRoleRequired")]
         public string UserRoleId { get; set; }
 

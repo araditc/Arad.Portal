@@ -18,6 +18,7 @@ using Arad.Portal.DataLayer.Contracts.Shop.Promotion;
 using Arad.Portal.DataLayer.Models.Shared;
 using System.Globalization;
 using Arad.Portal.DataLayer.Models.Product;
+using DocumentFormat.OpenXml.EMMA;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -44,14 +45,14 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> AddProToBasket(string code, int cnt, List<SpecValue> specVals)
+        [HttpPost]
+        public async Task<IActionResult> AddProToBasket([FromBody]BasketModel model)
         {
             var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
-            var productId = _productRepository.FetchIdByCode(Convert.ToInt64(code));
+            var productId = _productRepository.FetchIdByCode(Convert.ToInt64(model.Code));
             if (User != null && User.Identity.IsAuthenticated)
             {
-                var res = await _shoppingCartRepository.AddOrChangeProductToUserCart(productId, cnt, specVals);
+                var res = await _shoppingCartRepository.AddOrChangeProductToUserCart(productId, model.Count, model.SpecVals, model.CartDetailId);
                 ViewBag.BasketCount = res.ReturnValue.ItemsCount;
                 return Json(new
                 {
@@ -63,7 +64,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             else
             {
                 //return RedirectToAction("Login", "Account", new { returnUrl = "/basket/AddProToBasket" });
-                return Redirect($"~/{lanIcon}/Account/Login?returnUrl=/{lanIcon}/basket/AddProToBasket?code={code}&cnt={cnt}");
+                return Redirect($"~/{lanIcon}/Account/Login?returnUrl=/{lanIcon}/basket/AddProToBasket?code={model.Code}&cnt={model.Count}");
             }
         }
 

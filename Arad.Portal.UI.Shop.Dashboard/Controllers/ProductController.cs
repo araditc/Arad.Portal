@@ -108,7 +108,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var groupList = await _productGroupRepository.GetAlActiveProductGroup(defLangId, currentUserId);
                 ViewBag.ProductGroupList = groupList;
                 var scheme = HttpContext.Request.Scheme;
-                ViewBag.ShopUrl = scheme + "://" + domainEntity.ReturnValue.DomainName+"/"+ langSymbol;
+                //ViewBag.ShopUrl = scheme + "://" + domainEntity.ReturnValue.DomainName+"/"+ langSymbol;
+                
+                ViewBag.ShopUrl = scheme + "://" + HttpContext.Request.Host + "/" + langSymbol;
                 var unitList = _unitRepository.GetAllActiveProductUnit(defLangId);
                 ViewBag.ProductUnitList = unitList;
             }
@@ -125,17 +127,20 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var userDB = await _userManager.FindByIdAsync(currentUserId);
             if (userDB.IsSystemAccount)
             {
-                var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("AppRole", "True"));
+                var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("Vendor", "True"));
                 ViewBag.Vendors = vendorList.ToList().Select(_=>new SelectListModel()
                 {
                     Text = _.Profile.FullName,
                     Value = _.Id
                 });
+
+                ViewBag.Domains = _domainRepository.GetAllActiveDomains();
             }
             else
             {
                 ViewBag.Vendors = "-1";
             }
+            ViewBag.IsSysAcc = userDB.IsSystemAccount;
             ViewBag.ActivePromotionId = "-1";
 
             var fileShown = _configuration["LocalStaticFileShown"];

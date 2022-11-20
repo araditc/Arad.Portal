@@ -24,8 +24,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.User
         bool CountPhone(string phoneNumber, string userPhone);
 
         List<UserFavorites> GetUserFavoriteList(string userId, FavoriteType types);
-
-        ApplicationUser FindAdminOfDomain(string domainId);
+       
         Result AddToUserFavoriteList(string userId, FavoriteType type, string entityId, string url, string domainId);
 
         Task<Result> AddtoNotifyList(string productId, string userId);

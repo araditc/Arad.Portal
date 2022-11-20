@@ -77,7 +77,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ViewBag.PromotionTypes = _promotionRepository.GetAllPromotionType();
                 ViewBag.DiscountTypes = _promotionRepository.GetAllDiscountType(false);
                 ViewBag.ProductGroupList = _productRepositoy.GetAlActiveProductGroup(defaulltLang.LanguageId);
-                var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("AppRole", "True"));
+                var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("Vendor", "True"));
                 ViewBag.Vendors = vendorList.ToList().Select(_ => new SelectListModel()
                 {
                     Text = _.Profile.FullName,
@@ -147,7 +147,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.PromotionTypes = _promotionRepository.GetAllPromotionType();
             
             ViewBag.ProductGroupList = _productRepositoy.GetAlActiveProductGroup(defaulltLang.LanguageId);
-            var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("AppRole", "True"));
+            var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("Vendor", "True"));
             ViewBag.Vendors = vendorList.ToList().Select(_ => new SelectListModel()
             {
                 Text = _.Profile.FullName,
@@ -226,7 +226,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
             ViewBag.PromotionList = _promotionRepository.GetAvailableCouponsOfDomain(domainName);
             ViewBag.DomainUsers = _userManager.Users
-                .Where(_ => _.DomainId == domainEntity.DomainId && _.IsActive && !_.IsDeleted)
+                .Where(_ => _.IsActive && !_.IsDeleted && _.Domains.Any(a => a.DomainId == domainEntity.DomainId))
                 .Select(_ => new SelectListModel()
                 {
                    Text = _.Profile.FullName,

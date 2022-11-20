@@ -352,7 +352,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                         .Where(_ => _.CreationDate <= filter["to"].ToString().ToEnglishDate().ToUniversalTime());
                 }
               
-                var list = totalList.Skip((page - 1) * pageSize)
+                var list = totalList.OrderByDescending(_=>_.CreationDate).Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new CommentViewModel()
                    {
                        CommentId = _.CommentId,

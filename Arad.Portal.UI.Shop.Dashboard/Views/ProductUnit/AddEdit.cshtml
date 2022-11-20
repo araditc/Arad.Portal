@@ -27,6 +27,18 @@
 
             <div class="card-body">
                 <input type="hidden" value="@Model.ProductUnitId" asp-for="@Model.ProductUnitId" />
+                @if(@ViewBag.IsSysAcc)
+                {
+                    <div class="row">
+                         <div class="form-group col-12 col-md-3">
+                          <label asp-for="AssociatedDomainId" class="form-label">@Language.GetString("AssociatedDomain")</label>
+                          <select class="form-control selectpicker" data-live-search="true" 
+                             asp-for="@Model.AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text", Model.AssociatedDomainId))">
+                        </select>
+                        <span data-val-result="AssociatedDomainId" class="text-danger"></span>
+                    </div>
+                    </div>
+                }
                
                 <div class="row align-items-center alert alert-secondary">
                     <div class="form-group col-12 col-md-4">
@@ -187,6 +199,10 @@
         function FillDataToSend() {
             debugger;
             var obj = {};
+           if($("#AssociatedDomainId") != undefined)
+           {
+               obj.AssociatedDomainId = $("#AssociatedDomainId").val();
+           }
             obj.UnitNames = [];
             obj.ProductUnitId = $("#ProductUnitId").val();
           /* obj.ModificationReason = $("#ModificationReason").val();*/

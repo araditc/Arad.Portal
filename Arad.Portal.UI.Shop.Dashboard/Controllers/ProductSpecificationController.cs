@@ -12,6 +12,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -21,14 +25,20 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IProductSpecificationRepository _specificationRepository;
         private readonly IProductSpecGroupRepository _groupRepository;
         private readonly ILanguageRepository _lanRepository;
-        
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IDomainRepository _domainRepository;
         public ProductSpecificationController(IProductSpecificationRepository specificationRepository,
             IProductSpecGroupRepository productSpecGroupRepository,
-            ILanguageRepository lanRepository)
+            ILanguageRepository lanRepository,
+            IDomainRepository domainRepository,
+            UserManager<ApplicationUser> userManager)
         {
             _specificationRepository = specificationRepository;
             _groupRepository = productSpecGroupRepository;
             _lanRepository = lanRepository;
+            _userManager = userManager;
+            _domainRepository = domainRepository;
+
         }
 
         [HttpGet]
@@ -51,6 +61,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var model = new ProductSpecificationDTO();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var userDB = await _userManager.FindByIdAsync(currentUserId);
+            if (userDB.IsSystemAccount)
+            {
+
+                ViewBag.Domains = _domainRepository.GetAllActiveDomains();
+            }
+            ViewBag.IsSysAcc = userDB.IsSystemAccount;
+
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = await _specificationRepository.SpecificationFetch(id);

@@ -442,7 +442,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                                 #region sendNotification for customer and siteadmin
                                 var customerUser = await _userManager.FindByIdAsync(transaction.CustomerData.UserId);
                                 var siteAdmin = _userManager.Users
-                                    .Where(_ => _.IsDomainAdmin && _.DomainId == domainRes.ReturnValue.DomainId).FirstOrDefault();
+                                    .FirstOrDefault(_ => _.Domains.Any(a => a.DomainId == domainRes.ReturnValue.DomainId));
                                 await _createNotification.NotifyNewOrder("UserRegisterNewOrder", customerUser);
                                 await _createNotification.NotifyNewOrder("AdminRegisterNewOrder", siteAdmin);
                                 #endregion

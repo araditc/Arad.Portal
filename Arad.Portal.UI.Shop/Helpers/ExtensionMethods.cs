@@ -26,6 +26,8 @@ using Arad.Portal.DataLayer.Contracts.General.CountryParts;
 using Arad.Portal.DataLayer.Contracts.General.DesignStructure;
 using Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo;
 using Microsoft.AspNetCore.Http;
+using AspNetCore.Identity.MongoDbCore.Models;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Arad.Portal.UI.Shop.Helpers
 {
@@ -115,23 +117,6 @@ namespace Arad.Portal.UI.Shop.Helpers
                     //Id = Guid.NewGuid().ToString(),
                     Id = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa",
                     UserName = "SuperAdmin",
-                    Claims = new List<IdentityUserClaim<string>>()
-                    {
-                        new IdentityUserClaim<string>()
-                        {
-                            ClaimType = "AppRole",
-                            ClaimValue = true.ToString(),
-                        },
-                        //,???
-                        new IdentityUserClaim<string>()
-                        {
-                            ClaimType = "RelatedDomain",
-                            ClaimValue = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004",
-                            //testing
-                            UserId = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa"
-
-                        }
-                    },
                     PhoneNumber = "989309910790",
                     IsActive = true,
                     IsSystemAccount = true,

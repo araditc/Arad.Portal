@@ -228,7 +228,7 @@
                                 <td>@(item.Unit != null && item.Unit.UnitNames.Any(_=>_.LanguageId == langId) ? item.Unit.UnitNames.First(_ => _.LanguageId == langId).Name : "")</td>
                                 <td>@(string.Join("|", item.GroupNames))</td>
                                 <td>@item.UniqueCode</td>
-                                <td>@item.Inventory</td>
+                                <td>@(@item.Inventory != null ? @item.Inventory.Sum(_=>_.Count) : 0)</td>
                                 <td>
                                     @(item.Prices.Any(_ =>_.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate))
                                         ? item.Prices.First(_ => _.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).PriceValue : "")
@@ -238,8 +238,8 @@
                                 <td>
                                     <button class="btn btn-sm btn-dark bg-gradient" 
                                     data-code = "@item.ProductCode"
+                                    data-url="@(item.MultiLingualProperties.Any(_=>_.LanguageId == langId) ? item.MultiLingualProperties.First(_ => _.LanguageId == langId).UrlFriend : "")"
                                     onclick="ShowProduct(this)">
-                                    
                                         <i class="fa fa-eye"></i>@Language.GetString("btn_Show")
                                     </button>
                                 </td>
@@ -364,8 +364,16 @@
         function ShowProduct(sender)
         {
             debugger;
+            var urlFriend = $(sender).attr("data-url");
             var code = $(sender).attr("data-code");
-            var final = `${'@ViewBag.ShopUrl'}/product/${code}`;
+            var final = "";
+            if(urlFriend != "")
+            {
+                final = `${'@ViewBag.ShopUrl'}${urlFriend}`;
+            }else
+            {
+                final = `${'@ViewBag.ShopUrl'}/product/${code}`;
+            }
             window.open(final);
         }
         function EntityDelete(id) {

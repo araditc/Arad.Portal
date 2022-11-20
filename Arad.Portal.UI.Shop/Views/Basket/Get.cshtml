@@ -47,6 +47,7 @@
                                             <th scope="col">@Language.GetString("Image")</th>
                                             <th scope="col">@Language.GetString("tbl_ProductName")</th>
                                             <th scope="col">@Language.GetString("PricePerUnit")</th>
+                                            <th scope="col">@Language.GetString("PermissionTitle_ProductSpecification")</th>
                                             <th scope="col">@Language.GetString("Count")</th>
                                             <th scope="col">@Language.GetString("FinalPrice")</th>
                                             <th scope="col"></th>
@@ -57,66 +58,76 @@
                                         @{
                                             foreach (var item in seller.Products)
                                             {
-                                                                        <tr>
-                                                                            <th scope="row">@item.RowNumber</th>
-                                                                            <td>
-                                                                                @if (item.ProductImage != null)
-                                                        {
-                                                                                    <a href="@($"/product/{item.ProductCode}")" class="proLink" role="button">
-                                                                                        <img class="smlImg" src=@Url.Content($"~/getscaledimageonwidth?path={item.ProductImage.Url}&width={75}")>
-                                                                                    </a>
-                                                        }
-                                                                            </td>
-                                                                            <td class="align-middle">
-                                                                                <a href="@($"/product/{item.ProductCode}")" role="button" class="proLink">
-                                                                                    <span>@item.ProductName</span>
-                                                                                </a>
-                                                                            </td>
-                                                                            <td class="align-middle">
-                                                                                @{
-                                                            if (item.PreviousFinalPricePerUnit != 0 && item.PreviousFinalPricePerUnit != item.PricePerUnit - item.DiscountPricePerUnit)
-                                                            {
-                                                                                                                <div>
-                                                                                                                    <p class="pInTb"><s>@($"{Convert.ToInt64(item.PreviousFinalPricePerUnit):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</s></p>
-                                                                                                                    <p class="pInTb"><mark>@($"{Convert.ToInt64(item.PricePerUnit - item.DiscountPricePerUnit): n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
-                                                                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                                                                <div>
-                                                                                                                    <p class="pInTb"><mark>@($"{Convert.ToInt64(item.PricePerUnit - item.DiscountPricePerUnit):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
-                                                                                                                </div>
+                                                                                                                                    <tr detailId = "@item.ShoppingCartDetailId">
+                                                                                                                                        <th scope="row">@item.RowNumber</th>
+                                                                                                                                        <td>
+                                                                                                                                            @if (item.ProductImage != null)
+                                                                                 {
+                                                                                                                                                <a href="@($"/product/{item.ProductCode}")" class="proLink" role="button">
+                                                                                                                                                    <img class="smlImg" src=@Url.Content($"~/getscaledimageonwidth?path={item.ProductImage.Url}&width={75}")>
+                                                                                                                                                </a>
+                                                                                 }
+                                                                                                                                        </td>
+                                                                                                                                        <td class="align-middle">
+                                                                                                                                            <a href="@($"/product/{item.ProductCode}")" role="button" class="proLink">
+                                                                                                                                                <span>@item.ProductName</span>
+                                                                                                                                            </a>
+                                                                                                                                        </td>
+                                                                                                                                        <td class="align-middle">
+                                                                                                                                            @{
+                                                                                    if (item.PreviousFinalPricePerUnit != 0 && item.PreviousFinalPricePerUnit != item.PricePerUnit - item.DiscountPricePerUnit)
+                                                                                    {
+                                                                                                                                                                                                                                                                <div>
+                                                                                                                                                                                                                                                                    <p class="pInTb"><s>@($"{Convert.ToInt64(item.PreviousFinalPricePerUnit):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</s></p>
+                                                                                                                                                                                                                                                                    <p class="pInTb"><mark>@($"{Convert.ToInt64(item.PricePerUnit - item.DiscountPricePerUnit): n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                                                                                                                                                                                                                                                </div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                                                                                                                                                                                                <div>
+                                                                                                                                                                                                                                                                    <p class="pInTb"><mark>@($"{Convert.ToInt64(item.PricePerUnit - item.DiscountPricePerUnit):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                                                                                                                                                                                                                                                </div>
 
-                                                            }
-                                                                                }
-                                                                            </td>
-                                                                            <td class="align-middle">
-                                                                                <div class="w-75">
-                                                                                    <input type="number" class="form-control orderCnt" proid='@item.ProductId' min="1" value="@item.OrderCount" />
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="align-middle">
-                                                                                <div>
-                                                                                    <p><mark>@($"{Convert.ToInt64(@item.TotalAmountToPay) :n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="align-middle">
-                                                                                <button class="btn btn-sm btn-danger bg-gradient deleteItem" parId="@Model.ShoppingCartId" detailId="@item.ShoppingCartDetailId">
-                                                                                    <i class="fa fa-trash"></i>
-                                                                                </button>
-                                                                            </td>
-                                                                            <td class="align-middle">
-                                                                                <div>
-                                                                                    @{
+                                                                                    }
+                                                                                                                                            }
+                                                                                                                                        </td>
+                                                                                                                                        <td class="align-middle text-center specSection" >
+                                                                                                                                            @{
+                                                                                                                                                                                                @foreach (var spec in item.ProductSpecValues)
+                                                                                          {
+                                                                                                                                                                                                    <span class="specSpan" specName="@spec.SpecificationName" specid="@spec.SpecificationId"
+                                                                                                                                                                                                      specVal="@spec.SpecificationValue">@spec.SpecificationName : @spec.SpecificationValue</span>  
+                                                                                                                                                                                                      <br/>
+                                                                                          }
+                                                                                                                                            }
+                                                                                                                                        </td>
+                                                                                                                                        <td class="align-middle">
+                                                                                                                                            <div class="w-75">
+                                                                                                                                                <input type="number" class="form-control orderCnt" code='@item.ProductCode' min="1" value="@item.OrderCount" />
+                                                                                                                                            </div>
+                                                                                                                                        </td>
+                                                                                                                                        <td class="align-middle">
+                                                                                                                                            <div>
+                                                                                                                                                <p><mark>@($"{Convert.ToInt64(@item.TotalAmountToPay) :n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                                                                                                                            </div>
+                                                                                                                                        </td>
+                                                                                                                                        <td class="align-middle">
+                                                                                                                                            <button class="btn btn-sm btn-danger bg-gradient deleteItem" parId="@Model.ShoppingCartId" detailId="@item.ShoppingCartDetailId">
+                                                                                                                                                <i class="fa fa-trash"></i>
+                                                                                                                                            </button>
+                                                                                                                                        </td>
+                                                                                                                                        <td class="align-middle">
+                                                                                                                                            <div>
+                                                                                                                                                @{
                                                                 foreach (var not in item.Notifications)
                                                                 {
-                                                                                                                    <p class="fw-lighter">@not</p>
-                                                                                                                    <br />
+                                                                                                                                                                                                                                            <p class="fw-lighter">@not</p>
+                                                                                                                                                                                                                                            <br />
                                                                 }
-                                                                                    }
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
+                                                                                                                                                }
+                                                                                                                                            </div>
+                                                                                                                                        </td>
+                                                                                                                                    </tr>
                                             }
                                         }
                                     </tbody>
@@ -161,7 +172,7 @@
                     </div>
                     <div class="col-3 col-md-2">
                         <p>
-                            <strong class="float-start" id="finalP">@($"{Convert.ToInt64(Model.FinalPriceForPay):n0}")"</strong>
+                            <strong class="float-start" id="finalP">@($"{Convert.ToInt64(Model.FinalPriceForPay):n0}")</strong>
                             <strong class="float-end">@($" {Model.ShoppingCartCulture.CurrencySymbol}")</strong>
                         </p>
                     </div>
@@ -189,12 +200,27 @@
         $("input.orderCnt").bind('keyup mouseup', function() {
             debugger;
             var cnt = $(this).val();
-            var productId = $(this).attr("proid");
+            var code = $(this).attr("code");
+            var tr = $(this).closest("tr");
+            var specVals = [];
+            $(tr).find(".specSection .specSpan").each(function(){
+                var obj = {};
+                obj.SpecificationId = $(this).attr("specid");
+                obj.SpecificationValue = $(this).attr("specVal");
+                specVals.push(obj);
+            });
+            var obj = {};
+            obj.Code = code;
+            obj.Count = parseInt(cnt);
+            obj.SpecVals = specVals ;
+            obj.CartDetailId = $(tr).attr("detailId") != undefined ? $(tr).attr("detailId") : "";
+
             $.ajax({
-                url: "/" + "@ViewBag.LanIcon" + "/basket/AddProToBasket?productId=" + productId + "&cnt=" + cnt,
+                url: "/" + "@ViewBag.LanIcon" + "/basket/AddProToBasket",
                 contentType: 'application/json',
-                type: 'Get',
+                type: 'POST',
                 dataType: 'json',
+                data: JSON.stringify(obj),
                 beforeSend: function() {
                 },
                 success: function(result) {

@@ -26,6 +26,7 @@ using static Arad.Portal.DataLayer.Models.Shared.Enums;
 using System.Globalization;
 using Arad.Portal.DataLayer.Models.Product;
 using Arad.Portal.DataLayer.Entities.Shop.Product;
+using Arad.Portal.DataLayer.Entities.General.Domain;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
 {
@@ -85,26 +86,19 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             }
             return result;
         }
-        private InventoryDetail FindProductSpecValuesRecord(string productId, List<SpecValue> specValues)
-        {
-            var entity = _productContext.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
-            InventoryDetail inventoryDetail = null;
-            List<InventoryDetail> lst = entity.Inventory;
-            foreach (var item in specValues)
-            {
-                lst = lst.Where(_ => _.SpecValues.Any(a => a.SpecificationId == item.SpecificationId &&
-                                      a.SpecificationValue == item.SpecificationValue)).ToList();
-            }
-            if (lst.Count > 0) //surely lst have just one
-            {
-                inventoryDetail = lst[0];
-            }
-            return inventoryDetail;
-        }
-        public async Task<Result<CartItemsCount>> AddOrChangeProductToUserCart(string productId, int orderCount, List<SpecValue> specValues)
+        
+        public async Task<Result<CartItemsCount>> AddOrChangeProductToUserCart(string productId, int orderCount, List<SpecValue> specValues, string shoppingCartDetailId = "")
         {
             var result = new Result<CartItemsCount>();
             result.ReturnValue = new CartItemsCount();
+            var langSymbol = "";
+            langSymbol = CultureInfo.CurrentCulture.Name.ToLower();
+            var lanid = _languageContext.Collection.Find(_ => _.Symbol.ToLower() == langSymbol).FirstOrDefault().LanguageId;
+            foreach (var spec in specValues)
+            {
+                var specEntity = _productContext.SpecificationCollection.Find(_ => _.ProductSpecificationId == spec.SpecificationId).FirstOrDefault();
+                spec.SpecificationName = specEntity.SpecificationNameValues.FirstOrDefault(_ => _.LanguageId == lanid).Name;
+            }
             var productEntity = _productContext.ProductCollection
                 .Find(_ => _.ProductId == productId && !_.IsDeleted).FirstOrDefault();
             var userId = base.GetUserId();
@@ -125,9 +119,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
            
             if (productEntity != null)
             {
-                if (userCartEntity.Details.Any(_ => _.Products.Any(a => a.ProductId == productId)))
+                if(!string.IsNullOrWhiteSpace(shoppingCartDetailId))
+                //if (userCartEntity.Details.Any(_ => _.Products.Any(a => a.ProductId == productId)))
                 {
-                    var res = await ChangeProductCountInUserCart(userId, productId, orderCount, specValues);
+                    var res = await ChangeProductCountInUserCart(userId, productId, orderCount, specValues, shoppingCartDetailId);
                     result.Message = res.Message;
                     result.Succeeded = res.Succeeded;
                 }
@@ -136,7 +131,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     var currentPriceValue = GetCurrentPrice(productEntity);
                     var res = await GetCurrentDiscountPerUnit(productEntity, currentPriceValue);
 
-                    if (productEntity.Inventory.Sum(_=>_.Count) > 0)
+                    if (productEntity.Inventory != null && productEntity.Inventory.Sum(_=>_.Count) > 0)
                     {
                         var inventoryDetail = FindProductSpecValuesRecord(productId, specValues);
                         int finalOrderCnt = inventoryDetail.Count > orderCount ? orderCount : inventoryDetail.Count;
@@ -153,6 +148,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             DiscountPricePerUnit = res.DiscountPerUnit,
                             PricePerUnit = currentPriceValue,
                             IsActive = true,
+                            ProductSpecValues = specValues,
                             OrderCount = finalOrderCnt,
                             SellerId = productEntity.SellerUserId,
                             TotalAmountToPay = (currentPriceValue - res.DiscountPerUnit) * finalOrderCnt
@@ -166,15 +162,22 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                         else
                         {
                             var sellerEntity = await _userManager.FindByIdAsync(productEntity.SellerUserId);
-                            var sellerDomainEntity = _domainContext.Collection.Find(_ => _.DomainId == sellerEntity.DomainId).FirstOrDefault();
-                           
+                            var ownerDomainId = sellerEntity.Domains.Any(_ => _.IsOwner) ? sellerEntity.Domains.FirstOrDefault(_ => _.IsOwner).DomainId : "";
+
+                            Domain sellerDomainEntity = null;
+                            if(!string.IsNullOrWhiteSpace(ownerDomainId))
+                            {
+                                sellerDomainEntity = _domainContext.Collection.Find(_ => _.DomainId == ownerDomainId).FirstOrDefault();
+                            }
+
+                            var defaultDomain = _domainContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
                             var relatedDomain = "";
                             if(domainEntity.IsDefault)
                             {
                                 relatedDomain = domainEntity.DomainId;
                             }else
                             {
-                                relatedDomain = sellerDomainEntity.DomainId;
+                                relatedDomain = ownerDomainId;
                             }
                             Entities.Shop.Setting.ShippingSetting settingEntity = null;
                             FilterDefinitionBuilder<Entities.Shop.Setting.ShippingSetting> shippingBuilder = new();
@@ -186,7 +189,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             settingEntity = _shippingContext.Collection.Find(shippingFilterDef).FirstOrDefault();
 
 
-                            var finalShippingTypeId = domainEntity.IsDefault ? domainEntity.DefaultShippingTypeId : sellerDomainEntity.DefaultShippingTypeId;
+                            var finalShippingTypeId = domainEntity.IsDefault ? domainEntity.DefaultShippingTypeId : (sellerDomainEntity != null ? sellerDomainEntity.DefaultShippingTypeId : defaultDomain.DefaultShippingTypeId);
                             var purchase = new PurchasePerSeller()
                             {
                                 SellerId = productEntity.SellerUserId,
@@ -230,12 +233,12 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             var totalCount = 0;
             foreach (var item in entity.Details)
             {
-                var productCount = item.Products.Where(_ => !_.IsDeleted).Count();
+                var productCount = item.Products.Where(a=> !a.IsDeleted).Count();
                 totalCount += productCount;
             }
             return totalCount;
         }
-        public async Task<Result> ChangeProductCountInUserCart(string userId, string productId, int newCount, List<SpecValue> specValues)
+        public async Task<Result> ChangeProductCountInUserCart(string userId, string productId, int newCount, List<SpecValue> specValues, string shoppingCartDetailId)
         {
             var result = new Result();
             var domainName = base.GetCurrentDomainName();
@@ -261,7 +264,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 
                     //surely this product added before to shoppingcart then it has this record
                     var sellerObj = userCartEntity.Details.Where(_ => _.SellerId == productEntity.SellerUserId).FirstOrDefault();
-                    var productRow = sellerObj.Products.FirstOrDefault(_ => _.ProductId == productId);
+                    var productRow = sellerObj.Products.FirstOrDefault(_ => _.ShoppingCartDetailId == shoppingCartDetailId);
 
                     var index = sellerObj.Products.IndexOf(productRow);
                     if (inventoryDetail.Count > 0 && inventoryDetail.Count >= newCount)
@@ -274,7 +277,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             productRow.DiscountPricePerUnit = res.DiscountPerUnit;
                             productRow.PricePerUnit = price;
                             sellerObj.Products[index] = productRow;
-
+                            var sellerIndex = userCartEntity.Details.IndexOf(sellerObj);
+                            userCartEntity.Details[sellerIndex] = sellerObj;
                             var updateResult = await _context.Collection
                                 .ReplaceOneAsync(_ => _.ShoppingCartId == userCartEntity.ShoppingCartId, userCartEntity);
                             if (updateResult.IsAcknowledged)
@@ -289,7 +293,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                         }
                         else
                         {
-                            result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
+                            result.Message = Language.GetString("AlertAndMessage_ObjectNotFound");
                         }
                     }
                     else
@@ -299,12 +303,12 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                
             }else //if new count == 0
             {
-                result = await DeleteProductFromUserShoppingCart(userId, productId);
+                result = await DeleteProductFromUserShoppingCart(userId, shoppingCartDetailId);
             }
             return result;
         }
 
-        public async Task<Result> DeleteProductFromUserShoppingCart(string userId, string productId)
+        public async Task<Result> DeleteProductFromUserShoppingCart(string userId, string shoppingCartDetailId)
         {
             var result = new Result();
             var domainName = base.GetCurrentDomainName();
@@ -312,15 +316,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             var userCartEntity = _context.Collection
                 .Find(_ => _.CreatorUserId == userId && !_.IsDeleted
                 && _.IsActive && _.AssociatedDomainId == domainEntity.DomainId).FirstOrDefault();
-
-            var productEntity = _productContext.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
+          
+            //var productEntity = _productContext.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
             if (userCartEntity != null)
             {
-                var sellerObj = userCartEntity.Details.FirstOrDefault(_ => _.SellerId == productEntity.SellerUserId);
+                var sellerObj = userCartEntity.Details.FirstOrDefault(_ => _.Products.Any(a => a.ShoppingCartDetailId == shoppingCartDetailId));
+                //var sellerObj = userCartEntity.Details.FirstOrDefault(_ => _.SellerId == productEntity.SellerUserId);
                 int sellerIndex = userCartEntity.Details.IndexOf(sellerObj);
                 if (sellerObj != null)
                 {
-                    var productRow = sellerObj.Products.FirstOrDefault(_ => _.ProductId == productId);
+                    var productRow = sellerObj.Products.FirstOrDefault(_ => _.ShoppingCartDetailId == shoppingCartDetailId);
                     sellerObj.Products.Remove(productRow);
                     if(sellerObj.Products.Count == 0)
                     {
@@ -466,15 +471,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             det = new ShoppingCartDetailDTO
                             {
                                 RowNumber = rowNumber,
+                                ShoppingCartDetailId = pro.ShoppingCartDetailId,
                                 ProductCode = productEntity.ProductCode,
                                 CreationDate = DateTime.Now,
                                 CreatorUserId = userCartEntity.CreatorUserId,
                                 CreatorUserName = userCartEntity.CreatorUserName,
                                 ProductId = productId,
                                 ProductName = pro.ProductName,
-                                ShoppingCartDetailId = pro.ShoppingCartDetailId,
                                 OrderCount =  pro.OrderCount,
                                 PricePerUnit = activePriceValue,
+                                ProductSpecValues = pro.ProductSpecValues,
                                 DiscountPricePerUnit = discountPerUnit.DiscountPerUnit,
                                 TotalAmountToPay = (activePriceValue - discountPerUnit.DiscountPerUnit) * pro.OrderCount,
                                 ProductImage = productEntity.Images.Any(_=>_.IsMain) ? 
@@ -523,6 +529,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             det = new ShoppingCartDetailDTO
                             {
                                 RowNumber = rowNumber,
+                                ShoppingCartDetailId = pro.ShoppingCartDetailId,
                                 CreationDate = DateTime.Now,
                                 CreatorUserId = userCartEntity.CreatorUserId,
                                 CreatorUserName = userCartEntity.CreatorUserName,
@@ -532,6 +539,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                                 PricePerUnit = 0,
                                 DiscountPricePerUnit = 0,
                                 TotalAmountToPay = 0,
+                                ProductSpecValues = pro.ProductSpecValues,
                                 PreviousOrderCount = pro.OrderCount,
                                 PreviousFinalPricePerUnit = pro.PricePerUnit - pro.DiscountPricePerUnit
                             };
@@ -894,7 +902,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
         public async Task<Result> SubtractUserCartOrderCntFromInventory(Entities.Shop.ShoppingCart.ShoppingCart shoppingCart)
         {
             var result = new Result();
-            var adminUser = _userManager.Users.FirstOrDefault(_ => _.IsDomainAdmin && _.DomainId == shoppingCart.AssociatedDomainId);
+            var adminUser = _userManager.Users.FirstOrDefault(_ => _.Domains.Any( a => a.IsOwner && a.DomainId == shoppingCart.AssociatedDomainId));
             var lanId = _languageContext.Collection
                 .Find(_ => _.Symbol.ToLower() == CultureInfo.CurrentCulture.Name.ToLower()).FirstOrDefault().LanguageId;
             try
@@ -912,7 +920,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             var upDateResult = await _productContext.ProductCollection
                                 .ReplaceOneAsync(_ => _.ProductId == product.ProductId, productEntity);
 
-                            if(productEntity.Inventory.Sum(_=>_.Count) <= productEntity.MinimumCount)
+                            if(productEntity.Inventory != null && productEntity.Inventory.Sum(_=>_.Count) <= productEntity.MinimumCount)
                             {
                                 var productName = productEntity.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
                                     productEntity.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name :
@@ -971,6 +979,22 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             return entity;
         }
 
+        public InventoryDetail FindProductSpecValuesRecord(string productId, List<SpecValue> specValues)
+        {
+            var entity = _productContext.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
+            var inventoryDetail = new InventoryDetail();
+            List<InventoryDetail> lst = entity.Inventory;
+            foreach (var item in specValues)
+            {
+                lst = lst.Where(_ => _.SpecValues.Any(a => a.SpecificationId == item.SpecificationId &&
+                                      a.SpecificationValue == item.SpecificationValue)).ToList();
+            }
+            if (lst.Count > 0) //surely lst have just one
+            {
+                inventoryDetail = lst[0];
+            }
+            return inventoryDetail;
+        }
         public async Task<Result> Reorder(string shoppingCartId)
         {
             var res = new Result();
@@ -1001,14 +1025,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     var inventoryDetail = FindProductSpecValuesRecord(productEntity.ProductId, pro.ProductSpecValues);
                     if (inventoryDetail.Count >= 0)
                     {
+                        
                         shoppingDetail.ProductId = pro.ProductId;
                         shoppingDetail.ProductName = pro.ProductName;
                         shoppingDetail.SellerId = pro.SellerId;
                         shoppingDetail.OrderCount = inventoryDetail.Count >= pro.OrderCount ? pro.OrderCount : inventoryDetail.Count;
-
+                        shoppingDetail.ProductSpecValues = pro.ProductSpecValues;
                         var activePriceValue = GetCurrentPrice(productEntity);
                         var discountPerUnit = await GetCurrentDiscountPerUnit(productEntity, activePriceValue);
-
                         shoppingDetail.PricePerUnit = activePriceValue;
                         shoppingDetail.DiscountPricePerUnit = discountPerUnit.DiscountPerUnit;
                         shoppingDetail.TotalAmountToPay = (activePriceValue - discountPerUnit.DiscountPerUnit) * shoppingDetail.OrderCount;
@@ -1016,7 +1040,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                         purchaseperseller.Products.Add(shoppingDetail);
                         purchaseamnt += shoppingDetail.TotalAmountToPay;
                     }
-                    else //this product doesnt have stock then it cant be added to shoppingCart
+                    else //this product doesnt have inventory then it cant be added to shoppingCart
                         continue;
                 }
                 purchaseperseller.TotalDetailsAmountWithShipping = purchaseamnt;

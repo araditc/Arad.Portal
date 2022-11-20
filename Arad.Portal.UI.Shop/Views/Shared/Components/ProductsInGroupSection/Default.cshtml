@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="available">
                                     <div class="available_line d-flex flex-row justify-content-center">
-                                        <div class="available_title pe-3 me-3"> @Language.GetString("Available") <span>@item.Inventory</span></div>
+                                        <div class="available_title pe-3 me-3"> @Language.GetString("Available") <span>@(item.Inventory != null ? item.Inventory.Sum(_=>_.Count) : 0)</span></div>
                                         <div class="sold_stars m-auto">
                                             @for (int i = 1; i <= item.LikeRate; i++)
                                             {

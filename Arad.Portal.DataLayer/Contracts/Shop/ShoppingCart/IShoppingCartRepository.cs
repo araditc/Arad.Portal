@@ -11,7 +11,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart
 {
     public interface IShoppingCartRepository
     {
-        Task<Result<CartItemsCount>> AddOrChangeProductToUserCart(string productId, int orderCount, List<SpecValue> specValues);
+        Task<Result<CartItemsCount>> AddOrChangeProductToUserCart(string productId, int orderCount, List<SpecValue> specValues, string shoppingCartDetailId = "");
 
         Task<Result> InsertUserShoppingCart(string userId);
 
@@ -19,7 +19,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart
 
         int GetItemCountsInCart(Entities.Shop.ShoppingCart.ShoppingCart entity);
 
-        Task<Result> ChangeProductCountInUserCart(string userId, string productId, int newCount, List<SpecValue> specValues);
+        Task<Result> ChangeProductCountInUserCart(string userId, string productId, int newCount, List<SpecValue> specValues, string shoppingCartDetailId);
 
         Entities.Shop.ShoppingCart.ShoppingCart FetchShoppingCart(string shoppingCartId);
 
@@ -31,7 +31,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart
 
         Task<Result<Entities.Shop.ShoppingCart.ShoppingCart>> FetchUserShoppingCart(string userCartId);
 
-        Task<Result> DeleteProductFromUserShoppingCart(string userId, string productId);
+        Task<Result> DeleteProductFromUserShoppingCart(string userId, string shoppingCartDetailId);
 
         Task<Result> DeleteWholeUserShoppingCart(string userId);
 

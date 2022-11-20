@@ -393,7 +393,7 @@ namespace Arad.Portal.UI.Shop.Helpers
 
             if (!userCollection.Indexes.List().ToList().Any(i => i.GetValue("name").Equals("UserName_1")))
             {
-                var userNameInDomain = Builders<DataLayer.Entities.General.User.ApplicationUser>.IndexKeys.Ascending(_ => _.UserName).Ascending(_ => _.DomainId);
+                var userNameInDomain = Builders<DataLayer.Entities.General.User.ApplicationUser>.IndexKeys.Ascending(_ => _.UserName);
                 uniqueOption.Name = "UserName_1";
                 await userCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.General.User.ApplicationUser>(userNameInDomain, uniqueOption),
                     cancellationToken: cancellationToken);

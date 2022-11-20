@@ -214,6 +214,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                 var filterName = filter["Name"].ToString();
                 long totalCount = await _productContext.ProductUnitCollection.Find(c => true).CountDocumentsAsync();
                 var list = _productContext.ProductUnitCollection.AsQueryable().Where(_=>_.UnitNames.Any( a => a.Name.Contains(filterName))).Skip((page - 1) * pageSize)
+                   .OrderByDescending(_=>_.CreationDate)
                    .Take(pageSize).Select(_ => new ProductUnitViewModel()
                    {
                       ProductUnitId = _.ProductUnitId,

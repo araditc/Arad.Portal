@@ -35,6 +35,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Serilog;
+using AspNetCore.Identity.MongoDbCore.Models;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -143,7 +144,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromForm] LoginDTO model)
         {
-            Log.Fatal("*************First Line of Login**********");
+           
             if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
             {
                 ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIncorrectOrExpired"));
@@ -161,14 +162,13 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             await HttpContext.SignOutAsync();
             model.FullUserName = model.FullUserName.Replace("+", "");
-            Log.Fatal("***********" + model.FullUserName + "*********");
+           
             ApplicationUser user = await _userManager.FindByNameAsync(model.FullUserName.Trim());
-            Log.Fatal("**** whethere user can find by username or not" + user is null ? "True" : "False");
+            
             if(user == null)
             {
-               
                 user = _userManager.Users.FirstOrDefault(_ => _.PhoneNumber == model.FullUserName.Trim());
-                Log.Fatal("**** user is null whether user name can find by phone number or not" + user is null ? "True" : "False");
+                
             }
             if (user != null)
             {
@@ -189,17 +189,26 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             if (!ModelState.IsValid || user == null)
             {
-                Log.Fatal("******* modelstate.isvalid Or user is null " + ModelState.IsValid + "*********" + user is null ? "True" : "False");
                 return View(model);
             }
-
-            Log.Fatal("going to PasswordSignInAsync with password:" + model.Password);
+          
             var res = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
             if(res.Succeeded)
             {
+                //check whether this domain added to userDomains if not added then add
+
+                var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
+                if(!user.Domains.Any(_=>_.DomainId == domainEntity.DomainId))
+                {
+                    user.Domains.Add(new UserDomain()
+                    {
+                        DomainId = domainEntity.DomainId,
+                        DomainName = domainEntity.DomainName,
+                        IsOwner = false
+                    });
+                }
                 Log.Fatal("end of passwordsigninAsync successfully");
             }
-           
             
             user.LastLoginDate = DateTime.Now;
             await _userManager.UpdateAsync(user);
@@ -209,16 +218,16 @@ namespace Arad.Portal.UI.Shop.Controllers
                 return Redirect("/"+model.ReturnUrl);
             }
 
-            //???
-            //if (CultureInfo.CurrentCulture.Name != user.DefaultLanguage)
-            //{
-            //    Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(new(user.DefaultLanguage)), new() { Expires = DateTimeOffset.Now.AddYears(1) });
-            //}
-
-            //TempData["LoginUser"] = string.Format(Language.GetString("AlertAndMessage_WelcomeUser"), user.FullName);
+            
+            if (CultureInfo.CurrentCulture.Name != null)
+            {
+                Response.Cookies
+                    .Append(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(new(CultureInfo.CurrentCulture.Name)), new() { Expires = DateTimeOffset.Now.AddDays(5) });
+            }
             var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
-           
-            return Redirect($"/{lanIcon}");
+
+            // return Redirect($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}:/{lanIcon}");
+            return Redirect("/");
         }
 
         [HttpGet]
@@ -475,11 +484,11 @@ namespace Arad.Portal.UI.Shop.Controllers
             string id = Guid.NewGuid().ToString();
 
             #region Set claim
-            List<IdentityUserClaim<string>> claims = new()
+            List<MongoClaim> claims = new()
             {
-                new() { ClaimType = ClaimTypes.GivenName, ClaimValue = model.FullCellPhoneNumber },
-                new() { ClaimType = "IsActive", ClaimValue = true.ToString() },
-                new() { ClaimType = "IsSystemAccount", ClaimValue = false.ToString() }
+                new() { Type = ClaimTypes.GivenName, Value = model.FullCellPhoneNumber },
+                new() { Type = "IsActive", Value = true.ToString() },
+                new() { Type = "IsSystemAccount", Value = false.ToString() }
             };
             #endregion
 
@@ -489,7 +498,6 @@ namespace Arad.Portal.UI.Shop.Controllers
                 UserName = model.FullCellPhoneNumber,
                 IsSystemAccount = false,
                 Id = id,
-                IsDomainAdmin = false,
                 Profile = new DataLayer.Models.User.Profile() { UserType = UserType.Customer},
                 IsDeleted = false ,
                 CreatorId = id,
@@ -500,10 +508,9 @@ namespace Arad.Portal.UI.Shop.Controllers
                 PhoneNumberConfirmed = true,
                 Modifications = new(),
                 Claims = claims,
-                IsSiteUser = true,
-                DomainId = domainId
+                IsSiteUser = true
             };
-            
+            user.Domains.Add(new() { DomainId = domainId, IsOwner = false, DomainName = DomainName });
             string pass = Helpers.Utilities.GenerateRandomPassword(new() { RequireDigit = true, RequireLowercase = true, 
                 RequireNonAlphanumeric = false, RequireUppercase = true, RequiredLength = 6, RequiredUniqueChars = 0 });
             IdentityResult insertResult = await _userManager.CreateAsync(user, pass);

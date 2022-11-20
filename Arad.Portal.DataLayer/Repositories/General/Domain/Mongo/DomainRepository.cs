@@ -51,7 +51,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 {
 
                     var equallentEntity = _mapper.Map<Entities.General.Domain.Domain>(dto);
-                    equallentEntity.DomainId = Guid.NewGuid().ToString();
+                    //equallentEntity.DomainId = Guid.NewGuid().ToString();
                     foreach (var price in dto.Prices)
                     {
                         //price.PriceId = Guid.NewGuid().ToString();

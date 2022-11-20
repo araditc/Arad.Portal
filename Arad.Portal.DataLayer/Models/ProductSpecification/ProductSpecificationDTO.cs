@@ -29,5 +29,7 @@ namespace Arad.Portal.DataLayer.Models.ProductSpecification
         public ControlType ControlType { get; set; }
 
         public string ModificationReason { get; set; }
+
+        public string AssociatedDomainId { get; set; }
     }
 }

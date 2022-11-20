@@ -352,7 +352,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var langId = filter["LanguageId"].ToString();
                 long totalCount = await _categoryContext.Collection.Find(c => true).CountDocumentsAsync();
-                var list = _categoryContext.Collection.AsQueryable().Skip((page - 1) * pageSize)
+                var list = _categoryContext.Collection.AsQueryable().OrderByDescending(_=>_.CreationDate).Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ContentCategoryViewModel()
                    {
                        ContentCategoryId = _.ContentCategoryId,

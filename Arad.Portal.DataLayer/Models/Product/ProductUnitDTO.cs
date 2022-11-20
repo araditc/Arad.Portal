@@ -18,5 +18,6 @@ namespace Arad.Portal.DataLayer.Models.Product
         public List<MultiLingualProperty> UnitNames { get; set; }
         public string ModificationReason { get; set; }
         public bool IsDeleted { get; set; }
+        public string AssociatedDomainId { get; set; }
     }
 }

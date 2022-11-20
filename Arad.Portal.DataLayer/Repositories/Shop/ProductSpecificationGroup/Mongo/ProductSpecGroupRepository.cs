@@ -186,6 +186,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                 long totalCount = await _productContext.SpecGroupCollection.Find(c => true).CountDocumentsAsync();
                 var list = _productContext.SpecGroupCollection.AsQueryable()
                        .Where(a => a.GroupNames.Any(b => b.Name.Contains(filterName)) && a.GroupNames.Any(a => a.LanguageId == langId)).Skip((page - 1) * pageSize)
+                       .OrderByDescending(_=>_.CreationDate)
                        .Take(pageSize).Select(_ => new SpecificationGroupViewModel()
                        {
                            SpecificationGroupId = _.SpecificationGroupId,

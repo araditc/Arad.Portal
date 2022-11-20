@@ -152,29 +152,17 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
                     totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
                     var lst = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
                       .Take(pageSize).ToList();
-                    //.Select(_ => new ShippingSettingDTO()
-                    //  {
-                    //      ShippingSettingId = _.ShippingSettingId,
-                    //      AssociatedDomainId = _.AssociatedDomainId,
-                    //      DomainName = "",
-                    //      ShippingCoupon = _mapper.Map<ShippingCouponDTO>(_.ShippingCoupon),
-                    //      AllowedShippingTypes = _mapper.Map<List<ShippingTypeDetailDTO>>(_.AllowedShippingTypes)
-                    //  }).ToList();
+                   
                     list = _mapper.Map<List<ShippingSettingDTO>>(lst);
                 }
                 else
                 {
                     totalCount = await _context.Collection
-                        .Find(_ => userEntity.DomainId.Contains(_.AssociatedDomainId)).CountDocumentsAsync();
+                        .Find(_ => userEntity.Domains.Any(a=> a.DomainId == _.AssociatedDomainId)).CountDocumentsAsync();
                     var lst = _context.Collection.AsQueryable()
-                        .Where(_ => userEntity.DomainId.Contains(_.AssociatedDomainId)).Skip((page - 1) * pageSize)
+                        .Where(_ => userEntity.Domains.Any(a => a.DomainId == _.AssociatedDomainId)).Skip((page - 1) * pageSize)
                         .Take(pageSize).ToList();
-                     //_ => new ShippingSettingDTO()
-                     //{
-                     //    ShippingSettingId = _.ShippingSettingId,
-                     //    ShippingCoupon = _mapper.Map<ShippingCouponDTO>(_.ShippingCoupon),
-                     //    AllowedShippingTypes = _mapper.Map<List<ShippingTypeDetailDTO>>(_.AllowedShippingTypes)
-                     //}).ToList();
+                   
                     list = _mapper.Map<List<ShippingSettingDTO>>(lst);
                 }
 

@@ -92,6 +92,6 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public bool IsPublishedOnMainDomain { get; set; }
 
-        public string ModificationReason { get; set; }
+        public string AssociatedDomainId { get; set; }
     }
 }
