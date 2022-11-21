@@ -44,6 +44,9 @@
                             <span data-val-result="AssociatedDomainId" class="text-danger"></span>
                         </div>
                     </div>
+                }else
+                {
+                    <input type="hidden" value="@Model.AssociatedDomainId" asp-for="@Model.AssociatedDomainId" />
                 }
                 <div class="row align-items-center p-2">
                     <div class="form-group col-12 col-md-3">
@@ -195,12 +198,51 @@
                 $("#ControlType").selectpicker("refresh");
 
             }
+
+            $("#AssociatedDomainId").change(function(){
+
+                var langId = $("#languageId").val();
+                var did = $("#AssociatedDomainId").val();
+
+                if (langId != "-1") {
+                    $.ajax({
+                        url: '@Url.Action("GetSpecificationGroupList", "ProductSpecificationGroup")' + "?lid=" + langId + "&did=" + did,
+                        type: 'Get',
+                        dataType: 'json',
+                        success: function (result) {
+                            debugger;
+                            var options = "<option value=''> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                            if (result.status === "success") {
+                                debugger;
+                                if (result.data.length != 0) {
+                                    (result.data).forEach(function (item) {
+                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                        options += op;
+                                    });
+
+                                    $("#SpecificationGroupId").html(options);
+                                    $("#SpecificationGroupId").val('@Model.SpecificationGroupId');
+                                    $("#SpecificationGroupId").selectpicker("refresh");
+                                }
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        }
+                    });
+                }
+
+            });
             $("#languageId").change(function () {
                 debugger;
                 var langId = $("#languageId").val();
+                var did = $("#AssociatedDomainId").val();
+
                 if (langId != "-1") {
                     $.ajax({
-                        url: '@Url.Action("GetSpecificationGroupList", "ProductSpecification")' + "/" + langId,
+                        url: '@Url.Action("GetSpecificationGroupList", "ProductSpecificationGroup")' + "?lid=" + langId + "&did=" + did,
                         type: 'Get',
                         dataType: 'json',
                         success: function (result) {
@@ -240,6 +282,11 @@
 
                 if ($("#multiLingualList tr").length == 0) {
                     $("span[data-val-result='SpecificationNameValues']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
+                    flag = true;
+                }
+                if($("#AssociatedDomainId").val() != "")
+                {
+                    $("span[data-val-result='AssociatedDomainId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
                 }
                 if (!flag) {
@@ -345,10 +392,8 @@
             debugger;
             var obj = {};
             obj.SpecificationNameValues = [];
-            if($("#AssociatedDomainId") != undefined)
-               {
-                   obj.AssociatedDomainId = $("#AssociatedDomainId").val();
-               }
+
+            obj.AssociatedDomainId = $("#AssociatedDomainId").val();
             if ($("#ProductSpecificationId").val() != "")
                 obj.ProductSpecificationId = $("#ProductSpecificationId").val();
 

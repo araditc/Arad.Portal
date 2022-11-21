@@ -35,8 +35,24 @@
 
             <div class="card-body">
                 <input type="hidden" value="@Model.ShippingSettingId" asp-for="ShippingSettingId" />
-                <input type="hidden" value="@Model.AssociatedDomainId" id="hdnAssociatedDomainId" />
+              
 
+                  @if (@ViewBag.IsSysAcc)
+                    {
+                        <div class="row">
+                            <div class="form-group col-12 col-md-3">
+                                <label asp-for="AssociatedDomainId" class="form-label">@Language.GetString("AssociatedDomain")</label>
+                                <select class="form-control selectpicker" data-live-search="true"
+                                    asp-for="@Model.AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text", Model.AssociatedDomainId))">
+                                </select>
+                                <span data-val-result="AssociatedDomainId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <input type="hidden" value="@Model.AssociatedDomainId" asp-for="AssociatedDomainId" />
+                    }
 
                 <div class="row">
                     <div class="form-group col-md-3">
@@ -45,22 +61,7 @@
                         </select>
                         <span data-val-result="currencyId" class="text-danger"></span>
                     </div>
-                    @if (!string.IsNullOrWhiteSpace(Model.DomainName) && !ViewBag.IsSystem)
-                    {
-                        <div class="form-group col-md-3">
-                            <label asp-for="@Model.DomainName">@Language.GetString("DomainName")</label><br />
-                            <input type="text" asp-for="@Model.DomainName" class="form-control" value="@Model.DomainName" disabled />
-                        </div>
-                    }
-
-                    @if (ViewBag.IsSystem)
-                    {
-                        <div class="form-group col-md-3">
-                            <label class="form-label" asp-for="AssociatedDomainId">@Language.GetString("DomainName")</label><br />
-                            <select class="form-control selectpicker" asp-for="AssociatedDomainId" data-live-search="true" asp-items="@(new SelectList(ViewBag.DomainList,"Value","Text", Model.AssociatedDomainId))">
-                            </select>
-                        </div>
-                    }
+                   
                 </div>
 
                 <div class="row mt-2">
@@ -417,12 +418,9 @@
             obj.AllowedShippingTypes = [];
             obj.ShippingCoupon = {};
             obj.ShippingSettingId = $("#ShippingSettingId").val();
-            if ($("#AssociatedDomainId") != undefined) {
-                obj.AssociatedDomainId = $("#AssociatedDomainId").val();
-                obj.DomainName = $("#AssociatedDomainId option:selected").text();
-            } else {
-                obj.AssociatedDomainId = $("#hdnAssociatedDomainId").val();
-            }
+            obj.AssociatedDomainId = $("#AssociatedDomainId").val();
+            obj.DomainName = $("#AssociatedDomainId option:selected").text();
+            
             obj.CurrencyId = $("#CurrencyId").val();
 
             //shipping

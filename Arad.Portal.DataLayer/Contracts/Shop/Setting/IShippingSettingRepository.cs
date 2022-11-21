@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Entities.Shop.Setting;
+﻿using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Entities.Shop.Setting;
 using Arad.Portal.DataLayer.Models.Setting;
 using Arad.Portal.DataLayer.Models.Shared;
 using System;
@@ -11,7 +12,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Setting
 {
     public interface IShippingSettingRepository
     {
-        Task<PagedItems<ShippingSettingDTO>> List(string queryString);
+        Task<PagedItems<ShippingSettingDTO>> List(string queryString, ApplicationUser user);
 
         ShippingSettingDTO FetchById(string shippingSettingId);
 

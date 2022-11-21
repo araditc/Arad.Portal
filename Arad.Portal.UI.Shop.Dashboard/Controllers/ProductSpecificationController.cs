@@ -46,9 +46,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             PagedItems<ProductSpecificationViewModel> result = new PagedItems<ProductSpecificationViewModel>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userDb = await _userManager.FindByIdAsync(currentUserId);
             try
             {
-                result = await _specificationRepository.List(Request.QueryString.ToString());
+                result = await _specificationRepository.List(Request.QueryString.ToString(), userDb);
                 ViewBag.DefLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             }
@@ -65,9 +66,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var userDB = await _userManager.FindByIdAsync(currentUserId);
             if (userDB.IsSystemAccount)
             {
-
                 ViewBag.Domains = _domainRepository.GetAllActiveDomains();
             }
+            model.AssociatedDomainId = userDB.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+           
             ViewBag.IsSysAcc = userDB.IsSystemAccount;
 
             if (!string.IsNullOrWhiteSpace(id))
@@ -76,7 +78,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             var controlTypes = _specificationRepository.GetAllControlTypes();
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
-            var groupList = _groupRepository.AllActiveSpecificationGroup(lan.LanguageId);
+            var groupList = await _groupRepository.AllActiveSpecificationGroup(lan.LanguageId, currentUserId, "");
             groupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value =""  });
             ViewBag.SpecificationGroupList = groupList;
             ViewBag.LangId = lan.LanguageId;
@@ -89,30 +91,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         /// </summary>
         /// <param name="id">is stands for languageId</param>
         /// <returns></returns>
+
         [HttpGet]
-        public IActionResult GetSpecificationGroupList(string id)
+        public async Task<IActionResult> GetSpecificationInGroupAndLang(string groupId, string langId, string domainId)
         {
             JsonResult result;
             List<SelectListModel> lst;
-            lst = _groupRepository.AllActiveSpecificationGroup(id).OrderBy(_ => _.Text).ToList();
-            if (lst.Count() > 0)
-            {
-                result = new JsonResult(new { Status = "success", Data = lst });
-            }
-            else
-            {
-                result = new JsonResult(new { Status = "error", Message = "" });
-            }
-            return result;
-
-        }
-
-        [HttpGet]
-        public IActionResult GetSpecificationInGroupAndLang(string groupId, string langId)
-        {
-            JsonResult result;
-            List<SelectListModel> lst;
-            lst = _specificationRepository.GetSpecInGroupAndLanguage(groupId, langId)
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            lst = (await _specificationRepository.GetSpecInGroupAndLanguage(groupId, langId, currentUserId, domainId))
                 .OrderBy(_ => _.Text).ToList();
             if (lst.Count() > 0)
             {

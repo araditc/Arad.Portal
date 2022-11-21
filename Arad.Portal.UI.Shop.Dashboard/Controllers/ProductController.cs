@@ -94,8 +94,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 var domainId = User.GetClaimValue("RelatedDomain");
                 var domainEntity = _domainRepository.FetchDomain(domainId);
-                result = await _productRepository.List(Request.QueryString.ToString());
                 var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userDb = await _userManager.FindByIdAsync(currentUserId);
+                result = await _productRepository.List(Request.QueryString.ToString(), userDb);
+                
                 var languageEntity = _lanRepository.GetDefaultLanguage(currentUserId);
                 var defLangId = languageEntity.LanguageId;
                 ViewBag.DefLangId = defLangId;
@@ -111,7 +113,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 //ViewBag.ShopUrl = scheme + "://" + domainEntity.ReturnValue.DomainName+"/"+ langSymbol;
                 
                 ViewBag.ShopUrl = scheme + "://" + HttpContext.Request.Host + "/" + langSymbol;
-                var unitList = _unitRepository.GetAllActiveProductUnit(defLangId);
+                var unitList = await _unitRepository.GetAllActiveProductUnit(defLangId, currentUserId, "");
                 ViewBag.ProductUnitList = unitList;
             }
             catch (Exception)
@@ -122,7 +124,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         public async Task<IActionResult> AddEdit(string id = "")
         {
-            
+            var model = new ProductOutputDTO();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userDB = await _userManager.FindByIdAsync(currentUserId);
             if (userDB.IsSystemAccount)
@@ -140,8 +142,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 ViewBag.Vendors = "-1";
             }
+
+            model.AssociatedDomainId = userDB.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
             ViewBag.IsSysAcc = userDB.IsSystemAccount;
             ViewBag.ActivePromotionId = "-1";
+
 
             var fileShown = _configuration["LocalStaticFileShown"];
             ViewBag.Url = fileShown;
@@ -153,7 +158,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.ImageRatio = imageRatioList;
 
 
-            var model = new ProductOutputDTO();
+           
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = await _productRepository.ProductFetch(id);
@@ -174,7 +179,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
 
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
-            var specGroupList = _specGroupRepository.AllActiveSpecificationGroup(lan.LanguageId);
+            var specGroupList = await _specGroupRepository.AllActiveSpecificationGroup(lan.LanguageId, currentUserId, "");
             specGroupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.SpecificationGroupList = specGroupList;
 
@@ -189,7 +194,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.LangId = lan.LanguageId;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
 
-            var unitList = _unitRepository.GetAllActiveProductUnit(lan.LanguageId);
+            var unitList = await _unitRepository.GetAllActiveProductUnit(lan.LanguageId, currentUserId, "");
             unitList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.ProductUnitList = unitList;
 
@@ -255,7 +260,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 if (_productRepository.IsCodeUnique(dto.UniqueCode))
                 {
-
+                    
                     foreach (var item in dto.MultiLingualProperties)
                     {
                         var lan = _lanRepository.FetchLanguage(item.LanguageId);

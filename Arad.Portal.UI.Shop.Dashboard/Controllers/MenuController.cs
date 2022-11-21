@@ -63,30 +63,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             PagedItems<MenuDTO> result = new PagedItems<MenuDTO>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            //var userEntity = await _userManager.FindByIdAsync(currentUserId);
-            //ViewBag.IsSys = userEntity.IsSystemAccount;
-            
-          
-            var domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
-            var res = _domainRepository.FetchByName(domainName, true);
-            var domainId = res.Succeeded ? res.ReturnValue.DomainId : Guid.Empty.ToString();
+            var userEntity = await _userManager.FindByIdAsync(currentUserId);
            
             try
             {
-                var qs = Request.QueryString.ToString();
-                if(!string.IsNullOrWhiteSpace(qs) && !qs.Contains("domainId"))
-                {
-                    qs += $"&domainId={domainId}";
-                }else if(!qs.Contains("domainId"))
-                {
-                    qs = $"?domainId={domainId}";
-                }
                 var deflang = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
                 ViewBag.DefLangId = deflang;
                 //if user is systemaccount show all active menu for all domains otherwise it only shows the menu of current domain
                 ViewBag.MenuList = await _menuRepository.AllActiveMenues(domainId, deflang);
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
-                result = await _menuRepository.AdminList(qs);
+                result = await _menuRepository.AdminList(Request.QueryString.ToString(), userEntity);
             }
             catch (Exception ex)
             {
@@ -103,17 +89,19 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userEntity = await _userManager.FindByIdAsync(currentUserId);
-            ViewBag.IsSys = userEntity.IsSystemAccount;
+            ViewBag.IsSysAcc = userEntity.IsSystemAccount;
 
             if (userEntity.IsSystemAccount)
             {
                 var domainList = _domainRepository.GetAllActiveDomains();
                 ViewBag.DomainList = domainList;
             }
+            model.AssociatedDomainId = userEntity.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             ViewBag.DefLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
             ViewBag.ProductGroupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
-            ViewBag.ContentCategoryList = await _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId, currentUserId);
+            ViewBag.ContentCategoryList = await _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId, currentUserId, "");
             ViewBag.Menues = await  _menuRepository.AllActiveMenues(domainId, lan.LanguageId);
             ViewBag.MenuTypes = _menuRepository.GetAllMenuType();
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();

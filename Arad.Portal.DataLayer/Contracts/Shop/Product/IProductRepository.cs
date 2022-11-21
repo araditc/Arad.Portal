@@ -19,7 +19,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 {
     public interface IProductRepository
     {
-        Task<PagedItems<ProductViewModel>> List(string queryString);
+        Task<PagedItems<ProductViewModel>> List(string queryString, ApplicationUser user);
         Task<Result<string>> Add(ProductInputDTO dto);
         Task<Result> InsertDownloadLimitation(string shoppingCartDetailId, string productId, string userId, string domainId);
         long GetProductCode(string productId);

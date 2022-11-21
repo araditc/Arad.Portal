@@ -75,17 +75,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 equallentModel.IsActive = true;
                 equallentModel.ContentId = Guid.NewGuid().ToString();
 
-
-              
-                //Filter specific claim    
-                var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
-              
-                if (domainId == null)
-                {
-                    domainId = _domainContext.Collection.Find(_ => _.IsDefault == true).FirstOrDefault().DomainId;
-                }
-                equallentModel.AssociatedDomainId = domainId;
-
                 await _contentContext.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
                 result.ReturnValue = equallentModel.ContentId;
@@ -310,7 +299,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             return result;
         }
 
-        public async Task<PagedItems<ContentViewModel>> List(string queryString)
+        public async Task<PagedItems<ContentViewModel>> List(string queryString, ApplicationUser user)
         {
             PagedItems<ContentViewModel> result = new PagedItems<ContentViewModel>();
             try
@@ -334,9 +323,23 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 var langId = filter["LanguageId"].ToString();
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
+                long totalCount = 0;
+                string domainId = "";
+                IQueryable<Entities.General.Content.Content> totalList = null;
 
-                long totalCount = await _contentContext.Collection.Find(_=>!_.IsDeleted).CountDocumentsAsync();
-                var totalList = _contentContext.Collection.AsQueryable().Where(_=>!_.IsDeleted);
+                if(user.IsSystemAccount)
+                {
+                    totalCount = await _contentContext.Collection.Find(_ => true).CountDocumentsAsync();
+                    totalList = _contentContext.Collection.AsQueryable();
+                }
+                else
+                {
+                    domainId = user.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+                    totalCount = await _contentContext.Collection.Find(_=> _.AssociatedDomainId == domainId).CountDocumentsAsync();
+                    totalList = _contentContext.Collection.AsQueryable().Where(_ => _.AssociatedDomainId == domainId);
+                }
+                   
+               
                 if (!string.IsNullOrWhiteSpace(filter["catId"]))
                 {
                     totalList = totalList.Where(_ => _.ContentCategoryId == filter["catId"]);

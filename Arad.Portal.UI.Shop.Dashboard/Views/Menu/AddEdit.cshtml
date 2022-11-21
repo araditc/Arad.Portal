@@ -30,15 +30,18 @@
                 <div class="card-body">
                     <input type="hidden" value="@Model.MenuId" asp-for="MenuId" />
                       <div class="row">
-                        @if(ViewBag.IsSys)
+                        @if(ViewBag.IsSysAcc)
                         {
                             <div class="form-group col-12 col-md-3">
-                                <label class="form-label" >@Language.GetString("AssociatedDomain")</label>
-                                <select class="form-control selectpicker"  id="AssociatedDomainId"
+                                <label asp-for="AssociatedDomainId" class="form-label" >@Language.GetString("AssociatedDomain")</label>
+                                <select class="form-control selectpicker"  asp-for="AssociatedDomainId"
                                     asp-items="@(new SelectList(ViewBag.DomainList,"Value","Text"))" data-live-search="true">
                                     </select>
                                 <span data-val-result="AssociatedDomainId" class="text-danger"></span>
                             </div>
+                        }else
+                        {
+                            <input type="hidden" value="@Model.AssociatedDomainId" asp-for="AssociatedDomainId" />
                         }
                         <div class="form-group col-12 col-md-3">
                             <label class="form-label">@Language.GetString("Order")</label>
@@ -275,7 +278,7 @@
                      $("span[data-val-result='Url']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
                 }
-                if("@ViewBag.IsSys" == "True" && $("#AssociatedDomainId").val() == "-1")
+                if("@ViewBag.IsSysAcc" == "True" && $("#AssociatedDomainId").val() == "")
                 {
                     $("span[data-val-result='AssociatedDomainId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
@@ -487,15 +490,9 @@
                 obj.ParentId = $("#ParentId").val();
                 obj.ParentName = $("#ParentId option:selected").text();
             }
-
-            if("@ViewBag.IsSys" == "True")
-            {
-                obj.AssociatedDomainId = $("#AssociatedDomainId").val();
-            }
-
-            //if ($("#ModificationReason").length > 0) {
-            //    obj.ModificationReason = $("#ModificationReason").val();
-            //}
+           obj.AssociatedDomainId = $("#AssociatedDomainId").val();
+          
+          
             $("#multiLingualList tr").each(function ()
             {
                 debugger;

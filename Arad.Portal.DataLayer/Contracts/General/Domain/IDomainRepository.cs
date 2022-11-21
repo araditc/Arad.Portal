@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Arad.Portal.DataLayer.Models.Domain;
 using Arad.Portal.DataLayer.Entities.General.Email;
+using Arad.Portal.DataLayer.Entities.General.User;
 
 namespace Arad.Portal.DataLayer.Contracts.General.Domain
 {
@@ -14,7 +15,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
         Task<Result> AddDomain(DomainDTO dto);
         Task<Result> EditDomain(DomainDTO dto);
         Task<Result> DomainChangePrice(DomainPrice dto);
-        Task<PagedItems<DomainViewModel>> AllDomainList(string queryString);
+        Task<PagedItems<DomainViewModel>> AllDomainList(string queryString, ApplicationUser user);
         Task<Result> DeleteDomain(string domainId, string modificationReason);
         Result<DomainDTO> FetchDomain(string domainId);
         Result<DomainDTO> FetchByName(string domainName, bool isDef);

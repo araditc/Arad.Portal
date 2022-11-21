@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.DesignStructure;
+using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Content;
 using Arad.Portal.DataLayer.Models.DesignStructure;
 using Arad.Portal.DataLayer.Models.Shared;
@@ -13,7 +14,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
     public interface IContentRepository
     {
         Task<Result<string>> Add(ContentDTO dto);
-        Task<PagedItems<ContentViewModel>> List(string queryString);
+        Task<PagedItems<ContentViewModel>> List(string queryString, ApplicationUser user);
         List<ContentGlance> GetSpecialContent(int count, ProductOrContentType contentType, SelectionType selectionType, string categoryId, List<string> selectedIds = null, bool isDevelopment = false);
         List<ContentGlance> GetContentInCategory(int count, ProductOrContentType contentType, string contentCategoryId, bool isDevelopment = false);
         Task<ContentDTO> ContentFetch(string contentId);

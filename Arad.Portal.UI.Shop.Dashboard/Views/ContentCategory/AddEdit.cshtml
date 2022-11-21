@@ -24,6 +24,24 @@
 
             <div class="card-body" id="addContentCategoryCardBody">
                 <input type="hidden" value="@Model.ContentCategoryId" asp-for="ContentCategoryId" />
+
+                @if (@ViewBag.IsSysAcc)
+                {
+                    <div class="row">
+                        <div class="form-group col-12 col-md-3">
+                            <label asp-for="AssociatedDomainId" class="form-label">@Language.GetString("AssociatedDomain")</label>
+                            <select class="form-control selectpicker" data-live-search="true"
+                                asp-for="@Model.AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text", Model.AssociatedDomainId))">
+                            </select>
+                            <span data-val-result="AssociatedDomainId" class="text-danger"></span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" value="@Model.AssociatedDomainId" asp-for="AssociatedDomainId" />
+                }
+
                 <div class="row">
                     <div class="form-group col-12 col-md-3">
                         <label class="form-label" asp-for="@Model.ParentCategoryId">@Language.GetString("ParentGroup")</label>
@@ -129,10 +147,44 @@
         $(document).ready(function () {
           
             $("#languageId").val('@ViewBag.LangId');
-            if ("@Model.ContentCategoryId" != "" && "@Model.ParentCategoryId" != "") {
+            if ("@Model.ContentCategoryId" != "" && "@Model.ParentCategoryId" != "")
+            {
                 $("#ParentCategoryId").val("@Model.ParentCategoryId");
                 $("#ParentCategoryId").selectpicker("refresh");
             }
+
+            $("#AssociatedDomainId").change(function(){
+                var domainId = $(this).val();
+                var langId = $("#languageId").val();
+
+                $.ajax({
+                    url: `@Url.Action("GetContentCategoryList", "ContentCategory")?lid=${langId}&did=${domainId}`,
+                    type: 'Get',
+                    dataType: 'json',
+                    success: function (result) {
+                        debugger;
+                        var options = "";
+                        if (result.status === "success") {
+                            debugger;
+                            if (result.data.length != 0) {
+                                (result.data).forEach(function (item) {
+                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                    options += op;
+                                });
+
+                                $("#ParentCategoryId").html(options);
+                                //$("#ParentCategoryId").val('@Model.ParentCategoryId');
+                                $("#ParentCategoryId").selectpicker("refresh");
+                            }
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+            })
 
             $("#btnAddContentCategory").click(function () {
                 debugger;
@@ -142,17 +194,21 @@
                     $("span[data-val-result='MultiLingualProperties']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
                 }
-                if (!flag) {
+                if($("#AssociatedDomainId").val() == "")
+                {
+                    $("span[data-val-result='AssociatedDomainId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
+                if (!flag) 
+                {
 
                 var dto = FillDataToSend();
                     $.ajax({
-                        url: "@Model.ContentCategoryId" != "" ? '@Url.Action("Edit","ContentCategory")' : @Url.Action("Add","ContentCategory"),
+                        url: "@Model.ContentCategoryId" != "" ? '@Url.Action("Edit","ContentCategory")' : '@Url.Action("Add","ContentCategory")',
                         contentType: 'application/json',
                         data: JSON.stringify(dto),
                     type: 'Post',
                     beforeSend: function () {
-                        debugger;
-                       /* AddLoading($("#addContentCategoryCardBody"));*/
                     },
                     success: function (result) {
                         debugger;
@@ -218,6 +274,7 @@
             debugger;
             var obj = {};
             obj.CategoryNames = [];
+            obj.AssociatedDomainId = $("#AssociatedDomainId").val();
             obj.ContentCategoryId = $("#ContentCategoryId").val();
             if ($("#ParentCategoryId").val() != "-1") {
                 obj.ParentCategoryId = $("#ParentCategoryId").val();
@@ -256,7 +313,9 @@
                     $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
                     flag = true;
                 }
-                var urlFriend = $("#urlFriend").val();
+                var arr = $("#urlFriend").val().split(" ");
+                var urlFriend = arr.join("-");
+
                 var catId = '@Model.ContentCategoryId' == '' ? "" : '@Model.ContentCategoryId';
                 if (!flag) {
                     $.ajax({
@@ -270,7 +329,7 @@
                                    var urlFriend ="";
                                     if($("#urlFriend").val() != "")
                                     {
-                                        urlFriend = "/category/"+ $("#urlFriend").val();
+                                        urlFriend = "/category/" + arr.join("-");
                                     }
                                    var tr = "<tr style='text-align:center;'><td>" + $("#categoryName").val() +
                                         "</td><td>" + $('#languageId option:selected').text() +

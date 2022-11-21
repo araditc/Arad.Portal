@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.Content;
+﻿using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Models.Content;
 using Arad.Portal.DataLayer.Models.ContentCategory;
 using Arad.Portal.DataLayer.Models.ProductSpecificationGroup;
 using Arad.Portal.DataLayer.Models.Shared;
@@ -12,9 +13,9 @@ namespace Arad.Portal.DataLayer.Contracts.General.ContentCategory
 {
     public interface IContentCategoryRepository 
     {
-        Task<PagedItems<ContentCategoryViewModel>> List(string queryString);
+        Task<PagedItems<ContentCategoryViewModel>> List(string queryString, ApplicationUser user);
 
-        Task<List<SelectListModel>> AllActiveContentCategory(string langId, string currentUserId);
+        Task<List<SelectListModel>> AllActiveContentCategory(string langId, string currentUserId, string domainId = "");
 
         Task<Result> Add(ContentCategoryDTO dto);
 

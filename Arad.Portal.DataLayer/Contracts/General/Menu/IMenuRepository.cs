@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.Menu;
+﻿using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Models.Menu;
 using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Menu
         Task<List<SelectListModel>> AllActiveMenues(string domainId, string langId);
 
         List<SelectListModel> MenuesOfSelectedDomain(string domainId, string langId);
-        Task<PagedItems<MenuDTO>> AdminList(string queryString);
+        Task<PagedItems<MenuDTO>> AdminList(string queryString, ApplicationUser user);
          Task<Result> DeleteMenu(string menuId);
          Result<MenuDTO> FetchMenu(string menuId);
          List<SelectListModel> GetAllMenuType();

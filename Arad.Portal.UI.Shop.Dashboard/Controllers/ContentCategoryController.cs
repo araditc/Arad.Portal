@@ -1,12 +1,15 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.Language;
+using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.ContentCategory;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.UI.Shop.Dashboard.Authorization;
 using Arad.Portal.UI.Shop.Dashboard.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,14 +25,20 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IContentCategoryRepository _contentCategoryRepository;
         private readonly ILanguageRepository _lanRepository;
         private readonly CodeGenerator _codeGenerator;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IDomainRepository _domainRepository;
        
         public ContentCategoryController(IContentCategoryRepository contentCategoryRepository,
             CodeGenerator codeGenerator,
+            IDomainRepository domainRepository,
+            UserManager<ApplicationUser> userManager,
             ILanguageRepository lanRepository)
         {
             _contentCategoryRepository = contentCategoryRepository;
             _lanRepository = lanRepository;
             _codeGenerator = codeGenerator;
+            _userManager = userManager;
+            _domainRepository = domainRepository;
         }
 
         [HttpGet]
@@ -37,9 +46,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             PagedItems<ContentCategoryViewModel> result = new PagedItems<ContentCategoryViewModel>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userDb = await _userManager.FindByIdAsync(currentUserId);
             try
             {
-                result = await _contentCategoryRepository.List(Request.QueryString.ToString());
+                result = await _contentCategoryRepository.List(Request.QueryString.ToString(), userDb);
                 ViewBag.DefLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             }
@@ -62,22 +72,34 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> AddEdit(string id = "")
         {
             var model = new ContentCategoryDTO();
+
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userDB = await _userManager.FindByIdAsync(currentUserId);
+            if (userDB.IsSystemAccount)
+            {
+                ViewBag.Domains = _domainRepository.GetAllActiveDomains();
+            }
+           
+            model.AssociatedDomainId = userDB.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+           
+            ViewBag.IsSysAcc = userDB.IsSystemAccount;
+            var lan = _lanRepository.GetDefaultLanguage(currentUserId);
+            ViewBag.LangId = lan.LanguageId;
+
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = await _contentCategoryRepository.ContentCategoryFetch(id);
-            }else
+            }
+            else
             {
                 model.CategoryCode = _codeGenerator.GetNewId();
             }
-            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var lan = _lanRepository.GetDefaultLanguage(currentUserId);
-            ViewBag.LangId = lan.LanguageId;
-            var categoryList = await _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId, currentUserId);
-            //categoryList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
+            var categoryList = await _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId, currentUserId, model.AssociatedDomainId);
+            categoryList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             ViewBag.CategoryList = categoryList;
-             var lst =  _contentCategoryRepository.GetAllContentCategoryType();
-            //lst.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
+            var lst =  _contentCategoryRepository.GetAllContentCategoryType();
+
+         
             ViewBag.CategoryTypes = lst;
           
 
@@ -87,15 +109,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id">id stands for langId</param>
+        /// <param name="lid">languageId</param>
+        /// <param name="did">domainId</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetContentCategoryList(string id)
+        public async Task<IActionResult> GetContentCategoryList(string lid,string did)
         {
             JsonResult result;
             List<SelectListModel> lst;
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            lst = await _contentCategoryRepository.AllActiveContentCategory(id, currentUserId);
+            lst = await _contentCategoryRepository.AllActiveContentCategory(lid, currentUserId, did);
             if (lst.Count() > 0)
             {
                 result = new JsonResult(new { Status = "success", Data = lst.OrderBy(_=>_.Text) });

@@ -98,9 +98,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             PagedItems<DomainViewModel> result = new PagedItems<DomainViewModel>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userDb = await _userManager.FindByIdAsync(currentUserId);
             try
             {
-                result = await _domainRepository.AllDomainList(Request.QueryString.ToString());
+                result = await _domainRepository.AllDomainList(Request.QueryString.ToString(), userDb);
                 ViewBag.DefLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             }
@@ -449,11 +450,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> GetSpecificModule(string moduleName, string id, int colCount, string rn, string cn, string sec, string langId)
         {
             var module = _moduleRepository.FetchModuleByName(moduleName);
-            //??? testing
-            //id = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004";
 
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            
+            var userDb = await _userManager.FindByIdAsync(currentUserId);
+
             var viewName = $"_{moduleName}.cshtml";
             var imageTemplatePath = _webHostEnvironment.WebRootPath;
             var productOrContentTypes = _moduleRepository.GetAllProductOrContentTypes();
@@ -496,7 +496,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     ViewBag.TransactionType = _moduleRepository.GetAllTransactionType();
                     ViewBag.LoadAnimationType = _moduleRepository.GetAllLoadAnimationType();
                     ViewBag.SelectionType = _moduleRepository.GetAllSelectionType();
-                    ViewBag.CategoryList = await _categoryRepository.AllActiveContentCategory(langId, currentUserId);
+                    ViewBag.CategoryList = await _categoryRepository.AllActiveContentCategory(langId, currentUserId, userDb.Domains.FirstOrDefault(_=>_.IsOwner).DomainId);
                     ViewBag.ContentList = _contentRepository.GetContentsList(id, currentUserId, "");
                     break;
                 case "imagetextslider":
@@ -770,6 +770,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var imageTemplatePath = _webHostEnvironment.WebRootPath;
             var domainEntity = _domainRepository.FetchDomain(obj.DomainId).ReturnValue;
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userDb = await _userManager.FindByIdAsync(currentUserId);
             var viewName = "";
             switch(obj.Count)
             {
@@ -819,10 +820,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             ViewBag.ContentTemplateList = contentTemplateDesigns;
             ViewBag.SelectionType = _moduleRepository.GetAllSelectionType();
-            ViewBag.CategoryList = await _categoryRepository.AllActiveContentCategory(domainEntity.DefaultLanguageId, currentUserId);
+            ViewBag.CategoryList = await _categoryRepository.AllActiveContentCategory(domainEntity.DefaultLanguageId, currentUserId, userDb.Domains.FirstOrDefault(_=>_.IsOwner).DomainId);
             ViewBag.ContentList = _contentRepository.GetContentsList(obj.DomainId, currentUserId, "");
-            //??? testing
-            //obj.DomainId = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004";
+            
             ViewBag.SliderList = _sliderRepository.ActiveSliderList(obj.DomainId);
             ViewBag.ColWidth = obj.ColumnWidth;
             ViewBag.RowNumber = obj.RowNumber;

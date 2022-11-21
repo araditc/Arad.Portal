@@ -19,6 +19,8 @@ using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 using Arad.Portal.DataLayer.Entities.Shop.ProductSpecificationGroup;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mongo
 {
@@ -27,15 +29,17 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
         private readonly IMapper _mapper;
         private readonly ProductContext _productContext;
         private readonly LanguageContext _languageContext;
+        private readonly UserManager<ApplicationUser> _userManager;
         
         public ProductSpecGroupRepository(IHttpContextAccessor httpContextAccessor,
-            IWebHostEnvironment env,
+            IWebHostEnvironment env,UserManager<ApplicationUser> userManager,
             IMapper mapper, ProductContext productContext, LanguageContext langContext)
             : base(httpContextAccessor, env)
         {
             _mapper = mapper;
             _productContext = productContext;
             _languageContext = langContext;
+            _userManager = userManager;
         }
 
         public async Task<Result> Add(SpecificationGroupDTO dto)
@@ -63,16 +67,32 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             return result;
         }
 
-        public List<SelectListModel> AllActiveSpecificationGroup(string langId)
+        public async Task<List<SelectListModel>> AllActiveSpecificationGroup(string langId, string currentUserId, string domainId = "")
         {
             var result = new List<SelectListModel>();
-            result = _productContext.SpecGroupCollection.Find(_=>_.IsActive)
-                .Project(_=> new SelectListModel()
+            var userDb = await _userManager.FindByIdAsync(currentUserId);
+
+            if(userDb.IsSystemAccount && string.IsNullOrWhiteSpace(domainId))
+            {
+                result = _productContext.SpecGroupCollection.Find(_ => _.IsActive && !_.IsDeleted)
+                .Project(_ => new SelectListModel()
                 {
                     Text = _.GroupNames.Where(a => a.LanguageId == langId).Count() != 0 ?
                          _.GroupNames.FirstOrDefault(a => a.LanguageId == langId).Name : "",
                     Value = _.SpecificationGroupId
                 }).ToList();
+            }else
+            {
+                result = _productContext.SpecGroupCollection.AsQueryable()
+                .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == (!string.IsNullOrWhiteSpace(domainId) ? domainId : userDb.Domains.FirstOrDefault(a=> a.IsOwner).DomainId))
+                .Select(_ => new SelectListModel()
+                {
+                    Text = _.GroupNames.Where(a => a.LanguageId == langId).Count() != 0 ?
+                         _.GroupNames.FirstOrDefault(a => a.LanguageId == langId).Name : "",
+                    Value = _.SpecificationGroupId
+                }).ToList();
+            }
+            
             return result;
         }
 
@@ -153,7 +173,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             return result;
         }
 
-        public async Task<PagedItems<SpecificationGroupViewModel>> List(string queryString)
+        public async Task<PagedItems<SpecificationGroupViewModel>> List(string queryString, ApplicationUser user)
         {
             PagedItems<SpecificationGroupViewModel> result = new PagedItems<SpecificationGroupViewModel>();
             try
@@ -182,10 +202,21 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var langId = filter["LanguageId"].ToString();
                 var filterName = filter["Name"].ToString();
-
-                long totalCount = await _productContext.SpecGroupCollection.Find(c => true).CountDocumentsAsync();
+                long totalCount = 0;
+                string domainId = "";
+                if(user.IsSystemAccount)
+                {
+                    totalCount = await _productContext.SpecGroupCollection.Find(c => true).CountDocumentsAsync();
+                }else
+                {
+                    domainId = user.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+                    totalCount = await _productContext.SpecGroupCollection.Find(_=>_.AssociatedDomainId == domainId).CountDocumentsAsync();
+                }
+                 
                 var list = _productContext.SpecGroupCollection.AsQueryable()
-                       .Where(a => a.GroupNames.Any(b => b.Name.Contains(filterName)) && a.GroupNames.Any(a => a.LanguageId == langId)).Skip((page - 1) * pageSize)
+                       .Where(a => a.GroupNames.Any(b => b.Name.Contains(filterName)) 
+                                && a.GroupNames.Any(a => a.LanguageId == langId) 
+                                && (domainId == "" || a.AssociatedDomainId == domainId)).Skip((page - 1) * pageSize)
                        .OrderByDescending(_=>_.CreationDate)
                        .Take(pageSize).Select(_ => new SpecificationGroupViewModel()
                        {
@@ -256,6 +287,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                 currentModifications.Add(mod);
                 #endregion
                 availableEntity.Modifications = currentModifications;
+
                 if (dto.IsDeleted)
                 {
                     availableEntity.IsDeleted = true;

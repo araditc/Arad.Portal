@@ -17,22 +17,25 @@ using System.Web;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Entities.Shop.ProductSpecification;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
 {
     public class ProductSpecificationRepository : BaseRepository, IProductSpecificationRepository
     {
         private readonly IMapper _mapper;
-      
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ProductContext _productContext;
         private readonly LanguageContext _languageContext;
        
         public ProductSpecificationRepository(IHttpContextAccessor httpContextAccessor,
-            IMapper mapper, 
+            IMapper mapper, UserManager<ApplicationUser> userManager,
             IWebHostEnvironment env,
             ProductContext productContext, LanguageContext languageContext): base(httpContextAccessor, env)
         {
             _mapper = mapper;
+            _userManager = userManager;
             _productContext = productContext;
             _languageContext = languageContext;     
         }
@@ -189,7 +192,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             return result;
         }
 
-        public async Task<PagedItems<ProductSpecificationViewModel>> List(string queryString)
+        public async Task<PagedItems<ProductSpecificationViewModel>> List(string queryString, ApplicationUser user)
         {
             PagedItems<ProductSpecificationViewModel> result = new PagedItems<ProductSpecificationViewModel>();
             try
@@ -219,11 +222,23 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var langId = filter["LanguageId"].ToString();
                 var filterName = filter["Name"].ToString();
-
-
-                long totalCount = await _productContext.SpecificationCollection.Find(c => true).CountDocumentsAsync();
+                long totalCount = 0;
+                string domainId = "";
+               
+                if(user.IsSystemAccount)
+                {
+                    totalCount = await _productContext.SpecificationCollection.Find(c => true).CountDocumentsAsync();
+                }else
+                {
+                    domainId = user.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+                    totalCount = await _productContext.SpecificationCollection.Find(_=>_.AssociatedDomainId == domainId).CountDocumentsAsync();
+                }
+                
                 var list = _productContext.SpecificationCollection.AsQueryable()
-                    .Where(_ => _.SpecificationNameValues.Any(a => a.Name.Contains(filterName)) && _.SpecificationNameValues.Any(a => a.LanguageId == langId)).Skip((page - 1) * pageSize)
+                    .Where(_ => 
+                        _.SpecificationNameValues.Any(a => a.Name.Contains(filterName)) 
+                     && _.SpecificationNameValues.Any(a => a.LanguageId == langId) 
+                     && (domainId == "" || _.AssociatedDomainId == domainId)).Skip((page - 1) * pageSize)
                     .OrderByDescending(_=>_.CreationDate)
                    .Take(pageSize).Select(_ => new ProductSpecificationViewModel()
                    {
@@ -271,6 +286,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                 availableEntity.Modifications = currentModifications;
                 availableEntity.SpecificationGroupId = dto.SpecificationGroupId;
                 availableEntity.SpecificationNameValues = dto.SpecificationNameValues;
+                availableEntity.ControlType = dto.ControlType;
 
               
                 var updateResult = await _productContext.SpecificationCollection
@@ -319,16 +335,32 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             return result;
         }
 
-        public List<SelectListModel> GetSpecInGroupAndLanguage(string specificationGroupId, string languageId)
+        public async Task<List<SelectListModel>> GetSpecInGroupAndLanguage(string specificationGroupId, string languageId, string currentUserId, string domainId="")
         {
             var result = new List<SelectListModel>();
-            result = _productContext.SpecificationCollection.Find(_ => _.SpecificationGroupId == specificationGroupId)
-                .Project(_ => new SelectListModel()
-                {
-                    Text = _.SpecificationNameValues.Where(a => a.LanguageId == languageId).Count() != 0 ?
-                         _.SpecificationNameValues.FirstOrDefault(a => a.LanguageId == languageId).Name : "",
-                    Value = _.ProductSpecificationId
-                }).ToList();
+            var userDb = await _userManager.FindByIdAsync(currentUserId);
+
+            if(userDb.IsSystemAccount &&  string.IsNullOrWhiteSpace(domainId))
+            {
+                result = _productContext.SpecificationCollection.Find(_ => _.SpecificationGroupId == specificationGroupId && _.IsActive && !_.IsDeleted)
+               .Project(_ => new SelectListModel()
+               {
+                   Text = _.SpecificationNameValues.Where(a => a.LanguageId == languageId).Count() != 0 ?
+                        _.SpecificationNameValues.FirstOrDefault(a => a.LanguageId == languageId).Name : "",
+                   Value = _.ProductSpecificationId
+               }).ToList();
+            }else
+            {
+                result = _productContext.SpecificationCollection.AsQueryable().Where(_ => _.SpecificationGroupId == specificationGroupId && _.IsActive && !_.IsDeleted &&
+                 _.AssociatedDomainId == (!string.IsNullOrWhiteSpace(domainId) ? domainId : userDb.Domains.FirstOrDefault(a=> a.IsOwner).DomainId))
+               .Select(_ => new SelectListModel()
+               {
+                   Text = _.SpecificationNameValues.Where(a => a.LanguageId == languageId).Count() != 0 ?
+                        _.SpecificationNameValues.FirstOrDefault(a => a.LanguageId == languageId).Name : "",
+                   Value = _.ProductSpecificationId
+               }).ToList();
+            }
+           
             return result;
         }
 

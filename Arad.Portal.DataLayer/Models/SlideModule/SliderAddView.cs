@@ -13,5 +13,7 @@ namespace Arad.Portal.DataLayer.Models.SlideModule
         public string Title { get; set; }
 
         public bool IsActive { get; set; }
+
+        public string AssociatedDomainId { get; set; }
     }
 }

@@ -611,8 +611,11 @@
                 }
                 if (!flag) {
 
+                    var arr = $("#urlFriend").val().split(" ");
+                    var urlFriend = arr.join("-");
+
                      $.ajax({
-                        url: '@Url.Action("CheckUrlFriendUniqueness", "ProductGroup")'+ "?id=" + '@Model.ProductGroupId' +"&url=" + $("#urlFriend").val(),
+                        url: '@Url.Action("CheckUrlFriendUniqueness", "ProductGroup")'+ "?id=" + '@Model.ProductGroupId' +"&url=" + urlFriend,
                         type: 'Get',
                         dataType: 'json',
                         success: function (result) {
@@ -621,7 +624,7 @@
                             {
                                if($("#urlFriend").val() != "")
                                 {
-                                    var tmp = $("#urlFriend").val();
+                                    var tmp = arr.join("-");
                                     urlFriend = `/group/${tmp}`;
                                 }
                                 var tr = "<tr style='text-align:center;'><td>" + $("#groupName").val() +

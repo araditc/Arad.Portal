@@ -105,13 +105,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
 
-                var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
-                if (domainId == null)
-                {
-                    domainId = _domainContext.Collection.Find(_ => _.IsDefault == true).FirstOrDefault().DomainId;
-                }
-                equallentModel.AssociatedDomainId = domainId;
-
                 await _context.ProductCollection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
                 result.ReturnValue = equallentModel.ProductId;
@@ -596,7 +589,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<PagedItems<ProductViewModel>> List(string queryString)
+        public async Task<PagedItems<ProductViewModel>> List(string queryString, ApplicationUser user)
         {
             PagedItems<ProductViewModel> result = new PagedItems<ProductViewModel>();
             try
@@ -615,8 +608,18 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
-               // long totalCount = await _context.ProductCollection.Find(c => true).CountDocumentsAsync();
-                var totalList = _context.ProductCollection.AsQueryable();
+                // long totalCount = await _context.ProductCollection.Find(c => true).CountDocumentsAsync();
+                IQueryable<Entities.Shop.Product.Product> totalList = null;
+                var domainId = "";
+                if(user.IsSystemAccount)
+                {
+                    totalList = _context.ProductCollection.AsQueryable();
+                }else
+                {
+                    domainId = user.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+                    totalList = _context.ProductCollection.AsQueryable().Where(_ => _.AssociatedDomainId == domainId);
+                }
+               
                 if (!string.IsNullOrWhiteSpace(filter["groupIds"]))
                 {
                     var arr = filter["groupIds"].ToString().Split("|");
@@ -769,11 +772,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     var productName = product.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
                             product.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name :
                             product.MultiLingualProperties.FirstOrDefault().Name;
-                    var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
-                    if (domainId == null)
-                    {
-                        domainId = _domainContext.Collection.Find(_ => _.IsDefault == true).FirstOrDefault().DomainId;
-                    }
+                    //var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                    //if (domainId == null)
+                    //{
+                    //    domainId = _domainContext.Collection.Find(_ => _.IsDefault == true).FirstOrDefault().DomainId;
+                    //}
+                    var domainName = _httpContextAccessor.HttpContext.Request.Host.ToString();
+                    var domainId = _domainContext.Collection.Find(_=>_.DomainName.ToLower() == domainName.ToLower()).FirstOrDefault().DomainId;
                     Notification notification = new()
                     {
                         Type = notificationType,

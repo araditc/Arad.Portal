@@ -389,7 +389,7 @@ namespace Arad.Portal.UI.Shop.Helpers
             #endregion
 
             #region ApplicationUser
-            var userCollection = db.GetCollection<DataLayer.Entities.General.User.ApplicationUser>("ApplicationUser");
+            var userCollection = db.GetCollection<DataLayer.Entities.General.User.ApplicationUser>("Users");
 
             if (!userCollection.Indexes.List().ToList().Any(i => i.GetValue("name").Equals("UserName_1")))
             {

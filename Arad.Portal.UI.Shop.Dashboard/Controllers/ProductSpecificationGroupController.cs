@@ -44,10 +44,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             PagedItems<SpecificationGroupViewModel> list = new PagedItems<SpecificationGroupViewModel>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            
+            var userDb = await _userManager.FindByIdAsync(currentUserId);
             try
             {
-                list = await _productSpecGrpRepository.List(Request.QueryString.ToString());
+                list = await _productSpecGrpRepository.List(Request.QueryString.ToString(), userDb);
                 ViewBag.DefLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
                 var langs = _lanRepository.GetAllActiveLanguage();
                 langs.Insert(0, new SelectListModel() { Text = Language.GetString("Choose"), Value = "-1" });
@@ -66,8 +66,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var userDB = await _userManager.FindByIdAsync(currentUserId);
             if (userDB.IsSystemAccount)
             {
-
                 ViewBag.Domains = _domainRepository.GetAllActiveDomains();
+            }else
+            {
+                model.AssociatedDomainId = userDB.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
             }
             ViewBag.IsSysAcc = userDB.IsSystemAccount;
 
@@ -163,11 +165,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         /// <param name="id">id stands for languageId</param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetProductSpecificationGroupList(string id)
+        public async Task<IActionResult> GetProductSpecificationGroupList(string lid, string did)
         {
             JsonResult result;
             List<SelectListModel> lst;
-            lst = _productSpecGrpRepository.AllActiveSpecificationGroup(id).OrderBy(_ => _.Text).ToList();
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            
+            lst = (await _productSpecGrpRepository.AllActiveSpecificationGroup(lid, currentUserId, did )).OrderBy(_ => _.Text).ToList();
             if (lst.Count() > 0)
             {
                 result = new JsonResult(new { Status = "success", Data = lst });

@@ -18,6 +18,8 @@ using System.Collections.Specialized;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Entities.General.Role;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
 {
@@ -27,15 +29,18 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
         private readonly ProductContext _productContext;
         private readonly LanguageContext _languageContext;
         private readonly IMapper _mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
         public ProductUnitRepository(
             ProductContext productContext,
             LanguageContext languageContext,
             IWebHostEnvironment env,
+            UserManager<ApplicationUser> userManager,
             IMapper mapper, IHttpContextAccessor httpContextAccessor): base(httpContextAccessor, env)
         {
             _mapper = mapper;
             _languageContext = languageContext;
             _productContext = productContext;
+            _userManager = userManager;
         }
         public async Task<Result> AddProductUnit(ProductUnitDTO dto)
         {
@@ -170,20 +175,36 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             return result;
         }
 
-        public List<SelectListModel> GetAllActiveProductUnit(string langId)
+        public async Task<List<SelectListModel>> GetAllActiveProductUnit(string langId, string currentUserId, string domainId = "")
         {
             var result = new List<SelectListModel>();
-            result = _productContext.ProductUnitCollection.Find(_ => _.IsActive)
-                .Project(_ => new SelectListModel()
-                {
-                    Text = _.UnitNames.Where(a => a.LanguageId == langId).Count() != 0 ?
-                         _.UnitNames.FirstOrDefault(a => a.LanguageId == langId).Name : "",
-                    Value = _.ProductUnitId
-                }).ToList();
+            var userEntity = await _userManager.FindByIdAsync(currentUserId);
+
+            if(userEntity.IsSystemAccount && string.IsNullOrWhiteSpace(domainId))
+            {
+                result = _productContext.ProductUnitCollection.Find(_ => _.IsActive && !_.IsDeleted)
+               .Project(_ => new SelectListModel()
+               {
+                   Text = _.UnitNames.Where(a => a.LanguageId == langId).Count() != 0 ?
+                        _.UnitNames.FirstOrDefault(a => a.LanguageId == langId).Name : "",
+                   Value = _.ProductUnitId
+               }).ToList();
+            }else
+            {
+                result = _productContext.ProductUnitCollection.AsQueryable().Where(_=> _.IsActive && !_.IsDeleted &&
+                _.AssociatedDomainId == (!string.IsNullOrWhiteSpace(domainId) ? domainId : userEntity.Domains.FirstOrDefault(a=>a.IsOwner).DomainId))
+               .Select(_ => new SelectListModel()
+               {
+                   Text = _.UnitNames.Where(a => a.LanguageId == langId).Count() != 0 ?
+                        _.UnitNames.FirstOrDefault(a => a.LanguageId == langId).Name : "",
+                   Value = _.ProductUnitId
+               }).ToList();
+            }
+           
             return result;
         }
 
-        public async Task<PagedItems<ProductUnitViewModel>> List(string queryString)
+        public async Task<PagedItems<ProductUnitViewModel>> List(string queryString, ApplicationUser user)
         {
             PagedItems<ProductUnitViewModel> result = new PagedItems<ProductUnitViewModel>();
             try
@@ -212,8 +233,19 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var filterName = filter["Name"].ToString();
-                long totalCount = await _productContext.ProductUnitCollection.Find(c => true).CountDocumentsAsync();
-                var list = _productContext.ProductUnitCollection.AsQueryable().Where(_=>_.UnitNames.Any( a => a.Name.Contains(filterName))).Skip((page - 1) * pageSize)
+                long totalCount = 0;
+                var domainId = ""
+;                if(user.IsSystemAccount)
+                {
+                    totalCount = await _productContext.ProductUnitCollection.Find(c => true).CountDocumentsAsync();
+                }else
+                {
+                    domainId = user.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+                    totalCount = await _productContext.ProductUnitCollection.Find(_=>_.AssociatedDomainId == domainId).CountDocumentsAsync();
+                }
+                
+                var list = _productContext.ProductUnitCollection.AsQueryable()
+                    .Where(_=>_.UnitNames.Any( a => a.Name.Contains(filterName)) && (domainId == "" || _.AssociatedDomainId == domainId)).Skip((page - 1) * pageSize)
                    .OrderByDescending(_=>_.CreationDate)
                    .Take(pageSize).Select(_ => new ProductUnitViewModel()
                    {

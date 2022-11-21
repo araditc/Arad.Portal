@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.ProductSpecification;
+﻿using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Models.ProductSpecification;
 using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductSpecification
     public interface IProductSpecificationRepository
     {
         Task<Result> Add(ProductSpecificationDTO dto);
-        Task<PagedItems<ProductSpecificationViewModel>> List(string queryString);
+        Task<PagedItems<ProductSpecificationViewModel>> List(string queryString, ApplicationUser user);
         Task<ProductSpecificationDTO> SpecificationFetch(string specId);
         Result<Entities.Shop.ProductSpecification.ProductSpecification> GetEntity(string specId);
         Task<Result> Update(ProductSpecificationDTO spec);
@@ -22,6 +23,6 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductSpecification
 
         List<SelectListModel> GetAllControlTypes();
         List<ProductSpecificationDTO> GetAllSpecificationsInGroup(string specificationGroupId);
-        List<SelectListModel> GetSpecInGroupAndLanguage(string specificationGroupId, string languageId);
+        Task<List<SelectListModel>> GetSpecInGroupAndLanguage(string specificationGroupId, string languageId, string currentUserId, string domainId = "");
     }
 }

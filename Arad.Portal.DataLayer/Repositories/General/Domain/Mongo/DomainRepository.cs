@@ -117,7 +117,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
-        public async Task<PagedItems<DomainViewModel>> AllDomainList(string queryString)
+        public async Task<PagedItems<DomainViewModel>> AllDomainList(string queryString, ApplicationUser user)
         {
 
             PagedItems<DomainViewModel> result = new PagedItems<DomainViewModel>();
@@ -137,9 +137,19 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
-
-                long totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
-                var list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
+                long totalCount = 0;
+                var domainId = "";
+                if(user.IsSystemAccount)
+                {
+                   totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
+                }
+                else
+                {
+                    domainId = user.Domains.FirstOrDefault(a => a.IsOwner).DomainId;
+                    totalCount = await _context.Collection.Find(c => c.AssociatedDomainId == domainId).CountDocumentsAsync();
+                }
+               
+                var list = _context.Collection.AsQueryable().Where(_=> domainId == "" || _.AssociatedDomainId == domainId ).Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new DomainViewModel()
                    {
                        DomainId = _.DomainId,

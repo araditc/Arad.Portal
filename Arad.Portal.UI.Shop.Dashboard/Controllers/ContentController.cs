@@ -98,14 +98,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
            
             try
             {
-                result = await _contentRepository.List(Request.QueryString.ToString());
-
                 var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userDb = await _userManager.FindByIdAsync(currentUserId);
+                result = await _contentRepository.List(Request.QueryString.ToString(), userDb);
+
+                
                 var defLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
                 ViewBag.DefLangId = defLangId;
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
 
-                var categoryList =await _contentCategoryRepository.AllActiveContentCategory(defLangId, currentUserId);
+                var categoryList =await _contentCategoryRepository.AllActiveContentCategory(defLangId, currentUserId, userDb.Domains.FirstOrDefault(_=>_.IsOwner).DomainId);
                 categoryList = categoryList.OrderBy(_ => _.Text).ToList();
                 categoryList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
                 ViewBag.CatList = categoryList;
@@ -126,6 +128,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var fileShown = _configuration["LocalStaticFileShown"];
             ViewBag.Url = fileShown;
             var model = new ContentDTO();
+            
+            var userDB = await _userManager.FindByIdAsync(currentUserId);
+            if (userDB.IsSystemAccount)
+            {
+                ViewBag.Domains = _domainRepository.GetAllActiveDomains();
+            }
+            var domainId = userDB.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+            model.AssociatedDomainId = domainId;
+
+            ViewBag.IsSysAcc = userDB.IsSystemAccount;
+
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = await _contentRepository.ContentFetch(id);
@@ -146,7 +159,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var groupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
             ViewBag.ProductGroupList = groupList;
             ViewBag.baseHref = fileShown;
-            var unitList = _unitRepository.GetAllActiveProductUnit(lan.LanguageId);
+            var unitList = await _unitRepository.GetAllActiveProductUnit(lan.LanguageId, currentUserId, "");
             unitList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.ProductUnitList = unitList;
             var currencyList = _curRepository.GetAllActiveCurrency();
@@ -154,7 +167,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             ViewBag.StaticFileStorage = staticFileStorageURL;
            
-            var categoryList = await _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId, currentUserId);
+            var categoryList = await _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId, currentUserId, "");
             categoryList = categoryList.OrderBy(_ => _.Text).ToList();
             //categoryList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.CatList = categoryList;
@@ -175,6 +188,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             //}
             return View(model);
         }
+
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {

@@ -1,12 +1,16 @@
-﻿using Arad.Portal.DataLayer.Contracts.General.SliderModule;
+﻿using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Contracts.General.SliderModule;
 using Arad.Portal.DataLayer.Entities.General.SliderModule;
+using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Product;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.SlideModule;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.UI.Shop.Dashboard.Helpers;
 using AutoMapper;
+using DocumentFormat.OpenXml.EMMA;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -14,6 +18,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
@@ -24,12 +29,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly ISliderRepository _sliderRepository;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IDomainRepository _domainRepository;
 
-        public SliderController(ISliderRepository sliderRepository, IConfiguration configuration, IMapper mapper)
+        public SliderController(ISliderRepository sliderRepository, IConfiguration configuration,
+            IMapper mapper, UserManager<ApplicationUser> userManager, IDomainRepository domainRepository)
         {
             _sliderRepository = sliderRepository;
             _configuration = configuration;
             _mapper = mapper;
+            _userManager = userManager;
+            _domainRepository = domainRepository;
         }
 
         private ClientValidationErrorModel ValidatorPic(string model)
@@ -83,9 +93,23 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return imgObj;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var sliders = _sliderRepository.GetSliders();
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var sliders = _sliderRepository.GetSliders(currentUserId);
+
+           
+            var userDB = await _userManager.FindByIdAsync(currentUserId);
+            if (userDB.IsSystemAccount)
+            {
+                ViewBag.Domains = _domainRepository.GetAllActiveDomains();
+            }else
+            {
+                ViewBag.DomainId = userDB.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+            }
+            
+            ViewBag.IsSysAcc = userDB.IsSystemAccount;
+
             return View(sliders);
         }
 
@@ -105,7 +129,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var slider = new Slider()
             {
                 IsActive = true,
-                Title = model.Title
+                Title = model.Title,
+                AssociatedDomainId = model.AssociatedDomainId
             };
 
             var result = _sliderRepository.AddSlider(slider);

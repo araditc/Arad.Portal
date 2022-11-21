@@ -122,12 +122,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
             throw new NotImplementedException();
         }
 
-        public async Task<PagedItems<ShippingSettingDTO>> List(string queryString)
+        public async Task<PagedItems<ShippingSettingDTO>> List(string queryString, ApplicationUser user)
         {
             PagedItems<ShippingSettingDTO> result = new PagedItems<ShippingSettingDTO>();
             var list = new List<ShippingSettingDTO>();
-            var currentUserId = base.GetUserId();
-            var userEntity = await _userManager.FindByIdAsync(currentUserId);
 
             try
             {
@@ -147,7 +145,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                
                 long totalCount = 0;
-                if(userEntity.IsSystemAccount)
+                if(user.IsSystemAccount)
                 {
                     totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
                     var lst = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
@@ -158,9 +156,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
                 else
                 {
                     totalCount = await _context.Collection
-                        .Find(_ => userEntity.Domains.Any(a=> a.DomainId == _.AssociatedDomainId)).CountDocumentsAsync();
+                        .Find(_ => _.AssociatedDomainId == user.Domains.FirstOrDefault(a=> a.IsOwner).DomainId).CountDocumentsAsync();
                     var lst = _context.Collection.AsQueryable()
-                        .Where(_ => userEntity.Domains.Any(a => a.DomainId == _.AssociatedDomainId)).Skip((page - 1) * pageSize)
+                        .Where(_ => _.AssociatedDomainId == user.Domains.FirstOrDefault(a => a.IsOwner).DomainId).Skip((page - 1) * pageSize)
                         .Take(pageSize).ToList();
                    
                     list = _mapper.Map<List<ShippingSettingDTO>>(lst);

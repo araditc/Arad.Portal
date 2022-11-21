@@ -26,7 +26,7 @@ namespace Arad.Portal.DataLayer.Models.ContentCategory
 
         public int CategoryTypeId { get; set; }
 
-        public string ModificationReason { get; set; }
+        public string AssociatedDomainId { get; set; }
 
         public long CategoryCode { get; set; }
 

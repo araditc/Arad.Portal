@@ -415,7 +415,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                 }
                 else
                 {
-                    result = _productContext.ProductGroupCollection.Find(_ => dbUser.Profile.Access.AccessibleProductGroupIds.Contains(_.ProductGroupId))
+                    result = _productContext.ProductGroupCollection
+                   .Find(_ => dbUser.Profile.Access.AccessibleProductGroupIds.Contains(_.ProductGroupId))
                    .Project(_ => new SelectListModel()
                    {
                        Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?

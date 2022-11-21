@@ -45,13 +45,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             ViewBag.LangId = lan.LanguageId;
-           
+            var userDb = await _userManager.FindByIdAsync(currentUserId);
             var langs = _lanRepository.GetAllActiveLanguage();
             langs.Insert(0, new SelectListModel() { Text = Language.GetString("Choose"), Value = "-1" });
             ViewBag.LangList = langs;
-            PagedItems<ProductUnitViewModel> list = await _unitRepository.List(Request.QueryString.ToString());
+            PagedItems<ProductUnitViewModel> list = await _unitRepository.List(Request.QueryString.ToString(), userDb);
             return View(list);
         }
+
         public async Task<IActionResult> AddEdit(string id)
         {
             var model = new ProductUnitDTO();
@@ -62,6 +63,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
 
                 ViewBag.Domains = _domainRepository.GetAllActiveDomains();
+            }else
+            {
+                model.AssociatedDomainId = userDB.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
             }
             ViewBag.IsSysAcc = userDB.IsSystemAccount;
             if (!string.IsNullOrWhiteSpace(id))
@@ -184,6 +188,25 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             Result opResult = await _unitRepository.Delete(id);
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetProductUnitList(string lid, string did)
+        {
+            JsonResult result;
+            List<SelectListModel> lst;
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            lst = await _unitRepository.GetAllActiveProductUnit(lid, currentUserId, did);
+            if (lst.Count() > 0)
+            {
+                result = new JsonResult(new { Status = "success", Data = lst.OrderBy(_ => _.Text) });
+            }
+            else
+            {
+                result = new JsonResult(new { Status = "error", Message = "" });
+            }
+            return result;
+
         }
     }
 }

@@ -148,12 +148,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIsExpired"));
             }
-            if(!string.IsNullOrWhiteSpace(model.Username))
+            if(string.IsNullOrWhiteSpace(model.Username))
             {
                 ModelState.AddModelError("Username", Language.GetString("AlertAndMessage_UserNameRequired"));
             }
 
-            if(!string.IsNullOrWhiteSpace(model.Password))
+            if(string.IsNullOrWhiteSpace(model.Password))
             {
                 ModelState.AddModelError("Password", Language.GetString("AlertAndMessage_PasswordRequired"));
             }

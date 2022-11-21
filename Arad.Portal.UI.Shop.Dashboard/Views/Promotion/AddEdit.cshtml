@@ -35,6 +35,23 @@
 
             <div class="card-body" id="addEditProductGroupCard">
                 <input type="hidden" value="@Model.PromotionId" asp-for="PromotionId" />
+                @if (@ViewBag.IsSysAcc)
+                {
+                    <div class="row">
+                        <div class="form-group col-12 col-md-3">
+                            <label asp-for="AssociatedDomainId" class="form-label">@Language.GetString("AssociatedDomain")</label>
+                            <select class="form-control selectpicker" data-live-search="true"
+                                asp-for="@Model.AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text", Model.AssociatedDomainId))">
+                            </select>
+                            <span data-val-result="AssociatedDomainId" class="text-danger"></span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" value="@Model.AssociatedDomainId" asp-for="AssociatedDomainId" />
+                }
+                
                 <div class="row">
                     <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="title">@Language.GetString("Title")</label><br />
@@ -270,7 +287,7 @@
       }
     
 
-      $("#AsUserCoupon").click(function() { 
+    $("#AsUserCoupon").click(function() { 
           if($("#AsUserCoupon").is(":checked"))
           {
               $(".codeSection").removeClass("d-none");
@@ -574,7 +591,11 @@
                          $("span[data-val-result='promotedCountofUnit']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                      }
                  }
-          
+                 if($("#AssociatedDomainId").val() == "")
+                 {
+                      $("span[data-val-result='AssociatedDomainId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                            flag = true;
+                 }
                  if (!flag)
                  {
                      var dataModel = FillDataToSend();
@@ -672,6 +693,8 @@
             obj.Title = $("#title").val();
             obj.CurrencyId = $("#currencyId").val();
             obj.CurrencyName = $("#currencyId option:selected").text();
+            obj.AssociatedDomainId $("#AssociatedDomainId").val();
+
             if(!$("#AsUserCoupon").is(":checked"))
             {
                  obj.PromotionTypeId = parseInt($("#promotionTypeId").val());

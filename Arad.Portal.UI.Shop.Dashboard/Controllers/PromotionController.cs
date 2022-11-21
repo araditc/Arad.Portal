@@ -135,7 +135,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var lst = _productRepositoy.GetProductsOfThisVendor(defaulltLang.LanguageId, currentUserId);
                 lst.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
                 ViewBag.CurrentSellerProductList = lst;
+            }else
+            {
+                ViewBag.Domains = _domainRepository.GetAllActiveDomains();
             }
+            model.AssociatedDomainId = userDB.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = _promotionRepository.FetchPromotion(id);
@@ -161,11 +166,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             JsonResult result;
             var errors = new List<AjaxValidationErrorModel>();
-            var domainName = $"{_accessor.HttpContext.Request.Host}";
-            var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
+            //var domainName = $"{_accessor.HttpContext.Request.Host}";
+            //var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
             if (dto.AsUserCoupon)
             {
-                var res = _promotionRepository.CheckCouponCodeUniqueness(dto.CouponCode, domainEntity.DomainId);
+                var res = _promotionRepository.CheckCouponCodeUniqueness(dto.CouponCode, dto.AssociatedDomainId);
                 if (!res.Succeeded)
                 {
                     var obj = new AjaxValidationErrorModel() { Key = "CouponCode", ErrorMessage = Language.GetString("AlertAndMessage_DuplicateCode") };
@@ -189,7 +194,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                dto.AssociatedDomainId = domainEntity.DomainId;
+               
                 Result saveResult = await _promotionRepository.InsertPromotion(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });

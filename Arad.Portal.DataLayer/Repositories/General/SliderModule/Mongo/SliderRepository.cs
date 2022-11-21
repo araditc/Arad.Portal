@@ -6,11 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Arad.Portal.DataLayer.Contracts.General.SliderModule;
 using Arad.Portal.DataLayer.Entities.General.SliderModule;
+using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.SlideModule;
 using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
@@ -20,21 +22,32 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
     {
         private readonly SliderContext _context;
         private readonly DomainContext _domainContext;
-
+        private readonly UserManager<ApplicationUser> _userManager;
+       
         public SliderRepository(SliderContext context,
             DomainContext domainContext,
+            UserManager<ApplicationUser> userManager,
             IHttpContextAccessor httpContextAccessor,
             IWebHostEnvironment env):base(httpContextAccessor, env)
         {
             _context = context;
             _domainContext = domainContext;
+            _userManager = userManager;
         }
 
-        public List<Slider> GetSliders()
+        public async Task<List<Slider>> GetSliders(string currentUserId)
         {
-            var list = _context.Collection
-                .Find(_ => ! _.IsDeleted).ToList();
-               
+            var userDb = await _userManager.FindByIdAsync(currentUserId);
+            List<Slider> list = new List<Slider>();
+            if(userDb.IsSystemAccount)
+            {
+               list = _context.Collection
+               .Find(_ => !_.IsDeleted && _.IsActive).ToList();
+            }else
+            {
+                list = _context.Collection
+                .Find(_ => !_.IsDeleted && _.IsActive && _.AssociatedDomainId == userDb.Domains.FirstOrDefault(a => a.IsOwner).DomainId).ToList();
+            }
             return list;
         }
 
@@ -44,20 +57,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
             {
 
                 model.CreationDate = DateTime.Now;
-                model.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
+                var currentUserId = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                model.CreatorUserId = currentUserId;
                 model.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
 
                 model.SliderId = Guid.NewGuid().ToString();
-
-                var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
-                if (domainId == null)
-                {
-                    domainId = _domainContext.Collection.Find(_ => _.IsDefault == true).FirstOrDefault().DomainId;
-                }
-
-                model.AssociatedDomainId = domainId;
                 _context.Collection.InsertOne(model);
 
                 return true;

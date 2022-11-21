@@ -67,6 +67,7 @@ namespace Arad.Portal.DataLayer.Models.Content
         public Entities.General.Content.SourceType? SourceType { get; set; }
         public string SourceTypeId { get; set; }
         public string ContentProviderName { get; set; }
-        
+        public string AssociatedDomainId { get; set; }
+
     }
 }

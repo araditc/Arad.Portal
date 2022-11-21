@@ -64,15 +64,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                 equallentEntity.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
 
-                //Filter specific claim    
-                var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
-
-                if (domainId == null)
-                {
-                    domainId = _domainContext.Collection.Find(_ => _.IsDefault == true).FirstOrDefault().DomainId;
-                }
-                equallentEntity.AssociatedDomainId = domainId;
-
                 equallentEntity.IsActive = true;
                 await _categoryContext.Collection.InsertOneAsync(equallentEntity);
                 result.Succeeded = true;
@@ -85,13 +76,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             return result;
         }
               
-        public async Task<List<SelectListModel>> AllActiveContentCategory(string langId, string currentUserId)
+        public async Task<List<SelectListModel>> AllActiveContentCategory(string langId, string currentUserId, string domainId = "")
         {
             var result = new List<SelectListModel>();
             var dbUser = await _userManager.FindByIdAsync(currentUserId);
             if(dbUser != null)
             {
-                if (dbUser.IsSystemAccount)
+                if (dbUser.IsSystemAccount && string.IsNullOrWhiteSpace(domainId))
                 {
                     result = _categoryContext.Collection.Find(_ => _.IsActive && !_.IsDeleted)
                     .Project(_ => new SelectListModel()
@@ -103,7 +94,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                 }
                 else
                 {
-                    result = _categoryContext.Collection.Aggregate().Match(_ => dbUser.Profile.Access.AccessibleContentCategoryIds.Contains(_.ContentCategoryId))
+                    result = _categoryContext.Collection.Aggregate().Match(_ => _.IsActive && !_.IsDeleted && 
+                               dbUser.Profile.Access.AccessibleContentCategoryIds.Contains(_.ContentCategoryId) &&
+                                _.AssociatedDomainId == (!string.IsNullOrWhiteSpace(domainId) ? domainId : dbUser.Domains.FirstOrDefault(a=>a.IsOwner).DomainId))
                     .Project(_ => new SelectListModel()
                     {
                         Text = _.CategoryNames.Where(a => a.LanguageId == langId).Count() != 0 ?
@@ -326,7 +319,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
 
         }
 
-        public async Task<PagedItems<ContentCategoryViewModel>> List(string queryString)
+        public async Task<PagedItems<ContentCategoryViewModel>> List(string queryString, ApplicationUser user)
         {
             PagedItems<ContentCategoryViewModel> result = new PagedItems<ContentCategoryViewModel>();
             try
@@ -351,8 +344,20 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var langId = filter["LanguageId"].ToString();
-                long totalCount = await _categoryContext.Collection.Find(c => true).CountDocumentsAsync();
-                var list = _categoryContext.Collection.AsQueryable().OrderByDescending(_=>_.CreationDate).Skip((page - 1) * pageSize)
+                long totalCount = 0;
+                string domainId = "";
+                if (user.IsSystemAccount)
+                {
+                    totalCount = await _categoryContext.Collection.Find(c => true).CountDocumentsAsync();
+                }else
+                {
+                    domainId = user.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+                    totalCount = await _categoryContext.Collection.Find(_=>_.AssociatedDomainId == domainId).CountDocumentsAsync();
+                }
+                   
+                var list = _categoryContext.Collection.AsQueryable()
+                    .Where( _=> domainId == "" || _.AssociatedDomainId == domainId)
+                    .OrderByDescending(_=>_.CreationDate).Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ContentCategoryViewModel()
                    {
                        ContentCategoryId = _.ContentCategoryId,
@@ -416,12 +421,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
 
             if (availableEntity != null)
             {
-                #region Add Modification
-                var currentModifications = availableEntity.Modifications;
-                var mod = GetCurrentModification(dto.ModificationReason);
-                currentModifications.Add(mod);
-                #endregion
-                availableEntity.Modifications = currentModifications;
                 if (dto.IsDeleted)
                 {
                     availableEntity.IsDeleted = true;

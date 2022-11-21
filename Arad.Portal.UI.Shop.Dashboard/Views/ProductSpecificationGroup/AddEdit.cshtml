@@ -39,6 +39,9 @@
                             <span data-val-result="AssociatedDomainId" class="text-danger"></span>
                         </div>
                     </div>
+                }else
+                {
+                    <input type="hidden" value="@Model.AssociatedDomainId" asp-for="AssociatedDomainId" />
                 }
                 <div class="row">
                     <div class="form-group col-12 col-md-3">
@@ -125,20 +128,23 @@
 
       $("#btnAddProductSpecificationGroup").click(function () {
             debugger;
-                var flag = false;
-
-          var dataModel = FillDataToSend();
-
-          if (dataModel.GroupNames.length == 0) {
-                    $("span[data-val-result='GroupNames']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
-                    flag = true;
-                }
-                if (!flag) {
+          var flag = true;
+          if ($("#multiLingualList tr").length == 0) {
+            $("span[data-val-result='GroupNames']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
+            flag = false;
+          }
+          if($("#AssociatedDomainId").val() =="")
+          {
+                    $("span[data-val-result='AssociatedDomainId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            flag = false;
+          }
+         if (flag)
+         {
+            var dataModel = FillDataToSend();
             $.ajax({
                 url: "@Model.SpecificationGroupId" != "" ? '@Url.Action("Edit", "ProductSpecificationGroup")': '@Url.Action("Add", "ProductSpecificationGroup")',
-                  /*  data: dataModel,*/
-                    contentType: 'application/json',
-                    data: JSON.stringify(dataModel),
+                contentType: 'application/json',
+                data: JSON.stringify(dataModel),
                 type: 'Post',
                 beforeSend: function () {
                     debugger;
@@ -212,13 +218,10 @@
         function FillDataToSend() {
             debugger;
             var obj = {};
-            if ($("#AssociatedDomainId") != undefined)
-            {
-                obj.AssociatedDomainId = $("#AssociatedDomainId").val();
-            }
             obj.GroupNames = [];
+            obj.AssociatedDomainId = $("#AssociatedDomainId").val();
             obj.SpecificationGroupId = $("#SpecificationGroupId").val();
-          /* obj.ModificationReason = $("#ModificationReason").val();*/
+         
             $("#multiLingualList tr").each(function () {
                 debugger;
                 var innerModel = {};

@@ -145,6 +145,9 @@
                         <span data-val-result="AssociatedDomainId" class="text-danger"></span>
                     </div>
                     </div>
+                }else
+                {
+                     <input type="hidden" value="@Model.AssociatedDomainId" asp-for="AssociatedDomainId" />
                 }
                 <div class="row">
                     <div class="form-group col-12 col-md-3">
@@ -960,7 +963,11 @@ else
                  $("span[data-val-result='ProductFileContent']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-
+            if($("#AssociatedDomainId").val() == "" )
+            {
+                $("span[data-val-result='AssociatedDomainId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
               debugger;
                 if (!flag) {
                     var dto = FillDataToSend();
@@ -1085,8 +1092,9 @@ else
         $("#languageId").change(function () {
 
                 var langId = $("#languageId").val();
+                var did = $("#AssociatedDomainId").val();
                 $.ajax({
-                    url: '@Url.Action("GetSpecificationGroupList", "ProductSpecification")'+"/"+ langId,
+                    url: '@Url.Action("GetSpecificationGroupList", "ProductSpecificationGroup")'+"?lid="+ langId +"&did=" + did,
                     type: 'Get',
                     dataType : 'json',
                     success: function (result) {
@@ -1113,13 +1121,47 @@ else
             });
        });
 
+
+        $("#AssociatedDomainId").change(function(){
+             var langId = $("#languageId").val();
+             var did = $("#AssociatedDomainId").val();
+
+              $.ajax({
+                    url: `@Url.Action("GetProductUnitList", "ProductUnit")?lid=${langId}&did=${did}`,
+                    type: 'Get',
+                    dataType: 'json',
+                    success: function (result) {
+                        debugger;
+                        var options = "";
+                        if (result.status === "success") {
+                            debugger;
+                            if (result.data.length != 0) {
+                                (result.data).forEach(function (item) {
+                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                    options += op;
+                                });
+
+                                $("#Unit_ProductUnitId").html(options);
+                            $("#Unit_ProductUnitId").selectpicker("refresh");
+                            }
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+        })
+
         $("#specGroupId").change(function () {
            debugger;
             var langId = $("#languageId").val();
             var groupId = $("#specGroupId").val();
+            var domainId = $("#AssociatedDomainId").val();
             if (groupId != "") {
                 $.ajax({
-                    url: '@Url.Action("GetSpecificationInGroupAndLang", "ProductSpecification")'+"?groupId=" + groupId + "&langId=" + langId,
+                    url: '@Url.Action("GetSpecificationInGroupAndLang", "ProductSpecification")'+"?groupId=" + groupId + "&langId=" + langId + "&domainId=" + domainId,
                     type: 'Get',
                     dataType : 'json',
                     success: function (result) {
@@ -1425,10 +1467,8 @@ else
         dto.ProductCode = Number($("#ProductCode").val());
 
         //domainId
-        if($("#AssociatedDomainId") != undefined)
-           {
-               obj.AssociatedDomainId = $("#AssociatedDomainId").val();
-           }
+        obj.AssociatedDomainId = $("#AssociatedDomainId").val();
+       
         //groupIds
         for (var i = 0; i < $("#GroupIds").val().length; i++) {
             debugger;
@@ -1604,16 +1644,18 @@ else
 
             if (!flag)
             {
+                var arr = $("#urlFriend").val().split(" ");
+                var url = arr.join("-");
 
                 $.ajax({
-                url: '@Url.Action("CheckUrlFriendUniqueness", "Product")'+"?id="+ '@Model.ProductId' +"&url=" + $("#urlFriend").val(),
+                url: '@Url.Action("CheckUrlFriendUniqueness", "Product")'+"?id="+ '@Model.ProductId' +"&url=" + url,
                 type: 'Get',
                 dataType: 'json',
                         success: function(result) {
                             if (result.status == "Success") 
                             {
                                 var obj = {};
-                                var urlFriend = $("#urlFriend").val();
+                                var urlFriend = url;
                                 var finalUrl = "";
                                 obj.LanguageId = $('#multiLangId').val();
                                 obj.LanguageName = $("#multiLangId option:selected").text();

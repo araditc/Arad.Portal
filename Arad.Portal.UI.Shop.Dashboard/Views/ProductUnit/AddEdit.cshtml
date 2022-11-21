@@ -38,6 +38,9 @@
                         <span data-val-result="AssociatedDomainId" class="text-danger"></span>
                     </div>
                     </div>
+                }else
+                {
+                    <input type="hidden" value="@Model.AssociatedDomainId" asp-for="@Model.AssociatedDomainId" />
                 }
                
                 <div class="row align-items-center alert alert-secondary">
@@ -118,22 +121,23 @@
             debugger;
                 var flag = false;
 
-          var dataModel = FillDataToSend();
-
-          if (dataModel.UnitNames.length == 0) {
+                if ($("#multiLingualList tr").length == 0) {
                     $("span[data-val-result='UnitNames']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
                 }
+                if($("#AssociatedDomainId").val() == "")
+                {
+                    $("span[data-val-result='AssociatedDomainId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
                 if (!flag) {
-            $.ajax({
-                url: "@Model.ProductUnitId" != "" ? '@Url.Action("Edit", "ProductUnit")' : '@Url.Action("Add", "ProductUnit")',
-                   
+                    var dataModel = FillDataToSend();
+                  $.ajax({
+                    url: "@Model.ProductUnitId" != "" ? '@Url.Action("Edit", "ProductUnit")' : '@Url.Action("Add", "ProductUnit")',
                     contentType: 'application/json',
                     data: JSON.stringify(dataModel),
                     type: 'Post',
                     beforeSend: function () {
-                        debugger;
-                       /* AddLoading($("#addProductUnitCard"));*/
                     },
                     success: function (result) {
                         debugger;
@@ -199,13 +203,10 @@
         function FillDataToSend() {
             debugger;
             var obj = {};
-           if($("#AssociatedDomainId") != undefined)
-           {
-               obj.AssociatedDomainId = $("#AssociatedDomainId").val();
-           }
+           
+            obj.AssociatedDomainId = $("#AssociatedDomainId").val();
             obj.UnitNames = [];
             obj.ProductUnitId = $("#ProductUnitId").val();
-          /* obj.ModificationReason = $("#ModificationReason").val();*/
             $("#multiLingualList tr").each(function () {
                 debugger;
                 var innerModel = {};

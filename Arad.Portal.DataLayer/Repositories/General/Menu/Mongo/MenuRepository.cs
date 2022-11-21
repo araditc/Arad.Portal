@@ -69,14 +69,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
                 equallentModel.IsActive = true;
-                
-                var domainId = _httpContextAccessor.HttpContext.User.FindFirst("RelatedDomain")?.Value;
-                if (domainId == null)
-                {
-                    domainId = _domainContext.Collection.Find(_ => _.IsDefault == true).FirstOrDefault().DomainId;
-                }
-
-                //equallentModel.AssociatedDomainId = domainId;
+               
                 await _context.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
@@ -88,17 +81,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             return result;
         }
 
-        public async Task<PagedItems<MenuDTO>> AdminList(string queryString)
+        public async Task<PagedItems<MenuDTO>> AdminList(string queryString, ApplicationUser user)
         {
             PagedItems<MenuDTO> result = new PagedItems<MenuDTO>();
             var lan = new Entities.General.Language.Language();
             string languageId = "";
             try
             {
-                var userId = this.GetUserId();
-                var userEntity = await _userManager.FindByIdAsync(userId);
-                if (userEntity == null)
-                    return result;
 
                 NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
 
@@ -113,7 +102,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 }
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
-                var domainId = filter["domainId"].ToString();
+                
                 var parentId = "";
                 var keyToFilter = "";
                 if (string.IsNullOrWhiteSpace(filter["LanguageId"]))
@@ -135,18 +124,16 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 {
                     keyToFilter = filter["filter"].ToString();
                 }
-                var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
 
+                var domainId = user.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
                 FilterDefinitionBuilder<Entities.General.Menu.Menu> menuBuilder = new();
                 FilterDefinitionBuilder<MultiLingualProperty> menuTitlesBuilder = new();
                 FilterDefinition<Entities.General.Menu.Menu> menuFilterDef = null;
                 FilterDefinition<MultiLingualProperty> menuTitleFilterDef = null;
-                if (userEntity.IsSystemAccount)
+                if (user.IsSystemAccount)
                     menuFilterDef = menuBuilder.Empty;
-                else if (domainEntity != null)
-                    menuFilterDef = menuBuilder.Eq(nameof(Entities.General.Menu.Menu.AssociatedDomainId), domainEntity.DomainId);
-                else
-                    return result;
+                else 
+                    menuFilterDef = menuBuilder.Eq(nameof(Entities.General.Menu.Menu.AssociatedDomainId), domainId);
                
                 menuFilterDef = menuBuilder.And(menuFilterDef, menuBuilder.Eq(nameof(Entities.General.Menu.Menu.IsActive), true));
                 if(parentId != "")

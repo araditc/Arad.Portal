@@ -51,9 +51,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             PagedItems<ShippingSettingDTO> result;
             try
             {
-                //var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
-                //ViewBag.Permissions = dicKey;
-                result = await _shippingSettingRepository.List(this.Request.QueryString.ToString());
+                var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userDb = await _userManager.FindByIdAsync(currentUserId);
+
+                result = await _shippingSettingRepository.List(this.Request.QueryString.ToString(), userDb);
                 foreach (var item in result.Items)
                 {
                     item.DomainName = _domainRepository.FetchDomain(item.AssociatedDomainId).ReturnValue.DomainName;
@@ -70,14 +71,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var model = new ShippingSettingDTO();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            string domainName = $"{_accessor.HttpContext.Request.Host}";
-            var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
+            var userDb = await _userManager.FindByIdAsync(currentUserId);
+
+            //string domainName = $"{_accessor.HttpContext.Request.Host}";
+
+            var domainEntity = _domainRepository.FetchDomain(userDb.Domains.FirstOrDefault(_ => _.IsOwner).DomainId).ReturnValue;
 
             model.CurrencyId = domainEntity.DefaultCurrencyId;
             var defCurrency = _currencyRepository.FetchCurrency(domainEntity.DefaultCurrencyId).ReturnValue;
             model.CurrencySymbol = defCurrency.Symbol;
-            var userEntity = await _userManager.FindByIdAsync(currentUserId);
-            ViewBag.IsSystem = userEntity.IsSystemAccount;
+          
+            ViewBag.IsSysAcc = userDb.IsSystemAccount;
             
             if (!string.IsNullOrWhiteSpace(id))
             {
@@ -89,16 +93,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     //item.FloatingExpense = 
                 }
             }
-            if(!userEntity.IsSystemAccount)
+           if(userDb.IsSystemAccount)
             {
-                model.AssociatedDomainId = domainEntity.DomainId;
+                ViewBag.DomainList = _domainRepository.GetAllActiveDomains();
             }
-           
+            model.AssociatedDomainId = domainEntity.DomainId;
 
             ViewBag.Providers = _providerRepository.GetProvidersPerType(DataLayer.Entities.General.Service.ProviderType.Shipping);
             ViewBag.ShippngTypes = _basicDataRepository.GetList("ShippingType", true);
             ViewBag.CurrencyList = _currencyRepository.GetAllActiveCurrency();
-            ViewBag.DomainList = _domainRepository.GetAllActiveDomains();
+           
             return View(model);
         }
 

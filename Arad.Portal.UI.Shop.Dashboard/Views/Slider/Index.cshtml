@@ -13,6 +13,22 @@
         </div>
         <div class="card-body">
             <form id="addSlider" class="sm" asp-action="AddSlider" asp-controller="Slider" method="post" autocomplete="off" asp-antiforgery="true">
+                @if (@ViewBag.IsSysAcc)
+                {
+                    <div class="row">
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label">@Language.GetString("AssociatedDomain")</label>
+                            <select class="form-control selectpicker" data-live-search="true"
+                                id="AssociatedDomainId" name="AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text"))">
+                            </select>
+                            <span data-val-result="AssociatedDomainId" class="text-danger"></span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" id="AssociatedDomainId" value="@ViewBag.DomainId" />
+                }
                 <div class="row text-right ">
                     <div class=" col-md-12">
                         <div class="row">
@@ -79,11 +95,11 @@
                                 @{
                                     if (item.IsActive)
                                     {
-                                        <button onclick='changeActivation("@item.SliderId")' class="btn-sm btn btn-success bg-gradient">@Language.GetString("Active")</button>
+                                            <button onclick='changeActivation("@item.SliderId")' class="btn-sm btn btn-success bg-gradient">@Language.GetString("Active")</button>
                                     }
                                     else
                                     {
-                                        <button onclick='changeActivation("@item.SliderId")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
+                                            <button onclick='changeActivation("@item.SliderId")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
                                     }
                                 }
                             </td>
@@ -135,8 +151,9 @@
                 $inputs.each(function() {
                     values[this.name] = $(this).val();
                 });
-                console.log(values["Id"]);
-                
+               
+                values["AssociatedDomainId"] = $("#AssociatedDomainId").val();
+
                 if (sliderId == "") {
                     debugger;
                     $.ajax({

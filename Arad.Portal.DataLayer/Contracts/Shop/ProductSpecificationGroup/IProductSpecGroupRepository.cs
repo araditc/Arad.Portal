@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.ProductSpecificationGroup;
+﻿using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Models.ProductSpecificationGroup;
 using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductSpecificationGroup
 {
     public interface IProductSpecGroupRepository 
     {
-        Task<PagedItems<SpecificationGroupViewModel>> List(string queryString);
+        Task<PagedItems<SpecificationGroupViewModel>> List(string queryString, ApplicationUser user);
 
-        List<SelectListModel> AllActiveSpecificationGroup(string langId);
+        Task<List<SelectListModel>> AllActiveSpecificationGroup(string langId, string currentUserId, string domainId = "");
 
         Task<Result> Add(SpecificationGroupDTO dto);
 

@@ -162,6 +162,21 @@
 
                 <div class="card-body" id="addContentCardBody">
                     <input type="hidden" value="@Model.ContentId" asp-for="ContentId" />
+                     @if(@ViewBag.IsSysAcc)
+                    {
+                        <div class="row">
+                             <div class="form-group col-12 col-md-3">
+                              <label asp-for="AssociatedDomainId" class="form-label">@Language.GetString("AssociatedDomain")</label>
+                              <select class="form-control selectpicker" data-live-search="true" 
+                                 asp-for="@Model.AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text", Model.AssociatedDomainId))">
+                            </select>
+                            <span data-val-result="AssociatedDomainId" class="text-danger"></span>
+                        </div>
+                        </div>
+                    }else
+                    {
+                         <input type="hidden" value="@Model.AssociatedDomainId" asp-for="AssociatedDomainId" />
+                    }
                     <div class="row">
                         <div class="col-12 col-md-3">
                             <label class="form-label" asp-for="@Model.LanguageId">@Language.GetString("RelatedLanguage")</label>
@@ -636,7 +651,8 @@
             else {
                 $('.datepicker').datepicker();
             }
-            if ("@Model.ContentId" != "") {
+            if ("@Model.ContentId" != "") 
+            {
 
                 if ($("#IsSidebarContentsShowing").is(":checked")) {
                     $(".sidebarContentCountSection").removeClass("d-none");
@@ -651,7 +667,8 @@
                 if ("@Model.PersianEndShowDate" != "") {
                     $("#dtpEndShowDate").val("@Model.PersianEndShowDate");
                 }
-                if ('@Model.Images.Any()' == 'True') {
+                if ('@Model.Images.Any()' == 'True')
+                {
                     debugger;
                     var serverImages = @Json.Serialize(@Model.Images);
                     for (var i = 0; i < serverImages.length; i++) {
@@ -667,10 +684,73 @@
                     }
                 }
             }
-            else {
+            else 
+            {
                 $("#LanguageId").val('@ViewBag.LangId');
                 $("#LanguageId").selectpicker("refresh");
             }
+
+            $("#AssociatedDomainId").change(function(){
+                var domainId = $(this).val();
+                var langId = $("#LanguageId").val();
+
+                //contentcategory
+                $.ajax({
+                    url: `@Url.Action("GetContentCategoryList", "ContentCategory")?lid=${langId}&did=${domainId}`,
+                    type: 'Get',
+                    dataType: 'json',
+                    success: function (result) {
+                        debugger;
+                        var options = "";
+                        if (result.status === "success") {
+                            debugger;
+                            if (result.data.length != 0) {
+                                (result.data).forEach(function (item) {
+                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                    options += op;
+                                });
+
+                                $("#ContentCategoryId").html(options);
+                                $("#ContentCategoryId").selectpicker("refresh");
+                            }
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+
+                $.ajax({
+                    url: `@Url.Action("GetProductUnitList", "ProductUnit")?lid=${langId}&did=${domainId}`,
+                    type: 'Get',
+                    dataType: 'json',
+                    success: function (result) {
+                        debugger;
+                        var options = "";
+                        if (result.status === "success") {
+                            debugger;
+                            if (result.data.length != 0) {
+                                (result.data).forEach(function (item) {
+                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                    options += op;
+                                });
+
+                                $("#ProductUnitId").html(options);
+                                $("#ProductUnitId").selectpicker("refresh");
+                            }
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+            });
+
+
             $("#btnAddContent").click(function() {
                 debugger;
                 /*console.log("btnAddContent started");*/
@@ -716,7 +796,14 @@
                      $("span[data-val-result='UrlFriend']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
                 }
-                var urlFriend =$("#UrlFriend").val(); 
+                if($("#AssociatedDomainId").val() == "")
+                {
+                      $("span[data-val-result='AssociatedDomainId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
+                var arr = $("#UrlFriend").val().split(" ");
+                var urlFriend = arr.join("-"); 
+
                  var contentId = '@Model.ContentId' == '' ? "" : '@Model.ContentId' ;
                 if (!flag) {
                     $.ajax({
@@ -843,9 +930,10 @@
             $("#LanguageId").change(function() {
                 debugger;
                 var langId = $("#LanguageId").val();
+                var domainId = $("#AssociatedDomainId").val();
                 if (langId != "-1") {
                     $.ajax({
-                        url: `@Url.Action("GetContentCategoryList", "ContentCategory")/${langId}`,
+                        url: `@Url.Action("GetContentCategoryList", "ContentCategory")?lid=${langId}&did=${domainId}`,
                         type: 'Get',
                         dataType: 'json',
                         success: function(result) {
@@ -1003,10 +1091,13 @@
                     flag = true;
                 }
                 debugger;
+                var arr = $("#urlFriend").val().split(" ");
+                var urlFriend = arr.join("-");
+
                 if (!flag)
                 {
                      $.ajax({
-                       url: '@Url.Action("CheckUrlFriendUniqueness", "Product")'+"?id="+ '' +"&url=" + $("#urlFriend").val(),
+                       url: '@Url.Action("CheckUrlFriendUniqueness", "Product")'+"?id="+ '' +"&url=" + urlFriend,
                        type: 'Get',
                        dataType: 'json',
                        success: function(result)
@@ -1266,6 +1357,8 @@
             obj.IsRateBoxShowing = $("#IsRateBoxShowing").is(":checked");
             obj.IsSliderShowing = $("#IsSliderShowing").is(":checked");
             obj.IsSidebarContentsShowing = $("#IsSidebarContentsShowing").is(":checked");
+            obj.AssociatedDomainId = $("#AssociatedDomainId").val();
+
             if ($("#IsSidebarContentsShowing").is(":checked")) {
                 obj.SidebarContentCount = $("#SidebarContentCount").val();
             }

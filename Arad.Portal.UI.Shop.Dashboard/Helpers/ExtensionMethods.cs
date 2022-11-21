@@ -23,6 +23,9 @@ using Arad.Portal.DataLayer.Contracts.General.CountryParts;
 using Arad.Portal.DataLayer.Contracts.General.DesignStructure;
 using Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo;
 using Microsoft.AspNetCore.Http;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Models.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 {
@@ -96,6 +99,42 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             }
             #endregion permission
 
+            #region user
+            var userManager =
+                (UserManager<ApplicationUser>)scope.ServiceProvider
+                    .GetService(typeof(UserManager<ApplicationUser>));
+
+            if (userManager != null && !userManager.Users.Any())
+            {
+                var user = new ApplicationUser()
+                {
+                    //for testing
+                    //Id = Guid.NewGuid().ToString(),
+                    Id = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa",
+                    UserName = "SuperAdmin",
+                    PhoneNumber = "989309910790",
+                    IsActive = true,
+                    IsSystemAccount = true,
+                    UserRoleId = "0e1643a3-1212-485b-862f-45147532427c",
+                    Profile = new Profile()
+                    {
+                        Gender = Gender.Female,
+                        FatherName = "نام پدر",
+                        FirstName = "ادمین",
+                        LastName = "شماره یک",
+                        FullName = "ادمین" + " " + "شماره یک",
+                        NationalCode = "",
+                        CompanyName = "myComapany",
+                        DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
+                        DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
+                        UserType = UserType.Admin
+                    },
+                    CreationDate = DateTime.UtcNow
+                };
+
+                userManager.CreateAsync(user, "Sa@12345").Wait();
+            }
+            #endregion user
 
             #region country, state, city
             var countryRepository =

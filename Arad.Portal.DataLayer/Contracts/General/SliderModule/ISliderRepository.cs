@@ -11,7 +11,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.SliderModule
 {
     public interface ISliderRepository
     {
-        List<Slider> GetSliders();
+        Task<List<Slider>> GetSliders(string currentUserId);
         bool AddSlider(Slider model);
         Slider GetSlider(string id);
         Task<bool> Update(Slider slider);
