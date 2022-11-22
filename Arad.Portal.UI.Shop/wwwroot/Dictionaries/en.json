@@ -387,6 +387,10 @@
     "Key": "PermissionTitle_AddNewLanguage"
   },
   {
+    "Value": "Add New Currency",
+    "Key": "PermissionTitle_AddNewCurrency"
+  },
+  {
     "Value": "comment delete",
     "Key": "ProductCommentDelete"
   },
@@ -2170,6 +2174,22 @@
   {
     "Value": "Add",
     "Key": "Menu_Add"
+  },
+  {
+    "Value": "CurrencyName",
+    "Key": "Menu_CurrencyName"
+  },
+  {
+    "Value": "currency prefix",
+    "Key": "Menu_CurrencyPrefix"
+  },
+  {
+    "Value": "currency symbol",
+    "Key": "Menu_CurrencySymbol"
+  },
+  {
+    "Value": "isDefault currency",
+    "Key": "Menu_CurrencyIsDefault"
   },
   {
     "Value": "Icon",

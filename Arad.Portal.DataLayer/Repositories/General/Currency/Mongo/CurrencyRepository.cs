@@ -46,7 +46,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
            
             if (!string.IsNullOrWhiteSpace(dto.CurrencyId))//it is update case
             {
-                result = await UpdateCurrencyAsync(equallentModel, dto.ModificationReason);
+                result = await UpdateCurrencyAsync(equallentModel);
             }
             else //it is insert case
             {
@@ -68,7 +68,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
         {
             _context.Collection.InsertOne(entity);
         }
-        private async Task<Result> UpdateCurrencyAsync(Entities.General.Currency.Currency equallentModel, string modificationReason)
+        private async Task<Result> UpdateCurrencyAsync(Entities.General.Currency.Currency equallentModel)
         {
             var result = new Result();
 
@@ -77,16 +77,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
 
             if (availableEntity != null)
             {
-                #region Add Modification
-                var currentModification = availableEntity.Modifications;
-                //currentModification ??= new List<Modification>();
-                var mod = GetCurrentModification(modificationReason);
-
-                currentModification.Add(mod);
-                #endregion
-
-                equallentModel.Modifications = currentModification;
-
+               
                 equallentModel.CreationDate = availableEntity.CreationDate;
                 equallentModel.CreatorUserId = availableEntity.CreatorUserId;
                 equallentModel.CreatorUserName = availableEntity.CreatorUserName;
@@ -150,12 +141,16 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
                 {
                     filter.Set("PageSize", "20");
                 }
-
+               
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
-
-                long totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
-                var list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
+                string keyToFilter = "";
+                if (!string.IsNullOrWhiteSpace(filter["filter"]))
+                {
+                    keyToFilter = filter["filter"].ToString();
+                }
+                long totalCount = _context.Collection.AsQueryable().Count(c => keyToFilter == "" || c.CurrencyName.Contains(keyToFilter));
+                var list = _context.Collection.AsQueryable().Where(c => keyToFilter == "" || c.CurrencyName.Contains(keyToFilter)).Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_=> new CurrencyDTO()
                    {
                        CurrencyId = _.CurrencyId,
@@ -191,15 +186,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
 
             try
             {
-                #region check object dependency 
-                //??
-                //checke all dependencies in other entities if any dependecy exist delete not allowed
-                var allowDeletion = true;
-                #endregion
-                if(allowDeletion)
+               
+                var currencyEntity = _context.Collection.Find(_ => _.CurrencyId == currencyId).FirstOrDefault();
+                if(currencyEntity != null)
                 {
-                    var delResult = await _context.Collection.DeleteOneAsync(_ => _.CurrencyId == currencyId);
-                    if (delResult.IsAcknowledged)
+                    currencyEntity.IsDeleted = true;
+                    var upResult = await _context.Collection.UpdateOneAsync(_ => _.CurrencyId == currencyId, currencyId);
+                    if (upResult.IsAcknowledged)
                     {
                         result.Message = ConstMessages.SuccessfullyDone;
                         result.Succeeded = true;
@@ -208,12 +201,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
                     {
                         result.Message = ConstMessages.GeneralError;
                     }
-                }
-                else
+                }else
                 {
-                    result.Message = ConstMessages.DeletedNotAllowedForDependencies;
+                    result.Message = ConstMessages.ObjectNotFound;
                 }
-               
+                
             }
             catch (Exception e)
             {
@@ -306,6 +298,40 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
                 result = _mapper.Map<CurrencyDTO>(currency);
             }
            
+            return result;
+        }
+
+        public async Task<Result> RestoreCurrency(string currencyId)
+        {
+            Result result = new Result();
+
+            try
+            {
+                var currencyEntity = _context.Collection.Find(_ => _.CurrencyId == currencyId).FirstOrDefault();
+                if (currencyEntity != null)
+                {
+                    currencyEntity.IsDeleted = false;
+                    var upResult = await _context.Collection.UpdateOneAsync(_ => _.CurrencyId == currencyId, currencyId);
+                    if (upResult.IsAcknowledged)
+                    {
+                        result.Message = ConstMessages.SuccessfullyDone;
+                        result.Succeeded = true;
+                    }
+                    else
+                    {
+                        result.Message = ConstMessages.GeneralError;
+                    }
+                }
+                else
+                {
+                    result.Message = ConstMessages.ObjectNotFound;
+                }
+
+            }
+            catch (Exception e)
+            {
+                result.Message = ConstMessages.ExceptionOccured;
+            }
             return result;
         }
     }

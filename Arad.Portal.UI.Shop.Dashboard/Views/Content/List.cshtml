@@ -8,14 +8,23 @@
     bool isSearch = false;
     System.Collections.Specialized.NameValueCollection queryString = null;
     var langId = "";
+    var filter ="";
+    var catId = "";
     var error = Language.GetString("AlertAndMessage_Error");
     if (!string.IsNullOrWhiteSpace(Model.QueryString))
     {
         queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
-        isSearch = !string.IsNullOrWhiteSpace(queryString["LanguageId"]);
+        isSearch = !string.IsNullOrWhiteSpace(queryString["LanguageId"]) 
+           || !string.IsNullOrWhiteSpace(queryString["filter"])
+           || !string.IsNullOrWhiteSpace(queryString["catId"]);
         if (isSearch)
         {
+            if(queryString["LanguageId"] != null)
             langId = queryString["LanguageId"].ToString();
+            if(queryString["filter"] != null)
+            filter = queryString["filter"].ToString();
+            if(queryString["catId"] != null)
+            catId = queryString["catId"].ToString();
         }
         queryString.Remove("page");
     }
@@ -177,6 +186,16 @@
             if ("@langId" != "") {
                 $("#cmbLangIdFilter").val("@langId");
                  $("#cmbLangIdFilter").selectpicker("refresh");
+            }
+            if('@filter' != "")
+            {
+                $("#filter").val("@filter");
+            }
+
+            if("@catId" != "")
+            {
+                $("#contentCategoryId").val("@catId");
+                $("#contentCategoryId").selectpicker("refresh");
             }
 
             $("#cmbLangIdFilter").change(function () {

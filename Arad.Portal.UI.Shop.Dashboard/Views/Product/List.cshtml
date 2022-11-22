@@ -8,13 +8,59 @@
     bool isSearch = false;
     System.Collections.Specialized.NameValueCollection queryString = null;
     var langId = "";
+    var name ="";
+    var desc = "";
+    var groupIds ="";
+    var code ="";
+    var from ="";
+    var to ="";
+    var inventory ="";
+    var promotion ="";
+    var exist = "";
     if (!string.IsNullOrWhiteSpace(Model.QueryString))
     {
         queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
-        isSearch = !string.IsNullOrWhiteSpace(queryString["LanguageId"]);
+        isSearch = !string.IsNullOrWhiteSpace(queryString["LanguageId"]) ||
+       !string.IsNullOrWhiteSpace(queryString["groupIds"]) ||
+       !string.IsNullOrWhiteSpace(queryString["name"]) ||
+       !string.IsNullOrWhiteSpace(queryString["desc"]) ||
+       !string.IsNullOrWhiteSpace(queryString["code"]) ||
+       !string.IsNullOrWhiteSpace(queryString["from"]) ||
+       !string.IsNullOrWhiteSpace(queryString["to"]) ||
+       !string.IsNullOrWhiteSpace(queryString["inventory"]) ||
+       !string.IsNullOrWhiteSpace(queryString["promotion"]) ||
+       !string.IsNullOrWhiteSpace(queryString["exist"]);
         if (isSearch)
         {
+            if(queryString["LanguageId"] != null)
             langId = queryString["LanguageId"].ToString();
+
+            if(queryString["name"] != null)
+            name = queryString["name"].ToString();
+
+            if(queryString["groupIds"] != null)
+            groupIds = queryString["groupIds"].ToString();
+
+            if(queryString["desc"] != null)
+            desc = queryString["desc"].ToString();
+
+            if(queryString["code"] != null)
+            langId = queryString["code"].ToString();
+
+            if(queryString["from"] != null)
+            from = queryString["from"].ToString();
+
+            if(queryString["to"] != null)
+            to = queryString["to"].ToString();
+
+            if(queryString["inventory"] != null)
+            inventory = queryString["inventory"].ToString();
+
+            if(queryString["promotion"] != null)
+            promotion = queryString["promotion"].ToString();
+
+            if(queryString["exist"] != null)
+            exist = queryString["exist"].ToString();
         }
         queryString.Remove("page");
     }
@@ -65,7 +111,7 @@
                 <div class="form-group col-12 col-md-3">
                     <label class="form-label">@Language.GetString("tbl_ProductGroup")</label>
                     <select class="form-control selectpicker" data-live-search="true"
-                            multiple="multiple" id="cmbProductGroupFilter" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))" >
+                           id="cmbProductGroupFilter" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))" >
                     </select>
                 </div>
                 <div class="form-group col-12 col-md-3">
@@ -230,8 +276,15 @@
                                 <td>@item.UniqueCode</td>
                                 <td>@(@item.Inventory != null ? @item.Inventory.Sum(_=>_.Count) : 0)</td>
                                 <td>
-                                    @(item.Prices.Any(_ =>_.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate))
-                                        ? item.Prices.First(_ => _.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).PriceValue : "")
+                                    @{
+                                        var price = item.Prices.Any(_ => _.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate))
+                                                        ? item.Prices.First(_ => _.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).PriceValue : 0;
+                                        var currencyName = item.Prices.Any(_ => _.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate))
+                                        ? item.Prices.First(_ => _.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).CurrencyName : "";
+
+                                        var final = $"{Convert.ToInt64(price):n0} {currencyName}";
+                                    }
+                                    @(final)
                                 </td>
                                 <td>@item.CreationDate</td>
                                 <td dir="ltr">@(item.MultiLingualProperties.Any(_=>_.LanguageId == langId) ? item.MultiLingualProperties.First(_ => _.LanguageId == langId).UrlFriend : "")</td>
@@ -318,6 +371,53 @@
           
             if ("@langId" != "") {
                 $("#cmbLangIdFilter").val("@langId");
+                $("#cmbLangIdFilter").selectpicker("refresh");
+            }
+
+            if("@groupIds" != "")
+            {
+                $("#cmbProductGroupFilter").val("@groupIds");
+                $("#cmbProductGroupFilter").selectpicker("refresh");
+            }
+
+            if("@name" != "")
+            {
+                $("#txtProductNameFilter").val("@name");
+            }
+
+            if("@desc" != "")
+            {
+                $("#txtDescriptionFilter").val("@desc");
+            }
+
+            if("@code" != "")
+            {
+                $("#txtUniqueCodeFilter").val("@code");
+            }
+
+            if("@from" != "")
+            {
+               $("#dtpFromCreationDate").val("@from");
+            }
+
+            if("@to" != "")
+            {
+                $("#dtpToCreationDate").val("@to");
+            }
+
+            if("@inventory" != "")
+            {
+                $("#txtLeastProduct").val("@inventory");
+            }
+
+            if("@promotion" != "")
+            {
+                $("#chbProductsOnPromotion").prop("checked", true);
+            }
+
+            if("@exist" != "")
+            {
+                $("#chbExistentProducts").prop("checked", true);
             }
 
            $("#cmbLangIdFilter").change(function () {

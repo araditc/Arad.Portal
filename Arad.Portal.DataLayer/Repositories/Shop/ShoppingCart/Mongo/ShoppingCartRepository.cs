@@ -266,7 +266,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     var sellerObj = userCartEntity.Details.Where(_ => _.SellerId == productEntity.SellerUserId).FirstOrDefault();
                     var productRow = sellerObj.Products.FirstOrDefault(_ => _.ShoppingCartDetailId == shoppingCartDetailId);
 
-                    var index = sellerObj.Products.IndexOf(productRow);
+                   
                     if (inventoryDetail.Count > 0 && inventoryDetail.Count >= newCount)
                     {
                         if (productRow != null)
@@ -276,9 +276,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             var res = await GetCurrentDiscountPerUnit(productEntity, price);
                             productRow.DiscountPricePerUnit = res.DiscountPerUnit;
                             productRow.PricePerUnit = price;
-                            sellerObj.Products[index] = productRow;
-                            var sellerIndex = userCartEntity.Details.IndexOf(sellerObj);
-                            userCartEntity.Details[sellerIndex] = sellerObj;
+                           
                             var updateResult = await _context.Collection
                                 .ReplaceOneAsync(_ => _.ShoppingCartId == userCartEntity.ShoppingCartId, userCartEntity);
                             if (updateResult.IsAcknowledged)

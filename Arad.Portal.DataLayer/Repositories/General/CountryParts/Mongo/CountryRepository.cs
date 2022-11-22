@@ -31,12 +31,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo
 
         public IMongoCollection<Country> Countries { get; set; }
         
-
-        //public async Task InsertMany(List<Entities.General.Country.Country> countries)
-        //{
-        //    await _context.CountryCollection.InsertManyAsync(countries);
-        //}
-
+      
         public List<SelectListModel> GetAllCountries()
         {
             var lst = _context.CountryCollection.AsQueryable().Select(_ => new SelectListModel()

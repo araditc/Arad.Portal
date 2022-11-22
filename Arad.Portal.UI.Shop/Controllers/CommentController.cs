@@ -21,6 +21,7 @@ using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Contracts.General.User;
+using DocumentFormat.OpenXml.Math;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -131,6 +132,9 @@ namespace Arad.Portal.UI.Shop.Controllers
 
                     if (isAddAllow)
                     {
+                        var domainName = HttpContext.Request.Host.ToString();
+                        var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
+                        dto.AssociatedDomainId = domainEntity.DomainId;
                         Result<DataLayer.Entities.General.Comment.Comment> saveResult = await _commentRepository.Add(dto);
                         result = Json(saveResult.Succeeded ? new
                         {

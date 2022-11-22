@@ -1335,7 +1335,7 @@
     "Symbol": "en-US",
     "Direction": 0,
     "IsDefault": false,
-    "IsActive" :  true
+    "IsActive" : true
   },
   {
     "LanguageId": "3e86aa02-8613-45bf-88b8-f9bd4a77115d",
@@ -1623,7 +1623,7 @@
     "Symbol": "fa-IR",
     "Direction": 1,
     "IsDefault": true,
-    "IsActive":  true
+    "IsActive" :  true
   },
   {
     "LanguageId": "b71be9fe-30db-4aeb-9077-bcda8a8d41ed",

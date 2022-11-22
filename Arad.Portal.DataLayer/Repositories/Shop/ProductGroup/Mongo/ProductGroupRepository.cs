@@ -496,12 +496,12 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             if (long.TryParse(slugOrCode, out codeNumber))
             {
                 entity = _productContext.ProductGroupCollection
-                 .Find(_ => _.GroupCode == codeNumber).FirstOrDefault();
+                 .Find(_ => _.GroupCode == codeNumber && !_.IsDeleted).FirstOrDefault();
             }
             else
             {
                 entity = _productContext.ProductGroupCollection
-                    .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == $"/group/{slugOrCode}")).FirstOrDefault();
+                    .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == $"/group/{slugOrCode}") && !_.IsDeleted).FirstOrDefault();
             }
 
             if(entity != null)

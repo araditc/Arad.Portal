@@ -33,6 +33,8 @@ namespace Arad.Portal.DataLayer.Models.Comment
 
         public string ReferenceId { get; set; }
 
+        public string AssociatedDomainId { get; set; }
+
         public string ReferenceTitle { get; set; }
     }
 }

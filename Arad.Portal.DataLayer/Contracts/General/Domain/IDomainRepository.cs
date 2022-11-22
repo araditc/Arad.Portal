@@ -23,6 +23,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
         void InsertOne(Entities.General.Domain.Domain entity);
         string FetchDomainTitle(string domainName);
         string GetDomainName();
+        bool HasDefaultDomain();
         Entities.General.Domain.Domain FetchDomainByName(string domainName);
         Result<DomainDTO> GetDefaultDomain();
         SMTP GetSMTPAccount(string domainName);

@@ -613,7 +613,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             JsonResult result;
             //Result saveResult;
             DomainDTO model;
-            var domainId = User.GetClaimValue("RelatedDomain");
+            var domainId = "";
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userDb = await _userManager.FindByIdAsync(currentUserId);
+
+            domainId = userDb.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
             if (!ModelState.IsValid)
             {
                 var errors = new List<AjaxValidationErrorModel>();

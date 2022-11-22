@@ -28,6 +28,9 @@ using Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo;
 using Microsoft.AspNetCore.Http;
 using AspNetCore.Identity.MongoDbCore.Models;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Entities.General.Domain;
+using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 
 namespace Arad.Portal.UI.Shop.Helpers
 {
@@ -102,7 +105,23 @@ namespace Arad.Portal.UI.Shop.Helpers
             }
             #endregion permission
 
-            
+            #region Domain
+            var domainRepository =
+              (DomainRepository)scope.ServiceProvider.GetService(typeof(IDomainRepository));
+            if (!domainRepository.HasDefaultDomain())
+            {
+                var domain = new Domain()
+                {
+                    DomainId = "87deb839-c63a-460d-8c31-86c80b2a85b1",
+                    DomainName = "SampleDomainShouldBeChangedToYourDesiredDomainName",
+                    IsDefault = true,
+                    IsActive = true,
+                    DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
+                    DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a"
+                };
+                domainRepository.InsertOne(domain);
+            }
+            #endregion
 
             #region user
             var userManager =
@@ -136,7 +155,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                     },
                     CreationDate = DateTime.UtcNow
                 };
-
+                user.Domains.Add(new UserDomain() { DomainId = "87deb839-c63a-460d-8c31-86c80b2a85b1", DomainName = "SampleDomainShouldBeChangedToYourDesiredDomainName", IsOwner = true });
                 userManager.CreateAsync(user, "Sa@12345").Wait();
             }
             #endregion user

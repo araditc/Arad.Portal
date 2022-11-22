@@ -82,12 +82,18 @@
                         "ClientAddress": "/Role/Delete",
                         "Urls": []
                     },
-                    {
-                        "PermissionId": "f4adf45a-53df-4300-be6a-cc97159a260a",
-                        "Title": "ChangeActivation",
-                        "ClientAddress": "/Role/ChangeActivation",
-                        "Urls": []
-                    }
+                  {
+                    "PermissionId": "f4adf45a-53df-4300-be6a-cc97159a260a",
+                    "Title": "ChangeActivation",
+                    "ClientAddress": "/Role/ChangeActivation",
+                    "Urls": []
+                  },
+                  {
+                    "PermissionId": "f4vff45a-53df-4300-be6a-cc97159a260a",
+                    "Title": "ActionRestore",
+                    "ClientAddress": "/Role/Restore",
+                    "Urls": []
+                  }
                 ]
             }
         ]
@@ -122,12 +128,18 @@
                         "ClientAddress": "/ProductUnit/AddEdit",
                         "Urls": [ "/ProductUnit/Edit", "ProductUnit/List" ]
                     },
-                    {
-                        "PermissionId": "b7916304-be34-4dd7-9404-9de6230733c5",
-                        "Title": "ActionDelete",
-                        "ClientAddress": "/ProductUnit/Delete",
-                        "Urls": []
-                    }
+                  {
+                    "PermissionId": "b7916304-be34-4dd7-9404-9de6230733c5",
+                    "Title": "ActionDelete",
+                    "ClientAddress": "/ProductUnit/Delete",
+                    "Urls": []
+                  },
+                  {
+                    "PermissionId": "b7756304-be34-4dd7-9404-9de6230733c5",
+                    "Title": "ActionRestore",
+                    "ClientAddress": "/ProductUnit/Restore",
+                    "Urls": []
+                  }
                 ]
             },
             {
@@ -184,12 +196,18 @@
                         "ClientAddress": "/ProductSpecificationGroup/AddEdit",
                         "Urls": [ "/ProductSpecificationGroup/Edit", "/ProductSpecificationGroup/List" ]
                     },
-                    {
-                        "PermissionId": "1df1f5e3-dc47-42eb-b126-6714a1ca311b",
-                        "Title": "ActionDelete",
-                        "ClientAddress": "/ProductSpecificationGroup/Delete",
-                        "Urls": []
-                    }
+                  {
+                    "PermissionId": "1df1f5e3-dc47-42eb-b126-6714a1ca311b",
+                    "Title": "ActionDelete",
+                    "ClientAddress": "/ProductSpecificationGroup/Delete",
+                    "Urls": []
+                  },
+                  {
+                    "PermissionId": "4gf1f5e3-dc47-42eb-b126-6714a1ca311b",
+                    "Title": "ActionRestore",
+                    "ClientAddress": "/ProductSpecificationGroup/Restore",
+                    "Urls": []
+                  }
                 ]
             },
             {
@@ -212,12 +230,18 @@
                         "ClientAddress": "/ProductSpecification/AddEdit",
                         "Urls": [ "/ProductSpecification/GetSpecificationGroupList/", "/ProductSpecification/List", "/ProductSpecification/Edit" ]
                     },
-                    {
-                        "PermissionId": "76786d07-2b41-4fe4-864a-186b76cc02cb",
-                        "Title": "ActionDelete",
-                        "ClientAddress": "/ProductSpecification/Delete",
-                        "Urls": []
-                    }
+                  {
+                    "PermissionId": "76786d07-2b41-4fe4-864a-186b76cc02cb",
+                    "Title": "ActionDelete",
+                    "ClientAddress": "/ProductSpecification/Delete",
+                    "Urls": []
+                  },
+                  {
+                    "PermissionId": "76786d07-2b41-4fe4-864a-186b76cc02cb",
+                    "Title": "ActionRestore",
+                    "ClientAddress": "/ProductSpecification/Restore",
+                    "Urls": []
+                  }
                 ]
             },
             {
@@ -252,12 +276,18 @@
                             "Product/List"
                         ]
                     },
-                    {
-                        "PermissionId": "edff21ae-186f-4c11-a84b-bff910ca65b3",
-                        "Title": "ActionDelete",
-                        "ClientAddress": "/Product/Delete",
-                        "Urls": []
-                    }
+                  {
+                    "PermissionId": "edff21ae-186f-4c11-a84b-bff910ca65b3",
+                    "Title": "ActionDelete",
+                    "ClientAddress": "/Product/Delete",
+                    "Urls": []
+                  },
+                  {
+                    "PermissionId": "ed8521ae-186f-4c11-a84b-bff910ca65b3",
+                    "Title": "ActionRestore",
+                    "ClientAddress": "/Product/Restore",
+                    "Urls": []
+                  }
                 ]
             },
             {
@@ -654,7 +684,46 @@
             "Urls": []
           }
         ]
+      },
+      {
+        "PermissionId": "dvt3534a-1586-4b64-80fb-19b6127fa322",
+        "Title": "AddNewCurrency",
+        "LevelNo": 2,
+        "Priority": 6,
+        "Icon": "fa fa-dollar",
+        "ClientAddress": "/Currency/List",
+        "Actions": [
+          {
+            "PermissionId": "tyu3534a-1586-4b64-80fb-19b6127fa322",
+            "Title": "ActionNew",
+            "ClientAddress": "/Currency/AddEdit",
+            "Urls": [
+              "/Currency/Save"
+            ]
+          },
+          {
+            "PermissionId": "poi3534a-1586-4b64-80fb-19b6127fa322",
+            "Title": "ActionEdit",
+            "ClientAddress": "/Currency/AddEdit",
+            "Urls": [
+              "/Currency/Save"
+            ]
+          },
+          {
+            "PermissionId": "nhy3534a-1586-4b64-80fb-19b6127fa322",
+            "Title": "ActionDelete",
+            "ClientAddress": "/Currency/Delete",
+            "Urls": []
+          },
+          {
+            "PermissionId": "rtu3534a-1586-4b64-80fb-19b6127fa322",
+            "Title": "ActionRestore",
+            "ClientAddress": "/Currency/Restore",
+            "Urls": []
+          }
+        ]
       }
+
     ]
 
   }

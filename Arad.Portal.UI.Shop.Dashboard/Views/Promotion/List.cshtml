@@ -16,7 +16,7 @@
     var groupId = "-1";
     var fromDate = "";
     var toDate = "";
-     var baseAdd = Config["BaseAddress"];
+    var baseAdd = Config["BaseAddress"];
 
     if (!string.IsNullOrWhiteSpace(Model.QueryString))
     {
@@ -25,34 +25,42 @@
         if (!string.IsNullOrWhiteSpace(queryString["promotionTypeId"]))
         {
             promotionTypeId = queryString["promotionTypeId"].ToString();
+            isSearch = true;
         }
         if (!string.IsNullOrWhiteSpace(queryString["discountTypeId"]))
         {
             discountTypeId = queryString["discountTypeId"].ToString();
+             isSearch = true;
         }
         if (!string.IsNullOrWhiteSpace(queryString["title"]))
         {
             title = queryString["title"].ToString();
+             isSearch = true;
         }
         if (!string.IsNullOrWhiteSpace(queryString["fDate"]))
         {
             fromDate = queryString["fDate"].ToString();
+             isSearch = true;
         }
         if (!string.IsNullOrWhiteSpace(queryString["tDate"]))
         {
             toDate = queryString["tDate"].ToString();
+             isSearch = true;
         }
         if (!string.IsNullOrWhiteSpace(queryString["groupId"]))
         {
             groupId = queryString["groupId"].ToString();
+             isSearch = true;
         }
         if (!string.IsNullOrWhiteSpace(queryString["productId"]))
         {
             productId = queryString["productId"].ToString();
+             isSearch = true;
         }
         if (!string.IsNullOrWhiteSpace(queryString["vendor"]))
         {
             vendor = queryString["vendor"].ToString();
+            isSearch = true;
         }
 
         queryString.Remove("page");

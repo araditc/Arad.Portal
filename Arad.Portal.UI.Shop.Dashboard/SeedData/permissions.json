@@ -1,5 +1,6 @@
 ﻿[
-    //------------------------------------------User Management------------------------------------
+  //------------------------------------------User Management------------------------------------
+
   {
     "PermissionId": "86deb739-c63a-460d-8c31-86c80b2a85b1",
     "Title": "UserManagement",
@@ -86,257 +87,287 @@
             "Title": "ChangeActivation",
             "ClientAddress": "/Role/ChangeActivation",
             "Urls": []
+          },
+          {
+            "PermissionId": "f4vff45a-53df-4300-be6a-cc97159a260a",
+            "Title": "ActionRestore",
+            "ClientAddress": "/Role/Restore",
+            "Urls": []
           }
         ]
       }
     ]
   },
-
   //------------------------------------Product Management--------------------------
-    {
-        "PermissionId": "8cae0481-d040-4ea2-94b3-486af69aa9dc",
-        "Title": "ProductManagement",
-        "LevelNo": 1,
-        "Priority": 2,
-        "Icon": "fa fa-list",
-        "ClientAddress": "#",
-        "Children": [
-            {
-                "PermissionId": "55f9b071-3d6d-4bde-932f-0ef9366e3099",
-                "Title": "ProductUnit",
-                "LevelNo": 2,
-                "Priority": 1,
-                "Icon": "fas fa-tags",
-                "ClientAddress": "/ProductUnit/List",
-                "Actions": [
-                    {
-                        "PermissionId": "98930d51-f5f4-4e74-833f-4a8b1b857994",
-                        "Title": "ActionNew",
-                        "ClientAddress": "/ProductUnit/AddEdit",
-                        "Urls": [ "/ProductUnit/Add", "ProductUnit/List" ]
-                    },
-                    {
-                        "PermissionId": "9891e25b-fe63-40a0-be4b-1789e24a1f0b",
-                        "Title": "ActionEdit",
-                        "ClientAddress": "/ProductUnit/AddEdit",
-                        "Urls": [ "/ProductUnit/Edit", "ProductUnit/List" ]
-                    },
-                    {
-                        "PermissionId": "b7916304-be34-4dd7-9404-9de6230733c5",
-                        "Title": "ActionDelete",
-                        "ClientAddress": "/ProductUnit/Delete",
-                        "Urls": []
-                    }
-                ]
-            },
-            {
-                "PermissionId": "c0d3e9ef-2356-49cd-b5eb-5c8ea18f2102",
-                "Title": "ProductGroup",
-                "LevelNo": 2,
-                "Priority": 2,
-                "Icon": "fa fa fa-object-ungroup",
-                "ClientAddress": "/ProductGroup/List",
-                "Actions": [
-                    {
-                        "PermissionId": "87b791eb-1262-4c9d-abda-26f2efd9383e",
-                        "Title": "ActionNew",
-                        "ClientAddress": "/ProductGroup/AddEdit",
-                        "Urls": [ "/ProductGroup/Add", "ProductGroup/List" ]
-                    },
-                    {
-                        "PermissionId": "1540df3c-3c81-4b00-9cc7-508e2518a2fb",
-                        "Title": "ActionEdit",
-                        "ClientAddress": "/ProductGroup/AddEdit",
-                        "Urls": [ "/ProductGroup/Edit", "ProductGroup/List" ]
-                    },
-                    {
-                        "PermissionId": "a73e48f3-ad62-47f0-aaa4-3fd954230dfd",
-                        "Title": "ActionDelete",
-                        "ClientAddress": "/ProductGroup/Delete",
-                        "Urls": []
-                    },
-                    {
-                        "PermissionId": "6affac98-8d58-4573-8793-fc0374fc799d",
-                        "Title": "ActionRestore",
-                        "ClientAddress": "/ProductGroup/Restore",
-                        "Urls": []
-                    }
-                ]
-            },
-            {
-                "PermissionId": "05b4e07f-14e7-4ce3-a820-96ab28487da9",
-                "Title": "ProductSpecificationGroup",
-                "LevelNo": 2,
-                "Priority": 3,
-                "Icon": "fa fa-object-group",
-                "ClientAddress": "/ProductSpecificationGroup/List",
-                "Actions": [
-                    {
-                        "PermissionId": "dda6df00-5471-4790-a43d-c002edd087fc",
-                        "Title": "ActionNew",
-                        "ClientAddress": "/ProductSpecificationGroup/AddEdit",
-                        "Urls": [ "/ProductSpecificationGroup/Add", "/ProductSpecificationGroup/List" ]
-                    },
-                    {
-                        "PermissionId": "1df1f5e3-dc38-42eb-b126-6714a1ca311b",
-                        "Title": "ActionEdit",
-                        "ClientAddress": "/ProductSpecificationGroup/AddEdit",
-                        "Urls": [ "/ProductSpecificationGroup/Edit", "/ProductSpecificationGroup/List" ]
-                    },
-                    {
-                        "PermissionId": "1df1f5e3-dc47-42eb-b126-6714a1ca311b",
-                        "Title": "ActionDelete",
-                        "ClientAddress": "/ProductSpecificationGroup/Delete",
-                        "Urls": []
-                    }
-                ]
-            },
-            {
-                "PermissionId": "0448ba84-1d93-4e21-811b-76ae3185e788",
-                "Title": "ProductSpecification",
-                "LevelNo": 2,
-                "Priority": 4,
-                "Icon": "fa fa-cog",
-                "ClientAddress": "/ProductSpecification/List",
-                "Actions": [
-                    {
-                        "PermissionId": "21a4dbe9-ed84-43b1-9a3b-cccfb3c5290d",
-                        "Title": "ActionNew",
-                        "ClientAddress": "/ProductSpecification/AddEdit",
-                        "Urls": [ "/ProductSpecification/GetSpecificationGroupList/", "/ProductSpecification/List", "/ProductSpecification/Add" ]
-                    },
-                    {
-                        "PermissionId": "d56eb6cb-16c2-4ce4-a314-fb927b0155be",
-                        "Title": "ActionEdit",
-                        "ClientAddress": "/ProductSpecification/AddEdit",
-                        "Urls": [ "/ProductSpecification/GetSpecificationGroupList/", "/ProductSpecification/List", "/ProductSpecification/Edit" ]
-                    },
-                    {
-                        "PermissionId": "76786d07-2b41-4fe4-864a-186b76cc02cb",
-                        "Title": "ActionDelete",
-                        "ClientAddress": "/ProductSpecification/Delete",
-                        "Urls": []
-                    }
-                ]
-            },
-            {
-                "PermissionId": "edff21ae-186f-4c11-a84b-bff910ca75b3",
-                "Title": "Products",
-                "LevelNo": 2,
-                "Priority": 5,
-                "Icon": "fa fa-shopping-bag",
-                "ClientAddress": "/Product/List",
-                "Actions": [
-                    {
-                        "PermissionId": "edff21ae-186f-4c11-a74b-bff910ca75b3",
-                        "Title": "ActionNew",
-                        "ClientAddress": "/Product/AddEdit",
-                        "Urls": [
-                            "/ProductSpecification/GetSpecificationGroupList/",
-                            "/ProductSpecification/GetSpecificationInGroupAndLang",
-                            "/ProductSpecification/GetSpecificationValuesInLanguage",
-                            "/Product/Add",
-                            "Product/List"
-                        ]
-                    },
-                    {
-                        "PermissionId": "edff21ae-186f-4c11-a84b-bff810ca75b3",
-                        "Title": "ActionEdit",
-                        "ClientAddress": "/Product/AddEdit",
-                        "Urls": [
-                            "/ProductSpecification/GetSpecificationGroupList/",
-                            "/ProductSpecification/GetSpecificationInGroupAndLang",
-                            "/ProductSpecification/GetSpecificationValuesInLanguage",
-                            "/Product/Edit",
-                            "Product/List"
-                        ]
-                    },
-                    {
-                        "PermissionId": "edff21ae-186f-4c11-a84b-bff910ca65b3",
-                        "Title": "ActionDelete",
-                        "ClientAddress": "/Product/Delete",
-                        "Urls": []
-                    }
-                ]
-            },
-            {
-                "PermissionId": "7f41b1a8-289f-4ef5-9fcc-3b9555ce3a8a",
-                "Title": "ProductComments",
-                "LevelNo": 2,
-                "Priority": 6,
-                "Icon": "fa fa-comments",
-                "ClientAddress": "/ProductComments/List",
-                "Actions": [
-                    {
-                        "PermissionId": "3985ca90-4a53-4304-95cd-e9e41a33d980",
-                        "Title": "ProductCommentDelete",
-                        "ClientAddress": "/ProductComments/Delete",
-                        "Urls": []
-                    },
-                    {
-                        "PermissionId": "f612ae15-70a9-444b-9469-d46063282e45",
-                        "Title": "ProductCommentApprove",
-                        "ClientAddress": "/ProductComments/Approve",
-                        "Urls": []
-                    }
-                ]
-            },
-            {
-                "PermissionId": "36f8fe1f-c94e-4465-9fc7-f9ee96f2b9a4",
-                "Title": "Promotions",
-                "LevelNo": 2,
-                "Priority": 7,
-                "Icon": "fas fa-gifts",
-                "ClientAddress": "/Promotion/List",
-                "Actions": [
-                    {
-                        "PermissionId": "03f87624-77a1-4e64-8051-65192f13222b",
-                        "Title": "ActionNew",
-                        "ClientAddress": "/Promotion/AddEdit",
-                        "Urls": [
-                            "/Promotion/GetFilteredProductGroup",
-                            "/Promotion/GetFilteredProductGroup",
-                            "/Promotion/GetFilteredProduct",
-                            "Promotion/List",
-                            "/Promotion/Add"
-                        ]
-                    },
-                    {
-                        "PermissionId": "13f87624-77a1-4e64-8051-65192f13222b",
-                        "Title": "ActionEdit",
-                        "ClientAddress": "/Promotion/AddEdit",
-                        "Urls": [
-                            "/Promotion/GetFilteredProductGroup",
-                            "/Promotion/GetFilteredProductGroup",
-                            "/Promotion/GetFilteredProduct",
-                            "Promotion/List",
-                            "/Promotion/Edit"
-                        ]
-                    },
-                    {
-                        "PermissionId": "23f87624-77a1-4e64-8051-65192f13222b",
-                        "Title": "ActionDelete",
-                        "ClientAddress": "/Promotion/Delete",
-                        "Urls": []
-                    },
-                    {
-                        "PermissionId": "33f87624-77a1-4e64-8051-65192f13222b",
-                        "Title": "ActionRestore",
-                        "ClientAddress": "/Promotion/Restore",
-                        "Urls": []
-                    },
-                    {
-                        "PermissionId": "43f87624-77a1-4e64-8051-65192f13222b",
-                        "Title": "ChangeActivation",
-                        "ClientAddress": "/Promotion/ChangeActivation",
-                        "Urls": []
-                    }
 
-                ]
-            }
+  {
+    "PermissionId": "8cae0481-d040-4ea2-94b3-486af69aa9dc",
+    "Title": "ProductManagement",
+    "LevelNo": 1,
+    "Priority": 2,
+    "Icon": "fa fa-list",
+    "ClientAddress": "#",
+    "Children": [
+      {
+        "PermissionId": "55f9b071-3d6d-4bde-932f-0ef9366e3099",
+        "Title": "ProductUnit",
+        "LevelNo": 2,
+        "Priority": 1,
+        "Icon": "fas fa-tags",
+        "ClientAddress": "/ProductUnit/List",
+        "Actions": [
+          {
+            "PermissionId": "98930d51-f5f4-4e74-833f-4a8b1b857994",
+            "Title": "ActionNew",
+            "ClientAddress": "/ProductUnit/AddEdit",
+            "Urls": [ "/ProductUnit/Add", "ProductUnit/List" ]
+          },
+          {
+            "PermissionId": "9891e25b-fe63-40a0-be4b-1789e24a1f0b",
+            "Title": "ActionEdit",
+            "ClientAddress": "/ProductUnit/AddEdit",
+            "Urls": [ "/ProductUnit/Edit", "ProductUnit/List" ]
+          },
+          {
+            "PermissionId": "b7916304-be34-4dd7-9404-9de6230733c5",
+            "Title": "ActionDelete",
+            "ClientAddress": "/ProductUnit/Delete",
+            "Urls": []
+          },
+          {
+            "PermissionId": "b7756304-be34-4dd7-9404-9de6230733c5",
+            "Title": "ActionRestore",
+            "ClientAddress": "/ProductUnit/Restore",
+            "Urls": []
+          }
         ]
-    },
-    //--------------------------------------------ContentManagement------------------------
+      },
+      {
+        "PermissionId": "c0d3e9ef-2356-49cd-b5eb-5c8ea18f2102",
+        "Title": "ProductGroup",
+        "LevelNo": 2,
+        "Priority": 2,
+        "Icon": "fa fa fa-object-ungroup",
+        "ClientAddress": "/ProductGroup/List",
+        "Actions": [
+          {
+            "PermissionId": "87b791eb-1262-4c9d-abda-26f2efd9383e",
+            "Title": "ActionNew",
+            "ClientAddress": "/ProductGroup/AddEdit",
+            "Urls": [ "/ProductGroup/Add", "ProductGroup/List" ]
+          },
+          {
+            "PermissionId": "1540df3c-3c81-4b00-9cc7-508e2518a2fb",
+            "Title": "ActionEdit",
+            "ClientAddress": "/ProductGroup/AddEdit",
+            "Urls": [ "/ProductGroup/Edit", "ProductGroup/List" ]
+          },
+          {
+            "PermissionId": "a73e48f3-ad62-47f0-aaa4-3fd954230dfd",
+            "Title": "ActionDelete",
+            "ClientAddress": "/ProductGroup/Delete",
+            "Urls": []
+          },
+          {
+            "PermissionId": "6affac98-8d58-4573-8793-fc0374fc799d",
+            "Title": "ActionRestore",
+            "ClientAddress": "/ProductGroup/Restore",
+            "Urls": []
+          }
+        ]
+      },
+      {
+        "PermissionId": "05b4e07f-14e7-4ce3-a820-96ab28487da9",
+        "Title": "ProductSpecificationGroup",
+        "LevelNo": 2,
+        "Priority": 3,
+        "Icon": "fa fa-object-group",
+        "ClientAddress": "/ProductSpecificationGroup/List",
+        "Actions": [
+          {
+            "PermissionId": "dda6df00-5471-4790-a43d-c002edd087fc",
+            "Title": "ActionNew",
+            "ClientAddress": "/ProductSpecificationGroup/AddEdit",
+            "Urls": [ "/ProductSpecificationGroup/Add", "/ProductSpecificationGroup/List" ]
+          },
+          {
+            "PermissionId": "1df1f5e3-dc38-42eb-b126-6714a1ca311b",
+            "Title": "ActionEdit",
+            "ClientAddress": "/ProductSpecificationGroup/AddEdit",
+            "Urls": [ "/ProductSpecificationGroup/Edit", "/ProductSpecificationGroup/List" ]
+          },
+          {
+            "PermissionId": "1df1f5e3-dc47-42eb-b126-6714a1ca311b",
+            "Title": "ActionDelete",
+            "ClientAddress": "/ProductSpecificationGroup/Delete",
+            "Urls": []
+          },
+          {
+            "PermissionId": "4gf1f5e3-dc47-42eb-b126-6714a1ca311b",
+            "Title": "ActionRestore",
+            "ClientAddress": "/ProductSpecificationGroup/Restore",
+            "Urls": []
+          }
+        ]
+      },
+      {
+        "PermissionId": "0448ba84-1d93-4e21-811b-76ae3185e788",
+        "Title": "ProductSpecification",
+        "LevelNo": 2,
+        "Priority": 4,
+        "Icon": "fa fa-cog",
+        "ClientAddress": "/ProductSpecification/List",
+        "Actions": [
+          {
+            "PermissionId": "21a4dbe9-ed84-43b1-9a3b-cccfb3c5290d",
+            "Title": "ActionNew",
+            "ClientAddress": "/ProductSpecification/AddEdit",
+            "Urls": [ "/ProductSpecification/GetSpecificationGroupList/", "/ProductSpecification/List", "/ProductSpecification/Add" ]
+          },
+          {
+            "PermissionId": "d56eb6cb-16c2-4ce4-a314-fb927b0155be",
+            "Title": "ActionEdit",
+            "ClientAddress": "/ProductSpecification/AddEdit",
+            "Urls": [ "/ProductSpecification/GetSpecificationGroupList/", "/ProductSpecification/List", "/ProductSpecification/Edit" ]
+          },
+          {
+            "PermissionId": "76786d07-2b41-4fe4-864a-186b76cc02cb",
+            "Title": "ActionDelete",
+            "ClientAddress": "/ProductSpecification/Delete",
+            "Urls": []
+          },
+          {
+            "PermissionId": "76786d07-2b41-4fe4-864a-186b76cc02cb",
+            "Title": "ActionRestore",
+            "ClientAddress": "/ProductSpecification/Restore",
+            "Urls": []
+          }
+        ]
+      },
+      {
+        "PermissionId": "edff21ae-186f-4c11-a84b-bff910ca75b3",
+        "Title": "Products",
+        "LevelNo": 2,
+        "Priority": 5,
+        "Icon": "fa fa-shopping-bag",
+        "ClientAddress": "/Product/List",
+        "Actions": [
+          {
+            "PermissionId": "edff21ae-186f-4c11-a74b-bff910ca75b3",
+            "Title": "ActionNew",
+            "ClientAddress": "/Product/AddEdit",
+            "Urls": [
+              "/ProductSpecification/GetSpecificationGroupList/",
+              "/ProductSpecification/GetSpecificationInGroupAndLang",
+              "/ProductSpecification/GetSpecificationValuesInLanguage",
+              "/Product/Add",
+              "Product/List"
+            ]
+          },
+          {
+            "PermissionId": "edff21ae-186f-4c11-a84b-bff810ca75b3",
+            "Title": "ActionEdit",
+            "ClientAddress": "/Product/AddEdit",
+            "Urls": [
+              "/ProductSpecification/GetSpecificationGroupList/",
+              "/ProductSpecification/GetSpecificationInGroupAndLang",
+              "/ProductSpecification/GetSpecificationValuesInLanguage",
+              "/Product/Edit",
+              "Product/List"
+            ]
+          },
+          {
+            "PermissionId": "edff21ae-186f-4c11-a84b-bff910ca65b3",
+            "Title": "ActionDelete",
+            "ClientAddress": "/Product/Delete",
+            "Urls": []
+          },
+          {
+            "PermissionId": "ed8521ae-186f-4c11-a84b-bff910ca65b3",
+            "Title": "ActionRestore",
+            "ClientAddress": "/Product/Restore",
+            "Urls": []
+          }
+        ]
+      },
+      {
+        "PermissionId": "7f41b1a8-289f-4ef5-9fcc-3b9555ce3a8a",
+        "Title": "ProductComments",
+        "LevelNo": 2,
+        "Priority": 6,
+        "Icon": "fa fa-comments",
+        "ClientAddress": "/ProductComments/List",
+        "Actions": [
+          {
+            "PermissionId": "3985ca90-4a53-4304-95cd-e9e41a33d980",
+            "Title": "ProductCommentDelete",
+            "ClientAddress": "/ProductComments/Delete",
+            "Urls": []
+          },
+          {
+            "PermissionId": "f612ae15-70a9-444b-9469-d46063282e45",
+            "Title": "ProductCommentApprove",
+            "ClientAddress": "/ProductComments/Approve",
+            "Urls": []
+          }
+        ]
+      },
+      {
+        "PermissionId": "36f8fe1f-c94e-4465-9fc7-f9ee96f2b9a4",
+        "Title": "Promotions",
+        "LevelNo": 2,
+        "Priority": 7,
+        "Icon": "fas fa-gifts",
+        "ClientAddress": "/Promotion/List",
+        "Actions": [
+          {
+            "PermissionId": "03f87624-77a1-4e64-8051-65192f13222b",
+            "Title": "ActionNew",
+            "ClientAddress": "/Promotion/AddEdit",
+            "Urls": [
+              "/Promotion/GetFilteredProductGroup",
+              "/Promotion/GetFilteredProductGroup",
+              "/Promotion/GetFilteredProduct",
+              "Promotion/List",
+              "/Promotion/Add"
+            ]
+          },
+          {
+            "PermissionId": "13f87624-77a1-4e64-8051-65192f13222b",
+            "Title": "ActionEdit",
+            "ClientAddress": "/Promotion/AddEdit",
+            "Urls": [
+              "/Promotion/GetFilteredProductGroup",
+              "/Promotion/GetFilteredProductGroup",
+              "/Promotion/GetFilteredProduct",
+              "Promotion/List",
+              "/Promotion/Edit"
+            ]
+          },
+          {
+            "PermissionId": "23f87624-77a1-4e64-8051-65192f13222b",
+            "Title": "ActionDelete",
+            "ClientAddress": "/Promotion/Delete",
+            "Urls": []
+          },
+          {
+            "PermissionId": "33f87624-77a1-4e64-8051-65192f13222b",
+            "Title": "ActionRestore",
+            "ClientAddress": "/Promotion/Restore",
+            "Urls": []
+          },
+          {
+            "PermissionId": "43f87624-77a1-4e64-8051-65192f13222b",
+            "Title": "ChangeActivation",
+            "ClientAddress": "/Promotion/ChangeActivation",
+            "Urls": []
+          }
+
+        ]
+      }
+    ]
+  },
+  //--------------------------------------------ContentManagement------------------------
   {
     "PermissionId": "6cae0481-d040-4ea2-94b3-486af69aa9dc",
     "Title": "ContentManagement",
@@ -447,217 +478,253 @@
       }
     ]
   },
-
-
-
-    //-----------------------------------------------------------------StoreSetting-----------------------------
-    {
-        "PermissionId": "923a54be-abe1-4190-9634-dd7f36ee0615",
-        "Title": "StoreSettings",
-        "LevelNo": 1,
+  //-----------------------------------------------------------------StoreSetting-----------------------------
+  {
+    "PermissionId": "923a54be-abe1-4190-9634-dd7f36ee0615",
+    "Title": "StoreSettings",
+    "LevelNo": 1,
+    "Priority": 4,
+    "Icon": "fas fa-toolbox",
+    "ClientAddress": "#",
+    "Children": [
+      {
+        "PermissionId": "b81fba07-ff7b-4f61-b7d7-70dab1b83738",
+        "Title": "Domains",
+        "LevelNo": 2,
+        "Priority": 1,
+        "Icon": "fa fa-tags",
+        "ClientAddress": "/Domain/List",
+        "Actions": [
+          {
+            "PermissionId": "e81fba07-ff7b-4f61-b7d7-70dab1b83738",
+            "Title": "ActionNew",
+            "ClientAddress": "/Domain/AddEdit",
+            "Urls": [
+              "/Domain/GetProviderParams",
+              "/Domain/List",
+              "Domain/Add"
+            ]
+          },
+          {
+            "PermissionId": "f81fba07-ff7b-4f61-b7d7-70dab1b83738",
+            "Title": "ActionEdit",
+            "ClientAddress": "/Domain/AddEdit",
+            "Urls": [
+              "/Domain/GetProviderParams",
+              "/Domain/List",
+              "Domain/Edit"
+            ]
+          },
+          {
+            "PermissionId": "g81fba07-ff7b-4f61-b7d7-70dab1b83738",
+            "Title": "ActionDelete",
+            "ClientAddress": "/Domain/Delete",
+            "Urls": []
+          },
+          {
+            "PermissionId": "k81fba07-ff7b-4f61-b7d7-70dab1b83738",
+            "Title": "ActionRestore",
+            "ClientAddress": "/Domain/Restore",
+            "Urls": []
+          },
+          {
+            "PermissionId": "h81fba07-ff7b-4f61-b7d7-70dab1b83738",
+            "Title": "HomePageDesign",
+            "ClientAddress": "/Domain/HomePageDesign",
+            "Urls": [
+              "/Domain/SavePageContent",
+              "/Domain/GetMenu",
+              "/Domain/GetRowWithSelectedColumns",
+              "/Domain/SanitizeCkEditorContent",
+              "/Domain/GetProductModuleViewComponent",
+              "/Domain/GetContentModuleViewComponent"
+            ]
+          }
+        ]
+      },
+      {
+        "PermissionId": "C91fba07-ff7b-4f61-b7d7-70dab1b83738",
+        "Title": "Sliders",
+        "LevelNo": 2,
+        "Priority": 2,
+        "Icon": "fas fa-sliders-h",
+        "ClientAddress": "/Slider/Index",
+        "Actions": [
+          {
+            "PermissionId": "e81fba07-ff8b-4f61-b7d7-70dab1b83738",
+            "Title": "ActionNew",
+            "ClientAddress": "/Slider/AddSlide",
+            "Urls": [
+              "/Slider/AddSlide",
+              "/Slider/EditSlide",
+              "/Slider/GetSlide",
+              "/Slider/DeleteSlide",
+              "/Slider/ListSlides",
+              "/Slider/ChangeBeActiveSlide",
+              "/Slider/Layers",
+              "/Slider/ListLayers",
+              "/Slider/AddLayer",
+              "/Slider/EditLayer",
+              "/Slider/ChangeBeActiveLayer",
+              "/Slider/DeleteLayer"
+            ]
+          }
+        ]
+      },
+      {
+        "PermissionId": "329a54be-abe1-4190-9634-dd7f36ee0615",
+        "Title": "StoreMenues",
+        "LevelNo": 2,
+        "Priority": 3,
+        "Icon": "fa fa-bars",
+        "ClientAddress": "/Menu/List",
+        "Actions": [
+          {
+            "PermissionId": "acd3508a-1586-4b64-80fb-19b6127fa322",
+            "Title": "ActionNew",
+            "ClientAddress": "/Menu/AddEdit",
+            "Urls": [
+              "/Menu/GetContentList",
+              "/Menu/GetProductList",
+              "/Menu/Add",
+              "/Menu/List"
+            ]
+          },
+          {
+            "PermissionId": "bcd3508a-1586-4b64-80fb-19b6127fa322",
+            "Title": "ActionEdit",
+            "ClientAddress": "/Menu/AddEdit",
+            "Urls": [
+              "/Menu/GetContentList",
+              "/Menu/GetProductList",
+              "/Menu/Edit",
+              "/Menu/List"
+            ]
+          },
+          {
+            "PermissionId": "dcd3508a-1586-4b64-80fb-19b6127fa322",
+            "Title": "ActionDelete",
+            "ClientAddress": "/Menu/Delete",
+            "Urls": []
+          }
+        ]
+      },
+      {
+        "PermissionId": "efg3534a-1586-4b64-56fb-19b6127fa322",
+        "Title": "Orders",
+        "LevelNo": 2,
         "Priority": 4,
-        "Icon": "fas fa-toolbox",
-        "ClientAddress": "#",
-      "Children": [
-        {
-          "PermissionId": "b81fba07-ff7b-4f61-b7d7-70dab1b83738",
-          "Title": "Domains",
-          "LevelNo": 2,
-          "Priority": 1,
-          "Icon": "fa fa-tags",
-          "ClientAddress": "/Domain/List",
-          "Actions": [
-            {
-              "PermissionId": "e81fba07-ff7b-4f61-b7d7-70dab1b83738",
-              "Title": "ActionNew",
-              "ClientAddress": "/Domain/AddEdit",
-              "Urls": [
-                "/Domain/GetProviderParams",
-                "/Domain/List",
-                "Domain/Add"
-              ]
-            },
-            {
-              "PermissionId": "f81fba07-ff7b-4f61-b7d7-70dab1b83738",
-              "Title": "ActionEdit",
-              "ClientAddress": "/Domain/AddEdit",
-              "Urls": [
-                "/Domain/GetProviderParams",
-                "/Domain/List",
-                "Domain/Edit"
-              ]
-            },
-            {
-              "PermissionId": "g81fba07-ff7b-4f61-b7d7-70dab1b83738",
-              "Title": "ActionDelete",
-              "ClientAddress": "/Domain/Delete",
-              "Urls": []
-            },
-            {
-              "PermissionId": "k81fba07-ff7b-4f61-b7d7-70dab1b83738",
-              "Title": "ActionRestore",
-              "ClientAddress": "/Domain/Restore",
-              "Urls": []
-            },
-            {
-              "PermissionId": "h81fba07-ff7b-4f61-b7d7-70dab1b83738",
-              "Title": "HomePageDesign",
-              "ClientAddress": "/Domain/HomePageDesign",
-              "Urls": [
-                "/Domain/SavePageContent",
-                "/Domain/GetMenu",
-                "/Domain/GetRowWithSelectedColumns",
-                "/Domain/SanitizeCkEditorContent",
-                "/Domain/GetProductModuleViewComponent",
-                "/Domain/GetContentModuleViewComponent"
-              ]
-            }
-          ]
-        },
-        {
-          "PermissionId": "C91fba07-ff7b-4f61-b7d7-70dab1b83738",
-          "Title": "Sliders",
-          "LevelNo": 2,
-          "Priority": 2,
-          "Icon": "fas fa-sliders-h",
-          "ClientAddress": "/Slider/Index",
-          "Actions": [
-            {
-              "PermissionId": "e81fba07-ff8b-4f61-b7d7-70dab1b83738",
-              "Title": "ActionNew",
-              "ClientAddress": "/Slider/AddSlide",
-              "Urls": [
-                "/Slider/AddSlide",
-                "/Slider/EditSlide",
-                "/Slider/GetSlide",
-                "/Slider/DeleteSlide",
-                "/Slider/ListSlides",
-                "/Slider/ChangeBeActiveSlide",
-                "/Slider/Layers",
-                "/Slider/ListLayers",
-                "/Slider/AddLayer",
-                "/Slider/EditLayer",
-                "/Slider/ChangeBeActiveLayer",
-                "/Slider/DeleteLayer"
-              ]
-            }
-          ]
-        },
-        {
-          "PermissionId": "329a54be-abe1-4190-9634-dd7f36ee0615",
-          "Title": "StoreMenues",
-          "LevelNo": 2,
-          "Priority": 3,
-          "Icon": "fa fa-bars",
-          "ClientAddress": "/Menu/List",
-          "Actions": [
-            {
-              "PermissionId": "acd3508a-1586-4b64-80fb-19b6127fa322",
-              "Title": "ActionNew",
-              "ClientAddress": "/Menu/AddEdit",
-              "Urls": [
-                "/Menu/GetContentList",
-                "/Menu/GetProductList",
-                "/Menu/Add",
-                "/Menu/List"
-              ]
-            },
-            {
-              "PermissionId": "bcd3508a-1586-4b64-80fb-19b6127fa322",
-              "Title": "ActionEdit",
-              "ClientAddress": "/Menu/AddEdit",
-              "Urls": [
-                "/Menu/GetContentList",
-                "/Menu/GetProductList",
-                "/Menu/Edit",
-                "/Menu/List"
-              ]
-            },
-            {
-              "PermissionId": "dcd3508a-1586-4b64-80fb-19b6127fa322",
-              "Title": "ActionDelete",
-              "ClientAddress": "/Menu/Delete",
-              "Urls": []
-            }
-          ]
-        },
-        {
-          "PermissionId": "efg3534a-1586-4b64-56fb-19b6127fa322",
-          "Title": "Orders",
-          "LevelNo": 2,
-          "Priority": 4,
-          "Icon": "fab fa-product-hunt",
-          "ClientAddress": "/Order/List",
-          "Actions": [
-            {
-              "PermissionId": "ghu3534a-1586-4b64-80fb-19b6127fa322",
-              "Title": "ChangeStatus",
-              "ClientAddress": "/Order/ChangeStatus",
-              "Urls": [
-              ]
-            },
-            {
-              "PermissionId": "YTR3534a-1586-4b64-80fb-19b6127fa322",
-              "Title": "OrderDetail",
-              "ClientAddress": "/Order/Details",
-              "Urls": [
-              ]
-            }
-          ]
-        },
-        {
-          "PermissionId": "acd3534a-1586-4b64-80fb-19b6127fa322",
-          "Title": "ShippingSetting",
-          "LevelNo": 2,
-          "Priority": 5,
-          "Icon": "fas fa-shipping-fast",
-          "ClientAddress": "/Shipping/List",
-          "Actions": [
-            {
-              "PermissionId": "ace3534a-1586-4b64-80fb-19b6127fa322",
-              "Title": "ActionNew",
-              "ClientAddress": "/Shipping/AddEdit",
-              "Urls": [
-                "/Shipping/GetSymbolOfCurrency",
-                "/Shipping/Add",
-                "/Shipping/List"
-              ]
-            },
-            {
-              "PermissionId": "acf3534a-1586-4b64-80fb-19b6127fa322",
-              "Title": "ActionEdit",
-              "ClientAddress": "/Shipping/AddEdit",
-              "Urls": [
-                "/Shipping/GetSymbolOfCurrency",
-                "/Shipping/Edit",
-                "/Shipping/List"
-              ]
-            },
-            {
-              "PermissionId": "acg3534a-1586-4b64-80fb-19b6127fa322",
-              "Title": "ActionDelete",
-              "ClientAddress": "/Shipping/Delete",
-              "Urls": []
-            }
-          ]
-        },
-        {
-          "PermissionId": "ghu3534a-1586-4b64-80fb-19b6127fa322",
-          "Title": "AddNewLanguage",
-          "LevelNo": 2,
-          "Priority": 6,
-          "Icon": "fas fa-language",
-          "ClientAddress": "/Excel/AddExtraLanguage",
-          "Actions": [
-            {
-              "PermissionId": "ace3534a-1586-56hj-80fb-19b6127fa322",
-              "Title": "ActionNew",
-              "ClientAddress": "/Excel/GetLanguageTemplate",
-              "Urls": []
-            }
-          ]
-        }
-      ]
+        "Icon": "fab fa-product-hunt",
+        "ClientAddress": "/Order/List",
+        "Actions": [
+          {
+            "PermissionId": "ghu3534a-1586-4b64-80fb-19b6127fa322",
+            "Title": "ChangeStatus",
+            "ClientAddress": "/Order/ChangeStatus",
+            "Urls": [
+            ]
+          },
+          {
+            "PermissionId": "YTR3534a-1586-4b64-80fb-19b6127fa322",
+            "Title": "OrderDetail",
+            "ClientAddress": "/Order/Details",
+            "Urls": [
+            ]
+          }
+        ]
+      },
+      {
+        "PermissionId": "acd3534a-1586-4b64-80fb-19b6127fa322",
+        "Title": "ShippingSetting",
+        "LevelNo": 2,
+        "Priority": 5,
+        "Icon": "fas fa-shipping-fast",
+        "ClientAddress": "/Shipping/List",
+        "Actions": [
+          {
+            "PermissionId": "ace3534a-1586-4b64-80fb-19b6127fa322",
+            "Title": "ActionNew",
+            "ClientAddress": "/Shipping/AddEdit",
+            "Urls": [
+              "/Shipping/GetSymbolOfCurrency",
+              "/Shipping/Add",
+              "/Shipping/List"
+            ]
+          },
+          {
+            "PermissionId": "acf3534a-1586-4b64-80fb-19b6127fa322",
+            "Title": "ActionEdit",
+            "ClientAddress": "/Shipping/AddEdit",
+            "Urls": [
+              "/Shipping/GetSymbolOfCurrency",
+              "/Shipping/Edit",
+              "/Shipping/List"
+            ]
+          },
+          {
+            "PermissionId": "acg3534a-1586-4b64-80fb-19b6127fa322",
+            "Title": "ActionDelete",
+            "ClientAddress": "/Shipping/Delete",
+            "Urls": []
+          }
+        ]
+      },
+      {
+        "PermissionId": "ghu3534a-1586-4b64-80fb-19b6127fa322",
+        "Title": "AddNewLanguage",
+        "LevelNo": 2,
+        "Priority": 6,
+        "Icon": "fas fa-language",
+        "ClientAddress": "/Excel/AddExtraLanguage",
+        "Actions": [
+          {
+            "PermissionId": "ace3534a-1586-56hj-80fb-19b6127fa322",
+            "Title": "ActionNew",
+            "ClientAddress": "/Excel/GetLanguageTemplate",
+            "Urls": []
+          }
+        ]
+      },
+      {
+        "PermissionId": "dvt3534a-1586-4b64-80fb-19b6127fa322",
+        "Title": "AddNewCurrency",
+        "LevelNo": 2,
+        "Priority": 6,
+        "Icon": "fa fa-dollar",
+        "ClientAddress": "/Currency/List",
+        "Actions": [
+          {
+            "PermissionId": "tyu3534a-1586-4b64-80fb-19b6127fa322",
+            "Title": "ActionNew",
+            "ClientAddress": "/Currency/AddEdit",
+            "Urls": [
+              "/Currency/Save"
+            ]
+          },
+          {
+            "PermissionId": "poi3534a-1586-4b64-80fb-19b6127fa322",
+            "Title": "ActionEdit",
+            "ClientAddress": "/Currency/AddEdit",
+            "Urls": [
+              "/Currency/Save"
+            ]
+          },
+          {
+            "PermissionId": "nhy3534a-1586-4b64-80fb-19b6127fa322",
+            "Title": "ActionDelete",
+            "ClientAddress": "/Currency/Delete",
+            "Urls": []
+          },
+          {
+            "PermissionId": "rtu3534a-1586-4b64-80fb-19b6127fa322",
+            "Title": "ActionRestore",
+            "ClientAddress": "/Currency/Restore",
+            "Urls": []
+          }
+        ]
+      }
 
-    }
+    ]
+
+  }
 ]

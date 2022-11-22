@@ -234,12 +234,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             }
             return result;
         }
-
-        public List<ContentViewModel> GetAllContentsInCategory(string contentCategoryId, int? count)
-        {
-            throw new NotImplementedException();
-        }
-
+     
         public List<SelectListModel> GetAllSourceType()
         {
             var result = new List<SelectListModel>();
@@ -492,7 +487,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             if (!isDevelopment)
             {
                
-                //var domainName = "arad-itc.com";
+                
                 var domainName = this.GetCurrentDomainName();
                 domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
             }
@@ -517,7 +512,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             }
             if (domainEntity != null)
             {
-               //??? should be uncommented in development mode
+              
                 filterDef &= builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainEntity.DomainId);
                 switch (contentType)
                 {

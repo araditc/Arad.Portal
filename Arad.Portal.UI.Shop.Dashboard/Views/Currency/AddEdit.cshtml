@@ -1,0 +1,186 @@
+﻿@model Arad.Portal.DataLayer.Models.Currency.CurrencyDTO
+@{
+    var alert = Language.GetString("AlertAndMessage_GotIt");
+    var error = Language.GetString("AlertAndMessage_Error");
+    var baseAdd = Config["BaseAddress"];
+}
+@section Styles{
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+
+    </style>
+}
+
+    <h4>  @Language.GetString("Currency") </h4>
+<hr />
+<div class="row">
+    <div class="col-12">
+        <div class="card" id="addContentCategoryCardTitle">
+            <div class="card-header">
+                <h5 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.CurrencyId) ? Language.GetString("btn_Edit") : Language.GetString("Menu_Add"))</h5>
+            </div>
+
+            <div class="card-body" id="addCurrencyBody">
+                <input type="hidden" value="@Model.CurrencyId" asp-for="CurrencyId" />
+
+
+                <div class="row">
+                    
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label" asp-for="CurrencyName">@Language.GetString("Menu_CurrencyName")</label>
+                        <input type="text" class="form-control" asp-for="@Model.CurrencyName" value="@Model.CurrencyName" disabled />
+                        <span data-val-result="CategoryCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label" asp-for="Prefix">@Language.GetString("Menu_CurrencyPrefix")</label>
+                        <input type="text" class="form-control" asp-for="@Model.Prefix" value="@Model.Prefix" disabled />
+                        <span data-val-result="Prefix" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label" asp-for="Symbol">@Language.GetString("Menu_CurrencySymbol")</label>
+                        <input type="text" class="form-control" asp-for="@Model.Symbol" value="@Model.Symbol" disabled />
+                        <span data-val-result="Symbol" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-3 pt-4 pb-2">
+                        <div class="form-check m-auto d-inline-block pt-3">
+                            <input class="form-check-input" type="checkbox" value="IsDefault" asp-for="IsDefault">
+                            <label class="form-check-label" for="IsDefault">
+                                @Language.GetString("Menu_CurrencyIsDefault")
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12 col-md-4 offset-md-8 col-12">
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <input type="button" id="btnAddCurrency" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+
+           
+
+
+
+
+            $("#btnAddCurrency").click(function () {
+                debugger;
+                var flag = false;
+                if ($("#CurrencyName").val() == "") {
+                    $("span[data-val-result='CurrencyName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
+                if ($("#Prefix").val() == "") {
+                    $("span[data-val-result='Prefix']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
+                if ($("#Symbol").val() == "") {
+                    $("span[data-val-result='Symbol']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
+               
+                if (!flag) 
+                {
+
+                var dto = FillDataToSend();
+                    $.ajax({
+                        url:  '@Url.Action("Save","Currency")' ,
+                        contentType: 'application/json',
+                        data: JSON.stringify(dto),
+                    type: 'Post',
+                    beforeSend: function () {
+                    },
+                    success: function (result) {
+                        debugger;
+                        if (result.status === "Success") {
+                           
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            var bsAlert = new bootstrap.Toast($("#mainToast"));
+                            $("#toastPanel").show();
+                            bsAlert.show();
+                            setTimeout(function()
+                            {
+                                $("#toastPanel").hide();
+                                 window.location.href = '@Url.Action("List")';
+                            },
+                            3000);
+                        }
+                        else
+                        if (result.status === "ModelError") 
+                        {
+                            var spanErrorList = $('span[data-val-result]');
+                            if (spanErrorList.length > 1)
+                            {
+                                spanErrorList.each(function()
+                                {
+                                    $(this).html("");
+                                    $(this).parent().removeClass("has-error");
+                                });
+                            } else
+                            {
+                                spanErrorList.html("");
+                                spanErrorList.parent().removeClass("has-error");
+                            }
+                            if (result.modelStateErrors !== null && result.modelStateErrors.length > 0)
+                            {
+                                  result.modelStateErrors.forEach(function (value, index) {
+                                    $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                  });
+                            }
+                        }
+                        else
+                        if(result.status == "Error")
+                        {
+                            showError(result.message);
+                        }
+                    },
+                    @*error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    },*@
+                    complete: function () {
+                       /* removeLoading($("#addContentCategoryCardBody"));*/
+                    }
+                    });
+                }
+
+            });
+        });
+
+        function FillDataToSend() {
+            debugger;
+            var obj = {};
+           
+           // obj.AssociatedDomainId = $("#AssociatedDomainId").val();
+            obj.CurrencyName = $("#CurrencyName").val();
+            obj.Symbol = $("#Symbol").val();
+            obj.Prefix = $("#Prefix").val();
+            obj.IsDefault = $("#IsDefault").is(":checked");
+            return obj;
+        }
+
+      
+    </script>
+}
+
+
+
+

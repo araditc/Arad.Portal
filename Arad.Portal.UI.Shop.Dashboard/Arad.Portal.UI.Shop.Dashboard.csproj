@@ -634,6 +634,12 @@
     <Content Update="Views\Content\List.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="Views\Currency\AddEdit.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Views\Currency\List.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="Views\Domain\AddEdit.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Entities.General.Currency
 {
+    /// <summary>
+    /// only SysAccount user can define currency
+    /// </summary>
     public class Currency : BaseEntity
     {
         [BsonId]

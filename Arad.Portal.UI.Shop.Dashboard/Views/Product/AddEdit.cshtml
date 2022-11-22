@@ -600,7 +600,7 @@
                                     </div>
                                     <div class="form-group col-12 col-md-2">
                                         <label class="form-label">@Language.GetString("PriceValue")</label>
-                                        <input type="number" class="form-control" id="priceValue" />
+                                        <input type="number" class="form-control" id="priceValue"  />
                                         <span data-val-result="priceValue" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-11 col-md-3">
@@ -662,8 +662,8 @@
                                                             <td>@price.CurrencyName</td>
                                                             <td style="display:none;">@price.CurrencyId</td>
                                                             <td>@($"{Convert.ToInt64(@price.PriceValue):n0}")</td>
-                                                            <td style="direction: ltr;">@price.StartDate</td>
-                                                            <td>@price.EndDate</td>
+                                                            <td style="direction: ltr;">@price.StartDate.ToString().Split(" ")[0]</td>
+                                                            <td>@(@price.EndDate != null ? price.EndDate.Value.ToString().Split(" ")[0] : "")</td>
                                                             <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
                                                             <td>
                                                                 <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromPriceList(this);">
@@ -1331,7 +1331,7 @@ else
     function appendToPriceList(tr) {
          tr = "<tr style='text-align:center;'><td>" + $("#currencyId option:selected").text() +
                     "</td><td style='display:none;'>" + $('#currencyId').val() +
-                    "</td><td>" + $('#priceValue').val() +
+                    "</td><td>" + $('#priceValue').val().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
                     "</td><td style='direction:ltr;'>" + $("#dtpStartDate").val() +
                     "</td><td></td><td>" + active +
                     "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromPriceList(this);'>" +
@@ -1467,7 +1467,7 @@ else
         dto.ProductCode = Number($("#ProductCode").val());
 
         //domainId
-        obj.AssociatedDomainId = $("#AssociatedDomainId").val();
+        dto.AssociatedDomainId = $("#AssociatedDomainId").val();
        
         //groupIds
         for (var i = 0; i < $("#GroupIds").val().length; i++) {
@@ -1525,7 +1525,8 @@ else
             var innerModel = {};
             innerModel.CurrencyId = $(this).find("td:eq(1)").text();
             innerModel.CurrencyName = $(this).find("td:eq(0)").text();
-            innerModel.PriceValue = parseFloat($(this).find("td:eq(2)").text());
+            debugger;
+            innerModel.PriceValue = parseFloat($(this).find("td:eq(2)").text().replace(/,/g ,""));
             innerModel.StartDate = $(this).find("td:eq(3)").text();//string
             innerModel.EndDate = $(this).find("td:eq(4)").text(); //string
             

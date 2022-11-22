@@ -49,7 +49,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var userEntity = await _userManager.FindByIdAsync(currentUserId);
                 if (!userEntity.IsSystemAccount)
                 {
-                    var domainId = User.GetClaimValue("RelatedDomain");
+                    var domainId = userEntity.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
                     if (!string.IsNullOrWhiteSpace(Request.QueryString.ToString()))
                     {
                         querystring += $"&domainId={domainId}";

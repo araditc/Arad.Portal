@@ -251,7 +251,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             var result = new ContentCategoryDTO();
             var urlFriend = $"{domainName}/category/{slug}";
             var categoryEntity = _categoryContext.Collection
-                .Find(_ => _.CategoryNames.Any(a => a.UrlFriend == urlFriend)).FirstOrDefault();
+                .Find(_ => _.CategoryNames.Any(a => a.UrlFriend == urlFriend) && !_.IsDeleted).FirstOrDefault();
             if(categoryEntity != null)
             {
                 result = _mapper.Map<ContentCategoryDTO>(categoryEntity);
@@ -283,10 +283,14 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             List<Entities.General.Content.Content> lst = new List<Entities.General.Content.Content>();
             if(count != null)
             {
-               lst = _contentContext.Collection.Find(_ => _.ContentCategoryId == contentCategoryId && _.AssociatedDomainId == domainId && !_.IsDeleted).SortByDescending(_ => _.CreationDate).Skip(0).Limit(count).ToList();
+               lst = _contentContext.Collection
+                    .Find(_ => _.ContentCategoryId == contentCategoryId && _.AssociatedDomainId == domainId && !_.IsDeleted)
+                    .SortByDescending(_ => _.CreationDate).Skip(0).Limit(count).ToList();
             }else
             {
-                lst = _contentContext.Collection.Find(_ => _.ContentCategoryId == contentCategoryId && _.AssociatedDomainId == domainId && !_.IsDeleted).SortByDescending(_ => _.CreationDate).ToList();
+                lst = _contentContext.Collection
+                    .Find(_ => _.ContentCategoryId == contentCategoryId && _.AssociatedDomainId == domainId && !_.IsDeleted)
+                    .SortByDescending(_ => _.CreationDate).ToList();
             }
             result = _mapper.Map<List<ContentViewModel>>(lst);
 
@@ -344,6 +348,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var langId = filter["LanguageId"].ToString();
+                var filterKey = "";
+                if (!string.IsNullOrWhiteSpace(filter["filter"]))
+                {
+                    filterKey = filter["filter"].ToString();
+                }
                 long totalCount = 0;
                 string domainId = "";
                 if (user.IsSystemAccount)
@@ -356,7 +365,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                 }
                    
                 var list = _categoryContext.Collection.AsQueryable()
-                    .Where( _=> domainId == "" || _.AssociatedDomainId == domainId)
+                    .Where( _=> (domainId == "" || _.AssociatedDomainId == domainId) && (filterKey == "" || _.CategoryNames.Any(a => a.Name.Contains(filterKey))))
                     .OrderByDescending(_=>_.CreationDate).Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ContentCategoryViewModel()
                    {

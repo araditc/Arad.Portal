@@ -19,6 +19,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.Currency
         Task<Result> SaveCurrency(CurrencyDTO dto);
         Task<PagedItems<CurrencyDTO>> AllCurrencyList(string queryString);
         Task<Result> DeleteCurrency(string currencyId);
+
+        Task<Result> RestoreCurrency(string currencyId);
         Result<CurrencyDTO> FetchCurrency(string currencyId);
         Result<CurrencyDTO> GetDefaultCurrency(string userId);
         CurrencyDTO GetCurrencyByItsPrefix(string prefix);

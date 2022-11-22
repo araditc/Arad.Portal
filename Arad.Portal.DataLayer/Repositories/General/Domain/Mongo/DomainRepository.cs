@@ -756,5 +756,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             _context.Collection.InsertOne(entity);
         }
 
+        public bool HasDefaultDomain()
+        {
+            return _context.Collection.AsQueryable().Any(_=>_.IsDefault);
+        }
     }
 }

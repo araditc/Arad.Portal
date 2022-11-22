@@ -29,9 +29,10 @@ namespace Arad.Portal.DataLayer.Entities.General.User
             Profile = new();
             LoginData = new();
             Otp = new();
+            Domains = new();
         }
         /// <summary>
-        /// if  isSystemAccount = true this user have full access to all links and full ability only one user have this ability
+        /// if isSystemAccount = true this user have full access to all links and full ability only one user have this ability
         /// </summary>
         public bool IsSystemAccount { get; set; }
 

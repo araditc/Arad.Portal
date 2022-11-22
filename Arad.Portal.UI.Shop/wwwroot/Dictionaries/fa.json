@@ -385,6 +385,10 @@
     "Key": "PermissionTitle_AddNewLanguage"
   },
   {
+    "Value": "افزودن واحد پول جدید",
+    "Key": "PermissionTitle_AddNewCurrency"
+  },
+  {
     "Value": "جزییات سفارش",
     "Key": "PermissionTitle_OrderDetail"
   },
@@ -2155,6 +2159,22 @@
   {
     "Value": "افزودن",
     "Key": "Menu_Add"
+  },
+  {
+    "Value": "نام واحد پول",
+    "Key": "Menu_CurrencyName"
+  },
+  {
+    "Value": "پیشوند واحد پول",
+    "Key": "Menu_CurrencyPrefix"
+  },
+  {
+    "Value": "سیمبل واحد پول",
+    "Key": "Menu_CurrencySymbol"
+  },
+  {
+    "Value": "واحد پول پیش فرض",
+    "Key": "Menu_CurrencyIsDefault"
   },
   {
     "Value": "آیکان",

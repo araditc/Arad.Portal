@@ -63,7 +63,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
             var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).Any() ?
             _domainContext.Collection.Find(_ => _.DomainName == domainName).First() :
             _domainContext.Collection.Find(_ => _.IsDefault).First();
-            if (groupKey.ToLower() == "shippingType")
+            if (groupKey.ToLower() == "shippingtype")
             {
                 var hasShippingType = HasShippingType();
                 if (!hasShippingType)
@@ -93,9 +93,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
                     _context.Collection.InsertOne(courier);
                 }
             }
-            //test uncommented
+            
             var lst = _context.Collection
-                .Find(_ => _.GroupKey.ToLower() == groupKey.ToLower() /*&& _.AssociatedDomainId == domainEntity.DomainId*/).ToList();
+                .Find(_ => _.GroupKey.ToLower() == groupKey.ToLower() && _.AssociatedDomainId == domainEntity.DomainId).ToList();
 
             result = _mapper.Map<List<BasicDataModel>>(lst);
             if (withChooseItem)

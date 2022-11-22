@@ -37,6 +37,7 @@ using Arad.Portal.DataLayer.Contracts.General.Notification;
 using Arad.Portal.DataLayer.Entities.General.Notify;
 using Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo;
 using Arad.Portal.DataLayer.Entities.Shop.Product;
+using Microsoft.AspNetCore.Identity;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
@@ -56,6 +57,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         private readonly IMapper _mapper;
         private readonly MessageTemplateContext _messageTemplateContext;
         private readonly NotificationContext _notContext;
+        private readonly UserManager<ApplicationUser> _userManager;
       
 
 
@@ -72,6 +74,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             IWebHostEnvironment env,
             MessageTemplateContext msgContext,
             NotificationContext notificationContext,
+            UserManager<ApplicationUser> userManager,
             IMessageTemplateRepository messageTemplateRepository,
             TransactionContext transactionContext)
             : base(httpContextAccessor, env)
@@ -88,6 +91,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             _commentContext = commentContext;
             _messageTemplateContext = msgContext;
             _notContext = notificationContext;
+            _userManager = userManager;
         }
 
         public async Task<Result<string>> Add(ProductInputDTO dto)
@@ -772,11 +776,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     var productName = product.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
                             product.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name :
                             product.MultiLingualProperties.FirstOrDefault().Name;
-                    //var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
-                    //if (domainId == null)
-                    //{
-                    //    domainId = _domainContext.Collection.Find(_ => _.IsDefault == true).FirstOrDefault().DomainId;
-                    //}
+                    
                     var domainName = _httpContextAccessor.HttpContext.Request.Host.ToString();
                     var domainId = _domainContext.Collection.Find(_=>_.DomainName.ToLower() == domainName.ToLower()).FirstOrDefault().DomainId;
                     Notification notification = new()
@@ -1356,7 +1356,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             var domainName = base.GetCurrentDomainName();
             var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
             var currencyEntity = _currencyContext.Collection.Find(_ => _.CurrencyId == domainEntity.DefaultCurrencyId).FirstOrDefault();
-
+            var currentUserId = base.GetUserId();
+            var userntity = await _userManager.FindByIdAsync(currentUserId);
             try
             {
                 foreach (var pro in lst)
@@ -1419,12 +1420,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     product.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                         .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
 
-                    var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
-                    if (domainId == null)
-                    {
-                        domainId = _domainContext.Collection.Find(_ => _.IsDefault == true).FirstOrDefault().DomainId;
-                    }
-                    product.AssociatedDomainId = domainId;
+                   
+                    product.AssociatedDomainId = userntity.Domains.FirstOrDefault(_=>_.IsOwner).DomainId;
 
                     await _context.ProductCollection.InsertOneAsync(product);
 

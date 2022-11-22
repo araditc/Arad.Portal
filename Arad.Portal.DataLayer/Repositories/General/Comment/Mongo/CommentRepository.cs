@@ -107,8 +107,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                                     {
                                         cmt.DislikeCount += 1;
                                     }
-                                    //var index = proEntity.Comments.IndexOf(cmt);
-                                    //proEntity.Comments[index] = cmt;
+                                    
                                     res = await _productContext.ProductCollection
                                        .ReplaceOneAsync(_ => _.ProductId == cmtEntity.ReferenceId, proEntity);
                                     if (res.IsAcknowledged)
@@ -133,8 +132,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                                     {
                                         cmnt.DislikeCount += 1;
                                     }
-                                    //var cmtIndex = contentEntity.Comments.IndexOf(cmnt);
-                                    //contentEntity.Comments[cmtIndex] = cmnt;
+                                   
                                     res = await _contentContext.Collection
                                        .ReplaceOneAsync(_ => _.ContentId == cmtEntity.ReferenceId, contentEntity);
                                     if (res.IsAcknowledged)
@@ -330,7 +328,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
-                long totalCount = await _commentContext.Collection.Find(_=>!_.IsDeleted).CountDocumentsAsync();
+                long totalCount = await _commentContext.Collection.Find(_=>!_.IsDeleted && _.AssociatedDomainId == dbUser.Domains.FirstOrDefault(a => a.IsOwner).DomainId).CountDocumentsAsync();
                 var totalList = _commentContext.Collection.AsQueryable().Where(_=>!_.IsDeleted);
                 
                 if(!string.IsNullOrWhiteSpace(filter["refType"]))

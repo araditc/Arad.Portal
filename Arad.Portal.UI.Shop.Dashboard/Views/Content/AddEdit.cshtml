@@ -1090,6 +1090,11 @@
                      $("span[data-val-result='urlFriend']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
                 }
+                if($("#AssociatedDomainId").val() == "")
+                {
+                    $("span[data-val-result='AssociatedDomainId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
                 debugger;
                 var arr = $("#urlFriend").val().split(" ");
                 var urlFriend = arr.join("-");
@@ -1231,7 +1236,7 @@
             dto.ProductId = $("#ProductId").val();
             dto.IsActive = true;
             dto.ProductCode = Number($("#productCode").val());
-
+            dto.AssociatedDomainId = $("#AssociatedDomainId").val();
             //groupIds
             for (var i = 0; i < $("#GroupIds").val().length; i++) {
                 debugger;

@@ -321,13 +321,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     //add this culture to supported cultures
                     var list = _basicDataRepository.GetList("SupportedCultures", false);
                     var lastValue = list.Max(_ => _.Value);
+                    var domainId = "";
+                    var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var userDb = await _userManager.FindByIdAsync(currentUserId);
+
+                    domainId = userDb.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
                     await _basicDataRepository.InsertNewRecord(new DataLayer.Entities.General.BasicData.BasicData()
                     {
                         BasicDataId = Guid.NewGuid().ToString(),
                         GroupKey = "SupportedCultures",
                         Value = !string.IsNullOrWhiteSpace(lastValue) ? (Convert.ToInt32(lastValue) + 1).ToString() : "1",
                         Text = lanEntity.Symbol,
-                        AssociatedDomainId = User.GetClaimValue("RelatedDomain"),
+                        AssociatedDomainId = domainId,
                         Order = !string.IsNullOrWhiteSpace(lastValue) ? Convert.ToInt32(lastValue) + 1 : 1
                     });
 

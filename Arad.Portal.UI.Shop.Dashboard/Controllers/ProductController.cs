@@ -92,10 +92,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             
             try
             {
-                var domainId = User.GetClaimValue("RelatedDomain");
-                var domainEntity = _domainRepository.FetchDomain(domainId);
                 var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var userDb = await _userManager.FindByIdAsync(currentUserId);
+                var domainId = userDb.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+                var domainEntity = _domainRepository.FetchDomain(domainId);
+                
                 result = await _productRepository.List(Request.QueryString.ToString(), userDb);
                 
                 var languageEntity = _lanRepository.GetDefaultLanguage(currentUserId);
@@ -210,7 +211,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var mainDomainPublishState = _productRepository.IsPublishOnMainDomain(id);
             Result opResult = await _productRepository.DeleteProduct(id, "delete");
-            var domainId = User.GetClaimValue("RelatedDomain");
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userDb = await _userManager.FindByIdAsync(currentUserId);
+            var domainId = userDb.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
 
             #region delete related luceneIndexes
             var lst = _configuration.GetSection("SupportedCultures").Get<string[]>().ToList();
@@ -336,7 +339,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         #region add to LuceneIndex 
                         var mainDomainId = "";
                         var mainDomainPath = "";
-                        var domainId = User.GetClaimValue("RelatedDomain");
+                        var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                        var userDb = await _userManager.FindByIdAsync(currentUserId);
+                        var domainId = userDb.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
                         if (dto.IsPublishedOnMainDomain)
                         {
                             mainDomainId = _domainRepository.FetchDefaultDomain().ReturnValue.DomainId;
@@ -520,7 +525,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     if (saveResult.Succeeded)
                     {
                         #region Update lucene Index
-                        var domainId = User.GetClaimValue("RelatedDomain");
+                        var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                        var userDb = await _userManager.FindByIdAsync(currentUserId);
+                        var domainId = userDb.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
                         var mainDomainId = _domainRepository.FetchDefaultDomain().ReturnValue.DomainId;
                         var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId ,"Product");
                         var mainDomainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", mainDomainId, "Product");
@@ -641,7 +648,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     #region add to LuceneIndex
                     var product = await _productRepository.ProductSelect(id);
-                    var domainId = User.GetClaimValue("RelatedDomain");
+                    var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var userDb = await _userManager.FindByIdAsync(currentUserId);
+                    var domainId = userDb.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
                     var mainDomainId = _domainRepository.FetchDefaultDomain().ReturnValue.DomainId;
                     var lst = _configuration.GetSection("SupportedCultures").Get<string[]>().ToList();
                     foreach (var cul in lst)
