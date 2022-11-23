@@ -20,6 +20,7 @@ using Arad.Portal.DataLayer.Entities.General.Email;
 using Arad.Portal.DataLayer.Entities.General.Domain;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
 using Microsoft.AspNetCore.Hosting;
+using Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 {
@@ -28,15 +29,17 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
         private readonly DomainContext _context;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _accessor;
-
+        private readonly BasicDataContext _basicDataContext;
         public DomainRepository(DomainContext context,
                                 IHttpContextAccessor httpContextAccessor,
                                 IWebHostEnvironment env,
+                                BasicDataContext basicDataContext,
                                 IMapper mapper) : base(httpContextAccessor, env)
         {
             _context = context;
             _mapper = mapper;
             _accessor = httpContextAccessor;
+            _basicDataContext = basicDataContext;
         }
         public async Task<Result> AddDomain(DomainDTO dto)
         {
@@ -292,6 +295,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 if (dbEntity != null)
                 {
                     var dto = _mapper.Map<DomainDTO>(dbEntity);
+                    dto.SupportedLangId = _basicDataContext.Collection.AsQueryable()
+                   .Where(_ => _.AssociatedDomainId == dbEntity.DomainId && _.GroupKey == "SupportedCultures").Select(_ => _.Value).ToList();
                     result.Succeeded = true;
                     result.Message = ConstMessages.SuccessfullyDone;
                     result.ReturnValue = dto;
@@ -322,13 +327,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 {
                     result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                 }
-
-                var dto = _mapper.Map<DomainDTO>(dbEntity);
-                
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
-                result.ReturnValue = dto;
-
+                else
+                {
+                    var dto = _mapper.Map<DomainDTO>(dbEntity);
+                    dto.SupportedLangId = _basicDataContext.Collection.AsQueryable()
+                        .Where(_ => _.AssociatedDomainId == dbEntity.DomainId && _.GroupKey == "SupportedCultures").Select(_ => _.Value).ToList();
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                    result.ReturnValue = dto;
+                }
             }
             catch (Exception)
             {

@@ -173,8 +173,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             
            if(user == null || !user.IsSystemAccount)
             {
-                if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true
-                || (user != null && user.IsSiteUser) || (user != null && user.Domains.FirstOrDefault(a => a.IsOwner).DomainId != domainEntity.DomainId) )
+                if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true || !user.Domains.Any(_=>_.IsOwner)
+                || (user != null && user.IsSiteUser) || 
+                (user != null && user.Domains.Any(a => a.IsOwner) && user.Domains.FirstOrDefault(a => a.IsOwner).DomainId != domainEntity.DomainId) )
                 {
                     ViewBag.Message = Language.GetString("AlertAndMessage_InvalidUsernameOrPassword");
                     return View(model);
@@ -478,7 +479,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         IsSiteUser = model.IsSiteUser,
                         UserRoleId = model.UserRoleId,
                         CreationDate = DateTime.UtcNow,
-                        CreatorId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
+                        CreatorId = User.GetUserId(),
+                        CreatorUserName = User.GetUserName(),
                         Email = model.Email
                        
                     };
@@ -512,6 +514,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                 {
                                     Key = "Password",
                                     ErrorMessage = Language.GetString("AlertAndMessage_PasswordRequiresLower"),
+                                };
+                                errors.Add(obj);
+                            }
+                            else if (error.Code == "PasswordRequiresUpper")
+                            {
+                                var obj = new ClientValidationErrorModel
+                                {
+                                    Key = "Password",
+                                    ErrorMessage = Language.GetString("AlertAndMessage_PasswordRequiresUpper"),
                                 };
                                 errors.Add(obj);
                             }
@@ -863,8 +874,26 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             string currentUserId = User.GetUserId();
 
-            string pass = Helpers.Utilities.GenerateRandomPassword(new() { RequireDigit = false, RequireLowercase = true, RequireNonAlphanumeric = true, 
-                RequireUppercase = true, RequiredLength = 10, RequiredUniqueChars = 1 });
+            string pass = Helpers.Utilities.GenerateRandomPassword(new()
+            {
+                RequireDigit = true,
+                RequireLowercase = true,
+                RequireNonAlphanumeric = true,
+                RequireUppercase = true,
+                RequiredLength = 10,
+                RequiredUniqueChars = 0
+            });
+            while (!Password.PasswordIsValid(true, true, true, false, false, pass))
+            {
+                pass = Helpers.Utilities.GenerateRandomPassword(new()
+                { RequireDigit = true, 
+                   RequireLowercase = true, 
+                   RequireNonAlphanumeric = true, 
+                    RequireUppercase = true, 
+                    RequiredLength = 10, 
+                    RequiredUniqueChars = 0 
+                });
+            }
 
             ApplicationUser user = await _userManager.FindByIdAsync(id);
             if (user == null)

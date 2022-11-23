@@ -4,6 +4,10 @@
     "Key": "btn_HomePageDesign"
   },
   {
+    "Value": "تغییر کلمه عبور",
+    "Key": "btn_ChangePassword"
+  },
+  {
     "Value": "طراحی صفحه بلاگ",
     "Key": "btn_ContentPageDesign"
   },
@@ -110,6 +114,14 @@
   {
     "Value": "بازگردانی",
     "Key": "btn_Restore"
+  },
+  {
+    "Value": "بستن",
+    "Key": "btn_Close"
+  },
+  {
+    "Value": "کپی",
+    "Key": "btn_Copy"
   },
   {
     "Value": "حذف",
@@ -1023,6 +1035,10 @@
   {
     "Value": "پسورد باید حداقل یک کاراکتر از حروف کوچک a تا z باشد.",
     "Key": "AlertAndMessage_PasswordRequiresLower"
+  },
+  {
+    "Value": "پسورد باید حداقل یک کاراکتر از حروف بزرگ A تا Z باشد.",
+    "Key": "AlertAndMessage_PasswordRequiresUpper"
   },
   {
     "Value": "محتوای ویرایشگر نامعتبر است.",

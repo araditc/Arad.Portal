@@ -329,16 +329,16 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 RequireDigit = true,
                 RequireLowercase = true,
-                RequireNonAlphanumeric = false,
+                RequireNonAlphanumeric = true,
                 RequireUppercase = true,
-                RequiredLength = 6,
+                RequiredLength = 10,
                 RequiredUniqueChars = 0
             });
             while (!Password.PasswordIsValid(true, true, true,
                    true, false, pass))
             {
                 pass = Password.GeneratePassword(true, true, true,
-                    true, false, 6);
+                    true, false, 10);
             }
 
             Result result = await _createNotification.Send("AutomatedPasswordReset", currentUser, pass);

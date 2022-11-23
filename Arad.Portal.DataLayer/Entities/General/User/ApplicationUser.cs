@@ -30,6 +30,7 @@ namespace Arad.Portal.DataLayer.Entities.General.User
             LoginData = new();
             Otp = new();
             Domains = new();
+            Modifications = new();
         }
         /// <summary>
         /// if isSystemAccount = true this user have full access to all links and full ability only one user have this ability
@@ -68,9 +69,8 @@ namespace Arad.Portal.DataLayer.Entities.General.User
         public bool IsDeleted { get; set; }
 
         /// <summary>
-        /// the primary key of domain which user belongs to
+        /// all domains which user belong to whether domainOwner or not
         /// </summary>
-        /// //TODO
          public List<UserDomain> Domains { get; set; }
         //public string DomainId { get; set; }
 

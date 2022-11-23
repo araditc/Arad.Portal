@@ -9,7 +9,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.BasicData
 {
     public interface IBasicDataRepository
     {
-        List<BasicDataModel> GetList(string groupKey, bool withChooseItem);
+        List<BasicDataModel> GetList(string groupKey, bool withChooseItem, bool isDomain = true);
 
         bool HasLastID();
 

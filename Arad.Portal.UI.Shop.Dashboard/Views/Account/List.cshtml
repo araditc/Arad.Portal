@@ -72,11 +72,11 @@
 
                             foreach (var role in roles)
                             {
-                                    <option selected="@(queryString != null && !string.IsNullOrWhiteSpace(queryString["role"])
+                                                <option selected="@(queryString != null && !string.IsNullOrWhiteSpace(queryString["role"])
                                         && queryString["role"] == role.Id ? "selected" : null)"
                                         value="@role.Id">
-                                        @role.Title
-                                    </option>
+                                                    @role.Title
+                                                </option>
                             }
                         }
                     </select>
@@ -154,12 +154,7 @@
                             <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
                         </a>
                 </div>
-           
-                <div class="card-tools float-end">
-                    <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-warning bg-gradient btn-sm py-1">
-                        <i @*style="position: relative; left: 5px; top: 2px;"*@ class="fas fa-edit pt-1"></i>&nbsp; @Language.GetString("btn_ChangePass")
-                    </a>
-                </div>
+               
             </div>
         </div>
     </div>
@@ -193,11 +188,11 @@
                                 @{
                                     if (item.IsActive)
                                     {
-                                            <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success bg-gradient">@Language.GetString("Active")</button>
+                                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success bg-gradient">@Language.GetString("Active")</button>
                                     }
                                     else
                                     {
-                                            <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
+                                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
                                     }
                                 }
                             </td>
@@ -215,6 +210,11 @@
                                 {
                                     <button id=@($"restoreRecord_{@item.Id}") data-id="@item.Id" onclick="restoreUser('@item.Id')" class="btn btn-sm btn-secondary bg-gradient">
                                         @Language.GetString("btn_Restore")
+                                    </button>
+                                }else
+                                {
+                                    <button id=@($"deleteRecord_{@item.Id}") data-id="@item.Id" onclick="EntityDelete('@item.Id')" class="btn btn-sm btn-danger bg-gradient">
+                                        @Language.GetString("btn_Delete")
                                     </button>
                                 }
                                 
@@ -346,14 +346,24 @@
 
         function restoreUser(id) {
             entityId = id;
-			typeOfRequest = 'PUT';
+			typeOfRequest = 'Get';
 			confirmUrl = '@Url.Action("Restore", "Account")' + "/" + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
 			$('#confirmModal').modal('show');
         }
 
+        function EntityDelete(id) {
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = `@Url.Action("Delete", "Account")/${id}`,
+                document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
+            document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
+            $('#confirmModal').modal('show');
+        }
+
         function onChangePassword() {
+            debugger;
             $('#confirmChangePasswordModal').modal('hide');
 
             $.ajax({
@@ -361,6 +371,7 @@
                 url: confirmUrl,
                 statusCode: {
                     200: function (resultData) {
+                        debugger;
                         if (resultData.result) {
                             password = resultData.data;
                             document.getElementById('showChangePasswordModalLabel').innerHTML = '@Language.GetString("btn_ChangePassword")';
@@ -382,8 +393,9 @@
         }
 
         function changePassword(id) {
+            debugger;
             userId = id;
-            typeOfRequest = 'Put';
+            typeOfRequest = 'PUT';
             confirmUrl = `@Url.Action("ChangePassword")?id=${id}`;
             document.getElementById('confirmChangePasswordModalLabel').innerHTML = '@Language.GetString("btn_ChangePassword")';
             document.getElementById('confirmChangePasswordModalBody').innerHTML = '@Language.GetString("AlertAndMessage_ChangePassConfirmation")';

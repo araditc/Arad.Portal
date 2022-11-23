@@ -543,22 +543,27 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             var currentDomain = _domainRepository.FetchByName(domainName, false);
             var defDomain = _domainRepository.GetDefaultDomain();
 
-            FilterDefinitionBuilder<Entities.Shop.Product.Product> builder = new();
-            FilterDefinition<Entities.Shop.Product.Product> filterDef;
-            //var filter = new BsonDocument("AssociatedDomainId", currentDomain.ReturnValue.DomainId);
-            filterDef = builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), currentDomain.ReturnValue.DomainId);
-            if (currentDomain.ReturnValue.DomainId == defDomain.ReturnValue.DomainId)
+            //FilterDefinitionBuilder<Entities.Shop.Product.Product> builder = new();
+            //FilterDefinition<Entities.Shop.Product.Product> filterDef;
+
+            //filterDef = builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), currentDomain.ReturnValue.DomainId);
+            //if (currentDomain.ReturnValue.DomainId == defDomain.ReturnValue.DomainId)
+            //{
+            //    filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.Shop.Product.Product.IsPublishedOnMainDomain), true));
+            //}
+            //var cursor = await _productContext.ProductCollection.DistinctAsync<string>("GroupIds", filterDef);
+            //var lst = await cursor.ToListAsync();
+            List<string> lst;
+            if(currentDomain.ReturnValue.DomainId == defDomain.ReturnValue.DomainId)
             {
-                filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.Shop.Product.Product.IsPublishedOnMainDomain), true));
+                lst = _productContext.ProductCollection.AsQueryable()
+                      .Where(_ => !_.IsDeleted && (_.AssociatedDomainId == currentDomain.ReturnValue.DomainId || _.IsPublishedOnMainDomain)).SelectMany(_ => _.GroupIds).Distinct().ToList();
+            }else
+            {
+                lst = _productContext.ProductCollection.AsQueryable()
+                     .Where(_ => !_.IsDeleted && _.AssociatedDomainId == currentDomain.ReturnValue.DomainId).SelectMany(_ => _.GroupIds).Distinct().ToList();
             }
-            //TODO : doesnt work
-            var cursor = await _productContext.ProductCollection.DistinctAsync<string>("GroupIds", filterDef);
-            var lst = await cursor.ToListAsync();
             
-            //lst.Add("85b8f7f8-3381-44bf-9429-3c3dcd5988c2");
-            //lst.Add("9c27b561-3b95-4e73-a955-0571937d767a");
-            //lst.Add("01ec3195-5498-4e6f-a4c0-9d14ddeced63");
-            //lst.Add("7ca0c66f-2a89-45b9-8d77-a3c7592e7788");
             var finalList = new List<string>();
             foreach (var groupId in lst)
             {
@@ -579,9 +584,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                 }
                
             }
-            //testing part
-            var groups = _productContext.ProductGroupCollection.AsQueryable().Select(_ => _.ProductGroupId).ToList();
-            finalList = groups;
+           
+            //var groups = _productContext.ProductGroupCollection.AsQueryable().Select(_ => _.ProductGroupId).ToList();
+            //finalList = groups;
+
             return finalList;
         }
 

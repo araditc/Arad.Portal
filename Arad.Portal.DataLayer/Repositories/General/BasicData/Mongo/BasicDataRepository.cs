@@ -56,7 +56,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
             return result;
         }
 
-        public List<BasicDataModel> GetList(string groupKey, bool withChooseItem)
+        public List<BasicDataModel> GetList(string groupKey, bool withChooseItem, bool isDomain = true)
         {
             var result = new List<BasicDataModel>();
             var domainName = base.GetCurrentDomainName();
@@ -93,9 +93,18 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
                     _context.Collection.InsertOne(courier);
                 }
             }
-            
-            var lst = _context.Collection
-                .Find(_ => _.GroupKey.ToLower() == groupKey.ToLower() && _.AssociatedDomainId == domainEntity.DomainId).ToList();
+            List<Entities.General.BasicData.BasicData> lst = null;
+            if(!isDomain)
+            {
+               lst = _context.Collection
+                .Find(_ => _.GroupKey.ToLower() == groupKey.ToLower() && _.AssociatedDomainId == null).ToList();
+            }
+            else
+            {
+             lst = _context.Collection
+               .Find(_ => _.GroupKey.ToLower() == groupKey.ToLower() && _.AssociatedDomainId == domainEntity.DomainId).ToList();
+            }
+           
 
             result = _mapper.Map<List<BasicDataModel>>(lst);
             if (withChooseItem)

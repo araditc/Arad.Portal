@@ -17,7 +17,7 @@ namespace Arad.Portal.DataLayer.Models.Domain
             Prices = new();
             DomainPaymentProviders = new();
             HomePageDesign = new();
-            SupportedCultures = new();
+            SupportedLangId = new();
         }
         public string DomainId { get; set; }
 
@@ -53,7 +53,7 @@ namespace Arad.Portal.DataLayer.Models.Domain
 
         public List<PriceDTO> Prices { get; set; }
 
-        public List<string> SupportedCultures { get; set; }
+        public List<string> SupportedLangId { get; set; }
 
         public List<ProviderDetailDTO> DomainPaymentProviders { get; set; }
 

@@ -4,6 +4,10 @@
     "Key": "btn_HomePageDesign"
   },
   {
+    "Value": "change password",
+    "Key": "btn_ChangePassword"
+  },
+  {
     "Value": "design blog page",
     "Key": "btn_ContentPageDesign"
   },
@@ -1043,6 +1047,10 @@
   {
     "Value": "Passwords must have at least one lowercase ('a'-'z').",
     "Key": "AlertAndMessage_PasswordRequiresLower"
+  },
+  {
+    "Value": "Passwords must have at least one uppercase ('A'-'Z').",
+    "Key": "AlertAndMessage_PasswordRequiresUpper"
   },
   {
     "Value": "Invalid Editor Content",

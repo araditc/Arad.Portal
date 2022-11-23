@@ -33,8 +33,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             string[] randomChars = {
                                        "ABCDEFGHJKLMNPQRSTUVWXYZ", // uppercase 
                                        "abcdefghijkmnpqrstuvwxyz", // lowercase
-                                       "123456789" // digits
-                                       //"" // non-alphanumeric
+                                       "123456789", // digits
+                                       "!@$?" // non-alphanumeric
                                    };
             IdentityModel.CryptoRandom rand = new();
             List<char> chars = new();
@@ -54,10 +54,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 chars.Insert(rand.Next(0, chars.Count), randomChars[2][rand.Next(0, randomChars[2].Length)]);
             }
 
-            //if (opts.RequireNonAlphanumeric)
-            //{
-            //    chars.Insert(rand.Next(0, chars.Count), randomChars[3][rand.Next(0, randomChars[3].Length)]);
-            //}
+            if (opts.RequireNonAlphanumeric)
+            {
+                chars.Insert(rand.Next(0, chars.Count), randomChars[3][rand.Next(0, randomChars[3].Length)]);
+            }
 
             for (int i = chars.Count; i < opts.RequiredLength || chars.Distinct().Count() < opts.RequiredUniqueChars; i++)
             {

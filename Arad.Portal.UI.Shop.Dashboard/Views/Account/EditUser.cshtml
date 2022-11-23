@@ -149,7 +149,7 @@
             var spanErrorList = $('#edit span[data-val-result]');
             spanErrorList.html("");
             spanErrorList.parent().removeClass("has-error");
-            if (result.status === "success") {
+            if (result.status == "success") {
               
                  document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                             document.getElementById('mainToastBody').classList.add('alert-success');
@@ -164,7 +164,7 @@
                                 },
                                 3000);
             }
-            else if (result.status === "error") {
+            else if (result.status == "error") {
 
                 if (spanErrorList.length > 1) {
                     spanErrorList.each(function() {

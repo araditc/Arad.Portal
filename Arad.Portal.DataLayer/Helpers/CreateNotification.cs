@@ -151,7 +151,7 @@ namespace Arad.Portal.DataLayer.Helpers
                 {
                     case NotificationType.Email:
                         notification.SMTP = smtp;
-                        //todo notification.UserEmail = user.Email;
+                        notification.UserEmail = user.Email;
 
                         break;
 
@@ -387,6 +387,7 @@ namespace Arad.Portal.DataLayer.Helpers
         }
         public async Task<Result> SendCustomMessage(ApplicationUser user, string messageText)
         {
+            SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
             if (_sendSmsConfig == null)
             {
                 return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundSmsSetting") };
@@ -418,8 +419,8 @@ namespace Arad.Portal.DataLayer.Helpers
                 switch (notificationType)
                 {
                     case NotificationType.Email:
-                        //notification.SMTP = smtp;
-                        //todo notification.UserEmail = user.Email;
+                        notification.SMTP = smtp;
+                        notification.UserEmail = user.Email;
 
                         break;
 
@@ -774,7 +775,7 @@ namespace Arad.Portal.DataLayer.Helpers
                     {
                         case NotificationType.Email:
                             notification.SMTP = smtp;
-                            //todo notification.UserEmail = user.Email;
+                            notification.UserEmail = user.Email;
 
                             break;
 

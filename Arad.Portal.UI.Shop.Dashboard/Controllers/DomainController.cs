@@ -39,6 +39,7 @@ using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
 using Arad.Portal.DataLayer.Contracts.General.BasicData;
 using Microsoft.AspNetCore.Http;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -119,6 +120,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (userDB.IsSystemAccount)
             {
                 var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("Vendor", "True"));
+                vendorList = vendorList.Where(_ => !_.Domains.Any(a => a.IsOwner) || _.Domains.FirstOrDefault(_=>_.IsOwner).DomainId == id).ToList();
                 var vendors = vendorList.Select(_ => new SelectListModel()
                 {
                     Text = _.Profile.FullName,
@@ -134,7 +136,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = _domainRepository.FetchDomain(id).ReturnValue;
-                model.SupportedCultures = _basicDataRepository.GetList("SupportedCultures", false).Select(_ => _.Text).ToList();
+                //model.SupportedCultures = _basicDataRepository.GetList("SupportedCultures", false).Select(_ => _.Text).ToList();
             }
             
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
@@ -147,14 +149,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var currencyList = _curRepository.GetAllActiveCurrency();
             ViewBag.CurrencyList = currencyList;
             ViewBag.DefCurrency = _curRepository.GetDefaultCurrency(currentUserId).ReturnValue.CurrencyId;
-            ViewBag.Activelanguages = _lanRepository.GetAllActiveLanguage();
-            var supportedCultures = _basicDataRepository.GetList("SupportedCultures", false);
-            foreach (var item in supportedCultures)
+            var activeLanguages = _lanRepository.GetAllActiveLanguage();
+            var lst = new List<SelectListModel>();
+            foreach (var item in activeLanguages)
             {
-                var lanId = _lanRepository.FetchBySymbol(item.Text);
-                model.SupportedCultures.Add(lanId);
+                var languageEntity = _lanRepository.FetchLanguage(item.Value);
+                lst.Add(new SelectListModel()
+                {
+                    Text = languageEntity.Symbol,
+                    Value = languageEntity.LanguageId
+                });
             }
-
+            ViewBag.Activelanguages = lst;
             var invoiceNumberEnum = _domainRepository.GetInvoiceNumberProcedureEnum();
             ViewBag.InvoiceNumberEnum = invoiceNumberEnum;
 
@@ -247,8 +253,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 dto.DomainId = Guid.NewGuid().ToString();
                 #region DomainOwner user update
-                var ownerUser = await _userManager.FindByNameAsync(dto.OwnerUserName);
-                ownerUser.Domains.Add(new UserDomain() { DomainId = dto.DomainId, DomainName = dto.DomainName, IsOwner = true });
+                var ownerUser = await _userManager.FindByIdAsync(dto.OwnerUserId);
+                if(!ownerUser.Domains.Any(_=>_.DomainId == dto.DomainId))
+                {
+                    ownerUser.Domains.Add(new UserDomain() { DomainId = dto.DomainId, DomainName = dto.DomainName, IsOwner = true });
+                }else
+                {
+                    ownerUser.Domains.FirstOrDefault(_ => _.DomainId == dto.DomainId).IsOwner = true;
+                }
+                
                 await _userManager.UpdateAsync(ownerUser);
                 #endregion
 
@@ -273,20 +286,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     var activePrice = dto.Prices.Where(_ => _.IsActive && _.EDate == null).FirstOrDefault();
                     incorrectBoundary.EDate = activePrice.SDate.Value.AddDays(-1);
                 }
-
-                var supportedIds = dto.SupportedCultures;
-                
                 var i = 1;
-                foreach (var lanId in supportedIds)
+                foreach (var lanId in dto.SupportedLangId)
                 {
-                    var lanEntity = _lanRepository.FetchLanguage(lanId);
+                    var language = _lanRepository.FetchLanguage(lanId);
                     var basicObject = new DataLayer.Entities.General.BasicData.BasicData()
                     {
                         AssociatedDomainId = dto.DomainId,
                         BasicDataId = Guid.NewGuid().ToString(),
                         GroupKey = "SupportedCultures",
-                        Value = i.ToString(),
-                        Text = lanEntity.Symbol,
+                        Value = lanId,
+                        Text = language.Symbol,
                         Order = i,
                         CreationDate = DateTime.UtcNow,
                         IsActive = true,
@@ -613,11 +623,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             JsonResult result;
             //Result saveResult;
             DomainDTO model;
-            var domainId = "";
+            
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userDb = await _userManager.FindByIdAsync(currentUserId);
 
-            domainId = userDb.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+            
             if (!ModelState.IsValid)
             {
                 var errors = new List<AjaxValidationErrorModel>();
@@ -630,6 +640,32 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
+                #region DomainOwner user update
+                var domainEntity = _domainRepository.FetchDomain(dto.DomainId).ReturnValue;
+                if(domainEntity.OwnerUserId != dto.OwnerUserId)
+                {
+                    var ownerUser = await _userManager.FindByIdAsync(dto.OwnerUserId);
+                    if(!ownerUser.Domains.Any(_=>_.DomainId == dto.DomainId))
+                    {
+                        ownerUser.Domains.Add(new UserDomain() { DomainId = dto.DomainId, DomainName = dto.DomainName, IsOwner = true });
+                    }else
+                    {
+                        ownerUser.Domains.FirstOrDefault(_ => _.DomainId == dto.DomainId).IsOwner = true;
+                    }
+                   
+                    await _userManager.UpdateAsync(ownerUser);
+
+                    var previousOwner = await _userManager.FindByIdAsync(domainEntity.OwnerUserId);
+                    if(previousOwner != null)
+                    {
+                        previousOwner.Domains.FirstOrDefault(_ => _.IsOwner).IsOwner = false;
+                        await _userManager.UpdateAsync(previousOwner);
+                    }
+                    
+                }
+                
+                #endregion
+
                 foreach (var item in dto.DomainPaymentProviders)
                 {
                     item.PspType = (PspType)Enum.Parse(typeof(PspType), item.Type);
@@ -655,32 +691,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     var activePrice = dto.Prices.Where(_ => _.IsActive && _.EDate == null).FirstOrDefault();
                     incorrectActivation.EDate = activePrice.SDate.Value.AddDays(-1);
                 }
-                List<string> supportedCulsInput = new List<string>();
-                var currentSupportedCultures = _basicDataRepository.GetList("SupportedCultures", false).Select(_=>_.Text);
-                foreach (var item in dto.SupportedCultures)
+               
+                var res = await _basicDataRepository.DeleteGroupKeyListInDomain(dto.DomainId, "SupportedCultures");
+                int i = 1;
+                foreach (var lanId in dto.SupportedLangId)
                 {
-                    var lanEntity = _lanRepository.FetchLanguage(item);
-                    supportedCulsInput.Add(lanEntity.Symbol);
-                }
-                var intersection = supportedCulsInput.Intersect(currentSupportedCultures);
-                if(intersection.Count() != currentSupportedCultures.Count() || intersection.Count() != supportedCulsInput.Count())
-                {
-                    var res = await _basicDataRepository.DeleteGroupKeyListInDomain(domainId, "SupportedCultures");
-                    int i = 1;
-                    foreach (var item in supportedCulsInput)
+                    var languageId = _lanRepository.FetchBySymbol(lanId);
+                    await _basicDataRepository.InsertNewRecord(new DataLayer.Entities.General.BasicData.BasicData()
                     {
-                        await _basicDataRepository.InsertNewRecord(new DataLayer.Entities.General.BasicData.BasicData()
-                        {
-                            AssociatedDomainId = domainId,
-                            BasicDataId = Guid.NewGuid().ToString(),
-                            CreationDate = DateTime.UtcNow,
-                            GroupKey = "SupportedCultures",
-                            Value = i.ToString(),
-                            Text = item,
-                            Order = i
-                        });
-                        i++;
-                    }
+                        AssociatedDomainId = dto.DomainId,
+                        BasicDataId = Guid.NewGuid().ToString(),
+                        CreationDate = DateTime.UtcNow,
+                        GroupKey = "SupportedCultures",
+                        Value = languageId,
+                        Text = lanId,
+                        Order = i
+                    });
+                    i++;
+                  
                 }
 
                 Result saveResult = await _domainRepository.EditDomain(dto);

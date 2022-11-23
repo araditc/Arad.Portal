@@ -117,17 +117,14 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             var dbEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
             var defDomain = _domainContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
 
-            FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
-            FilterDefinition<Entities.General.Content.Content> filterDef;
-           
-            filterDef = builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), dbEntity.DomainId);
-            filterDef &= builder.Eq(nameof(Entities.General.Content.Content.IsDeleted), false);
+            //FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
+            //FilterDefinition<Entities.General.Content.Content> filterDef;
+            //filterDef = builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), dbEntity.DomainId);
+            //filterDef &= builder.Eq(nameof(Entities.General.Content.Content.IsDeleted), false);
+            //var cursor = await _contentContext.Collection.<string>("ContentCategoryId", filterDef);
+            //var lst = await cursor.ToListAsync();
 
-            //TODO : doesnt work
-            var cursor = await _contentContext.Collection.DistinctAsync<string>("ContentCategoryId", filterDef);
-            var lst = await cursor.ToListAsync();
-
-           
+            var lst = _contentContext.Collection.AsQueryable().Where(_ => !_.IsDeleted && _.AssociatedDomainId == dbEntity.DomainId).GroupBy(_ => _.ContentCategoryId).Select(a => a.Key);
             var finalList = new List<string>();
             foreach (var catId in lst)
             {

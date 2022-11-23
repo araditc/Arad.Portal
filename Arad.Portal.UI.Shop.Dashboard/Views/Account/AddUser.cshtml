@@ -193,7 +193,7 @@
             success: function (result)
             {
                 debugger;
-                    if (result.status === "success")
+                    if (result.status == "success")
                     {
 
                             document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
@@ -209,7 +209,7 @@
                                 },
                                 3000);
                         }
-                    else if (result.status === "error")
+                    else if (result.status == "error")
                       {
                             var spanErrorList = $('span[data-val-result]');
 

@@ -100,10 +100,10 @@
                         </div>
 
                         <div class="form-group col-12 col-md-3">
-                        <label class="form-label" asp-for="SupportedCultures">@Language.GetString("design_SupportedCultures")</label><br />
-                        <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.SupportedCultures" asp-items="@(new MultiSelectList(ViewBag.Activelanguages, "Value","Text", Model.DefaultLanguageId))">
+                        <label class="form-label" asp-for="SupportedLangId">@Language.GetString("design_SupportedCultures")</label><br />
+                        <select class="form-control selectpicker" data-live-search="true" multiple asp-for="@Model.SupportedLangId" asp-items="@(new MultiSelectList(ViewBag.Activelanguages, "Value","Text"))">
                         </select>
-                        <span data-val-result="@Model.SupportedCultures" class="text-danger"></span>
+                        <span data-val-result="SupportedLangId" class="text-danger"></span>
                     </div>
 
                 </div>
@@ -462,8 +462,8 @@
             $("#btnAddDomain").click(function () {
             debugger;
                 var flag = false;
-                 if ($("#SupportedCultures").val().length == 0) {
-                $("span[data-val-result='SupportedCultures']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
+                if ($("#SupportedLangId").val().length == 0) {
+                $("span[data-val-result='SupportedLangId']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
                 flag = true;
                  }
                 if($("#DomainName").val() == "")
@@ -523,12 +523,12 @@
                                     $("#toastPanel").show();
                                     var bsAlert = new bootstrap.Toast($('#mainToast'));
                                     bsAlert.show();
-                                         //   setTimeout(function()
-                                         //   {
-                                         //       $("#toastPanel").hide();
-                                         //        window.location.href = '@Url.Action("List")';
-                                         //   },
-                                         //1500);
+                                            setTimeout(function()
+                                            {
+                                                $("#toastPanel").hide();
+                                                 window.location.href = '@Url.Action("List")';
+                                            },
+                                         2000);
                                 }
                                 else
                                 if (result.status === "ModelError")
@@ -574,7 +574,7 @@
             debugger;
             var obj = {};
             obj.Prices = [];
-            obj.SupportedCultures = [];
+            obj.SupportedLangId = [];
             obj.DomainPaymentProviders = [];
             obj.DomainId = $("#DomainId").val();
             if($("#DomainName").val() != "")
@@ -583,9 +583,8 @@
             }
 
             //supportedcultures
-            for (var i = 0; i < $("#SupportedCultures").val().length; i++) {
-
-                obj.SupportedCultures.push($("#SupportedCultures").val()[i]);
+            for (var i = 0; i < $("#SupportedLangId option:selected").length; i++) {
+                obj.SupportedLangId.push($("#SupportedLangId").val()[i]);
             }
 
 

@@ -109,8 +109,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             {
                 var domain = new Domain()
                 {
-                    DomainId = "87deb839-c63a-460d-8c31-86c80b2a85b1",
-                    DomainName = "SampleDomainShouldBeChangedToYourDesiredDomainName",
+                    DomainId = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004",
+                    DomainName = "http://localhost:3214",
                     IsDefault = true,
                     IsActive = true,
                     DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
@@ -137,6 +137,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     IsActive = true,
                     IsSystemAccount = true,
                     UserRoleId = "0e1643a3-1212-485b-862f-45147532427c",
+                   
                     Profile = new Profile()
                     {
                         Gender = Gender.Female,
@@ -152,7 +153,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     },
                     CreationDate = DateTime.UtcNow
                 };
-                user.Domains.Add(new UserDomain() { DomainId = "87deb839-c63a-460d-8c31-86c80b2a85b1", DomainName = "SampleDomainShouldBeChangedToYourDesiredDomainName", IsOwner = true });
+                user.Domains.Add(new UserDomain() { DomainId = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004", DomainName = "http://localhost:3214", IsOwner = true });
                 userManager.CreateAsync(user, "Sa@12345").Wait();
             }
             #endregion user

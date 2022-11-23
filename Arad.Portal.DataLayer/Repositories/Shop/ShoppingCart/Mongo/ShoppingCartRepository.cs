@@ -450,9 +450,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     obj.SellerUserName = sellerPurchase.SellerUserName;
                     obj.ShippingTypeId = sellerPurchase.ShippingTypeId;
                    obj.ShippingExpense = sellerPurchase.ShippingExpense;
+
                     //??? update shippingExpense if seller change it
-                    //TODO
-                    finalPaymentPrice += sellerPurchase.ShippingExpense;
+                    var sellerEntity = await _userManager.FindByIdAsync(sellerPurchase.SellerId);
+                    var domainOwner = sellerEntity.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+                    var shippingEntity = _shippingContext.Collection.Find(_ => _.AssociatedDomainId == domainOwner).FirstOrDefault();
+                    var fixedExpense = shippingEntity.AllowedShippingTypes.FirstOrDefault(_ => _.HasFixedExpense).FixedExpenseValue;
+                    finalPaymentPrice += fixedExpense;
+
                     sellerFactor += sellerPurchase.ShippingExpense;
                     foreach (var pro in sellerPurchase.Products.Where(_=>!_.IsDeleted))
                     {
@@ -804,9 +809,12 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     purchasePerSeller.ShippingTypeId = sellerPurchase.ShippingTypeId;
 
                     // update shippingExpense if seller change it
-                    //TODO
-
-                    finalPaymentPrice += sellerPurchase.ShippingExpense;
+                    var sellerEntity = await _userManager.FindByIdAsync(sellerPurchase.SellerId);
+                    var domainOwner = sellerEntity.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
+                    var shippingEntity = _shippingContext.Collection.Find(_ => _.AssociatedDomainId == domainOwner).FirstOrDefault();
+                    var fixedExpense = shippingEntity.AllowedShippingTypes.FirstOrDefault(_ => _.HasFixedExpense).FixedExpenseValue;
+                    finalPaymentPrice += fixedExpense;
+                   
                     sellerFactor += sellerPurchase.ShippingExpense;
                     foreach (var pro in sellerPurchase.Products)
                     {
