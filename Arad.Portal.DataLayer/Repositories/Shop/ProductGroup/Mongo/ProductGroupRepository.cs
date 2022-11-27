@@ -293,7 +293,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                 var langId = filter["LanguageId"].ToString();
                 var filterName = filter["Name"].ToString();
                 long totalCount = await _productContext.ProductGroupCollection.Find(c => true).CountDocumentsAsync();
-                var lst = _productContext.ProductGroupCollection.AsQueryable()
+                var lst = _productContext.ProductGroupCollection.AsQueryable().OrderByDescending(_=>_.CreationDate)
                    .Where(_=>_.MultiLingualProperties.Any(a => a.Name.Contains(filterName)) && _.MultiLingualProperties.Any(_=> _.LanguageId == langId))
                    .Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ProductGroupViewModel()

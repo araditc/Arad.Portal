@@ -111,12 +111,12 @@
                         $("#ProvinceId").html(html);
                         $("#ProvinceId").selectpicker('refresh');
                     } else {
-
+                        showError(result.message);
                     }
                 },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    alert(xhr.status);
-                },
+                //error: function(xhr, ajaxOptions, thrownError) {
+                //  //  alert(xhr.status);
+                //},
                 complete: function() {
                 
                 }
@@ -142,12 +142,12 @@
                             $("#CityId").html(html);
                             $("#CityId").selectpicker('refresh');
                         } else {
-
+                            showError(result.message);
                         }
                     },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        alert(xhr.status);
-                    },
+                    //error: function(xhr, ajaxOptions, thrownError) {
+                    //    alert(xhr.status);
+                    //},
                     complete: function() {
                 
                     }
@@ -174,13 +174,16 @@
                             debugger;
                             console.log(result);
                             window.location = result.url;
-                        } else {
+                        } else 
+                        {
                             if (result.modelStateErrors.length !== 0) {
                                 result.modelStateErrors.forEach(function(value, index) {
                                     $('[data-val-result=' + value.key + ']').html(value.errorMessage);
                                     $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
                                 });
+                                showError(result.message);
                             }
+                           
                         }
                     },
                     complete: function() {

@@ -156,7 +156,8 @@
                                         },
                                         3000);
                                 }else
-                                if (result.status === "ModelError") {
+                                if (result.status === "ModelError")
+                                {
                                     var spanErrorList = $('span[data-val-result]');
                                     if (spanErrorList.length > 1) {
                                         spanErrorList.each(function() {
@@ -175,6 +176,9 @@
                                             $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
                                         });
                                     }
+                                }else
+                                {
+                                    showError(result.message);
                                 }
                             },
                             error: function (xhr, ajaxOptions, thrownError) {

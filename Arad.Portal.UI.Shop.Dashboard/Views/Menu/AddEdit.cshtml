@@ -35,7 +35,7 @@
                             <div class="form-group col-12 col-md-3">
                                 <label asp-for="AssociatedDomainId" class="form-label" >@Language.GetString("AssociatedDomain")</label>
                                 <select class="form-control selectpicker"  asp-for="AssociatedDomainId"
-                                    asp-items="@(new SelectList(ViewBag.DomainList,"Value","Text"))" data-live-search="true">
+                                    asp-items="@(new SelectList(ViewBag.DomainList,"Value","Text", Model.AssociatedDomainId))" data-live-search="true">
                                     </select>
                                 <span data-val-result="AssociatedDomainId" class="text-danger"></span>
                             </div>
@@ -216,13 +216,16 @@
                                         $("#ParentId").html(options);
                                         $("#ParentId").selectpicker("refresh");
                                     }
+                                }else
+                                {
+                                    showError(result.message);
                                 }
-                            },
-                            error: function (xhr, ajaxOptions, thrownError) {
-                                alert("@error");
-                                alert(xhr.status);
-                                alert(thrownError);
-                             }
+                            }//,
+                            //error: function (xhr, ajaxOptions, thrownError) {
+                            //    alert("@error");
+                            //    alert(xhr.status);
+                            //    alert(thrownError);
+                            // }
                       });
                 }
             });
@@ -334,11 +337,11 @@
                                  showError(result.message);
                              }
                         },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            alert("@error");
-                            alert(xhr.status);
-                            alert(thrownError);
-                        },
+                        //error: function (xhr, ajaxOptions, thrownError) {
+                        //    alert("@error");
+                        //    alert(xhr.status);
+                        //    alert(thrownError);
+                        //},
                         complete: function () {
                             /*removeLoading($("#addStoreMenuCard"));*/
                         }
@@ -436,6 +439,9 @@
                             $("#lblProductOrContent").text('@Language.GetString("Content")');
                             $("#productOrContentSection").removeClass("invisible");
                         }
+                    }else
+                    {
+                        showError(result.message);
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
@@ -470,6 +476,9 @@
                                 $("#lblProductOrContent").text('@Language.GetString("Product")');
                                 $("#productOrContentSection").removeClass("invisible");
                             }
+                        }else
+                        {
+                            showError(result.message);
                         }
                     },
                     error: function (xhr, ajaxOptions, thrownError) {

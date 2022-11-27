@@ -449,6 +449,7 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<UserExtensions, UserExtensions>();
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IProductSharedRunTimeDataRepository, ProductSharedRunTimeDataRepository>();
             services.AddTransient<IProductGroupRepository, ProductGroupRepository>();
             services.AddTransient<IProductSpecificationRepository, ProductSpecificationRepository>();
             services.AddTransient<IProductSpecGroupRepository, ProductSpecGroupRepository>();

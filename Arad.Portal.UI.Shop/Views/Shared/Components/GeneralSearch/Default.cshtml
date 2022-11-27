@@ -101,14 +101,14 @@
                         $(div).append(row);
                     }
                     else if (result.status === "error") {
-
+                        showError(result.message);
                     }
                 },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    debugger;
-                    console.log(thrownError);
-                    alert(xhr.status);
-                },
+                //error: function(xhr, ajaxOptions, thrownError) {
+                //    debugger;
+                //    console.log(thrownError);
+                //    alert(xhr.status);
+                //},
                 complete: function(result) {
                     console.log("here in compelete")
                 }

@@ -78,6 +78,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
                 currentModifications.Add(mod);
                 #endregion
                 var model = _mapper.Map<Entities.Shop.Setting.ShippingSetting>(dto);
+               
                 var updateResult = await _context.Collection
                .ReplaceOneAsync(_ => _.ShippingSettingId == dto.ShippingSettingId, model);
                 if (updateResult.IsAcknowledged)

@@ -12,7 +12,7 @@
     @{
         if (@Model["List"])
         {
-            @*<a class="action-head search open" data-toggle="collapse" href="#search">
+                @*<a class="action-head search open" data-toggle="collapse" href="#search">
                     <i class="fa fa-filter" aria-hidden="true"></i>
                 </a>*@
         }
@@ -20,44 +20,44 @@
     @{
         if (@Model["Add"])
         {
-            <a class="action-head add open" data-toggle="collapse" href="#add">
-                <i class="fa fa-plus pt-1" aria-hidden="true"></i>
-            </a>
+                <a class="action-head add open" data-toggle="collapse" href="#add">
+                    <i class="fa fa-plus pt-1" aria-hidden="true"></i>
+                </a>
         }
     }
 </div>
 @{
     if (@Model["Add"])
     {
-        @await Component.InvokeAsync("AddRoleComponent")
+    @await Component.InvokeAsync("AddRoleComponent")
     }
 }
 @{
     if (@Model["List"])
     {
-        <div class="table">
-            <div class="table-head d-none d-lg-block">
-                <div class="table-row">
-                    <div class="row m-0">
-                        <div class="table-col col-md-1">
-                            <span>@Language.GetString("tbl_RowName")</span>
-                        </div>
-                        <div class="table-col col-md-7">
-                            <span>@Language.GetString("tbl_RoleName")</span>
-                        </div>
-                        <div class="table-col col-md-3">
-                            <span></span>
+    <div class="table">
+                <div class="table-head d-none d-lg-block">
+                    <div class="table-row">
+                        <div class="row m-0">
+                            <div class="table-col col-md-1">
+                                <span>@Language.GetString("tbl_RowName")</span>
+                            </div>
+                            <div class="table-col col-md-7">
+                                <span>@Language.GetString("tbl_RoleName")</span>
+                            </div>
+                            <div class="table-col col-md-3">
+                                <span></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="table" class="table-body">
+                <div id="table" class="table-body">
 
-            </div>
-            @await Component.InvokeAsync("LoadingGridData")
-            <ul id="pagination" class="pagination-sm"></ul>
-        </div>
+                </div>
+                @await Component.InvokeAsync("LoadingGridData")
+                <ul id="pagination" class="pagination-sm"></ul>
+    </div>
     }
 }
 
@@ -233,7 +233,8 @@
                                 $("#editModal").modal("show");
 
                             } else {
-                                toastr.error(result.message);
+                              
+                                showError(result.message);
                             }
                         },
                         error: function(xhr, ajaxOptions, thrownError) {

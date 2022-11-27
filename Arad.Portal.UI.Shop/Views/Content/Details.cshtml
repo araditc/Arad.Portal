@@ -227,6 +227,9 @@
                              if (result.status === "Success") {
                                  $("#commentPart").val("@Language.GetString("AlertAndMessage_SubmitComment")");
                                  location.reload();
+                             }else 
+                             {
+                                 showError(result.message);
                              }
                          }
                      });

@@ -88,7 +88,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             if (!string.IsNullOrWhiteSpace(id))
             {
-                model = await _contentCategoryRepository.ContentCategoryFetch(id);
+                model = await _contentCategoryRepository.ContentCategoryFetch(id, true);
             }
             else
             {
@@ -113,19 +113,23 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         /// <param name="did">domainId</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetContentCategoryList(string lid,string did)
+        public async Task<IActionResult> GetContentCategoryList(string lid, string did)
         {
             JsonResult result;
-            List<SelectListModel> lst;
+            List<SelectListModel> lst = new List<SelectListModel>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            lst = await _contentCategoryRepository.AllActiveContentCategory(lid, currentUserId, did);
-            if (lst.Count() > 0)
+            if(!string.IsNullOrWhiteSpace(did))
+            {
+                lst = await _contentCategoryRepository.AllActiveContentCategory(lid, currentUserId, did);
+            }
+            
+            if (lst.Count > 0)
             {
                 result = new JsonResult(new { Status = "success", Data = lst.OrderBy(_=>_.Text) });
             }
             else
             {
-                result = new JsonResult(new { Status = "error", Message = "" });
+                result = new JsonResult(new { Status = "error", Message = Language.GetString(ConstMessages.ObjectNotFound) });
             }
             return result;
 
@@ -175,7 +179,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             JsonResult result;
             try
             {
-                var dto = _contentCategoryRepository.ContentCategoryFetch(id);
+                var dto = _contentCategoryRepository.ContentCategoryFetch(id, true);
                 if (dto == null)
                 {
                     result = new JsonResult(new
@@ -235,7 +239,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                model =await _contentCategoryRepository.ContentCategoryFetch(dto.ContentCategoryId);
+                model =await _contentCategoryRepository.ContentCategoryFetch(dto.ContentCategoryId, true);
                 if (model == null)
                 {
                     return RedirectToAction("PageOrItemNotFound", "Account");

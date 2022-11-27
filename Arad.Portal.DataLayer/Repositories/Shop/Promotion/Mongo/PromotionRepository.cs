@@ -207,7 +207,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 equallentModel.CreationDate = oldEntity.CreationDate;
                 equallentModel.CreatorUserId = oldEntity.CreatorUserId;
                 equallentModel.CreatorUserName = oldEntity.CreatorUserName;
-
+                equallentModel.AssociatedDomainId = dto.AssociatedDomainId;
                 var updateResult = await _context.Collection
                     .ReplaceOneAsync(_ => _.PromotionId == dto.PromotionId, equallentModel);
                 if (updateResult.IsAcknowledged)
@@ -263,12 +263,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 long totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
                 if(userId == Guid.Empty.ToString())//show all promotions cause the user is system account
                 {
-                    list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
-                          .Take(pageSize).ToList();
+                    list = _context.Collection.AsQueryable().ToList();
+                        //.Skip((page - 1) * pageSize)
+                        //  .Take(pageSize).ToList();
                 }else
                 {
-                    list = _context.Collection.AsQueryable().Where(_=>_.CreatorUserId == userId).Skip((page - 1) * pageSize)
-                      .Take(pageSize).ToList();
+                    list = _context.Collection.AsQueryable().Where(_ => _.CreatorUserId == userId).AsQueryable().ToList();
+                      //  .Skip((page - 1) * pageSize)
+                      //.Take(pageSize).ToList();
                 }
                 if(!string.IsNullOrWhiteSpace(title))
                 {

@@ -70,28 +70,39 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
         public async Task<List<SelectListModel>> AllActiveSpecificationGroup(string langId, string currentUserId, string domainId = "")
         {
             var result = new List<SelectListModel>();
-            var userDb = await _userManager.FindByIdAsync(currentUserId);
+            
+            try
+            {
+                var userDb = await _userManager.FindByIdAsync(currentUserId);
+                if (userDb.IsSystemAccount && string.IsNullOrWhiteSpace(domainId))
+                {
+                    result = _productContext.SpecGroupCollection.Find(_ => _.IsActive && !_.IsDeleted)
+                    .Project(_ => new SelectListModel()
+                    {
+                        Text = _.GroupNames.Where(a => a.LanguageId == langId).Count() != 0 ?
+                             _.GroupNames.FirstOrDefault(a => a.LanguageId == langId).Name : "",
+                        Value = _.SpecificationGroupId
+                    }).ToList();
+                }
+                else
+                {
+                    var finalDomainId = !string.IsNullOrWhiteSpace(domainId) ? domainId : userDb.Domains.FirstOrDefault(a => a.IsOwner).DomainId;
+                    var lst = _productContext.SpecGroupCollection.AsQueryable()
+                    .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == finalDomainId).ToList();
 
-            if(userDb.IsSystemAccount && string.IsNullOrWhiteSpace(domainId))
-            {
-                result = _productContext.SpecGroupCollection.Find(_ => _.IsActive && !_.IsDeleted)
-                .Project(_ => new SelectListModel()
-                {
-                    Text = _.GroupNames.Where(a => a.LanguageId == langId).Count() != 0 ?
-                         _.GroupNames.FirstOrDefault(a => a.LanguageId == langId).Name : "",
-                    Value = _.SpecificationGroupId
-                }).ToList();
-            }else
-            {
-                result = _productContext.SpecGroupCollection.AsQueryable()
-                .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == (!string.IsNullOrWhiteSpace(domainId) ? domainId : userDb.Domains.FirstOrDefault(a=> a.IsOwner).DomainId))
-                .Select(_ => new SelectListModel()
-                {
-                    Text = _.GroupNames.Where(a => a.LanguageId == langId).Count() != 0 ?
-                         _.GroupNames.FirstOrDefault(a => a.LanguageId == langId).Name : "",
-                    Value = _.SpecificationGroupId
-                }).ToList();
+                    result = lst.Select(b => new SelectListModel()
+                    {
+                        Text = b.GroupNames.Any(a => a.LanguageId == langId) ?
+                             b.GroupNames.FirstOrDefault(a => a.LanguageId == langId).Name : "",
+                        Value = b.SpecificationGroupId
+                    }).ToList();
+                }
+
             }
+            catch (Exception ex)
+            {
+            }
+            
             
             return result;
         }
@@ -287,7 +298,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                 currentModifications.Add(mod);
                 #endregion
                 availableEntity.Modifications = currentModifications;
-
+                availableEntity.AssociatedDomainId = dto.AssociatedDomainId;
                 if (dto.IsDeleted)
                 {
                     availableEntity.IsDeleted = true;

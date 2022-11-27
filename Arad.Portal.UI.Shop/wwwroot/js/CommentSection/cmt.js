@@ -34,7 +34,9 @@ function submitComment(sender, refId, isLogged,lanIcon) {
                         },
                             3000);
                        
-                    } else {
+                    }
+                    else
+                    {
                         $(DivId).find(".cmt").val(result.message);
                         setTimeout(function () {
                             $(DivId).find(".cmt").val("");
@@ -42,7 +44,6 @@ function submitComment(sender, refId, isLogged,lanIcon) {
                             DivId = null;
                         },
                             3000);
-                       
                     }
                     
                 }

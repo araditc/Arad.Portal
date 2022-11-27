@@ -82,32 +82,42 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             var dbUser = await _userManager.FindByIdAsync(currentUserId);
             if(dbUser != null)
             {
-                if (dbUser.IsSystemAccount && string.IsNullOrWhiteSpace(domainId))
+                try
                 {
-                    result = _categoryContext.Collection.Find(_ => _.IsActive && !_.IsDeleted)
-                    .Project(_ => new SelectListModel()
+                    if (dbUser.IsSystemAccount && string.IsNullOrWhiteSpace(domainId))
                     {
-                        Text = _.CategoryNames.Where(a => a.LanguageId == langId).Count() != 0 ?
-                             _.CategoryNames.First(a => a.LanguageId == langId).Name : "",
-                        Value = _.ContentCategoryId
-                    }).ToList();
+                        result = _categoryContext.Collection.Find(_ => _.IsActive && !_.IsDeleted)
+                        .Project(_ => new SelectListModel()
+                        {
+                            Text = _.CategoryNames.Where(a => a.LanguageId == langId).Count() != 0 ?
+                                 _.CategoryNames.First(a => a.LanguageId == langId).Name : "",
+                            Value = _.ContentCategoryId
+                        }).ToList();
+                    }
+                    else
+                    {
+                        var lastDomainId = !string.IsNullOrWhiteSpace(domainId) ? domainId : dbUser.Domains.FirstOrDefault(a => a.IsOwner).DomainId;
+                        var lst = _categoryContext.Collection.AsQueryable().Where(_ => _.IsActive && !_.IsDeleted &&
+                                   //dbUser.Profile.Access.AccessibleContentCategoryIds.Contains(_.ContentCategoryId) &&
+                                    _.AssociatedDomainId == lastDomainId).ToList();
+                        result = lst
+                                .Select(_ => new SelectListModel()
+                                {
+                                    Text = _.CategoryNames.Any(a => a.LanguageId == langId) ?
+                                         _.CategoryNames.First(a => a.LanguageId == langId).Name : "",
+                                    Value = _.ContentCategoryId
+                                }).ToList();
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    result = _categoryContext.Collection.Aggregate().Match(_ => _.IsActive && !_.IsDeleted && 
-                               dbUser.Profile.Access.AccessibleContentCategoryIds.Contains(_.ContentCategoryId) &&
-                                _.AssociatedDomainId == (!string.IsNullOrWhiteSpace(domainId) ? domainId : dbUser.Domains.FirstOrDefault(a=>a.IsOwner).DomainId))
-                    .Project(_ => new SelectListModel()
-                    {
-                        Text = _.CategoryNames.Where(a => a.LanguageId == langId).Count() != 0 ?
-                             _.CategoryNames.First(a => a.LanguageId == langId).Name : "",
-                        Value = _.ContentCategoryId
-                    }).ToList();
-                    // .Sort(Builders<SelectListModel>.Sort.Ascending(x => x.Text))
+
+                   
                 }
             }
-           
+            if(result.Count > 0)
             result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
+
             return result; ;
         }
 
@@ -147,13 +157,22 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             return finalList;
         }
 
-        public async Task<ContentCategoryDTO> ContentCategoryFetch(string contentCategoryId, bool isDeleted = true)
+        public async Task<ContentCategoryDTO> ContentCategoryFetch(string contentCategoryId, bool isDeleted = false)
         {
             var result = new ContentCategoryDTO();
+            Entities.General.ContentCategory.ContentCategory category = null; 
             try
             {
-                var category = await _categoryContext.Collection
-                    .Find(_ => _.ContentCategoryId == contentCategoryId && _.IsDeleted == isDeleted).FirstOrDefaultAsync();
+                if(isDeleted)
+                {
+                   category = await _categoryContext.Collection
+                   .Find(_ => _.ContentCategoryId == contentCategoryId).FirstOrDefaultAsync();
+                }else
+                {
+                    category = await _categoryContext.Collection
+                   .Find(_ => _.ContentCategoryId == contentCategoryId && !_.IsDeleted).FirstOrDefaultAsync();
+                }
+               
                 if(category != null)
                 {
                     result = _mapper.Map<ContentCategoryDTO>(category);
@@ -435,6 +454,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                 {
                     availableEntity.CategoryNames = dto.CategoryNames;
                 }
+                availableEntity.AssociatedDomainId = dto.AssociatedDomainId;
                 var updateResult = await _categoryContext.Collection
                    .ReplaceOneAsync(_ => _.ContentCategoryId == availableEntity.ContentCategoryId, availableEntity);
 

@@ -448,14 +448,23 @@ namespace Arad.Portal.UI.Shop.Controllers
         [Route("{language}/product/FindProductInventory")]
         public async Task<IActionResult> FindProductInventory([FromBody]InventoryModel model)
         {
-            var productEntity = await _productRepository.ProductFetch(model.ProductId);
-            var lst = productEntity.Inventory;
-            foreach (var item in model.SelectedSpecs)
+            try
             {
-                lst = lst.Where(_ => _.SpecValues.Any(a => a.SpecificationId == item.Value && a.SpecificationValue == item.Text)).ToList();
+                var productEntity = await _productRepository.ProductFetch(model.ProductId);
+                var lst = productEntity.Inventory;
+                foreach (var item in model.SelectedSpecs)
+                {
+                    lst = lst.Where(_ => _.SpecValues.Any(a => a.SpecificationId == item.Value && a.SpecificationValue == item.Text)).ToList();
+                }
+                var finalInventory = lst.Sum(_ => _.Count);
+                return Json(new { status = "success", cnt = finalInventory });
             }
-            var finalInventory = lst.Sum(_ => _.Count);
-            return Json(new { status = "success", cnt = finalInventory });
+            catch (Exception ex)
+            {
+
+                return Json(new { status = "error", message = Language.GetString(ConstMessages.InternalServerErrorMessage) });
+            }
+           
         }
 
         [Route("{language}/product/{**slug}")]

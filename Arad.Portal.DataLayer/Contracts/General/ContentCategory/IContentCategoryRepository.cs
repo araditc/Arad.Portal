@@ -26,7 +26,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.ContentCategory
 
         Task<Result> Restore(string contentCategoryId);
 
-        Task<ContentCategoryDTO> ContentCategoryFetch(string contentCategoryId, bool isDeleted = true);
+        Task<ContentCategoryDTO> ContentCategoryFetch(string contentCategoryId, bool isDeleted = false);
 
         List<ContentCategoryDTO> GetDirectChildrens(string contentCategoryId, int? count, int skip = 0);
 

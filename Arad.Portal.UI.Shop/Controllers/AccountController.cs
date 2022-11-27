@@ -654,7 +654,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
             catch (Exception e)
             {
-                return Json(new { status = "error", data = new List<CountryPartView>() });
+                return Json(new { status = "error", message = Language.GetString(ConstMessages.InternalServerErrorMessage) });
             }
         }
 
@@ -675,7 +675,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             catch (Exception e)
             {
-                return Json(new { status = "error", data = new List<CountryPartView>() });
+                return Json(new { status = "error", message = Language.GetString(ConstMessages.InternalServerErrorMessage) });
             }
         }
 
@@ -731,7 +731,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                         }
                     }
                    
-                    return Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_FillEssentialFields"), ModelStateErrors = errors });
+                    return Json(new { Status = "error", message = Language.GetString("AlertAndMessage_FillEssentialFields"), ModelStateErrors = errors });
                 }
 
               

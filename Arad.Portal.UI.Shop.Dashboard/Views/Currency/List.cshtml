@@ -105,19 +105,22 @@
                                     <a asp-action="AddEdit" asp-controller="Currency" asp-route-id="@item.CurrencyId" class="btn btn-sm btn-warning bg-gradient">
                                         <i  class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
-                               
-                               if(!@item.IsDeleted)
-                                    <button onclick="EntityDelete('@item.CurrencyId')" class="btn btn-sm btn-danger bg-gradient">
+                               @{
+                                    if(@item.IsDeleted)
+                                    {
+                                          <button onclick="EntityDelete('@item.CurrencyId')" class="btn btn-sm btn-danger bg-gradient">
                                         <i  class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
-                                }
-                                else
-                                {
-                                    <button id="restoreRecord" data-id="@item.CurrencyId" onclick="EntityRestore('@item.CurrencyId')" class="btn btn-sm btn-secondary bg-gradient">
-                                        <i  class="fa fa-refresh"></i>
-                                        @Language.GetString("btn_Restore")
-                                    </button>
-                                }
+                                    }
+                                   else
+                                    {
+                                        <button id="restoreRecord" data-id="@item.CurrencyId" onclick="EntityRestore('@item.CurrencyId')" class="btn btn-sm btn-secondary bg-gradient">
+                                            <i  class="fa fa-refresh"></i>
+                                            @Language.GetString("btn_Restore")
+                                        </button>
+                                    }
+                               }
+                              
                             </td>
                         </tr>
                     }

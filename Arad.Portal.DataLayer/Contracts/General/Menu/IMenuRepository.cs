@@ -25,7 +25,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.Menu
         List<SelectListModel> MenuesOfSelectedDomain(string domainId, string langId);
         Task<PagedItems<MenuDTO>> AdminList(string queryString, ApplicationUser user);
          Task<Result> DeleteMenu(string menuId);
-         Result<MenuDTO> FetchMenu(string menuId);
+        Task<Result> RestoreMenu(string menuId);
+        Result<MenuDTO> FetchMenu(string menuId);
          List<SelectListModel> GetAllMenuType();
          StoreMenuVM GetByCode(long menuCode);
     }

@@ -50,14 +50,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                 //    baseAddress = "/Admin";
                 //}
                 ViewBag.BasePath = baseAddress;
+                
                 var obj = new RequestMenuModel()
                 {
                     PathString = $"/{route?.Values["controller"]}/{route?.Values["action"]}".ToLower(),
                     Domain = $"{_accessor.HttpContext.Request.Host}"
                 };
+                if (route?.Values["controller"].ToString() == "Comment")
+                {
+                    obj.PathString = _accessor.HttpContext.Request.Path;
+                }
 
-                
-                if (userId != null)
+                    if (userId != null)
                 {
                     menues = await _permissionRepository.GetMenus(userId,obj.PathString);
                 }

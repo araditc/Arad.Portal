@@ -191,7 +191,7 @@
 
         </div>
         <div class="card-footer">
-            <button id="btnSearch" class="btn btn-primary bg-gradient" type="submit">
+            <button id="btnSearch" class="btn btn-primary bg-gradient float-end" type="submit">
                 <i style="position: relative; left: 5px; top: 1px;" class="fa fa-search"></i>
                 @Language.GetString("btn_Search")
             </button>
@@ -247,8 +247,8 @@
                             <td class="ListCell">@(++i)</td>
                             <td class="ListCell">@item.Title</td>
                             <td class="ListCell">@item.CurrencyName</td>
-                            <td class="ListCell">@item.SDate</td>
-                            <td class="ListCell">@item.EDate</td>
+                            <td class="ListCell" dir="ltr">@item.SDate.ToString().Split(" ")[0]</td>
+                            <td class="ListCell" dir="ltr">@(@item.EDate != null ? item.EDate.Value.ToString().Split(" ")[0] : "")</td>
                             <td class="ListCell">@item.PromotionType</td>
                             <td class="ListCell">@item.DiscountType</td>
                             <td class="ListCell">@(item.AsUserCoupon ? Language.GetString("Yes") : Language.GetString("No"))</td>
@@ -360,10 +360,12 @@
                        url: '@Url.Action("GetFilteredProductGroup", "Promotion")'+`?vendorId={-1}`,
                         type: 'Get',
                         dataType: 'json',
-                        success: function (result) {
+                        success: function (result)
+                        {
                             debugger;
                             var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
-                            if (result.status === "success") {
+                            if (result.status === "success")
+                            {
                                 debugger;
 
                                 if (result.data.length != 0) {
@@ -376,6 +378,9 @@
                                     "<select class='form-control selectpicker' id='productGroupId' data-live-search='true' >" + options + "</select>";
                                 $("#firstRow").append(groupSelect);
                                 $("#productGroupId").selectpicker();
+                            }else
+                            {
+                                showError(result.message);
                             }
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
@@ -454,7 +459,8 @@
                         success: function (result) {
                             debugger;
                             var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
-                            if (result.status === "success") {
+                            if (result.status === "success")
+                            {
                                 debugger;
 
                                 if (result.data.length != 0) {
@@ -467,6 +473,9 @@
                                     "<select class='form-control selectpicker' id='productGroupId' data-live-search='true' >" + options + "</select></div>";
                                 $("#firstRow").append(groupSelect);
                                 $("#productGroupId").selectpicker();
+                            }else
+                            {
+                                showError(result.message);
                             }
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
@@ -493,7 +502,8 @@
                   success: function (result) {
                       debugger;
                       var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
-                      if (result.status === "success") {
+                      if (result.status === "success")
+                      {
                           debugger;
 
                           if (result.data.length != 0) {
@@ -507,7 +517,10 @@
 
                           $("#firstRow").append(productSection);
                           $("#productId").selectpicker();
-                          }
+                      }else
+                      {
+                          showError(result.message);
+                      }
                   },
                     error: function (xhr, ajaxOptions, thrownError) {
                         alert("@error");

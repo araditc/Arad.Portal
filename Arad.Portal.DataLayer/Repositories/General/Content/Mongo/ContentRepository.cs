@@ -441,7 +441,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             var userId = _httpContextAccessor.HttpContext.User.Claims
                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             equallentModel.CreatorUserName = userName;
-
+            equallentModel.AssociatedDomainId = dto.AssociatedDomainId;
             #region add modification
             var mod = GetCurrentModification($"update this content by userId:'{userId}' and userName:'{userName}' in date:'{DateTime.Now.ToPersianLetDateTime()}'");
             equallentModel.Modifications.Add(mod);

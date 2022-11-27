@@ -135,7 +135,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                 #endregion
 
                 equallentModel.Modifications = currentModification;
-
+                equallentModel.AssociatedDomainId = dto.AssociatedDomainId;
                 equallentModel.CreationDate = availableEntity.CreationDate;
                 equallentModel.CreatorUserId = availableEntity.CreatorUserId;
                 equallentModel.CreatorUserName = availableEntity.CreatorUserName;
@@ -178,29 +178,40 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
         public async Task<List<SelectListModel>> GetAllActiveProductUnit(string langId, string currentUserId, string domainId = "")
         {
             var result = new List<SelectListModel>();
-            var userEntity = await _userManager.FindByIdAsync(currentUserId);
+            try
+            {
+                var userEntity = await _userManager.FindByIdAsync(currentUserId);
 
-            if(userEntity.IsSystemAccount && string.IsNullOrWhiteSpace(domainId))
-            {
-                result = _productContext.ProductUnitCollection.Find(_ => _.IsActive && !_.IsDeleted)
-               .Project(_ => new SelectListModel()
-               {
-                   Text = _.UnitNames.Where(a => a.LanguageId == langId).Count() != 0 ?
-                        _.UnitNames.FirstOrDefault(a => a.LanguageId == langId).Name : "",
-                   Value = _.ProductUnitId
-               }).ToList();
-            }else
-            {
-                result = _productContext.ProductUnitCollection.AsQueryable().Where(_=> _.IsActive && !_.IsDeleted &&
-                _.AssociatedDomainId == (!string.IsNullOrWhiteSpace(domainId) ? domainId : userEntity.Domains.FirstOrDefault(a=>a.IsOwner).DomainId))
-               .Select(_ => new SelectListModel()
-               {
-                   Text = _.UnitNames.Where(a => a.LanguageId == langId).Count() != 0 ?
-                        _.UnitNames.FirstOrDefault(a => a.LanguageId == langId).Name : "",
-                   Value = _.ProductUnitId
-               }).ToList();
+                if (userEntity.IsSystemAccount && string.IsNullOrWhiteSpace(domainId))
+                {
+                    result = _productContext.ProductUnitCollection.Find(_ => _.IsActive && !_.IsDeleted)
+                   .Project(_ => new SelectListModel()
+                   {
+                       Text = _.UnitNames.Where(a => a.LanguageId == langId).Count() != 0 ?
+                            _.UnitNames.FirstOrDefault(a => a.LanguageId == langId).Name : "",
+                       Value = _.ProductUnitId
+                   }).ToList();
+                }
+                else
+                {
+                    var fionalDomainId = !string.IsNullOrWhiteSpace(domainId) ? domainId : userEntity.Domains.FirstOrDefault(a => a.IsOwner).DomainId;
+                    var lst = _productContext.ProductUnitCollection.AsQueryable().Where(_ => _.IsActive && !_.IsDeleted &&
+                    _.AssociatedDomainId == fionalDomainId).ToList();
+
+                    result = lst
+                           .Select(_ => new SelectListModel()
+                           {
+                               Text = _.UnitNames.Where(a => a.LanguageId == langId).Count() != 0 ?
+                                    _.UnitNames.FirstOrDefault(a => a.LanguageId == langId).Name : "",
+                               Value = _.ProductUnitId
+                           }).ToList();
+                }
             }
-           
+            catch (Exception ex)
+            {
+
+              
+            }
             return result;
         }
 

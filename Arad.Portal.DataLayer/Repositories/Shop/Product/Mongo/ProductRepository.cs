@@ -626,8 +626,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                
                 if (!string.IsNullOrWhiteSpace(filter["groupIds"]))
                 {
-                    var arr = filter["groupIds"].ToString().Split("|");
-                    totalList = totalList.Where(_ => _.GroupIds.Intersect(arr.ToList()).Any());
+                   
+                    totalList = totalList.Where(_ => _.GroupIds.Contains(filter["groupIds"].ToString()));
                 }
 
                 if (!string.IsNullOrWhiteSpace(filter["name"]))
@@ -1305,34 +1305,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<Result> UpdateProductInventory(string productId, bool isIncreament, int count, List<SpecValue> specValues)
-        {
-            var result = new Result();
-            var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
-            var inventoryDetail = new InventoryDetail();
-            List<InventoryDetail> lst = entity.Inventory;
-
-            foreach (var item in specValues)
-            {
-                lst = lst.Where(_ => _.SpecValues.Any(a => a.SpecificationId == item.SpecificationId && a.SpecificationValue == item.SpecificationValue)).ToList();
-            }
-            if (lst.Count > 0)
-            {
-                inventoryDetail = lst[0];
-
-                if (isIncreament)
-                    entity.Inventory.FirstOrDefault(_ => _.SpecValuesId == inventoryDetail.SpecValuesId).Count += count;
-                else
-                    entity.Inventory.FirstOrDefault(_ => _.SpecValuesId == inventoryDetail.SpecValuesId).Count -= count;
-
-                var updateResult = await _context.ProductCollection.ReplaceOneAsync(_ => _.ProductId == productId, entity);
-                if (updateResult.IsAcknowledged)
-                {
-                    result.Succeeded = true;
-                }
-            }
-            return result;
-        }
+      
         public InventoryDetail FindProductSpecValuesRecord(string productId, List<SpecValue> specValues)
         {
             var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();

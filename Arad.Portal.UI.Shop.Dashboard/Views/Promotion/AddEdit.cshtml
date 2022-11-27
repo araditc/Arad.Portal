@@ -401,13 +401,16 @@
                                     "<select class='form-control selectpicker' id='productGroupId' data-live-search='true'>" + options + "</select></div>";
                                 $("#firstRow").append(groupSelect);
                                 $("#productGroupId").selectpicker();
+                            }else
+                            {
+                                showError(result.message);
                             }
                         },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            alert("@error");
-                            alert(xhr.status);
-                            alert(thrownError);
-                        }
+                        //error: function (xhr, ajaxOptions, thrownError) {
+                        //    alert("@error");
+                        //    alert(xhr.status);
+                        //    alert(thrownError);
+                        //}
                     });
                }
             });
@@ -464,6 +467,9 @@
                                 $("#productGroupTypeSection").append(productGroupTypeSelect);
                                 $("#productGroupId").selectpicker();
                                 $("#productGroupType").selectpicker();
+                            }else
+                            {
+                                showError(result.message);
                             }
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
@@ -489,7 +495,8 @@
                   success: function (result) {
                       debugger;
                       var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
-                      if (result.status === "success") {
+                      if (result.status === "success")
+                      {
                           debugger;
                           if (result.data.length != 0) {
                               (result.data).forEach(function (item) {
@@ -506,7 +513,10 @@
                               "<button type='button' class='btn btn-success btn-sm bg-gradient' onclick='addProductToPromotion()'>" +
                               "<i class='fa fa-plus pt-1' ></i></botton></div></div>");
                          /* $("#addButtonSection").css("display", "block");*/
-                          }
+                      }else
+                      {
+                          showError(result.message);
+                      }
                   },
                     error: function (xhr, ajaxOptions, thrownError) {
                         alert("@error");
@@ -693,7 +703,7 @@
             obj.Title = $("#title").val();
             obj.CurrencyId = $("#currencyId").val();
             obj.CurrencyName = $("#currencyId option:selected").text();
-            obj.AssociatedDomainId $("#AssociatedDomainId").val();
+            obj.AssociatedDomainId = $("#AssociatedDomainId").val();
 
             if(!$("#AsUserCoupon").is(":checked"))
             {
@@ -834,13 +844,16 @@
                                     $("#productGroupType").selectpicker('val', model.groupIdOfPromotedProduct);
                                     $("#productGroupId").selectpicker('val', model.infoes[0].affectedProductGroupId);
 
+                                }else
+                                {
+                                    showError(result.message);
                                 }
                             },
-                            error: function (xhr, ajaxOptions, thrownError) {
-                                alert("@error");
-                                alert(xhr.status);
-                                alert(thrownError);
-                            }
+                            //error: function (xhr, ajaxOptions, thrownError) {
+                            //    alert("@error");
+                            //    alert(xhr.status);
+                            //    alert(thrownError);
+                            //}
                         });
                     }
                 }
@@ -898,7 +911,8 @@
                         success: function (result) {
                             debugger;
                             var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
-                            if (result.status === "success") {
+                            if (result.status === "success")
+                            {
                                 debugger;
                                 if (result.data.length != 0) {
                                     (result.data).forEach(function (item) {
@@ -921,12 +935,16 @@
                                 $("#productGroupTypeSection").css("display", "block");
                                 fillProductTypeIdSelect(selectedProductId);
                             }
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            alert("@error");
-                            alert(xhr.status);
-                            alert(thrownError);
-                        }
+                            else
+                            {
+                                showError(result.message);
+                            }
+                        }//,
+                        //error: function (xhr, ajaxOptions, thrownError) {
+                        //    alert("@error");
+                        //    alert(xhr.status);
+                        //    alert(thrownError);
+                        //}
                     });
         }
 
@@ -946,7 +964,8 @@
                   success: function (result) {
                       debugger;
                       var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
-                      if (result.status === "success") {
+                      if (result.status === "success")
+                      {
                           debugger;
                           if (result.data.length != 0) {
                               (result.data).forEach(function (item) {
@@ -966,6 +985,9 @@
                           }
                          /* $(".type2").css("display", "block");*/
                           $("#productTypeSection").css("display", "block");
+                     }else
+                     {
+                         showError(result.message);
                      }
                   },
                     error: function (xhr, ajaxOptions, thrownError) {

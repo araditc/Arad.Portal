@@ -801,6 +801,9 @@ else
     $(document).ready(function () {
         debugger;
         
+        $("#languageId").val("@ViewBag.LangId");
+        $("#languageId").selectpicker("refresh");
+
         $("#seoTitle").characterCounter({
              //opacity : ".8",
              max: 70,
@@ -1035,11 +1038,11 @@ else
                                 showError(result.message);
                             }
                         },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            alert("@error");
-                            alert(xhr.status);
-                            alert(thrownError);
-                        },
+                        //error: function (xhr, ajaxOptions, thrownError) {
+                        //    alert("@error");
+                        //    alert(xhr.status);
+                        //    alert(thrownError);
+                        //},
                         complete: function () {
                            /* removeLoading($("#addProductCard"));*/
                         }
@@ -1111,18 +1114,23 @@ else
                                 $("#specGroupId").html(options);
                                 $("#specGroupId").selectpicker("refresh");
                             }
+                        }else
+                        {
+                            showError(result.message);
                         }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert("@error");
-                        alert(xhr.status);
-                        alert(thrownError);
-                    }
+                    }//,
+                    //error: function (xhr, ajaxOptions, thrownError) {
+                    //    alert("@error");
+                    //    alert(xhr.status);
+                    //    alert(thrownError);
+                    //}
             });
        });
 
 
         $("#AssociatedDomainId").change(function(){
+            debugger;
+            
              var langId = $("#languageId").val();
              var did = $("#AssociatedDomainId").val();
 
@@ -1144,13 +1152,16 @@ else
                                 $("#Unit_ProductUnitId").html(options);
                             $("#Unit_ProductUnitId").selectpicker("refresh");
                             }
+                        }else
+                        {
+                            showError(result.message);
                         }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert("@error");
-                        alert(xhr.status);
-                        alert(thrownError);
-                    }
+                    }//,
+                    //error: function (xhr, ajaxOptions, thrownError) {
+                    //    alert("@error");
+                    //    alert(xhr.status);
+                    //    alert(thrownError);
+                    //}
                 });
         })
 
@@ -1178,6 +1189,9 @@ else
                                 $("#specificationId").html(options);
                                 $("#specificationId").selectpicker('refresh');
                             }
+                        }else
+                        {
+                            showError(result.message);
                         }
                     },
                     error: function (xhr, thrownError) {
@@ -1212,6 +1226,9 @@ else
                                 $("#specValues").html(options);
                                 $("#specValues").selectpicker('refresh');
                             }
+                        }else
+                        {
+                            showError(result.message);
                         }
                     },
                     error: function (xhr, thrownError) {
@@ -1628,6 +1645,7 @@ else
         {
              $("span[data-val-result='multiLangId']").html("");
             $("span[data-val-result='productName']").html("");
+            $("span[data-val-result='urlFriend']").html("");
 
             if ($("#multiLangId").val() == "") {
                 $("span[data-val-result='multiLangId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');

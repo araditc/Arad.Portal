@@ -53,14 +53,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         List<ProductSpecificationValue> GetProductSpecifications(string productId);
         Task<Result> ChangeActivation(string productId, string modificationReason);
         int GetInventory(string productId);
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="productId"></param>
-        /// <param name="isIncreament">if equals to false then it is decreament</param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        Task<Result> UpdateProductInventory(string productId, bool isIncreament, int count, List<SpecValue> specValues);
+        
 
         InventoryDetail FindProductSpecValuesRecord(string productId, List<SpecValue> specValues);
        

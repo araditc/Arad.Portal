@@ -153,6 +153,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             
             ViewBag.ProductGroupList = _productRepositoy.GetAlActiveProductGroup(defaulltLang.LanguageId);
             var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("Vendor", "True"));
+            ViewBag.LangId = defaulltLang;
             ViewBag.Vendors = vendorList.ToList().Select(_ => new SelectListModel()
             {
                 Text = _.Profile.FullName,
@@ -349,7 +350,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> GetFilteredProduct(string productGroupId, string vendorId)
         {
             JsonResult result;
-            List<SelectListModel> lst;
+            List<SelectListModel> lst = new List<SelectListModel>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userDb = await _userManager.FindByIdAsync(currentUserId);
             var defaultLanguage = _lanRepository.GetDefaultLanguage(currentUserId);
@@ -372,7 +373,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                result = new JsonResult(new { Status = "error", Message = "" });
+                result = new JsonResult(new { Status = "error", Message = Language.GetString(ConstMessages.ObjectNotFound) });
             }
             return result;
 
@@ -382,7 +383,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public IActionResult GetRelatedDiscountType(bool asUserCoupon)
         {
             JsonResult result;
-            List<SelectListModel> List;
+            List<SelectListModel> List = new List<SelectListModel>();
             List = _promotionRepository.GetAllDiscountType(asUserCoupon);
             if (List.Count() > 0)
             {
@@ -390,7 +391,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                result = new JsonResult(new { Status = "notFound", Message = "" });
+                result = new JsonResult(new { Status = "error", Message = Language.GetString(ConstMessages.ObjectNotFound) });
             }
             return result;
 
@@ -399,7 +400,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> GetFilteredProductGroup(string vendorId)
         {
             JsonResult result;
-            List<SelectListModel> List;
+            List<SelectListModel> List = new List<SelectListModel>();
             
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userDb = await _userManager.FindByIdAsync(currentUserId);
@@ -416,13 +417,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             var defaultLanguage = _lanRepository.GetDefaultLanguage(currentUserId);
             List = _productRepositoy.GetGroupsOfThisVendor(vendorId, defaultLanguage.LanguageId);
-            if (List.Count() > 0)
+            if (List.Count > 0)
             {
                 result = new JsonResult(new { Status = "success", Data = List });
             }
             else
             {
-                result = new JsonResult(new { Status = "notFound", Message = "" });
+                result = new JsonResult(new { Status = "error", Message = Language.GetString(ConstMessages.ObjectNotFound) });
             }
             return result;
         }

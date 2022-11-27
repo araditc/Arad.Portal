@@ -72,6 +72,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 model = _unitRepository.FetchUnit(id);
             }
+            ViewBag.DefLang = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             return View(model);
         }
@@ -194,16 +195,19 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> GetProductUnitList(string lid, string did)
         {
             JsonResult result;
-            List<SelectListModel> lst;
+            List<SelectListModel> lst = new List<SelectListModel>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            lst = await _unitRepository.GetAllActiveProductUnit(lid, currentUserId, did);
-            if (lst.Count() > 0)
+            if (!string.IsNullOrWhiteSpace(did))
+            {
+                lst = await _unitRepository.GetAllActiveProductUnit(lid, currentUserId, did);
+            }
+            if (lst.Count > 0)
             {
                 result = new JsonResult(new { Status = "success", Data = lst.OrderBy(_ => _.Text) });
             }
             else
             {
-                result = new JsonResult(new { Status = "error", Message = "" });
+                result = new JsonResult(new { Status = "error", Message = Language.GetString(ConstMessages.ObjectNotFound) });
             }
             return result;
 

@@ -45,7 +45,7 @@
             desc = queryString["desc"].ToString();
 
             if(queryString["code"] != null)
-            langId = queryString["code"].ToString();
+            code = queryString["code"].ToString();
 
             if(queryString["from"] != null)
             from = queryString["from"].ToString();
@@ -373,7 +373,7 @@
                 $("#cmbLangIdFilter").val("@langId");
                 $("#cmbLangIdFilter").selectpicker("refresh");
             }
-
+            debugger;
             if("@groupIds" != "")
             {
                 $("#cmbProductGroupFilter").val("@groupIds");
@@ -429,8 +429,8 @@
             $("#btnSearch").click(function () {
                 debugger;
                 var queryString = "?";
-                if ($("#cmbProductGroupFilter").val().length != 0) {
-                    var groupIds = $("#cmbProductGroupFilter").val().join('|');
+                if ($("#cmbProductGroupFilter").val() != "-1") {
+                    var groupIds = $("#cmbProductGroupFilter").val();
                     queryString += queryString == "?" ? "groupIds=" + groupIds : "&groupIds=" + groupIds;
                 }
                 if ($("#txtProductNameFilter").val() != "") {

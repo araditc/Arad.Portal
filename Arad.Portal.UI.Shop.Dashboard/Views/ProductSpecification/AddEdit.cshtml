@@ -224,13 +224,16 @@
                                     $("#SpecificationGroupId").val('@Model.SpecificationGroupId');
                                     $("#SpecificationGroupId").selectpicker("refresh");
                                 }
+                            }else
+                            {
+                                showError(result.message);
                             }
                         },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            alert("@error");
-                            alert(xhr.status);
-                            alert(thrownError);
-                        }
+                        //error: function (xhr, ajaxOptions, thrownError) {
+                        //    alert("@error");
+                        //    alert(xhr.status);
+                        //    alert(thrownError);
+                        //}
                     });
                 }
 
@@ -260,13 +263,16 @@
                                     $("#SpecificationGroupId").val('@Model.SpecificationGroupId');
                                     $("#SpecificationGroupId").selectpicker("refresh");
                                 }
+                            }else
+                            {
+                                showError(result.message);
                             }
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            alert("@error");
-                            alert(xhr.status);
-                            alert(thrownError);
-                        }
+                        }//,
+                        //error: function (xhr, ajaxOptions, thrownError) {
+                        //    alert("@error");
+                        //    alert(xhr.status);
+                        //    alert(thrownError);
+                        //}
                     });
                 }
 
@@ -284,7 +290,7 @@
                     $("span[data-val-result='SpecificationNameValues']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
                 }
-                if($("#AssociatedDomainId").val() != "")
+                if($("#AssociatedDomainId").val() == "")
                 {
                     $("span[data-val-result='AssociatedDomainId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
@@ -424,7 +430,8 @@
         function addToTable() {
             debugger;
             var flag = false;
-
+            var selectedLang = $('#languageId').val();
+            if (isUnique(selectedLang, 'multiLingualList', 1, '@Language.GetString("AlertAndMessage_LangUniqueness")')) {
             if ($("#name").val() == "") {
                 $("span[data-val-result='name']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
                 flag = true;
@@ -453,10 +460,15 @@
 
                 $("#multiLingualList").append(tr);
                 $("#name").val("");
-                $("#languageId").val("-1");
+                $("#languageId").val("@ViewBag.LangId");
+                $("#languageId").selectpicker("refresh");
                 $("#nameValuesList").html("");
+                $("#ControlType").val("-1");
+                $("#ControlType").selectpicker("refresh");
+
 
                 clearMessages();
+            }
             }
         }
         function clearMessages() {

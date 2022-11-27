@@ -118,7 +118,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> GetProductGroupList(string id)
         {
             JsonResult result;
-            List<SelectListModel> lst;
+            List<SelectListModel> lst = new List<SelectListModel>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             lst = await _productGroupRepository.GetAlActiveProductGroup(id, currentUserId);
             if (lst.Count() > 0)
@@ -127,7 +127,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                result = new JsonResult(new { Status = "error", Message = "" });
+                result = new JsonResult(new { Status = "error", Message = Language.GetString(ConstMessages.ObjectNotFound) });
             }
             return result;
 

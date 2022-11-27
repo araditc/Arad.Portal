@@ -82,27 +82,28 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> AddEdit(string id = "")
         {
             var model = new MenuDTO();
-            if (!string.IsNullOrWhiteSpace(id))
-            {
-                var res = _menuRepository.FetchMenu(id);
-                model = res.ReturnValue;
-            }
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userEntity = await _userManager.FindByIdAsync(currentUserId);
             ViewBag.IsSysAcc = userEntity.IsSystemAccount;
-
             if (userEntity.IsSystemAccount)
             {
                 var domainList = _domainRepository.GetAllActiveDomains();
                 ViewBag.DomainList = domainList;
             }
+
             model.AssociatedDomainId = userEntity.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
 
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                var res = _menuRepository.FetchMenu(id);
+                model = res.ReturnValue;
+            }
+           
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             ViewBag.DefLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
             ViewBag.ProductGroupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
             ViewBag.ContentCategoryList = await _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId, currentUserId, "");
-            ViewBag.Menues = await  _menuRepository.AllActiveMenues(domainId, lan.LanguageId);
+            ViewBag.Menues = await  _menuRepository.AllActiveMenues(model.AssociatedDomainId, lan.LanguageId);
             ViewBag.MenuTypes = _menuRepository.GetAllMenuType();
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             
@@ -113,16 +114,20 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public IActionResult GetRelatedMenues(string domainId)
         {
             JsonResult result;
-            List<SelectListModel> lst;
+            List<SelectListModel> lst = new List<SelectListModel>();
             var domainObj = _domainRepository.FetchDomain(domainId).ReturnValue;
-            lst = _menuRepository.MenuesOfSelectedDomain(domainId, domainObj.DefaultLanguageId);
-            if(lst.Count() > 0)
+            if(!string.IsNullOrWhiteSpace(domainId))
+            {
+                lst = _menuRepository.MenuesOfSelectedDomain(domainId, domainObj.DefaultLanguageId);
+            }
+           
+            if(lst.Count > 0)
             {
                 result = new JsonResult(new { Status = "success", Data = lst });
             }
             else
             {
-                result = new JsonResult(new { Status = "error", Message = "" });
+                result = new JsonResult(new { Status = "error", Message = Language.GetString(ConstMessages.ObjectNotFound) });
             }
             return result;
         }
@@ -145,7 +150,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                result = new JsonResult(new { Status = "error", Message = "" });
+                result = new JsonResult(new { Status = "error", Message = Language.GetString(ConstMessages.ObjectNotFound) });
             }
             return result;
 
@@ -154,7 +159,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> GetContentList(string categoryId)
         {
             JsonResult result;
-            List<SelectListModel> lst;
+            List<SelectListModel> lst = new List<SelectListModel>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userDb = await _userManager.FindByIdAsync(currentUserId);
             if (userDb.IsSystemAccount)
@@ -162,13 +167,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 currentUserId = Guid.Empty.ToString();
             }
             lst = _contentRepository.GetContentsList(domainId, currentUserId, categoryId);
-            if (lst.Count() > 0)
+            if (lst.Count > 0)
             {
                 result = new JsonResult(new { Status = "success", Data = lst });
             }
             else
             {
-                result = new JsonResult(new { Status = "error", Message = "" });
+                result = new JsonResult(new { Status = "error", Message = Language.GetString(ConstMessages.ObjectNotFound) });
             }
             return result;
 
@@ -361,6 +366,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _menuRepository.DeleteMenu(id);
+            return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
+            : new { Status = "Error", opResult.Message });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Restore(string id)
+        {
+            Result opResult = await _menuRepository.RestoreMenu(id);
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }

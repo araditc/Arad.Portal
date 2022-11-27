@@ -287,7 +287,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                 availableEntity.SpecificationGroupId = dto.SpecificationGroupId;
                 availableEntity.SpecificationNameValues = dto.SpecificationNameValues;
                 availableEntity.ControlType = dto.ControlType;
-
+                availableEntity.AssociatedDomainId = dto.AssociatedDomainId;
               
                 var updateResult = await _productContext.SpecificationCollection
                    .ReplaceOneAsync(_ => _.ProductSpecificationId == availableEntity.ProductSpecificationId, availableEntity);
@@ -351,11 +351,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                }).ToList();
             }else
             {
-                result = _productContext.SpecificationCollection.AsQueryable().Where(_ => _.SpecificationGroupId == specificationGroupId && _.IsActive && !_.IsDeleted &&
-                 _.AssociatedDomainId == (!string.IsNullOrWhiteSpace(domainId) ? domainId : userDb.Domains.FirstOrDefault(a=> a.IsOwner).DomainId))
+                var finalDomainId = !string.IsNullOrWhiteSpace(domainId) ? domainId : userDb.Domains.FirstOrDefault(a => a.IsOwner).DomainId;
+                var lst = _productContext.SpecificationCollection.AsQueryable().Where(_ => _.SpecificationGroupId == specificationGroupId && _.IsActive && !_.IsDeleted &&
+                 _.AssociatedDomainId == finalDomainId).ToList();
+
+                result = lst
                .Select(_ => new SelectListModel()
                {
-                   Text = _.SpecificationNameValues.Where(a => a.LanguageId == languageId).Count() != 0 ?
+                   Text = _.SpecificationNameValues.Any(a => a.LanguageId == languageId) ?
                         _.SpecificationNameValues.FirstOrDefault(a => a.LanguageId == languageId).Name : "",
                    Value = _.ProductSpecificationId
                }).ToList();

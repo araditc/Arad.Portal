@@ -704,11 +704,11 @@
                                     $("#AddressProvinceId").html(html);
                                     $("#AddressProvinceId").selectpicker('refresh');
                                 } else {
-
+                                    showError(result.message);
                                 }
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
-                                alert(xhr.status);
+                              //  alert(xhr.status);
                             },
                             complete: function() {
 
@@ -735,7 +735,7 @@
                             $("#AddressCityId").html(html);
                             $("#AddressCityId").selectpicker('refresh');
                         } else {
-
+                            showError(result.message);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
@@ -833,7 +833,7 @@
                         $("#AddressCityId").html(html);
                         $("#AddressCityId").selectpicker('refresh');
                     } else {
-
+                        showError(result.message);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {

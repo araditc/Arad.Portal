@@ -147,6 +147,8 @@
         $(document).ready(function () {
           
             $("#languageId").val('@ViewBag.LangId');
+             $("#languageId").selectpicker();
+
             if ("@Model.ContentCategoryId" != "" && "@Model.ParentCategoryId" != "")
             {
                 $("#ParentCategoryId").val("@Model.ParentCategoryId");
@@ -173,16 +175,18 @@
                                 });
 
                                 $("#ParentCategoryId").html(options);
-                                //$("#ParentCategoryId").val('@Model.ParentCategoryId');
                                 $("#ParentCategoryId").selectpicker("refresh");
                             }
+                        }else
+                        {
+                            showError(result.message);
                         }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert("@error");
-                        alert(xhr.status);
-                        alert(thrownError);
-                    }
+                    }//,
+                    //error: function (xhr, ajaxOptions, thrownError) {
+                    //    alert("@error");
+                    //    alert(xhr.status);
+                    //    alert(thrownError);
+                    //}
                 });
             })
 
@@ -302,6 +306,10 @@
         }
         function addToTable() {
             var flag = false;
+            $("span[data-val-result='categoryName']").html("");
+            $("span[data-val-result='languageId']").html("");
+            $("span[data-val-result='urlFriend']").html("");
+
             debugger;
             var selectedLang = $('#languageId').val();
             if (isUnique(selectedLang, 'multiLingualList', 2, '@Language.GetString("AlertAndMessage_LangUniqueness")')) {
@@ -324,7 +332,7 @@
                             dataType: 'json',
                             success: function (result) {
 
-                                if(result.status =="Success")
+                                if(result.status ==="Success")
                                 {
                                    var urlFriend ="";
                                     if($("#urlFriend").val() != "")
@@ -341,7 +349,9 @@
                                         $("#categoryName").val("");
                                         $("#urlFriend").val("");
                                         $("#languageId").val("@ViewBag.LangId");
-                                 }else
+                                        $("#languageId").selectpicker("");
+                                 }
+                                 else
                                  {
                                      $("span[data-val-result='urlFriend']").html('@Language.GetString("AlertAndMessage_UrlFriendIsNotUnique")');
                                  }

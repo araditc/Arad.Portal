@@ -116,6 +116,9 @@
     <script>
 
         $(document).ready(function () {
+             debugger;
+            $("#languageId").val('@ViewBag.DefLang');
+            $("#languageId").selectpicker("refresh");
 
          $("#btnAddProductUnit").click(function () {
             debugger;
@@ -231,7 +234,7 @@
                 $("span[data-val-result='unitName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
                 flag = true;
             }
-            if ($("#languageId").val() == "-1") {
+            if ($("#languageId").val() == null || $("#languageId").val() == "-1") {
                  $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
                 flag = true;
             }
@@ -246,7 +249,7 @@
 
                 $("#multiLingualList").append(tr);
                 $("#unitName").val("");
-                $("#languageId").val("-1");
+                $("#languageId").val('@ViewBag.DefLang');
                 $("#languageId").selectpicker("refresh");
             }
         }

@@ -1,29 +1,27 @@
-﻿using Arad.Portal.DataLayer.Contracts.General.Domain;
+﻿using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Contracts.General.Language;
+using Arad.Portal.DataLayer.Contracts.Shop.ProductGroup;
+using Arad.Portal.DataLayer.Models.ContentCategory;
+using Arad.Portal.DataLayer.Models.ProductGroup;
+using Arad.Portal.DataLayer.Models.Shared;
+using Arad.Portal.DataLayer.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Arad.Portal.DataLayer.Contracts.Shop.Product;
-using Arad.Portal.DataLayer.Contracts.General.Content;
-using Arad.Portal.DataLayer.Contracts.General.Language;
-using Arad.Portal.DataLayer.Contracts.General.Currency;
-using Arad.Portal.DataLayer.Models.Shared;
 using System.Globalization;
-using Arad.Portal.DataLayer.Services;
+using System.Threading.Tasks;
+using System;
 using Microsoft.Extensions.Configuration;
-using System.IO;
-using Arad.Portal.DataLayer.Contracts.Shop.ProductGroup;
-using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
-using Arad.Portal.DataLayer.Models.ProductGroup;
-using Arad.Portal.DataLayer.Models.ContentCategory;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.GeneralLibrary.Utilities;
+using System.Linq;
+using System.IO;
 
-namespace Arad.Portal.UI.Shop.Controllers
+namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
-    public class SearchController : BaseController
+    public class SearchController : Controller
     {
         private readonly IDomainRepository _domainRepository;
         private readonly ILanguageRepository _lanRepository;
@@ -32,10 +30,12 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IConfiguration _configuration;
         private readonly IProductGroupRepository _groupRepository;
         private readonly IContentCategoryRepository _categoryRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
         public SearchController(
             ILanguageRepository lanRepository, LuceneService luceneService,
+            UserManager<ApplicationUser> userManager,
             IConfiguration configuration, IProductGroupRepository grpRepository, IContentCategoryRepository categoryRepository,
-            IDomainRepository domainRepository, IHttpContextAccessor accessor) :base(accessor, domainRepository)
+            IDomainRepository domainRepository, IHttpContextAccessor accessor)
         {
             _domainRepository = domainRepository;
             _luceneService = luceneService;
@@ -44,6 +44,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _groupRepository = grpRepository;
             _categoryRepository = categoryRepository;
             _accessor = accessor;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -53,9 +54,12 @@ namespace Arad.Portal.UI.Shop.Controllers
             List<LuceneSearchIndexModel> lst = new List<LuceneSearchIndexModel>();
             try
             {
+                var userId = User.GetUserId();
+                var UserEntity = await _userManager.FindByIdAsync(userId);
+                var domainId = UserEntity.Domains.FirstOrDefault(a => a.IsOwner).DomainId;
                 if (!string.IsNullOrWhiteSpace(key))
                 {
-                    var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
+                    var domainEntity = _domainRepository.FetchDomain(domainId).ReturnValue;
                     string lanIcon;
 
                     if (CultureInfo.CurrentCulture.Name != null)
@@ -97,14 +101,14 @@ namespace Arad.Portal.UI.Shop.Controllers
                             else
                             {
                                 cat = await _categoryRepository.ContentCategoryFetch(item.GroupIds[i], false);
-                                if(!string.IsNullOrWhiteSpace(cat.ContentCategoryId))
+                                if (!string.IsNullOrWhiteSpace(cat.ContentCategoryId))
                                 {
                                     id = cat.CategoryCode.ToString();
                                     name = cat.CategoryNames.Any(_ => _.LanguageId == lanId) ? cat.CategoryNames.FirstOrDefault(_ => _.LanguageId == lanId).Name : cat.CategoryNames.FirstOrDefault().Name;
                                 }
-                                
+
                             }
-                            if(id != "" && name != string.Empty)
+                            if (id != "" && name != string.Empty)
                             {
                                 var suggest = new SuggestionObject()
                                 {
@@ -124,7 +128,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { status = "error" , message = Language.GetString(ConstMessages.GeneralError)});
+                return Json(new { status = "error", message = Language.GetString(ConstMessages.GeneralError) });
             }
             return Json(new { status = "error", message = Language.GetString(ConstMessages.ObjectNotFound) });
         }

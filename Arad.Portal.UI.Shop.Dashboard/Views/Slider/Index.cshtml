@@ -19,7 +19,7 @@
                         <div class="form-group col-12 col-md-3">
                             <label class="form-label">@Language.GetString("AssociatedDomain")</label>
                             <select class="form-control selectpicker" data-live-search="true"
-                                id="AssociatedDomainId" name="AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text"))">
+                                id="AssociatedDomainId" name="AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text", "@ViewBag.DomainId"))">
                             </select>
                             <span data-val-result="AssociatedDomainId" class="text-danger"></span>
                         </div>
@@ -311,9 +311,9 @@
 
                         $("#loading").css("display", "none");
                     },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        $("#loading").css("display", "none");
-                    },
+                    //error: function(xhr, ajaxOptions, thrownError) {
+                    //    $("#loading").css("display", "none");
+                    //},
                     complete: function() {
 
                     }

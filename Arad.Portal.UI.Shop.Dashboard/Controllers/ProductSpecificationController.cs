@@ -96,36 +96,35 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> GetSpecificationInGroupAndLang(string groupId, string langId, string domainId)
         {
             JsonResult result;
-            List<SelectListModel> lst;
+            List<SelectListModel> lst = new List<SelectListModel>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             lst = (await _specificationRepository.GetSpecInGroupAndLanguage(groupId, langId, currentUserId, domainId))
                 .OrderBy(_ => _.Text).ToList();
-            if (lst.Count() > 0)
+            if (lst.Count > 0)
             {
                 result = new JsonResult(new { Status = "success", Data = lst });
             }
             else
             {
-                result = new JsonResult(new { Status = "error", Message = "" });
+                result = new JsonResult(new { Status = "error", message = Language.GetString(ConstMessages.ObjectNotFound) });
             }
             return result;
-
         }
 
         [HttpGet]
         public IActionResult GetSpecificationValuesInLanguage(string specId, string langId)
         {
             JsonResult result;
-            List<SelectListModel> lst;
+            List<SelectListModel> lst = new List<SelectListModel>();
             lst = _specificationRepository.GetSpcificationValuesInLanguage(specId, langId)
                 .OrderBy(_ => _.Text).ToList();
-            if (lst.Count() > 0)
+            if (lst.Count > 0)
             {
                 result = new JsonResult(new { Status = "success", Data = lst });
             }
             else
             {
-                result = new JsonResult(new { Status = "error", Message = "" });
+                result = new JsonResult(new { Status = "error", Message = Language.GetString(ConstMessages.ObjectNotFound) });
             }
             return result;
         }

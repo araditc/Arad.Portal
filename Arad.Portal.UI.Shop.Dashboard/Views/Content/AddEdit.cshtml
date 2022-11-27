@@ -713,13 +713,16 @@
                                 $("#ContentCategoryId").html(options);
                                 $("#ContentCategoryId").selectpicker("refresh");
                             }
+                        }else
+                        {
+                            showError(result.message);
                         }
                     },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert("@error");
-                        alert(xhr.status);
-                        alert(thrownError);
-                    }
+                    //error: function (xhr, ajaxOptions, thrownError) {
+                    //    alert("@error");
+                    //    alert(xhr.status);
+                    //    alert(thrownError);
+                    //}
                 });
 
                 $.ajax({
@@ -740,13 +743,16 @@
                                 $("#ProductUnitId").html(options);
                                 $("#ProductUnitId").selectpicker("refresh");
                             }
+                        }else
+                        {
+                            showError(result.message);
                         }
                     },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert("@error");
-                        alert(xhr.status);
-                        alert(thrownError);
-                    }
+                    //error: function (xhr, ajaxOptions, thrownError) {
+                    //    alert("@error");
+                    //    alert(xhr.status);
+                    //    alert(thrownError);
+                    //}
                 });
             });
 

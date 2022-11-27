@@ -441,8 +441,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 entity.MenuCode = dto.MenuCode;
                 entity.Order = dto.Order;
                 entity.Icon = dto.Icon;
-
-
+                entity.AssociatedDomainId = dto.AssociatedDomainId;
                 var updateResult = await _context.Collection
                .ReplaceOneAsync(_ => _.MenuId == dto.MenuId, entity);
                 if (updateResult.IsAcknowledged)
@@ -531,6 +530,48 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             return result;
         }
 
-        
+        public async Task<Result> RestoreMenu(string menuId)
+        {
+            Result result = new Result();
+            try
+            {
+                var userId = this.GetUserId();
+                var userName = this.GetUserName();
+                
+                
+                    var entity = _context.Collection.Find(_ => _.MenuId == menuId).First();
+                    if (entity != null)
+                    {
+                        entity.IsDeleted = false;
+                        #region add modification
+                        var mod = GetCurrentModification($"restore this menu by UserId={userId} and UserName={userName} at {DateTime.Now.ToPersianDdate()}");
+                        entity.Modifications.Add(mod);
+                        #endregion
+
+                        var updateResult = await _context.Collection.ReplaceOneAsync(_ => _.MenuId == menuId, entity);
+                        if (updateResult.IsAcknowledged)
+                        {
+                            result.Message = ConstMessages.SuccessfullyDone;
+                            result.Succeeded = true;
+                        }
+                        else
+                        {
+                            result.Message = ConstMessages.GeneralError;
+                        }
+                    }
+                    else
+                    {
+                        result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
+                    }
+
+               
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return result;
+        }
     }
 }

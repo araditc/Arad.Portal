@@ -107,7 +107,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ViewBag.DefLangId = defLangId;
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
 
-                var categoryList =await _contentCategoryRepository.AllActiveContentCategory(defLangId, currentUserId, userDb.Domains.FirstOrDefault(_=>_.IsOwner).DomainId);
+                var categoryList =await _contentCategoryRepository.AllActiveContentCategory(defLangId, currentUserId, "");
                 categoryList = categoryList.OrderBy(_ => _.Text).ToList();
                 categoryList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
                 ViewBag.CatList = categoryList;

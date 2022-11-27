@@ -96,14 +96,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Index()
         {
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var sliders = _sliderRepository.GetSliders(currentUserId);
+            var sliders =await  _sliderRepository.GetSliders(currentUserId);
 
            
             var userDB = await _userManager.FindByIdAsync(currentUserId);
             if (userDB.IsSystemAccount)
             {
-                ViewBag.Domains = _domainRepository.GetAllActiveDomains();
-            }else
+                var domains = _domainRepository.GetAllActiveDomains();
+                ViewBag.Domains = domains;
+                ViewBag.DomainId = _domainRepository.GetDefaultDomain().ReturnValue.DomainId;
+            }
+            else
             {
                 ViewBag.DomainId = userDB.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
             }

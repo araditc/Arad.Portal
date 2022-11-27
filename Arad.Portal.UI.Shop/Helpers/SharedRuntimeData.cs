@@ -1,6 +1,7 @@
 ﻿using Arad.Portal.DataLayer.Contracts.Shop.Product;
 using Arad.Portal.DataLayer.Contracts.Shop.Transaction;
 using Arad.Portal.DataLayer.Models.Shared;
+using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -18,9 +19,9 @@ namespace Arad.Portal.UI.Shop.Helpers
                         = new ConcurrentDictionary<string, TransactionItems>();
 
 
-        private readonly IProductRepository _productRepository;
+        private readonly IProductSharedRunTimeDataRepository _productRepository;
        
-        public SharedRuntimeData(IProductRepository productRepository)
+        public SharedRuntimeData(IProductSharedRunTimeDataRepository productRepository)
         {
             _productRepository = productRepository;
         }

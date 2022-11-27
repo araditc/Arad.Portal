@@ -294,6 +294,10 @@
     
         $(document).ready(function () {
             debugger;
+            $("#languageId").val("@ViewBag.LangId");
+            $("#languageId").selectpicker("refresh");
+
+            
              $("#seoTitle").characterCounter({
              //opacity : ".8",
              max: 70,
@@ -333,7 +337,7 @@
                     dataType : 'json',
                     success: function (result) {
 
-                        var options = ">";
+                        var options = "";
                         if (result.status === "success") {
 
                             if (result.data.length != 0) {
@@ -345,6 +349,9 @@
                                 $("#ParentId").html(options);
                                 $("#ParentId").selectpicker("refresh");
                             }
+                        }else
+                        {
+                            showError(result.message);
                         }
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -591,7 +598,8 @@
             var urlFriend = "" ;
             debugger;
              var selectedLang = $('#languageId').val();
-            if (isUnique(selectedLang, 'multiLingualList', 2, '@Language.GetString("AlertAndMessage_LangUniqueness")')) {
+            if (isUnique(selectedLang, 'multiLingualList', 2, '@Language.GetString("AlertAndMessage_LangUniqueness")')) 
+            {
                 if ($("#groupName").val() == "") {
                     $("span[data-val-result='groupName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
                     flag = true;
@@ -620,7 +628,7 @@
                         dataType: 'json',
                         success: function (result) {
                             debugger;
-                            if(result.status =="Success")
+                            if(result.status ==="Success")
                             {
                                if($("#urlFriend").val() != "")
                                 {
@@ -641,8 +649,10 @@
 
                                     $("#multiLingualList").append(tr);
                                     $("#groupName").val("");
-                                    $("#languageId").val("-1");
+                                    $("#languageId").val("@ViewBag.LangId");
+                                    $("#languageId").selectpicker("refresh");
                                     $("#currencyId").val("-1");
+                                    $("#currencyId").selectpicker("refresh");
                                      $("#urlFriend").val("");
                                     $("#seoTitle").val("");
                                     $("#seoDescription").val("");
