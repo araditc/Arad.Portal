@@ -64,8 +64,11 @@
     else
     {
         <link href="@Url.Content($"~/lib/bootstrap5/css/bootstrap.rtl.min.css")" rel="stylesheet" />
-        <link href="@Url.Content($"~/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
+    }
 
+    @if(CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir")
+    {
+        <link href="@Url.Content($"~/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
     }
 
 

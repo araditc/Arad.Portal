@@ -18,6 +18,7 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 using Arad.Portal.DataLayer.Models.User;
+using System.Globalization;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
 {
@@ -170,17 +171,20 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             equallentModel.CreationDate = DateTime.Now;
             equallentModel.CreatorUserId = GetUserId();
             equallentModel.CreatorUserName = GetUserName();
-
+            equallentModel.IsActive = true;
             if(!dto.AsUserCoupon)
             equallentModel.PromotionType = (PromotionType)dto.PromotionTypeId;
 
             equallentModel.DiscountType = (DiscountType)dto.DiscountTypeId;
-            equallentModel.SDate = dto.PersianStartDate.ToEnglishDate();
-            equallentModel.EDate =dto.PersianEndDate.ToEnglishDate();
+            if(CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir")
+            {
+                equallentModel.SDate = dto.PersianStartDate.ToEnglishDate();
+                equallentModel.EDate = dto.PersianEndDate.ToEnglishDate();
+            }
 
-                await _context.Collection.InsertOneAsync(equallentModel);
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
+            await _context.Collection.InsertOneAsync(equallentModel);
+            result.Succeeded = true;
+            result.Message = ConstMessages.SuccessfullyDone;
 
             }
             catch (Exception ex)
@@ -194,36 +198,51 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             var result = new Result();
             var oldEntity = _context.Collection
                 .Find(_ => _.PromotionId == dto.PromotionId).FirstOrDefault();
-            if(oldEntity != null)
+            try
             {
-                var equallentModel = _mapper.Map<Entities.Shop.Promotion.Promotion>(dto);
-                equallentModel.SDate = DateHelper.ToEnglishDate(dto.PersianStartDate);
-                if(!string.IsNullOrWhiteSpace(dto.PersianEndDate))
-                equallentModel.EDate = DateHelper.ToEnglishDate(dto.PersianEndDate);
-                var modifications = oldEntity.Modifications;
-                var newModification = GetCurrentModification(dto.ModificationReason);
-                modifications.Add(newModification);
-                equallentModel.Modifications = modifications;
-                equallentModel.CreationDate = oldEntity.CreationDate;
-                equallentModel.CreatorUserId = oldEntity.CreatorUserId;
-                equallentModel.CreatorUserName = oldEntity.CreatorUserName;
-                equallentModel.AssociatedDomainId = dto.AssociatedDomainId;
-                var updateResult = await _context.Collection
-                    .ReplaceOneAsync(_ => _.PromotionId == dto.PromotionId, equallentModel);
-                if (updateResult.IsAcknowledged)
+                if (oldEntity != null)
                 {
-                    result.Succeeded = true;
-                    result.Message = ConstMessages.SuccessfullyDone;
+                    var equallentModel = _mapper.Map<Entities.Shop.Promotion.Promotion>(dto);
+
+                    if (CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir")
+                    {
+                        equallentModel.SDate = DateHelper.ToEnglishDate(dto.PersianStartDate);
+                    }
+
+                    if (CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir" && !string.IsNullOrWhiteSpace(dto.PersianEndDate))
+                        equallentModel.EDate = DateHelper.ToEnglishDate(dto.PersianEndDate);
+
+                    var modifications = oldEntity.Modifications;
+                    var newModification = GetCurrentModification(dto.ModificationReason);
+                    modifications.Add(newModification);
+                    equallentModel.PromotionType = (PromotionType)dto.PromotionTypeId;
+                    equallentModel.Modifications = modifications;
+                    equallentModel.CreationDate = oldEntity.CreationDate;
+                    equallentModel.CreatorUserId = oldEntity.CreatorUserId;
+                    equallentModel.CreatorUserName = oldEntity.CreatorUserName;
+                    equallentModel.AssociatedDomainId = dto.AssociatedDomainId;
+                    var updateResult = await _context.Collection
+                        .ReplaceOneAsync(_ => _.PromotionId == dto.PromotionId, equallentModel);
+                    if (updateResult.IsAcknowledged)
+                    {
+                        result.Succeeded = true;
+                        result.Message = ConstMessages.SuccessfullyDone;
+                    }
+                    else
+                    {
+                        result.Message = ConstMessages.GeneralError;
+                    }
                 }
                 else
                 {
-                    result.Message = ConstMessages.GeneralError;
+                    result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                 }
             }
-            else
+            catch (Exception)
             {
-                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
+                result.Message = ConstMessages.GeneralError;
             }
+          
             return result;
         }
 
@@ -264,13 +283,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 if(userId == Guid.Empty.ToString())//show all promotions cause the user is system account
                 {
                     list = _context.Collection.AsQueryable().ToList();
-                        //.Skip((page - 1) * pageSize)
-                        //  .Take(pageSize).ToList();
+                        
                 }else
                 {
                     list = _context.Collection.AsQueryable().Where(_ => _.CreatorUserId == userId).AsQueryable().ToList();
-                      //  .Skip((page - 1) * pageSize)
-                      //.Take(pageSize).ToList();
+                      
                 }
                 if(!string.IsNullOrWhiteSpace(title))
                 {

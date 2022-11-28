@@ -127,20 +127,20 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
 
         public string ProductVendorName { get; set; }
     }
-    public enum PromotionType
+    public enum PromotionType //if userCoupon = false then it has this field
     {
-        All,
-        Group, 
-        Product
+        All, //0
+        Group, //1
+        Product //2
     }
 
     public enum DiscountType
     {
-        Fixed,
-        Percentage,
+        Fixed, //0
+        Percentage, //1
         /// <summary>
         /// for example if you buy one you get another one free
         /// </summary>
-        Product
+        Product //2
     }
 }

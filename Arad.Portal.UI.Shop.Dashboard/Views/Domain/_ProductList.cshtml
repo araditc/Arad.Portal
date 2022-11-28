@@ -7,12 +7,14 @@
     var selLoadAnimation ="";
     var selloadAnimationType = "";
     var cnt = "";
-    if(Model != null)
+   
+    if(!string.IsNullOrWhiteSpace(Model.ModuleId))
     {
         selproType = ((int)@Model.ParametersValue.ProductOrContentType).ToString();
         selLoadAnimation = ((int)@Model.ParametersValue.LoadAnimation).ToString();
         selloadAnimationType = ((int)@Model.ParametersValue.LoadAnimationType).ToString();
         cnt = @Model.ParametersValue.Count.ToString();
+      
     }
 }
 <div class="row par mx-2" parid="templateSection">
@@ -21,7 +23,7 @@
     {
         <div class="col-12 @(@ViewBag.ColCnt == 1 || @ViewBag.ColCnt == 2 ? "col-md-3" : "") text-center">
             <input class="form-check-input" name="rdbProductTemplateList" type="radio" value="@(option.Text)"
-             @(Model.ParametersValue.ProductTemplateDesign.ToString() == option.Text ? "checked='checked'" : "" )
+               @(Model.ParametersValue.ProductTemplateDesign.ToString() == option.Text ? "checked='checked'" : "")
             cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" /><br />
             <img class="img-fluid m-2" src="@($"../filemanager/GetScaledImageOnWidth?path={option.ImageUrl}&width=300")" />
         </div>

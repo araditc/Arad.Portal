@@ -165,7 +165,7 @@
                     <th>@Language.GetString("design_Link")</th>
                     <th>@Language.GetString("StartShowDate")</th>
                     <th>@Language.GetString("EndShowDate")</th>
-                    <th>@Language.GetString("ActivationState")</th>
+                    @*<th>@Language.GetString("ActivationState")</th>*@
                     <th></th>
                 </tr>
             </thead>
@@ -481,7 +481,7 @@ else
                             $('#add').collapse('show');
 
                         } else {
-                            toastr.error(result.message);
+                           showError(result.message);
                         }
 
                         $("#loading").css("display", "none");

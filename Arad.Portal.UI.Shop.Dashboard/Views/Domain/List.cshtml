@@ -116,9 +116,9 @@
                                         <i class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
                                 }
-                                @if (item.IsDeleted)
+                                else
                                 {
-                                    <button id="restoreRecord" onclick="EntityRestore('@item.DomainId')" class="btn btn-sm btn-primary bg-gradient">
+                                    <button id="restoreRecord" onclick="EntityRestore('@item.DomainId')" class="btn btn-sm btn-secondary bg-gradient">
                                         <i class="fa fa-refresh"></i>
                                         @Language.GetString("btn_Restore")
                                     </button>

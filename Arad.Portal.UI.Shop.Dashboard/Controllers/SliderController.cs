@@ -93,6 +93,44 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return imgObj;
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Restore(string id)
+        {
+            JsonResult result;
+            try
+            {
+                
+                    var res = await _sliderRepository.RestoreSlider(id);
+                    if (res)
+                    {
+                        result = new JsonResult(new
+                        {
+                            Status = "success",
+                            Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully")
+                        });
+                    }
+                    else
+                    {
+                        result = new JsonResult(new
+                        {
+                            Status = "error",
+                            Message = Language.GetString("AlertAndMessage_TryLator")
+                        });
+                    }
+                
+            }
+            catch (Exception ex)
+            {
+                result = new JsonResult(new
+                {
+                    Status = "error",
+                    Message = Language.GetString("AlertAndMessage_TryLator")
+                });
+            }
+            return result;
+        }
+
         public async Task<IActionResult> Index()
         {
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -147,8 +185,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSlider(string sliderId)
+        public IActionResult GetSlider([FromQuery]string sliderId)
         {
+           
             Slider slide = _sliderRepository.GetSlider(sliderId);
 
             if (slide != null)

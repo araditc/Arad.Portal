@@ -13,7 +13,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.SliderModule
     {
         Task<List<Slider>> GetSliders(string currentUserId);
         bool AddSlider(Slider model);
-        Slider GetSlider(string id);
+        Slider GetSlider(string id, string domainId ="");
         Task<bool> Update(Slider slider);
         Slide GetSlide(string slideId);
         PagedItems<Slide> ListSlides(SearchParamSlides searchParam);
@@ -23,6 +23,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.SliderModule
         Task<bool> UpdateLayer(Layer layer);
         Task<bool> UpdateSlide(Slide slide);
         Task<bool> DeleteSlider(string id);
+        Task<bool> RestoreSlider(string id);
         Task<Result> ActiveSlider(string sliderId);
         Task<Result> ActiveSlide(string slideId);
         Task<bool> DeleteSlide(string id);

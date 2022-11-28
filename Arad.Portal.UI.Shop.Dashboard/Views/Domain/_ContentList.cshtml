@@ -3,7 +3,7 @@
 @model Arad.Portal.DataLayer.Models.DesignStructure.ModuleWithParametersValue;
 @{
     var countSectionClass = "";
-    if(Model == null)
+    if(string.IsNullOrWhiteSpace(Model.ModuleId))
     {
         countSectionClass = "d-none";
     }else
@@ -27,7 +27,7 @@
     var cnt = "";
     var categoryListSectionClass = "d-none";
     var contentListSectionClass = "d-none";
-    if(Model != null)
+    if (!string.IsNullOrWhiteSpace(Model.ModuleId))
     {
         selcontentType = ((int)@Model.ParametersValue.ProductOrContentType).ToString();
         selLoadAnimation = ((int)@Model.ParametersValue.LoadAnimation).ToString();

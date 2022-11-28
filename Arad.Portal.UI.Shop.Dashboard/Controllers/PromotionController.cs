@@ -367,7 +367,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             if (userDb.IsSystemAccount) currentUserId = Guid.Empty.ToString();
             lst = _productRepositoy.GetAllActiveProductList(defaultLanguage.LanguageId, currentUserId, productGroupId, vendorId);
-            if (lst.Count() > 0)
+            if (lst.Count > 0)
             {
                 result = new JsonResult(new { Status = "success", Data = lst });
             }

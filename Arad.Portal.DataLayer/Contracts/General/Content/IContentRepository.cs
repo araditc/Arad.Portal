@@ -17,7 +17,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         Task<PagedItems<ContentViewModel>> List(string queryString, ApplicationUser user);
         List<ContentGlance> GetSpecialContent(int count, ProductOrContentType contentType, SelectionType selectionType, string categoryId, List<string> selectedIds = null, bool isDevelopment = false);
         List<ContentGlance> GetContentInCategory(int count, ProductOrContentType contentType, string contentCategoryId, bool isDevelopment = false);
-        Task<ContentDTO> ContentFetch(string contentId);
+        Task<ContentDTO> ContentFetch(string contentId, bool isDeleted = false);
         Task<Result> Update(ContentDTO dto);
         List<Image> GetPictures(string contentId);
         Task<Result> UpdateVisitCount(string contentId);

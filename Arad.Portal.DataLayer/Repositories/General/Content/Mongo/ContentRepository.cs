@@ -100,26 +100,36 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
         /// </summary>
         /// <param name="contentId"></param>
         /// <returns></returns>
-        public async Task<ContentDTO> ContentFetch(string contentId)
+        public async Task<ContentDTO> ContentFetch(string contentId, bool isDeleted = false)
         {
             var result = new ContentDTO();
-            //try
-            //{
-                var entity = await _contentContext.Collection
-                .Find(_ => _.ContentId == contentId).FirstOrDefaultAsync();
+            Entities.General.Content.Content entity = null;
+            var domainName = this.GetCurrentDomainName();
+            var domain = _domainContext.Collection.Find(_ => _.DomainName.ToLower() == domainName.ToLower()).FirstOrDefault();
+            try
+            {
+                if(isDeleted == true)
+                {
+                    entity = await _contentContext.Collection
+                      .Find(_ => _.ContentId == contentId && _.AssociatedDomainId == domain.DomainId).FirstOrDefaultAsync();
+                }
+                else
+                {
+                    entity = await _contentContext.Collection
+                     .Find(_ => _.ContentId == contentId && !_.IsDeleted && _.AssociatedDomainId == domain.DomainId).FirstOrDefaultAsync();
+                }
+               
                 if(entity != null)
                 {
                     result = _mapper.Map<ContentDTO>(entity);
                     result.PersianStartShowDate = DateHelper.ToPersianDdate(result.StartShowDate.Value);
                     result.PersianEndShowDate = DateHelper.ToPersianDdate(result.EndShowDate.Value);
                 }
-                
-            //}
-            //catch (Exception ex)
-            //{
 
-            //    throw;
-            //}
+            }
+            catch (Exception ex)
+            {
+            }
             return result;
         }
 
@@ -157,16 +167,18 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
         {
             var result = new ContentDTO();
             var contentEntity = new Entities.General.Content.Content();
+            var domainName = this.GetCurrentDomainName();
+            var domain = _domainContext.Collection.Find(_ => _.DomainName.ToLower() == domainName.ToLower()).FirstOrDefault();
             long codeNumber;
             if (long.TryParse(slugOrCode, out codeNumber))
             {
                 contentEntity = _contentContext.Collection
-                   .Find(_ => _.ContentCode == codeNumber && !_.IsDeleted).FirstOrDefault();
+                   .Find(_ => _.ContentCode == codeNumber && !_.IsDeleted && _.AssociatedDomainId == domain.DomainId).FirstOrDefault();
             }
             else
             {
                 contentEntity = _contentContext.Collection
-                     .Find(_=>_.UrlFriend == $"/blog/{slugOrCode}" && !_.IsDeleted).FirstOrDefault();
+                     .Find(_=>_.UrlFriend == $"/blog/{slugOrCode}" && !_.IsDeleted && _.AssociatedDomainId == domain.DomainId).FirstOrDefault();
             }
 
             if(contentEntity != null)
@@ -184,7 +196,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
         public async Task<Result<EntityRate>> RateContent(string contentId, int score, bool isNew, int prevScore)
         {
             var result = new Result<EntityRate>();
-            var entity = _contentContext.Collection.Find(_ => _.ContentId == contentId).FirstOrDefault();
+            var domainName = this.GetCurrentDomainName();
+            var domain = _domainContext.Collection.Find(_ => _.DomainName.ToLower() == domainName.ToLower()).FirstOrDefault();
+            var entity = _contentContext.Collection.Find(_ => _.ContentId == contentId && _.AssociatedDomainId == domain.DomainId).FirstOrDefault();
             if(entity != null)
             {
                 if (isNew)
@@ -226,6 +240,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
         {
             var result = new ContentDTO();
             var urlFriend = $"{domainName}/blog/{slug}";
+            var domain = _domainContext.Collection.Find(_ => _.DomainName.ToLower() == domainName.ToLower()).FirstOrDefault();
             var contentEntity = _contentContext.Collection
                 .Find(_ => _.UrlFriend == urlFriend && !_.IsDeleted).FirstOrDefault();
             if(contentEntity != null)
@@ -272,7 +287,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 if(!string.IsNullOrWhiteSpace(categoryId))
                 {
                     result = _contentContext.Collection
-                        .Find(_ => _.ContentCategoryId == categoryId && _.IsActive && !_.IsDeleted && _.LanguageId == domainEntity.DefaultLanguageId)
+                        .Find(_ => _.ContentCategoryId == categoryId && _.IsActive && !_.IsDeleted && _.LanguageId == domainEntity.DefaultLanguageId && _.AssociatedDomainId == domainEntity.DomainId)
                   .Project(_ => new SelectListModel()
                   {
                       Text = _.Title,
@@ -281,7 +296,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 }
                 else
                 {
-                    result = _contentContext.Collection.Find(_ => _.IsActive && _.LanguageId == domainEntity.DefaultLanguageId && !_.IsDeleted)
+                    result = _contentContext.Collection.Find(_ => _.IsActive && _.LanguageId == domainEntity.DefaultLanguageId && !_.IsDeleted && _.AssociatedDomainId == domainEntity.DomainId)
                   .Project(_ => new SelectListModel()
                   {
                       Text = _.Title,
@@ -318,19 +333,16 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 var langId = filter["LanguageId"].ToString();
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
-                long totalCount = 0;
                 string domainId = "";
                 IQueryable<Entities.General.Content.Content> totalList = null;
 
                 if(user.IsSystemAccount)
                 {
-                    totalCount = await _contentContext.Collection.Find(_ => true).CountDocumentsAsync();
                     totalList = _contentContext.Collection.AsQueryable();
                 }
                 else
                 {
                     domainId = user.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
-                    totalCount = await _contentContext.Collection.Find(_=> _.AssociatedDomainId == domainId).CountDocumentsAsync();
                     totalList = _contentContext.Collection.AsQueryable().Where(_ => _.AssociatedDomainId == domainId);
                 }
                    
@@ -344,6 +356,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 {
                     totalList = totalList.Where(_ => _.TagKeywords.Contains(filter["filter"]) || _.Contents.Contains(filter["filter"]));
                 }
+                var totalCount = totalList.Count();
+
                 var list = totalList.OrderByDescending(_=>_.CreationDate).Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ContentViewModel()
                    {
@@ -440,7 +454,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                    .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
             var userId = _httpContextAccessor.HttpContext.User.Claims
                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            equallentModel.CreatorUserName = userName;
+           
             equallentModel.AssociatedDomainId = dto.AssociatedDomainId;
             #region add modification
             var mod = GetCurrentModification($"update this content by userId:'{userId}' and userName:'{userName}' in date:'{DateTime.Now.ToPersianLetDateTime()}'");
@@ -484,13 +498,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
         {
             Entities.General.Domain.Domain domainEntity = new Entities.General.Domain.Domain();
             List<ContentGlance> lst = new List<ContentGlance>();
-            if (!isDevelopment)
-            {
-               
-                
-                var domainName = this.GetCurrentDomainName();
-                domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
-            }
+            
+            var domainName = this.GetCurrentDomainName();
+            domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
+            
             
             FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
             FilterDefinition<Entities.General.Content.Content> filterDef = builder.Eq(nameof(Entities.General.Content.Content.IsDeleted), false);
@@ -617,11 +628,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
         {
             Entities.General.Domain.Domain domainEntity = new Entities.General.Domain.Domain();
             List<ContentGlance> lst = new List<ContentGlance>();
-            if (!isDevelopment)
-            {
-                var domainName = this.GetCurrentDomainName();
-                domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
-            }
+           
+            var domainName = this.GetCurrentDomainName();
+            domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
+            
 
             FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
             FilterDefinition<Entities.General.Content.Content> filterDef = builder.Eq(nameof(Entities.General.Content.Content.IsDeleted), false);

@@ -87,34 +87,10 @@
                         </select>
                         <span data-val-result="promotionTypeId" class="text-danger"></span>
                     </div>
-
-                    @*@if (ViewBag.IsSysAcc)
-                        {
-                            <div class="form-group col-md-3" id="venderSection">
-                                <label class="form-label" for="productVendor">@Language.GetString("ProductVendor")</label><br />
-                                <select class="form-control selectpicker" id="productVendor" data-live-search="true"
-                                        asp-items="@(new SelectList(ViewBag.Vendors, "Value", "Text"))">
-                                </select>
-                            </div>
-                        }
-                        <div class="form-group col-md-3" id="">
-                            <label class="form-label" for="productGroupId">@Language.GetString("tbl_ProductGroup")</label><br />
-                            <select class="form-control selectpicker" id="productGroupId" data-live-search="true" >
-                            </select>
-                            <span data-val-result="productGroupId" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group col-md-3" id="">
-                            <label class="form-label" for="productId">@Language.GetString("Product")</label><br />
-                            <select class="form-control selectpicker" id="productId" data-live-search="true" >
-                            </select>
-                            <span data-val-result="productId" class="text-danger"></span>
-                        </div>*@
-
                 </div>
-                <div class="row proSec" style="display:none;"> <div class="col-12"><lable class="form-control">@Language.GetString("ProductsInPromotion")</lable></div></div>
+                <div class="row proSec mt-4" style="@((Model.PromotionType == Arad.Portal.DataLayer.Entities.Shop.Promotion.PromotionType.Product && Model.Infoes.Any()) ? "display:block;" : "display:none;")"> <div class="col-12"><lable class="form-control">@Language.GetString("ProductsInPromotion")</lable></div></div>
 
-                <div class="row proSec" style="display:none;">
+                <div class="row proSec" style="@((Model.PromotionType == Arad.Portal.DataLayer.Entities.Shop.Promotion.PromotionType.Product && Model.Infoes.Any()) ? "display:block;" : "display:none;")">
                     <div class="col-12">
                         <table class="table table-hover table-bordered">
                             <thead>
@@ -363,7 +339,7 @@
                        $(".proSec").css("display", "none");
                    }
                }
-               else
+               else //promotionType == -1
                {
                    if($("#vendorSection").length > 0)
                        $("#vendorSection").remove();
@@ -498,23 +474,32 @@
                       if (result.status === "success")
                       {
                           debugger;
-                          if (result.data.length != 0) {
+                          if (result.data.length != 0)
+                          {
                               (result.data).forEach(function (item) {
                                   var op = "<option value='" + item.value + "'>" + item.text + "</option>";
                                   options += op;
                               });
-                          }
-                          var productSection = "<div class='form-group col-md-3' id='productClassification'><label class='form-label' for='productId'>" +'@Language.GetString("Product")'+"</label><br />" +
-                              "<select class='form-control selectpicker' id='productId' data-live-search='true' >" + options + "</select></div>";
 
-                          $("#firstRow").append(productSection);
-                          $("#productId").selectpicker();
-                          $("#firstRow").append("<div class='col-md-1' style='margin-top:1%;' id='addButtonSection'><div style='margin:auto;display:inline-block;'>" +
-                              "<button type='button' class='btn btn-success btn-sm bg-gradient' onclick='addProductToPromotion()'>" +
-                              "<i class='fa fa-plus pt-1' ></i></botton></div></div>");
-                         /* $("#addButtonSection").css("display", "block");*/
+                        
+                              var productSection = "<div class='form-group col-md-3' id='productClassification'><label class='form-label' for='productId'>" +'@Language.GetString("Product")'+"</label><br />" +
+                                  "<select class='form-control selectpicker' id='productId' data-live-search='true' >" + options + "</select></div>";
+
+                              $("#firstRow").append(productSection);
+                         
+                              $("#productId").selectpicker();
+                              $("#firstRow").append("<div class='col-md-1' style='margin-top:1%;' id='addButtonSection'><div style='margin:auto;display:inline-block;'>" +
+                                  "<button type='button' class='btn btn-success btn-sm bg-gradient' onclick='addProductToPromotion()'>" +
+                                  "<i class='fa fa-plus pt-1' ></i></botton></div></div>");
+                         }
                       }else
                       {
+                          if($("#addButtonSection") != undefined)
+                          $("#addButtonSection").remove();
+
+                          if($("#productClassification") != undefined)
+                            $("#productClassification").remove();
+
                           showError(result.message);
                       }
                   },
@@ -527,7 +512,11 @@
 
                 }
                 else {
-                   $("#productClassification").remove();
+                    if($("#productClassification") != undefined)
+                      $("#productClassification").remove();
+
+                    if ($("#addButtonSection") != undefined)
+                        $("#addButtonSection").remove();
                 }
        });
       $(document).on("change", "#productGroupType", function () {
@@ -796,7 +785,7 @@
                     $("#firstRow").addClass("d-none");
                 }else
                 {
-                    $("#promotionTypeId").selectpicker("val", model.promotionType);                  
+                    $("#promotionTypeId").selectpicker("val", "@Model.PromotionTypeId");            
                     $("#firstRow").removeClass("d-none");
                 }
 
@@ -872,7 +861,7 @@
         function addProductToPromotion() {
             debugger;
            /* alert("aaaaaaa");*/
-            if ($("#productId").val() != "-1") {
+            if ($("#productId").val() != "-1" ) {
                 var vendorId = "";
                 var vendorName = "";
                 if ($("#productVendor").length != 0) {

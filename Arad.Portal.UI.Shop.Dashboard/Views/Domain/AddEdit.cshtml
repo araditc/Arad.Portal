@@ -234,9 +234,9 @@
                                                         <tr style="text-align:center;">
                                                             <td>@price.CurrencyName</td>
                                                             <td style="display:none;">@price.CurrencyId</td>
-                                                            <td>@price.PriceValue</td>
-                                                            <td class="ltr">@price.StartDate</td>
-                                                            <td class="ltr">@price.EndDate</td>
+                                                            <td>  @($"{Convert.ToInt64(@price.PriceValue):n0}")</td>
+                                                            <td class="ltr">@price.StartDate.ToString().Split(" ")[0]</td>
+                                                            <td class="ltr">@(price.EndDate != null ? price.EndDate.ToString().Split(" ")[0] : "")</td>
                                                             <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
                                                             <td>
                                                                 <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromPriceList(this);">
@@ -583,7 +583,7 @@
             }
 
             //supportedcultures
-            for (var i = 0; i < $("#SupportedLangId option:selected").length; i++) {
+            for (var i = 0; i < $("#SupportedLangId").val().length; i++) {
                 obj.SupportedLangId.push($("#SupportedLangId").val()[i]);
             }
 
@@ -616,11 +616,11 @@
                 var innerModel = {};
                 innerModel.CurrencyId = $(this).find("td:eq(1)").text();
                 innerModel.CurrencyName = $(this).find("td:eq(0)").text();
-                innerModel.PriceValue = parseFloat($(this).find("td:eq(2)").text());
+                innerModel.PriceValue = parseFloat($(this).find("td:eq(2)").text().replace(/,/g ,""));
                 innerModel.StartDate = $(this).find("td:eq(3)").text();
                 innerModel.EndDate = $(this).find("td:eq(4)").text();
-                debugger;
-                if ($(this).find("td:eq(5)").text().trim() == active)
+               
+                if ($(this).find("td:eq(5)").text().trim() == '@Language.GetString("Active")')
                     innerModel.IsActive = true;
                 else
                     innerModel.IsActive = false;
@@ -654,12 +654,20 @@
         $("span[data-val-result='priceValue']").html("");
         $("span[data-val-result='startDate']").html("");
         $("span[data-val-result='endDate']").html("");
+        $("span[data-val-result='currencyId']").html("");
+
         if ($("#priceValue").val() == "") {
             $("span[data-val-result='priceValue']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
             flag = true;
         }
         if ($("#dtpStartDate").val() == "") {
             $("span[data-val-result='startDate']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+            flag = true;
+        }
+
+        if($("#currencyId").val() == "-1")
+        {
+            $("span[data-val-result='currencyId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
             flag = true;
         }
 
@@ -687,7 +695,7 @@
     function appendToPriceList(tr) {
          tr = "<tr style='text-align:center;'><td>" + $("#currencyId option:selected").text() +
                     "</td><td style='display:none;'>" + $('#currencyId').val() +
-                    "</td><td class='ltr'>" + $('#priceValue').val() +
+                    "</td><td class='ltr'>" + $('#priceValue').val().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
                     "</td><td class='ltr'>" + $("#dtpStartDate").val() +
                     "</td><td></td><td>" + active +
                     "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromPriceList(this);'>" +

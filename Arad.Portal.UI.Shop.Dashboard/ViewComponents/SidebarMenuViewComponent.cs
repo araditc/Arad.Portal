@@ -61,7 +61,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                     obj.PathString = _accessor.HttpContext.Request.Path;
                 }
 
-                    if (userId != null)
+                if (userId != null)
                 {
                     menues = await _permissionRepository.GetMenus(userId,obj.PathString);
                 }

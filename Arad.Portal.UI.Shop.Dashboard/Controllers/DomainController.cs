@@ -528,7 +528,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.RowNumber = rn;
             ViewBag.ColNumber = cn;
             ViewBag.Section = sec;
-            return PartialView($"~/Views/Domain/{viewName}", null);
+            return PartialView($"~/Views/Domain/{viewName}", new ModuleWithParametersValue() { });
         }
 
 
@@ -685,7 +685,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     return RedirectToAction("PageOrItemNotFound", "Account");
                 }
 
-                if (dto.Prices.Where(_ => _.IsActive = false && _.EDate == null).Any())
+                if (dto.Prices.Where(_ => _.IsActive == false && _.EDate == null).Any())
                 {
                     var incorrectActivation = dto.Prices.Where(_ => _.IsActive = false && _.EDate == null).FirstOrDefault();
                     var activePrice = dto.Prices.Where(_ => _.IsActive && _.EDate == null).FirstOrDefault();
@@ -696,15 +696,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 int i = 1;
                 foreach (var lanId in dto.SupportedLangId)
                 {
-                    var languageId = _lanRepository.FetchBySymbol(lanId);
+                    var languageEntity = _lanRepository.FetchLanguage(lanId);
                     await _basicDataRepository.InsertNewRecord(new DataLayer.Entities.General.BasicData.BasicData()
                     {
                         AssociatedDomainId = dto.DomainId,
                         BasicDataId = Guid.NewGuid().ToString(),
                         CreationDate = DateTime.UtcNow,
                         GroupKey = "SupportedCultures",
-                        Value = languageId,
-                        Text = lanId,
+                        Value = lanId,
+                        Text = languageEntity.Symbol,
                         Order = i
                     });
                     i++;

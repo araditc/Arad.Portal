@@ -164,6 +164,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                        DefaultLanguageId = _.DefaultLanguageId,
                        DefaultLanguageName = _.DefaultLanguageName,
                        IsDefault = _.IsDefault,
+                       IsDeleted = _.IsDeleted,
                        DefaultCurrencyId = _.DefaultCurrencyId,
                        DefaultCurrencyName = _.DefaultCurrencyName
 

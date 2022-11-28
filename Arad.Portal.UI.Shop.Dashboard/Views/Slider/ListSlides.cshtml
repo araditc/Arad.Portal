@@ -24,18 +24,6 @@
                     <td class="ListCell">@(@CultureInfo.CurrentCulture.Name == "fa-IR" ? @item.PersianStartDate : @item.StartDate)</td>
                     <td class="ListCell">@(@CultureInfo.CurrentCulture.Name == "fa-IR" ? @item.PersianExpireDate : @item.ExpireDate)</td>
                     <td class="ListCell">
-                        @{
-                            if (item.IsActive)
-                            {
-                                <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success bg-gradient">@Language.GetString("Active")</button>
-                            }
-                            else
-                            {
-                                <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
-                            }
-                        }
-                    </td>
-                    <td class="ListCell">
                         <a class="btn btn-outline-secondary btn-xs" asp-action="Layers" asp-controller="Slider"  asp-route-sliderId="@ViewBag.SliderId" asp-route-slideId="@item.Id">
                         @Language.GetString("design_Layers")  
                     </a>

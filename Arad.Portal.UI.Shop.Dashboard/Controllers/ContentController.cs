@@ -141,7 +141,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             if (!string.IsNullOrWhiteSpace(id))
             {
-                model = await _contentRepository.ContentFetch(id);
+                model = await _contentRepository.ContentFetch(id, true);
                 
                 if (string.IsNullOrWhiteSpace(staticFileStorageURL))
                 {

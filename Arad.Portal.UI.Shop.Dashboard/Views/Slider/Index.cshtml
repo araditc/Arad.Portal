@@ -18,7 +18,7 @@
                     <div class="row">
                         <div class="form-group col-12 col-md-3">
                             <label class="form-label">@Language.GetString("AssociatedDomain")</label>
-                            <select class="form-control selectpicker" data-live-search="true"
+                            <select class="form-control selectpicker" data-live-search="true" 
                                 id="AssociatedDomainId" name="AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text", "@ViewBag.DomainId"))">
                             </select>
                             <span data-val-result="AssociatedDomainId" class="text-danger"></span>
@@ -95,11 +95,11 @@
                                 @{
                                     if (item.IsActive)
                                     {
-                                            <button onclick='changeActivation("@item.SliderId")' class="btn-sm btn btn-success bg-gradient">@Language.GetString("Active")</button>
+                                                            <button onclick='changeActivation("@item.SliderId")' class="btn-sm btn btn-success bg-gradient">@Language.GetString("Active")</button>
                                     }
                                     else
                                     {
-                                            <button onclick='changeActivation("@item.SliderId")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
+                                                            <button onclick='changeActivation("@item.SliderId")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
                                     }
                                 }
                             </td>
@@ -108,7 +108,7 @@
                                     @Language.GetString("design_Slides")
                                 </a>
 
-                                <a id="editRecord" data-id="@item.SliderId" href="#" class="btn btn-outline-secondary btn-sm">
+                                <a id="editRecord" data-id="@item.SliderId" data-domainId="@item.AssociatedDomainId" href="#" class="btn btn-outline-secondary btn-sm">
                                     @Language.GetString("btn_Detail")
                                 </a>
 
@@ -116,6 +116,12 @@
                                 {
                                     <button onclick="EntityDelete('@item.SliderId')" class="btn btn-sm btn-danger bg-gradient">
                                         <i class="fa fa-trash"></i>@Language.GetString("btn_Delete")
+                                    </button>
+                                }else
+                                {
+                                     <button id="restoreRecord" onclick="EntityRestore('@item.SliderId')" class="btn btn-sm btn-secondary bg-gradient">
+                                        <i class="fa fa-refresh"></i>
+                                        @Language.GetString("btn_Restore")
                                     </button>
                                 }
                             </td>
@@ -285,28 +291,26 @@
             "#editRecord",
             function(e) {
                 e.preventDefault();
-
-                var id = $(this).data("id");
-                var data = { sliderId: id };
-                sliderId = id ;
-                $.ajax({
-                    url: "@Url.Action("GetSlider")",
+                  sliderId = $(this).data("id");
+                   $.ajax({
+                    url: "@Url.Action("GetSlider")"+ "?sliderId="+ sliderId,
                     type: 'Get',
-                    data: data,
+                    //data: data,
                     beforeSend: function() {
                     },
                     success: function(result) {
 
                         if (result.status === "success") {
                             var slide = result.data;
-
+                            debugger;
                             $("#addSlider #Title").val(slide.title);
                             $("#addSlider #Id").val(slide.id);
-
+                            $("#addSlider #AssociatedDomainId").val(slide.associatedDomainId);
+                            $("#addSlider #AssociatedDomainId").selectpicker("refresh");
                             $('#add').collapse('show');
 
                         } else {
-                            toastr.error(result.message);
+                            showError(result.message)
                         }
 
                         $("#loading").css("display", "none");
@@ -318,7 +322,9 @@
 
                     }
                 });
-                });
+               
+
+            });
 
             $(document).on("click", "#deleteRecord", function(e) {
                 debugger;
@@ -394,9 +400,18 @@
             });
         }
 
-         function changeActivation(id) {
+        function EntityRestore(id) {
             debugger;
-                $.ajax({
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("Restore", "Slider")' + '/' + id,
+                document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
+            document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
+            $('#confirmModal').modal('show');
+        }
+
+         function changeActivation(id) {
+             $.ajax({
                     type: 'Get',
                     url: '@Url.Action("ChangeBeActiveSlider", "Slider")' + '?id=' + id,
                     success: function(resultData) {

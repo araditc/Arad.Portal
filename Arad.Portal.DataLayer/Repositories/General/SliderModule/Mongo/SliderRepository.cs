@@ -42,11 +42,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
             if(userDb.IsSystemAccount)
             {
                list = _context.Collection
-               .Find(_ => !_.IsDeleted && _.IsActive).ToList();
+               .Find(_ => true).ToList();
             }else
             {
                 list = _context.Collection
-                .Find(_ => !_.IsDeleted && _.IsActive && _.AssociatedDomainId == userDb.Domains.FirstOrDefault(a => a.IsOwner).DomainId).ToList();
+                .Find(_ => _.AssociatedDomainId == userDb.Domains.FirstOrDefault(a => a.IsOwner).DomainId).ToList();
             }
             return list;
         }
@@ -62,7 +62,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
                 model.CreatorUserId = currentUserId;
                 model.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-
+                model.IsActive = true;
                 model.SliderId = Guid.NewGuid().ToString();
                 _context.Collection.InsertOne(model);
 
@@ -74,11 +74,21 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
             }
         }
 
-        public Slider GetSlider(string id)
+        public Slider GetSlider(string id, string domainId = "")
         {
+            Entities.General.Domain.Domain domainEntity = null;
+           if(!string.IsNullOrWhiteSpace(domainId))
+                domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
             try
             {
-                return _context.Collection.Find(s => s.SliderId == id).FirstOrDefault();
+                if(!string.IsNullOrWhiteSpace(domainId))
+                {
+                    return _context.Collection.Find(s => s.SliderId == id && !s.IsDeleted && s.AssociatedDomainId == domainEntity.DomainId).FirstOrDefault();
+                }else
+                {
+                    return _context.Collection.Find(s => s.SliderId == id && !s.IsDeleted).FirstOrDefault();
+                }
+              
             }
             catch (Exception e)
             {
@@ -542,6 +552,33 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
                      }).ToList();
 
             return result;
+        }
+
+        public async Task<bool> RestoreSlider(string id)
+        {
+            try
+            {
+                var slider = _context.Collection.Find(s => s.SliderId == id).FirstOrDefault();
+
+                if (slider != null)
+                {
+
+                    slider.IsDeleted = false;
+                    var result = await _context.Collection
+                        .ReplaceOneAsync(c => c.SliderId == slider.SliderId, slider);
+
+                    if (result.IsAcknowledged)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
     }
 }

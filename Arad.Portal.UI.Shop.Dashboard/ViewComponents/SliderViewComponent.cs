@@ -15,7 +15,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
         public IViewComponentResult Invoke(string sliderId)
         {
             var slider = _sliderRepository.GetSlider(sliderId);
-            
             return View("Default", slider);
         }
     }

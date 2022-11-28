@@ -564,6 +564,7 @@
               "/Slider/Layers",
               "/Slider/ListLayers",
               "/Slider/AddLayer",
+              "/Slider/Slides",
               "/Slider/EditLayer",
               "/Slider/ChangeBeActiveLayer",
               "/Slider/DeleteLayer"

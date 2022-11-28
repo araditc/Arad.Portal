@@ -870,7 +870,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 result = _context.ProductCollection.Find(_ => _.GroupIds.Contains(productGroupId) && (vendorId == "-1" || _.SellerUserId == vendorId) && _.IsActive)
                   .Project(_ => new SelectListModel()
                   {
-                      Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
+                      Text = _.MultiLingualProperties.Any(a => a.LanguageId == langId) ?
                          _.MultiLingualProperties.FirstOrDefault(a => a.LanguageId == langId).Name : "",
                       Value = _.ProductId
                   }).ToList();
@@ -881,7 +881,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 && _.IsActive && _.CreatorUserId == currentUserId)
                   .Project(_ => new SelectListModel()
                   {
-                      Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
+                      Text = _.MultiLingualProperties.Any(a => a.LanguageId == langId) ?
                          _.MultiLingualProperties.FirstOrDefault(a => a.LanguageId == langId).Name : "",
                       Value = _.ProductId
                   }).ToList();

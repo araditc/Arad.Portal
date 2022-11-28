@@ -1,7 +1,7 @@
 ﻿@model Arad.Portal.DataLayer.Models.DesignStructure.ModuleWithParametersValue;
 @{
     var sel = "";
-    if (Model != null)
+    if (!string.IsNullOrWhiteSpace(Model.ModuleId))
         sel = @Model.ParametersValue.SliderId;
 }
 <div class="row mx-2">

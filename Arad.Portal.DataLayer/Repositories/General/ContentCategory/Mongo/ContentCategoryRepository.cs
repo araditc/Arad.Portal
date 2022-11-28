@@ -156,7 +156,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             }
             return finalList;
         }
-
+        /// <summary>
+        /// if isDeleted = true it also shows the category even if it is deleted
+        /// </summary>
+        /// <param name="contentCategoryId"></param>
+        /// <param name="isDeleted"></param>
+        /// <returns></returns>
         public async Task<ContentCategoryDTO> ContentCategoryFetch(string contentCategoryId, bool isDeleted = false)
         {
             var result = new ContentCategoryDTO();
