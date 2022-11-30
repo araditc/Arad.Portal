@@ -36,7 +36,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         ContentDTO FetchBySlug(string slug, string domainName);
         ContentDTO FetchByCode(string slugOrCode);
         string FetchIdByCode(long code);
-
+        long GetContentCode(string contentId);
         Task<Result> UpdateContentEntity(Entities.General.Content.Content content);
         List<Entities.General.Content.Content> AllContents(string domainId);
         bool IsUniqueUrlFriend(string urlFriend, string domainId, string contentId = "");

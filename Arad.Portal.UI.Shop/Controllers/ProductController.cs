@@ -502,7 +502,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 if (isLoggedUser)
                 {
                     #region check cookiepart for loggedUser
-                    var userProductRateCookieName = $"{userId}_p{entity.ProductId}";
+                    var userProductRateCookieName = $"{userId}_pp{entity.ProductId}";
                     if (HttpContext.Request.Cookies[userProductRateCookieName] != null)
                     {
                         ViewBag.HasRateBefore = true;

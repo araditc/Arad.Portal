@@ -17,6 +17,7 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Contracts.General.User;
+using Arad.Portal.DataLayer.Models.Content;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -78,9 +79,9 @@ namespace Arad.Portal.UI.Shop.Controllers
         public async Task<IActionResult> Details(string slug)
         {
             ViewData["DomainTitle"] = this.DomainTitle;
-            var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
+           
             string userId = "";
-            userId = isLoggedUser ? User.GetUserId() : "";
+            userId = HttpContext.User.Identity.IsAuthenticated ? User.GetUserId() : "";
             var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
             var entity = _contentRepository.FetchByCode(slug);
             if(entity != null)
@@ -97,10 +98,10 @@ namespace Arad.Portal.UI.Shop.Controllers
 
                     ViewBag.Sidbars = sidebars;
                 }
-                if (isLoggedUser)
+                if (HttpContext.User.Identity.IsAuthenticated)
                 {
                     #region check cookiepart for loggedUser
-                    var userProductRateCookieName = $"{userId}_c{entity.ContentId}";
+                    var userProductRateCookieName = $"{userId}_cc{entity.ContentId}";
                     if (HttpContext.Request.Cookies[userProductRateCookieName] != null)
                     {
                         ViewBag.HasRateBefore = true;
@@ -135,36 +136,6 @@ namespace Arad.Portal.UI.Shop.Controllers
            
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Rate([FromQuery] string contentId, [FromQuery] int score, [FromQuery] bool isNew)
-        {
-            var userId = User.GetUserId();
-            string prevRate = "";
-            var userProductRateCookieName = $"{userId}_cc{contentId}";
-            if (!isNew)//the user has rated before
-            {
-                prevRate = HttpContext.Request.Cookies[userProductRateCookieName];
-            }
-            int preS = !string.IsNullOrWhiteSpace(prevRate) ? Convert.ToInt32(prevRate) : 0;
-
-            var res = await _contentRepository.RateContent(contentId, score,
-                    isNew, preS);
-            if (res.Succeeded)
-            {
-                //set its related cookie
-                return
-                    Json(new
-                    {
-                        status = "Succeed",
-                        like = res.ReturnValue.LikeRate,
-                        dislike = res.ReturnValue.DisikeRate,
-                        half = res.ReturnValue.HalfLikeRate
-                    });
-            }
-            else
-            {
-                return Json(new { status = "error" });
-            }
-        }
+        
     }
 }

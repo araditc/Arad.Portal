@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Models.DesignStructure;
+using Arad.Portal.DataLayer.Entities.Shop.Product;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
 {
@@ -910,6 +911,17 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 res.Succeeded = true;
             }
             return res;
+        }
+
+        public long GetContentCode(string contentId)
+        {
+            long result = 0;
+            var entity = _contentContext.Collection.Find(_ => _.ContentId == contentId).FirstOrDefault();
+            if (entity != null)
+            {
+                result = Convert.ToInt64(entity.ContentCode);
+            }
+            return result;
         }
     }
 }

@@ -23,6 +23,8 @@ using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Contracts.General.User;
 using DocumentFormat.OpenXml.Math;
 using Arad.Portal.DataLayer.Contracts.General.Content;
+using Arad.Portal.DataLayer.Models.Content;
+using DocumentFormat.OpenXml.Office2013.PowerPoint.Roaming;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -203,6 +205,86 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
 
+
+        [HttpPost]
+        public async Task<IActionResult> Rate([FromBody] RateModel model)
+        {
+            var userId = User.GetUserId();
+            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            string prevRate = "";
+            long code = 0;
+            string cookieName = "";
+            Result<EntityRate> finalRes;
+            if (User != null && User.Identity.IsAuthenticated)
+            {
+                try
+                {
+                    if (model.IsContent)
+                    {
+                        cookieName = $"{userId}_cc{model.EntityId}";
+                    }
+                    else
+                    {
+                        cookieName = $"{userId}_pp{model.EntityId}";
+                    }
+
+                    if (!model.IsNew)//the user has rated before
+                    {
+                        prevRate = HttpContext.Request.Cookies[cookieName];
+                    }
+                    int preS = !string.IsNullOrWhiteSpace(prevRate) ? Convert.ToInt32(prevRate) : 0;
+
+
+                    if (model.IsContent)
+                    {
+                        finalRes = await _contentRepository.RateContent(model.EntityId, model.Score,
+                           model.IsNew, preS);
+
+                        code = _contentRepository.GetContentCode(model.EntityId);
+                    }
+                    else
+                    {
+                        finalRes = await _productRepository.RateProduct(model.EntityId, model.Score,
+                               model.IsNew, preS);
+
+                        code = _productRepository.GetProductCode(model.EntityId);
+                    }
+                    if (finalRes.Succeeded)
+                    {
+                        //set its related cookie
+                        CookieOptions option = new CookieOptions();
+                        option.Expires = DateTime.Now.AddYears(1);
+                        Response.Cookies.Append(cookieName, model.Score.ToString(), option);
+
+
+                        return
+                            Json(new
+                            {
+                                status = "Succeed",
+                                like = finalRes.ReturnValue.LikeRate,
+                                dislike = finalRes.ReturnValue.DisikeRate,
+                                half = finalRes.ReturnValue.HalfLikeRate
+                            });
+                    }
+                    else
+                    {
+                        return Json(new { status = "error", message = Language.GetString(ConstMessages.InternalServerErrorMessage) });
+                    }
+                }
+                catch (Exception)
+                {
+                    return Json(new { status = "error", message = Language.GetString(ConstMessages.InternalServerErrorMessage) });
+                }
+            }else if (model.IsContent)
+            {
+                return Redirect($"{lanIcon}/Account/Login?returnUrl={lanIcon}/blog/{code}");
+            }
+            else
+            {
+                return Redirect($"{lanIcon}/Account/Login?returnUrl={lanIcon}/Product/{code}");
+            }
+        }
+
         [HttpGet]
         public async Task<IActionResult> RemoveFromFav([FromQuery] string pkey)
         {
@@ -223,44 +305,44 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> RatingProduct([FromBody] RateProduct model)
-        {
-            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
-            var productCode = _productRepository.GetProductCode(model.ProductId);
-            if (User != null && User.Identity.IsAuthenticated)
-            {
+        //[HttpPost]
+        //public async Task<IActionResult> RatingProduct([FromBody] RateProduct model)
+        //{
+        //    var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+        //    var productCode = _productRepository.GetProductCode(model.ProductId);
+        //    if (User != null && User.Identity.IsAuthenticated)
+        //    {
 
-                var userId = User.GetUserId();
-                string prevRate = "";
-                var userProductRateCookieName = $"{userId}_p{model.ProductId}";
-                if (!model.IsNew)//the user has rated before
-                {
-                    prevRate = HttpContext.Request.Cookies[userProductRateCookieName];
-                }
-                int preS = !string.IsNullOrWhiteSpace(prevRate) ? Convert.ToInt32(prevRate) : 0;
+        //        var userId = User.GetUserId();
+        //        string prevRate = "";
+        //        var userProductRateCookieName = $"{userId}_p{model.ProductId}";
+        //        if (!model.IsNew)//the user has rated before
+        //        {
+        //            prevRate = HttpContext.Request.Cookies[userProductRateCookieName];
+        //        }
+        //        int preS = !string.IsNullOrWhiteSpace(prevRate) ? Convert.ToInt32(prevRate) : 0;
 
-                var res = await _productRepository.RateProduct(model.ProductId, model.Score,
-                        model.IsNew, preS);
-                if (res.Succeeded)
-                {
-                    //set its related cookie
-                    return
-                        Json(new
-                        {
-                            status = "Succeed",
-                            like = res.ReturnValue.LikeRate,
-                            dislike = res.ReturnValue.DisikeRate,
-                            half = res.ReturnValue.HalfLikeRate
-                        });
-                }
-                else
-                {
-                    return Json(new { status = "error" });
-                }
-            }
-            return Redirect($"{lanIcon}/Account/Login?returnUrl={lanIcon}/Product/{productCode}");
-        }
+        //        var res = await _productRepository.RateProduct(model.ProductId, model.Score,
+        //                model.IsNew, preS);
+        //        if (res.Succeeded)
+        //        {
+        //            //set its related cookie
+        //            return
+        //                Json(new
+        //                {
+        //                    status = "Succeed",
+        //                    like = res.ReturnValue.LikeRate,
+        //                    dislike = res.ReturnValue.DisikeRate,
+        //                    half = res.ReturnValue.HalfLikeRate
+        //                });
+        //        }
+        //        else
+        //        {
+        //            return Json(new { status = "error" });
+        //        }
+        //    }
+        //    return Redirect($"{lanIcon}/Account/Login?returnUrl={lanIcon}/Product/{productCode}");
+        //}
 
         [HttpPost]
         public async Task<IActionResult> AddLikeDisLike([FromQuery] string commentId, [FromQuery] bool isLike)

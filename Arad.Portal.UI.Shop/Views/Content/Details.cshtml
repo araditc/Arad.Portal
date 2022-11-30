@@ -3,9 +3,10 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     var dir = HelpersMethods.GetDirection(CultureInfo.CurrentCulture);
-   
+
     List<ContentGlance> sidebarContents = (List<ContentGlance>)ViewBag.Sidbars;
     var like = User.Identity.IsAuthenticated && ViewBag.Like ? true : false;
+    var initial = Model.HalfLikeRate ? Model.LikeRate + 2 : Model.LikeRate + 1;
 }
 @section Styles
 {
@@ -95,24 +96,27 @@
                 @for (int i = 1; i <= Model.LikeRate; i++)
                 {
                     <a href="#"
-                          role="button" aria-expanded="false" title="@Language.GetString("ContentScore")" onclick="Rate(@i);">
+               role="button" aria-expanded="false" title=@($"{Language.GetString("ContentScore")}_{i}") onclick="Rate(@i);">
                         <i class="fas fa-star"></i>
                     </a>
                 }
                 @if (Model.HalfLikeRate)
                 {
                     <a href="#"
-                           role="button" aria-expanded="false" title="@Language.GetString("ContentScore")" onclick="Rate(@Model.LikeRate+1);">
+               role="button" aria-expanded="false" title=@($"{Language.GetString("ContentScore")}_{@Model.LikeRate+1}") onclick="Rate(@Model.LikeRate+1);">
                         <i class="fas fa-star-half-alt"></i>
                     </a>
                 }
-                @for (int i = (Model.HalfLikeRate ? Model.LikeRate + 2 : Model.LikeRate + 1); i <= Model.DisikeRate; i++)
+              
+                @for (int i = initial; i <= 5; i++ )
                 {
                     <a href="#"
-                              role="button" aria-expanded="false" onclick="Rate(@i);" title=@($"{@Language.GetString("ContentScore")}_{i}")>
+                                role="button" aria-expanded="false" onclick="Rate(@i);" title=@($"{Language.GetString("ContentScore")}_{i}")>
                         <i class="far fa-star"></i>
                     </a>
                 }
+              
+                
             </div>
              <div class="col-1 offset-1 col-md-4 offset-md-4 px-3">
               <a href="#" role="button" class="float-end fs-4" data-bs-toggle="tooltip" onclick="AddToFavoriteList('@Model.ContentCode');"
@@ -265,7 +269,7 @@
      function Rate(score) {
          debugger;
          var isAllow = false;
-         if ('@ViewBag.LoggedUser' == 'True') {
+        if ('@User.Identity.IsAuthenticated' == "True") {
              if ('@ViewBag.HasRateBefore' == 'True') {
                  if (score != parseInt('@ViewBag.PreRate'))
                      isAllow = true;
@@ -273,37 +277,52 @@
              else {
                  isAllow = true;
              }
+         }else
+         {
+            window.location.href = '@Url.Action("Login", "Account")' + `?returnUrl=${'@ViewBag.LanIcon'}/blog/${contentCode}`;
          }
          if (isAllow)
          {
+             var obj ={};
+            obj.EntityId = '@Model.ContentId';
+            obj.IsContent = true;
+            obj.IsNew = "@ViewBag.HasRateBefore" == "False";
+            obj.Score = score;
+
+
              $.ajax({
-                 url: "/Content/Rate?contentId=" +
-                     '@Model.ContentId' + "&score=" + score + '&hasrate=' + '@ViewBag.HasRateBefore',
-             contentType: 'application/json',
-             type: 'Post',
-             dataType: 'json',
-             beforeSend: function () {
-             },
-             success: function (result) {
-                 if (result.status == "Success") {
-                     //refresh rate part
-                     $("div.ratePart").html("");
-                     for (var i = 1; i <= result.like; i++) {
-                         $("div.ratePart")
-                         .append('<a href="#" role = "button" aria-expanded="false" onclick="Rate('+i+');"><i class="fas fa-star"></i></a>');
-                     }
-                     if (result.half == 'True') {
-                         $("div.ratePart")
-                             .append('<a href="#" role="button" aria-expanded="false" onclick="Rate(' + result.like + 1+');"><i class="fas fa-star-half-alt"></i></a>');
-                     }
-                     var initiali = result.half == 'True' ? result.like + 2 : result.like + 1;
-                     for (var i = initiali; i <= result.dislike; i++) {
-                         $("div.ratePart")
-                             .append('<a href="#" role="button" aria-expanded="false" onclick="Rate('+i+');"><i class="far fa-star"></i></a>');
+                 url: '@Url.Action("Rate", "Comment")',
+                 contentType: 'application/json',
+                 type: 'POST',
+                 data : JSON.stringify(obj),
+                 dataType: 'json',
+                 beforeSend: function () {
+                 },
+                 success: function (result) {
+                     debugger;
+                    if (result.status == "Succeed") {
+                         //refresh rate part
+                         //$("div.ratePart").html("");
+                         //for (var i = 1; i <= result.like; i++) {
+                         //    $("div.ratePart")
+                         //    .append('<a href="#" role = "button" aria-expanded="false" onclick="Rate('+i+');"><i class="fas fa-star"></i></a>');
+                         //}
+                         //if (result.half == 'True') {
+                         //    $("div.ratePart")
+                         //        .append('<a href="#" role="button" aria-expanded="false" onclick="Rate(' + result.like + 1+');"><i class="fas fa-star-half-alt"></i></a>');
+                         //}
+                         //var initiali = result.half == 'True' ? result.like + 2 : result.like + 1;
+                         //for (var i = initiali; i <= 5; i++) {
+                         //    $("div.ratePart")
+                         //        .append('<a href="#" role="button" aria-expanded="false" onclick="Rate('+i+');"><i class="far fa-star"></i></a>');
+                         //}
+                        window.location.reload();
+                     }else
+                     {
+                         showError(result.message);
                      }
                  }
-             }
-             });
+                 });
          }
     }
 
