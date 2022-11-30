@@ -1,5 +1,6 @@
 ﻿using Arad.Portal.UI.Shop.Dashboard.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -14,9 +15,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     public class FileManagerController : Controller
     {
         private readonly IConfiguration _configuration;
-        public FileManagerController(IConfiguration configuration)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public FileManagerController(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _configuration = configuration;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [AllowAnonymous]
@@ -61,7 +64,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 if (!System.IO.File.Exists(finalPath))
                 {
-                    finalPath = "/imgs/NoImage.png";
+                    finalPath = Path.Combine(_webHostEnvironment.WebRootPath, "imgs/NoImage.png");
                 }
                 var fileName = Path.GetFileName(finalPath);
                 var mimeType = ImageFunctions.GetMIMEType(fileName);
@@ -70,7 +73,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                finalPath = "/imgs/NoImage.png";
+                finalPath = Path.Combine(_webHostEnvironment.WebRootPath, "imgs/NoImage.png");
                 var fileName = Path.GetFileName(finalPath);
                 var mimeType = ImageFunctions.GetMIMEType(fileName);
                 byte[] fileContent = System.IO.File.ReadAllBytes(finalPath);

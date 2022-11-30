@@ -78,6 +78,16 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
 
         }
 
+        public async Task<Result> RemoveToUserFavouriteList(string id)
+        {
+            var res = new Result();
+            var delRes = await _context.UserFavoritesCollection.DeleteOneAsync(_ => _.UserFavoritesId == id);
+            if(delRes.IsAcknowledged)
+            {
+                res.Succeeded = true;
+            }
+            return res;
+        }
         public bool CountPhone(string phoneNumber, string userPhone)
         {
             bool result;

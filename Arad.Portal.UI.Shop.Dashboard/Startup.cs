@@ -137,7 +137,6 @@ namespace Arad.Portal.UI.Shop.Dashboard
                 {
                     options.Cookie.HttpOnly = true;
                     options.Cookie.IsEssential = true;
-                    //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.SameSite = SameSiteMode.Strict;
                 }
             });

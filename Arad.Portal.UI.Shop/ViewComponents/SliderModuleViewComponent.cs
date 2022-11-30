@@ -20,7 +20,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
         public IViewComponentResult Invoke(string sliderId)
         {
             var domainName = HttpContext.Request.Host.ToString();
-            var domainEntity = _domainRepository.FetchDomain(domainName).ReturnValue; 
+            var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue; 
             var slider = _sliderRepository.GetSlider(sliderId, domainEntity.DomainId);
             Log.Fatal($"find slider={slider.SliderId}");
           

@@ -26,7 +26,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.User
         List<UserFavorites> GetUserFavoriteList(string userId, FavoriteType types);
        
         Result AddToUserFavoriteList(string userId, FavoriteType type, string entityId, string url, string domainId);
-
+        Task<Result> RemoveToUserFavouriteList(string id);
         Task<Result> AddtoNotifyList(string productId, string userId);
         Task<Result> RemoveFromNotifyList(string productId, string userId);
         Task<Result<List<string>>> GetUserInformList(string userId);

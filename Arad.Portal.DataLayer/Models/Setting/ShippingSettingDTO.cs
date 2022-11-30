@@ -26,6 +26,8 @@ namespace Arad.Portal.DataLayer.Models.Setting
 
         public string CurrencySymbol { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public List<ShippingTypeDetailDTO> AllowedShippingTypes { get; set; }
 
         public ShippingCouponDTO ShippingCoupon { get; set; }

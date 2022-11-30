@@ -63,7 +63,7 @@ namespace Arad.Portal.UI.Shop.Helpers
 
                 if (!File.Exists(finalPath))
                 {
-                    finalPath = "/imgs/NoImage.png";
+                    finalPath = Path.Combine(localStaticFileStorage, "imgs/NoImage.png");
                 }
                 var fileName = Path.GetFileName(finalPath);
                 var mimeType = GetMIMEType(fileName);
@@ -72,7 +72,7 @@ namespace Arad.Portal.UI.Shop.Helpers
             }
             else
             {
-                finalPath = "/imgs/NoImage.png";
+                finalPath = Path.Combine(localStaticFileStorage, "imgs/NoImage.png");
                 var fileName = Path.GetFileName(finalPath);
                 var mimeType = GetMIMEType(fileName);
                 byte[] fileContent = File.ReadAllBytes(finalPath);

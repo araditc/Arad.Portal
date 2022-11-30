@@ -34,8 +34,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
             _currencyRepository = currencyRepository;
         }
 
-        public  IViewComponentResult Invoke(ProductOrContentType productType, ProductTemplateDesign selectionTemplate, 
-            int count, TransActionType loadAnimation, LoadAnimationType loadAnimationType)
+        public  IViewComponentResult Invoke(ModuleParameters moduleParameters)
         {
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
             var defLangSymbol = defaultCulture.Split("|")[0][2..];
@@ -47,10 +46,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
 
             var langId = _lanRepository.FetchBySymbol(defLangSymbol);
             ViewBag.CurLangId = langId;
-            ViewBag.LoadAnimation = loadAnimation;
-            ViewBag.LoadAnimationType = loadAnimationType;
-            var lst = _productRepository.GetSpecialProducts(count, currencyDto.CurrencyId, productType);
-            return selectionTemplate switch
+            ViewBag.LoadAnimation = moduleParameters.LoadAnimation;
+            ViewBag.LoadAnimationType = moduleParameters.LoadAnimationType;
+            var lst = _productRepository.GetSpecialProducts(moduleParameters.Count.Value, currencyDto.CurrencyId, moduleParameters.ProductOrContentType.Value, 0, moduleParameters.DomainId);
+            return moduleParameters.ProductTemplateDesign switch
             {
                 ProductTemplateDesign.First => View("First", lst),
                 _ => View(lst),

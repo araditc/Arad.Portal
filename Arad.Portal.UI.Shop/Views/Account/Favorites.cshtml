@@ -27,20 +27,26 @@
                              src="@Url.Content($"~/GetScaledImageOnWidth?path={item.ImagePath}&width={100}")">
                             </a>
                         </div>
-                        <div class="col-8 col-md-8">
+                        <div class="col-7 col-md-7">
                             <a href="@item.Url" class="alignt-middle" role="button" style="text-decoration: none;color: black;">
                                 <span>@item.Name</span>
                             </a>
                         </div>
+                         
                     }
                     else
                     {
-                        <div class="col-12 d-flex justify-content-center">
+                        <div class="col-11 d-flex justify-content-center">
                             <a href="@item.Url" class="alignt-middle" role="button" style="text-decoration: none;">
                                 <span>@item.Name</span>
                             </a>
                         </div>
                     }
+                    <div class="col-1 align-middle">
+                             <button type="button" class="btn btn-danger bg-gradient"  key="@item.UserFavoritesId" onclick="deleteFromFavList(this);">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
 
                 </div>
             </li>
@@ -53,8 +59,31 @@ $(document).ready(function() {
         
         if ($("#txtSearch").val().trim() != "") {
             var txt = $("#txtSearch").val().trim();
-            window.location.href = @Url.Action("Favorites", "Account")+"?type=" + "@ViewBag.Type" + "&keyword=" + txt;
+            window.location.href = '@Url.Action("Favorites", "Account")'+"?type=" + "@ViewBag.Type" + "&keyword=" + txt;
         }
     });
 });
+
+
+function deleteFromFavList(sender)
+{
+    debugger;
+    var id = $(sender).attr("key");
+    $.ajax({
+                         url: '@Url.Action("RemoveFromFav", "Comment")'+"?pkey=" + id,
+                         contentType: 'application/json',
+                         type: 'Get',
+                         dataType: 'json',
+                         beforeSend: function () {
+                         },
+                         success: function (result) {
+                             if (result.status === "Succeed") {
+                                 $(sender).parent().parent().parent().remove();
+                             }else 
+                             {
+                                 showError(result.message);
+                             }
+                         }
+                     });
+}
  </script>

@@ -46,7 +46,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
             ViewBag.LoadAnimation = moduleParameters.LoadAnimation;
             ViewBag.LoadAnimationType = moduleParameters.LoadAnimationType;
             
-            lst = _contentRepository.GetSpecialContent(moduleParameters.Count.Value, moduleParameters.ProductOrContentType.Value, moduleParameters.SelectionType.Value, moduleParameters.CatId, moduleParameters.SelectedIds, _environment.IsDevelopment());
+            lst = _contentRepository.GetSpecialContent(moduleParameters.Count.Value, 
+                moduleParameters.ProductOrContentType.Value, moduleParameters.SelectionType.Value, 
+                moduleParameters.CatId, moduleParameters.SelectedIds, _environment.IsDevelopment(), moduleParameters.DomainId);
             switch (moduleParameters.ContentTemplateDesign)
             {
                 case ContentTemplateDesign.First:

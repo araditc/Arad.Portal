@@ -241,7 +241,7 @@
     {
         debugger;
         if ('@like' == "True") {
-            window.location.href = '@Url.Action("GetUserFavList", "Comment")';
+            window.location.href = '@Url.Action("Favorites", "Account")'+"?type=content";
         }
         else if ('@User.Identity.IsAuthenticated' == "True") {
             $.ajax({

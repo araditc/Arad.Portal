@@ -614,7 +614,7 @@ else
     function AddToFavoriteList(productCode) {
         debugger;
         if ('@like' == "True") {
-            window.location.href = '@Url.Action("GetUserFavList", "Comment")';
+            window.location.href = '@Url.Action("Favorites", "Account")'+"?type=product";
         }
         else if ('@User.Identity.IsAuthenticated' == "True") {
             $.ajax({

@@ -37,7 +37,7 @@
     @{
         if(CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir")
         {
-             <link href="@Url.Content($"~/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
+                     <link href="@Url.Content($"~/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
         }
     }
     <link href="@Url.Content($"~/lib/font-awesome/css/all.css")" rel="stylesheet" />
@@ -2456,7 +2456,7 @@
 
             function addModulesWithParams(sender)
             {
-             
+                debugger;
                   var dataToSend ;
                   var ajaxType ="GET";
                   var moduleParameter = {}; //an Instance of ModuleParameter
@@ -2590,21 +2590,23 @@
                  {
                      case "productlist":
                          url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType
-                             +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation + "&loadAnimationType=" + loadAnimationType ;
+                             +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation + "&loadAnimationType=" + loadAnimationType;
+
                          obj.ParametersValue.ProductTemplateDesign = selectedTemplate;
                          obj.ParametersValue.Count = count;
                          obj.ParametersValue.ProductOrContentType = selectedType;
                          obj.ParametersValue.LoadAnimation = loadAnimation;
                          obj.ParametersValue.loadAnimationType = loadAnimationType;
+                         obj.ParametersValue.DomainId = domainId;
                      break;
                      case "contentlist":
                          
                           url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType 
                             +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation +
-                            "&loadAnimationType=" + loadAnimationType+"&selectedType=" + selectedType +"&catId="+ catId  ;
+                            "&loadAnimationType=" + loadAnimationType+"&selectedType=" + selectedType +"&catId="+ catId;
                          dataToSend = JSON.stringify(selectedIds);
 
-                         //url = "@Url.Action("GetContentModuleViewComponent", "Domain")";
+                        
                          obj.ParametersValue.ProductOrContentType = selectedType;
                          obj.ParametersValue.ContentTemplateDesign = selectedTemplate;
                          obj.ParametersValue.Count = count;
@@ -2613,6 +2615,7 @@
                          obj.ParametersValue.SelectionType = selectionType ;
                          obj.ParametersValue.CatId = catId ;
                          obj.ParametersValue.SelectedIds = selectedIds ;
+                         obj.ParametersValue.DomainId = domainId;
                          
                      break;
                      case "imagetextslider":

@@ -22,6 +22,7 @@ using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Contracts.General.User;
 using DocumentFormat.OpenXml.Math;
+using Arad.Portal.DataLayer.Contracts.General.Content;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -30,24 +31,22 @@ namespace Arad.Portal.UI.Shop.Controllers
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IUserRepository _userRepository;
-        private readonly ProductContext _productContext;
-        private readonly ContentContext _contentContex;
-        private readonly IDomainRepository _domainRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IContentRepository _contentRepository;
+        private readonly IDomainRepository _domainRepository;
+       
         private readonly UserManager<ApplicationUser> _userManager;
        
         public CommentController(ICommentRepository commentRepository,
-                                 ContentContext contentContext,
-                                 ProductContext productContext,
-                                 IDomainRepository domainRepository,
+                                 IContentRepository contentRepository,
                                  IProductRepository productRepository,
+                                 IDomainRepository domainRepository,
                                  UserManager<ApplicationUser> userManager,
                                  IUserRepository userRepository,
                                  IHttpContextAccessor accessor):base(accessor, domainRepository)
         {
             _commentRepository = commentRepository;
-            _productContext = productContext;
-            _contentContex = contentContext;
+            _contentRepository = contentRepository;
             _productRepository = productRepository;
             _userManager = userManager;
             _userRepository = userRepository;
@@ -85,7 +84,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                     if (refId.StartsWith("p*"))
                     {
                         dto.ReferenceType = DataLayer.Entities.General.Comment.ReferenceType.Product;
-                        var pro = _productContext.ProductCollection.Find(_ => _.ProductId == dto.ReferenceId).FirstOrDefault();
+                        var pro = _productRepository.FetchProductForComment(dto.ReferenceId);
                         pro.Comments.Add(new DataLayer.Entities.General.Comment.Comment()
                         {
                             CommentId = dto.CommentId,
@@ -98,9 +97,8 @@ namespace Arad.Portal.UI.Shop.Controllers
                             CreatorUserName = dto.CreatorUserName,
                             IsActive = true
                         });
-                        var updateResult = await _productContext.ProductCollection
-                       .ReplaceOneAsync(_ => _.ProductId == dto.ReferenceId, pro);
-                        if (updateResult.IsAcknowledged)
+                        var res = await _productRepository.UpdateProductEntity(pro);
+                        if (res.Succeeded)
                         {
                             isAddAllow = true;
                         }
@@ -109,7 +107,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                     else if (refId.StartsWith("c*"))
                     {
                         dto.ReferenceType = DataLayer.Entities.General.Comment.ReferenceType.Content;
-                        var content = _contentContex.Collection.Find(_ => _.ContentId == dto.ReferenceId).FirstOrDefault();
+                        var content = await _contentRepository.ContentSelect(dto.ReferenceId);
                         content.Comments.Add(new DataLayer.Entities.General.Comment.Comment()
                         {
                             CommentId = dto.CommentId,
@@ -122,9 +120,8 @@ namespace Arad.Portal.UI.Shop.Controllers
                             CreatorUserName = dto.CreatorUserName,
                             IsActive = true
                         });
-                        var updateResult = await _contentContex.Collection
-                       .ReplaceOneAsync(_ => _.ContentId == dto.ReferenceId, content);
-                        if (updateResult.IsAcknowledged)
+                        var res = await _contentRepository.UpdateContentEntity(content);
+                        if (res.Succeeded)
                         {
                             isAddAllow = true;
                         }
@@ -165,22 +162,29 @@ namespace Arad.Portal.UI.Shop.Controllers
         public  IActionResult AddToFavList(string code, string name)
         {
             var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            string entityId = string.Empty;
+            string url = string.Empty;
             var domainName = base.DomainName;
             var domainResult = _domainRepository.FetchByName(domainName, false);
             if (User != null && User.Identity.IsAuthenticated)
             {
                 var userId = User.GetUserId();
-                var productId = _productRepository.FetchIdByCode(Convert.ToInt64(code));
+               
                
                 FavoriteType type;
                 if(name.ToLower() == "product")
                 {
                     type = FavoriteType.Product;
-                }else
+                    entityId = _productRepository.FetchIdByCode(Convert.ToInt64(code));
+                    url = $"/product/{code}";
+                }
+                else
                 {
                     type = FavoriteType.Content;
+                    entityId = _contentRepository.FetchIdByCode(Convert.ToInt64(code));
+                    url = $"/blog/{code}";
                 }
-                var finalRes = _userRepository.AddToUserFavoriteList(userId, type, productId, $"/product/{code}", domainResult.ReturnValue.DomainId);
+                var finalRes = _userRepository.AddToUserFavoriteList(userId, type, entityId, url, domainResult.ReturnValue.DomainId);
                 if (finalRes.Succeeded)
                 {
                     return
@@ -191,12 +195,33 @@ namespace Arad.Portal.UI.Shop.Controllers
                 }
                 else
                 {
-                    return Json(new { status = "error" });
+                    return Json(new { status = "error", Message = Language.GetString(ConstMessages.InternalServerErrorMessage) });
                 }
 
             }
             return Redirect($"{lanIcon}/Account/Login?returnUrl={lanIcon}/Product/{code}");
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> RemoveFromFav([FromQuery] string pkey)
+        {
+            var res = await _userRepository.RemoveToUserFavouriteList(pkey);
+            if (res.Succeeded)
+            {
+                return
+                    Json(new
+                    {
+                        status = "Succeed"
+                    });
+            }
+            else
+            {
+                return Json(new { status = "error", Message = Language.GetString(ConstMessages.InternalServerErrorMessage) });
+            }
+
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> RatingProduct([FromBody] RateProduct model)

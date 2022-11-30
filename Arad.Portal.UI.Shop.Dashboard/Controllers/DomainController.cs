@@ -60,7 +60,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _accessor;
-        
+        private string SelectedDomainId = string.Empty;
       
 
         public DomainController(IDomainRepository domainRepository, UserManager<ApplicationUser> userManager,
@@ -97,6 +97,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> List()
         {
+            SelectedDomainId = "";
             PagedItems<DomainViewModel> result = new PagedItems<DomainViewModel>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userDb = await _userManager.FindByIdAsync(currentUserId);
@@ -172,7 +173,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
        public async Task<IActionResult> SavePageContent([FromBody]DomainPageModel model)
        {
             var domainEntity = _domainRepository.FetchDomain(model.DomainId);
-
+           
             //var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
             //var languageId = _lanRepository.FetchBySymbol(lanIcon);
 
@@ -320,7 +321,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             //var moduleList = _moduleRepository.GetAllModules();
             //ViewBag.ModuleList = moduleList;
             var domainEntity = _domainRepository.FetchDomain(domainId).ReturnValue;
-
+            SelectedDomainId = domainId;
             ViewBag.PageType = pageType;
             List<PageDesignContent> finalModel = new List<PageDesignContent>();
             ViewBag.DomainId = domainId;
@@ -401,7 +402,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public IActionResult GetProductModuleViewComponent(ProductOrContentType productType, ProductTemplateDesign selectionTemplate,
             int count, DataLayer.Entities.General.SliderModule.TransActionType loadAnimation, LoadAnimationType loadAnimationType)
         {
-            return ViewComponent("SpecialProduct", new { productType, selectionTemplate, count, loadAnimation, loadAnimationType });
+            var moduleParameters = new ModuleParameters()
+            {
+                ProductOrContentType = productType,
+                ProductTemplateDesign = selectionTemplate,
+                Count = count, 
+                LoadAnimation = loadAnimation,
+                LoadAnimationType = loadAnimationType,
+                DomainId = SelectedDomainId
+            };
+            return ViewComponent("SpecialProduct", moduleParameters);
         }
 
 
@@ -439,9 +449,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 LoadAnimationType = loadAnimationType,
                 SelectionType = selectedType,
                 CatId = catId,
-                SelectedIds = selectedIds
+                SelectedIds = selectedIds,
+                DomainId = SelectedDomainId
             };
-            return ViewComponent("ContentTemplates", moduleParameters);
+            return ViewComponent("ContentTemplates", new { moduleParameters}
+            );
         }
 
         [HttpGet]
@@ -765,6 +777,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             return result;
         }
+
         [HttpPost]
         public IActionResult SaveBackgroundImageToServer([FromBody] BgImage model)
         {

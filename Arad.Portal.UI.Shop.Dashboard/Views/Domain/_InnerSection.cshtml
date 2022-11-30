@@ -157,11 +157,11 @@
                             @await Component.InvokeAsync("SpecialProduct",
         new { productType = module.ParametersValue.ProductOrContentType,
         selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
-        loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType } )
+        loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType, domainId = module.ParametersValue.DomainId  } )
                             ;
                             break;
                         case "ContentList":
-                            @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
+                            @await Component.InvokeAsync("ContentTemplates",  module.ParametersValue )
                             ;
                             break;
                         case "HorizantalStoreMenu":

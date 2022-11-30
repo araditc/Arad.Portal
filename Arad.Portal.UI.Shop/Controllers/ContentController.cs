@@ -113,7 +113,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                     #endregion
                     #region FavoriteList
                     var userEntity = await _userManager.FindByIdAsync(userId);
-                    var userFavoriteList = _userRepository.GetUserFavoriteList(userId, FavoriteType.Product);
+                    var userFavoriteList = _userRepository.GetUserFavoriteList(userId, FavoriteType.Content);
 
                     if (userFavoriteList.Any(_ => _.EntityId == entity.ContentId))
                     {

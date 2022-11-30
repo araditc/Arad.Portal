@@ -494,15 +494,23 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
         }
 
         public List<ContentGlance> GetSpecialContent(int count, ProductOrContentType contentType, SelectionType selectionType, 
-            string categoryId, List<string> selectedIds = null, bool isDevelopment = false)
+            string categoryId, List<string> selectedIds = null, bool isDevelopment = false, string domainId = "")
         {
-            Entities.General.Domain.Domain domainEntity = new Entities.General.Domain.Domain();
+           
             List<ContentGlance> lst = new List<ContentGlance>();
-            
-            var domainName = this.GetCurrentDomainName();
-            domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
-            
-            
+
+            Entities.General.Domain.Domain domainEntity;
+            if (string.IsNullOrWhiteSpace(domainId))
+            {
+                var domainName = this.GetCurrentDomainName();
+                domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
+            }
+            else
+            {
+                domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
+            }
+
+
             FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
             FilterDefinition<Entities.General.Content.Content> filterDef = builder.Eq(nameof(Entities.General.Content.Content.IsDeleted), false);
             
@@ -877,6 +885,31 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
         public List<Entities.General.Content.Content> AllContents(string domainId)
         {
             return _contentContext.Collection.Find(_ =>_.AssociatedDomainId == domainId).ToList();
+        }
+
+        public string FetchIdByCode(long code)
+        {
+            var entity = _contentContext.Collection.Find(_ => _.ContentCode == code).FirstOrDefault();
+            if (entity != null)
+            {
+                return entity.ContentId;
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        public async Task<Result> UpdateContentEntity(Entities.General.Content.Content content)
+        {
+            var res = new Result();
+            var updateResult = await _contentContext.Collection
+                     .ReplaceOneAsync(_ => _.ContentId == content.ContentId, content);
+            if(updateResult.IsAcknowledged)
+            {
+                res.Succeeded = true;
+            }
+            return res;
         }
     }
 }

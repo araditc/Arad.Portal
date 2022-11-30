@@ -827,6 +827,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
 
+       
+
         [HttpGet]
         public async Task<IActionResult> Profile()
         {

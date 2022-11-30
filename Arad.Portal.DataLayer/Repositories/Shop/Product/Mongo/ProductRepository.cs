@@ -1413,10 +1413,18 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductOrContentType type, int skip = 0)
+        public List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductOrContentType type, int skip = 0, string domainId = "")
         {
-            var domainName = this.GetCurrentDomainName();
-            var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
+            Entities.General.Domain.Domain domainEntity;
+            if(string.IsNullOrWhiteSpace(domainId))
+            {
+                var domainName = this.GetCurrentDomainName();
+                domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
+            }else
+            {
+                domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
+            }
+            
             // FilterDefinitionBuilder<Entities.Shop.Product.Product> builder = new();
             _builder = new();
             FilterDefinition<Entities.Shop.Product.Product> filterDef;
@@ -1434,7 +1442,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 var orFilter = _builder.Or(filter1, filter2);
                 filterDef = _builder.And(orFilter);
             }
-            filterDef = _builder.And(filterDef, _builder.Gt(nameof(Entities.Shop.Product.Product.Inventory), 0));
+            
+            //filterDef = _builder.And(filterDef, _builder.Gt(nameof(Entities.Shop.Product.Product.Inventory), 0));
 
             List<ProductOutputDTO> lst = new List<ProductOutputDTO>();
             switch (type)
@@ -2069,7 +2078,23 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-       
+        public Entities.Shop.Product.Product FetchProductForComment(string productId)
+        {
+           return  _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
+        }
+
+        public async Task<Result> UpdateProductEntity(Entities.Shop.Product.Product pro)
+        {
+            var res = new Result();
+            var updateResult = await _context.ProductCollection
+                      .ReplaceOneAsync(_ => _.ProductId == pro.ProductId, pro);
+
+            if(updateResult.IsAcknowledged)
+            {
+                res.Succeeded = true;
+            }
+            return res;
+        }
     }
 }
 

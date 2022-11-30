@@ -73,8 +73,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userDb = await _userManager.FindByIdAsync(currentUserId);
 
-            //string domainName = $"{_accessor.HttpContext.Request.Host}";
-
             var domainEntity = _domainRepository.FetchDomain(userDb.Domains.FirstOrDefault(_ => _.IsOwner).DomainId).ReturnValue;
 
             model.CurrencyId = domainEntity.DefaultCurrencyId;
@@ -82,7 +80,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             model.CurrencySymbol = defCurrency.Symbol;
           
             ViewBag.IsSysAcc = userDb.IsSystemAccount;
-            
+
+            if (userDb.IsSystemAccount)
+            {
+                ViewBag.Domains = _domainRepository.GetAllActiveDomains();
+            }
+            model.AssociatedDomainId = domainEntity.DomainId;
+
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = _shippingSettingRepository.FetchById(id);
@@ -93,12 +97,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     //item.FloatingExpense = 
                 }
             }
-           if(userDb.IsSystemAccount)
-            {
-                ViewBag.DomainList = _domainRepository.GetAllActiveDomains();
-            }
-            model.AssociatedDomainId = domainEntity.DomainId;
-
             ViewBag.Providers = _providerRepository.GetProvidersPerType(DataLayer.Entities.General.Service.ProviderType.Shipping);
             ViewBag.ShippngTypes = _basicDataRepository.GetList("ShippingType", true);
             ViewBag.CurrencyList = _currencyRepository.GetAllActiveCurrency();
@@ -209,7 +207,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
-            Result opResult = await _domainRepository.DeleteDomain(id, "delete");
+            Result opResult = await _shippingSettingRepository.Delete(id);
+            return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
+            : new { Status = "Error", opResult.Message });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Restore(string id)
+        {
+            Result opResult = await _domainRepository.Restore(id);
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }

@@ -22,6 +22,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Setting
 
         Task<Result> EditShippingSetting(ShippingSettingDTO dto);
 
+        Task<Result> Delete(string id);
 
+        Task<Result> Restore(string id);
     }
 }

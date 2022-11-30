@@ -62,8 +62,10 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         string FetchIdByCode(long productCode);
 
         string FetchUrlFriendById(string productId);
+        Entities.Shop.Product.Product FetchProductForComment(string productId);
 
-        List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductOrContentType type, int skip = 0);
+        Task<Result> UpdateProductEntity(Entities.Shop.Product.Product pro);
+        List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductOrContentType type, int skip = 0, string domainId = "");
         Task<PagedItems<ProductOutputDTO>> GetFilteredProduct(int count, int skip, string currencyId, string languageId, string domainId, SelectedFilter filter);
         bool HasActiveProductPromotion(string productId);
         List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId, string productGroupId, string vendorId);

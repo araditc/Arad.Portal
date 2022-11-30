@@ -15,7 +15,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
     {
         Task<Result<string>> Add(ContentDTO dto);
         Task<PagedItems<ContentViewModel>> List(string queryString, ApplicationUser user);
-        List<ContentGlance> GetSpecialContent(int count, ProductOrContentType contentType, SelectionType selectionType, string categoryId, List<string> selectedIds = null, bool isDevelopment = false);
+        List<ContentGlance> GetSpecialContent(int count, ProductOrContentType contentType, SelectionType selectionType, string categoryId, List<string> selectedIds = null, bool isDevelopment = false, string domainId = "");
         List<ContentGlance> GetContentInCategory(int count, ProductOrContentType contentType, string contentCategoryId, bool isDevelopment = false);
         Task<ContentDTO> ContentFetch(string contentId, bool isDeleted = false);
         Task<Result> Update(ContentDTO dto);
@@ -35,7 +35,9 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         PagedItems<ContentGlance> GetAllBlogList(string queryString, string domainId, string languageId);
         ContentDTO FetchBySlug(string slug, string domainName);
         ContentDTO FetchByCode(string slugOrCode);
+        string FetchIdByCode(long code);
 
+        Task<Result> UpdateContentEntity(Entities.General.Content.Content content);
         List<Entities.General.Content.Content> AllContents(string domainId);
         bool IsUniqueUrlFriend(string urlFriend, string domainId, string contentId = "");
         Task<Entities.General.Content.Content> ContentSelect(string contentId);

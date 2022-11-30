@@ -60,11 +60,8 @@
                             <td class="ListCell">
                                 @(item.ShippingCoupon != null ?
                             (item.ShippingCoupon.ShippingExpense == 0 ?
-                            item.ShippingCoupon.FromInvoiceExpense :
-                            (Language.GetString("tbl_ShippingCoupon")
-                            .Replace("[0]", $"{item.ShippingCoupon.FromInvoiceExpense} {item.CurrencyId}")
-                            .Replace("[1]", $"{item.ShippingCoupon.ShippingExpense} {item.CurrencyId}")))
-                            : "")
+                            $"{Convert.ToInt64(@item.ShippingCoupon.FromInvoiceExpense):n0} {item.CurrencySymbol}" :"") :
+                            "")
                             </td>
 
                             <td>
@@ -72,10 +69,19 @@
                                     <a asp-action="AddEdit" asp-controller="Shipping" asp-route-id="@item.ShippingSettingId" class="btn btn-sm btn-warning bg-gradient">
                                         <i  class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
-                              
+                               @if (!item.IsDeleted)
+                                {
                                     <button onclick="EntityDelete('@item.ShippingSettingId')" class="btn btn-sm btn-danger bg-gradient">
-                                        <i  class="fa fa-trash"></i>@Language.GetString("btn_Delete")
+                                        <i class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
+                                }
+                                else
+                                {
+                                    <button id="restoreRecord" onclick="EntityRestore('@item.ShippingSettingId')" class="btn btn-sm btn-secondary bg-gradient">
+                                        <i class="fa fa-refresh"></i>
+                                        @Language.GetString("btn_Restore")
+                                    </button>
+                                }
 
                             </td>
                         </tr>
@@ -118,6 +124,15 @@
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
 			$('#confirmModal').modal('show');
+        }
+          function EntityRestore(id) {
+            debugger;
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("Restore", "Shipping")' + '/' + id,
+                document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
+            document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
+            $('#confirmModal').modal('show');
         }
 </script>
 }

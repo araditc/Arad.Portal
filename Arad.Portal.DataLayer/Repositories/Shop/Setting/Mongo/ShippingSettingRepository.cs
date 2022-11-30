@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Entities.Shop.Setting;
+using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
 {
@@ -25,12 +26,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
     {
 
         private readonly ShippingSettingContext _context;
+        private readonly CurrencyContext _currencyContext;
         private readonly DomainContext _domainContext;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         public ShippingSettingRepository(IHttpContextAccessor accessor,
             ShippingSettingContext context,
             IMapper mapper,
+            CurrencyContext currencyContext,
             IWebHostEnvironment env,
             DomainContext  domainContext,
             UserManager<ApplicationUser> userManager):base(accessor, env)
@@ -39,6 +42,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
             _userManager = userManager;
             _mapper = mapper;
             _domainContext = domainContext;
+            _currencyContext = currencyContext;
         }
 
         public async Task<Result> AddShippingSetting(ShippingSettingDTO dto)
@@ -61,6 +65,35 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
             {
                 result.Message = ConstMessages.InternalServerErrorMessage;
             }
+            return result;
+        }
+
+        public async Task<Result> Delete(string id)
+        {
+            var result = new Result();
+            var entity = _context.Collection
+              .Find(_ => _.ShippingSettingId == id).FirstOrDefault();
+            if (entity != null)
+            {
+                entity.IsDeleted = true;
+                var updateResult = await _context.Collection
+                   .ReplaceOneAsync(_ => _.ShippingSettingId == id, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                    result.Message = ConstMessages.ErrorInSaving;
+                }
+            }
+            else
+            {
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
+            }
+
             return result;
         }
 
@@ -163,6 +196,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
                         .Take(pageSize).ToList();
                    
                     list = _mapper.Map<List<ShippingSettingDTO>>(lst);
+                    foreach (var item in list)
+                    {
+                        item.CurrencySymbol = _currencyContext.Collection.Find(_ => _.CurrencyId == item.CurrencyId).FirstOrDefault().Symbol;
+                    }
                 }
 
                 result.CurrentPage = page;
@@ -180,6 +217,35 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
                 result.PageSize = 10;
                 result.QueryString = queryString;
             }
+            return result;
+        }
+
+        public async Task<Result> Restore(string id)
+        {
+            var result = new Result();
+            var entity = _context.Collection
+              .Find(_ => _.ShippingSettingId == id).FirstOrDefault();
+            if (entity != null)
+            {
+                entity.IsDeleted = false;
+                var updateResult = await _context.Collection
+                   .ReplaceOneAsync(_ => _.ShippingSettingId == id, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                    result.Message = ConstMessages.ErrorInSaving;
+                }
+            }
+            else
+            {
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
+            }
+
             return result;
         }
     }
