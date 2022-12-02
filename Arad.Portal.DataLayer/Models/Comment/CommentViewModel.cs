@@ -38,5 +38,9 @@ namespace Arad.Portal.DataLayer.Models.Comment
         public string ReferenceTitle { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public string AssociatedDomainId { get; set; }
+
+        public string domainName { get; set; }
     }
 }

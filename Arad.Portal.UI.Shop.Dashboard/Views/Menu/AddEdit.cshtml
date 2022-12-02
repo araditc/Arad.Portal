@@ -171,8 +171,10 @@
             
             } else if("@Model.MenuId" == ""){
                 $("#MenuType").val("-1");
+                $("#MenuType").selectpicker("refresh");
             }
-            $("#languageId").val("@ViewBag.DefLangId")
+            $("#languageId").val("@ViewBag.DefLangId");
+            $("#languageId").selectpicker("refresh");
 
              $('#iconPicktarget').iconpicker({
                 align: 'center', // Only in div tag
@@ -361,6 +363,7 @@
                                 options += op;
                             });
                             $("#categoryId").html(options);
+                            $("#categoryId").selectpicker("refresh");
                             $("#groupSection").removeClass("invisible");
                             $("#productOrContentSection").addClass("invisible");
                             break;
@@ -373,6 +376,7 @@
                                 options += op;
                             });
                             $("#categoryId").html(options);
+                            $("#categoryId").selectpicker("refresh");
                             $("#groupSection").removeClass("invisible");
                             $("#productOrContentSection").addClass("invisible");
                             break;
@@ -400,6 +404,7 @@
             if ($("#MenuType").val() != "4" && $("#MenuType").val() != "5")
             {
                 $("#categoryId").val('@Model.SubGroupId');
+                $("#categoryId").selectpicker("refresh");
                 $("#groupSection").removeClass("invisible");
                 if ($("#MenuType").val() == "1") {
                     fillProductList('@Model.SubGroupId', '@Model.SubId');
@@ -436,6 +441,7 @@
                             if (selectedVal != "") {
                                 $("#ContentOrProductId").val(selectedVal);
                             }
+                            $("#ContentOrProductId").selectpicker("refresh");
                             $("#lblProductOrContent").text('@Language.GetString("Content")');
                             $("#productOrContentSection").removeClass("invisible");
                         }
@@ -473,6 +479,7 @@
                                 if (selectedVal != "") {
                                     $("#ContentOrProductId").val(selectedVal);
                                 }
+                                $("#ContentOrProductId").selectpicker("refresh");
                                 $("#lblProductOrContent").text('@Language.GetString("Product")');
                                 $("#productOrContentSection").removeClass("invisible");
                             }
@@ -556,6 +563,7 @@
                 $("#multiLingualList").append(tr);
                 $("#menuTitle").val("");
                 $("#languageId").val("-1");
+                $("#languageId").selectpicker("refresh");
             }
         }
     </script>

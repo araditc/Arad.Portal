@@ -17,12 +17,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Microsoft.AspNetCore.Authorization;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
     [Authorize(Policy = "Role")]
-    [Route("/ProductComments/[action]/{id?}")]
-    [Route("/ContentComments/[action]/{id?}")]
+    
+
     public class CommentController : Controller
     {
         private readonly ICommentRepository _commentRepository;
@@ -30,16 +31,21 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IDomainRepository _domainRepository;
         public CommentController(ICommentRepository commentRepository, IWebHostEnvironment webHostEnvironment, 
-            IConfiguration configuration,
+            IConfiguration configuration,IDomainRepository domainrepository,
             UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
             _commentRepository = commentRepository;
             _webHostEnvironment = webHostEnvironment;
             _configuration = configuration;
             _userManager = userManager;
+            _domainRepository = domainrepository;
             _httpContextAccessor = httpContextAccessor;
         }
+
+        [Route("/ProductComments/List")]
+        [Route("/ContentComments/List")]
         public async Task<IActionResult> List()
         {
             PagedItems<CommentViewModel> result = new PagedItems<CommentViewModel>();
@@ -61,7 +67,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             try
             {
                 var queryString = "";
-                if(!string.IsNullOrEmpty(Request.Path.ToString()))
+                if(!string.IsNullOrEmpty(Request.QueryString.ToString()))
                 {
                     queryString = Request.QueryString.ToString();
                     queryString += $"&refType={(referenceSource == "ProductComments" ? ReferenceType.Product : ReferenceType.Content)}";
@@ -72,7 +78,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
                 result = await _commentRepository.List(queryString);
                 var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+                var userDb = await _userManager.FindByIdAsync(currentUserId);
+                ViewBag.IsSysAcc = userDb.IsSystemAccount;
+                if(userDb.IsSystemAccount)
+                {
+                    ViewBag.Domains = _domainRepository.GetAllActiveDomains();
+                }
                 ViewBag.ReferenceTypes = _commentRepository.GetAllReferenceType();
 
             }
@@ -82,6 +93,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(result);
         }
 
+
+        [Route("/ProductComments/AddEdit/{id?}")]
+        [Route("/ContentComments/AddEdit/{id?}")]
         public async Task<IActionResult> AddEdit(string id = "")
         {
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -112,6 +126,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
+        [Route("/ProductComments/Delete/{id?}")]
+        [Route("/ContentComments/Delete/{id?}")]
         public async Task<IActionResult> Delete(string id)
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -121,8 +137,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             : new { Status = "Error", opResult.Message });
         }
 
-        
-        [HttpGet]
+
+
+        [Route("/ProductComments/ApproveComment")]
+        [Route("/ContentComments/ApproveComment")]
         public async Task<IActionResult> ApproveComment(string commentId, bool isApproved = true)
         {
             JsonResult result;
@@ -183,6 +201,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
+        [Route("/ProductComments/Restore/{id?}")]
+        [Route("/ContentComments/Restore/{id?}")]
         public async Task<IActionResult> Restore(string id)
         {
             JsonResult result;

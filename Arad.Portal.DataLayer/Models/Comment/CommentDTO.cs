@@ -13,7 +13,7 @@ namespace Arad.Portal.DataLayer.Models.Comment
 
         public string Content { get; set; }
 
-        public string ParentCommentId { get; set; }
+        public string ParentId { get; set; }
 
         public string ParentCommentContent { get; set; }
 

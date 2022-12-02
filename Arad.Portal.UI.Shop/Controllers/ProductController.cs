@@ -302,8 +302,8 @@ namespace Arad.Portal.UI.Shop.Controllers
                 }
                 HttpContext.Session.SetComplexData($"compareList_{remoteIpAddress}_{domainEntity.DomainId}", compareList);
             }
-            
-            return Redirect($"/{lanIcon}/Product/Compare");
+
+            return RedirectToAction("Compare");
         }
         [HttpGet]
         [Route("{language}/product/compare")]
@@ -358,6 +358,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 var obj = new ProductCompare()
                 {
                     ProductId = item,
+                    ProductCode = productDto.ProductCode,
                     Specifications = productDto.Specifications.Any(_=>_.LanguageId == lanId) ? 
                         productDto.Specifications.Where(_=>_.LanguageId == lanId).ToList() : new List<ProductSpecificationValue>() ,
                     ProductName = productDto.MultiLingualProperties.Any(_=> _.LanguageId == lanId) ? 
@@ -403,6 +404,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             string lanId = "";
             string curId = "";
+            var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress;
+            List<string> compareList = new List<string>();
             var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
             if (CultureInfo.CurrentCulture.Name != null)
             {
@@ -419,14 +422,22 @@ namespace Arad.Portal.UI.Shop.Controllers
                 curId = domainEntity.DefaultCurrencyId;
             }
             var res = await _productRepository.SearchProducts(filter, lanId, curId, domainEntity.DomainId);
-            if(res.Succeeded)
+            if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
             {
-                foreach (var item in res.ReturnValue)
+                compareList = HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}");
+            }
+            List<ProductCompare> final = new List<ProductCompare>();
+            if (res.Succeeded)
+            {
+                //remove current compare list from result
+                final = res.ReturnValue.Where(_ => !compareList.Contains(_.ProductId)).ToList(); 
+                foreach (var item in final)
                 {
+
                     item.FormattedPrice = $"{Convert.ToInt64(item.CurrentPrice):n0}";
                 }
             }
-            return new JsonResult(new { status = res.Succeeded ? "success" : "failed", data = res.ReturnValue, msg = res.Message });
+            return new JsonResult(new { status = res.Succeeded ? "success" : "failed", data = final, msg = res.Message });
 
         }
 

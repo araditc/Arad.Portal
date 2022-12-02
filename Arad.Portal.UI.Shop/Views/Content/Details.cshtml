@@ -70,7 +70,7 @@
                     @foreach (var img in Model.Images)
                     {
                         <div class="carousel-item active">
-                            <img src="@Url.Content($"~/getscaledimageOnWidth?path={img.Url}&width={1000}")" class="d-block w-100" alt="@img.Title">
+                            <img src="@Url.Content($"~/GetscaledimageOnWidth?path={img.Url}&width={1000}")" class="d-block w-100" alt="@img.Title">
                         </div>
                     }
                 </div>
@@ -213,16 +213,16 @@
      $(document).ready(function () {
          $("#btnAddComment").click(function () {
              debugger;
-             if ('@ViewBag.LoggedUser' == 'True') {
+             if ('@User.Identity.IsAuthenticated' == 'True') {
                  if ($("#commentPart").val() != "") {
                      var obj = {};
-                     obj.ReferenceId = '@Model.ContentId';
+                     obj.ReferenceId = `c*${'@Model.ContentId'}`;
                      obj.Content = $("#commentPart").val();
                      obj.ParentId = null;
                      $.ajax({
-                         url: "/Comment/SubmitComment",
+                         url: '@Url.Action("SubmitComment","Comment")',
                          contentType: 'application/json',
-                         data: JSON.stringify(dto),
+                         data: JSON.stringify(obj),
                          type: 'Post',
                          dataType: 'json',
                          beforeSend: function () {

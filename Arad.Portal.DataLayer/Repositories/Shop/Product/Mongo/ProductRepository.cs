@@ -1225,6 +1225,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 CreatorUserName = _.CreatorUserName,
                 DislikeCount = _.DislikeCount,
                 ReferenceId = _.ReferenceId,
+                ReferenceType = _.ReferenceType,
                 LikeCount = _.LikeCount,
                 userStatus = !string.IsNullOrWhiteSpace(currentUserId) ? (_httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] != null ?
                 (_httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] == "true" ? userStatus.Like : userStatus.Dislike) :
@@ -1254,6 +1255,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     CreatorUserName = _.CreatorUserName,
                     DislikeCount = _.DislikeCount,
                     ReferenceId = _.ReferenceId,
+                    ReferenceType = _.ReferenceType,
                     LikeCount = _.LikeCount,
                     userStatus = !string.IsNullOrWhiteSpace(currentUserId) ? (_httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] != null ?
                       (_httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] == "true" ? userStatus.Like : userStatus.Dislike) :

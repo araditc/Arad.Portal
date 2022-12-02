@@ -15,7 +15,7 @@ function submitComment(sender, refId, isLogged,lanIcon) {
            
             obj.Content = parent.find(".cmt").val()
             DivId = $(sender).parent().parent();
-           /* obj.ParentId = "p*" + $(sender).parent().parent().attr("id").replace("bx_", "");*/
+         
            
             $.ajax({
                 url: `/${lanIcon}/Comment/SubmitComment`,

@@ -26,7 +26,7 @@
                 <div class="card-body" id="addEditCommentCardBody">
                     <div class="row">
                         <input type="hidden" value="@Model.CommentId" asp-for="CommentId" />
-                        <input type="hidden" value="@Model.ParentCommentId" asp-for="@Model.ParentCommentId" />
+                        <input type="hidden" value="@Model.ParentId" asp-for="@Model.ParentId" />
                         <div class="form-group col-12 col-md-3">
                             <label class="form-label" asp-for="@Model.ReferenceTitle">@Language.GetString(ViewBag.lbl)</label>
                             <input type="text" asp-for="@Model.ReferenceTitle" value="@Model.ReferenceTitle" class="form-control" readonly="readonly" />
@@ -44,7 +44,7 @@
 
                     <div class="row">
                         <div class="form-group col-12 col-md-6">
-                            <label class="form-label" asp-for="@Model.ParentCommentId">@Language.GetString("ParentComment")</label>
+                            <label class="form-label" asp-for="@Model.ParentId">@Language.GetString("ParentComment")</label>
                             <input type="text" asp-for="@Model.ParentCommentContent" value="@Model.ParentCommentContent" class="form-control" readonly="readonly" />
                             <span data-val-result="ParentCommentContent" class="text-danger"></span>
                         </div>

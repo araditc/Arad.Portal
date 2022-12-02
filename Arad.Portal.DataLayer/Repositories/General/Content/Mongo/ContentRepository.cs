@@ -23,6 +23,7 @@ using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Models.DesignStructure;
 using Arad.Portal.DataLayer.Entities.Shop.Product;
+using Arad.Portal.DataLayer.Entities.General.Comment;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
 {
@@ -185,12 +186,68 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             if(contentEntity != null)
             {
                 result = _mapper.Map<ContentDTO>(contentEntity);
+                var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+                result.Comments = CreateNestedTreeComment(contentEntity.Comments, currentUserId);
             }
            
             var r = Helpers.Utilities.ConvertPopularityRate(contentEntity.TotalScore, contentEntity.ScoredCount);
             result.LikeRate = r.LikeRate;
             result.DisikeRate = r.DisikeRate;
             result.HalfLikeRate = r.HalfLikeRate;
+            return result;
+        }
+
+        private List<CommentVM> CreateNestedTreeComment(List<Entities.General.Comment.Comment> comments, string currentUserId)
+        {
+            var result = new List<CommentVM>();
+            result = comments.Where(_ => _.ParentId == null && _.IsApproved && !_.IsDeleted).Select(_ => new CommentVM()
+            {
+                CommentId = _.CommentId,
+                Content = _.Content,
+                CreationDate = _.CreationDate,
+                PersianCreationDate = DateHelper.ToPersianDdate(_.CreationDate.ToLocalTime()),
+                CreatorUserId = _.CreatorUserId,
+                CreatorUserName = _.CreatorUserName,
+                DislikeCount = _.DislikeCount,
+                ReferenceId = _.ReferenceId,
+                ReferenceType = _.ReferenceType,
+                LikeCount = _.LikeCount,
+                userStatus = !string.IsNullOrWhiteSpace(currentUserId) ? (_httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] != null ?
+                (_httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] == "true" ? userStatus.Like : userStatus.Dislike) :
+                     userStatus.NoAction) : userStatus.UnAuthorized,
+                Childrens = GetChildren(comments, _.CommentId, currentUserId)
+
+            }).ToList();
+            return result;
+        }
+
+        private List<CommentVM> GetChildren(List<Entities.General.Comment.Comment> list, string currentCommentId, string currentUserId)
+        {
+            List<CommentVM> result;
+            if (!list.Any(_ => _.ParentId == currentCommentId))
+            {
+                result = new List<CommentVM>();
+            }
+            else
+            {
+                result = list.Where(_ => _.ParentId == currentCommentId && _.IsApproved && !_.IsDeleted).Select(_ => new CommentVM()
+                {
+                    CommentId = _.CommentId,
+                    Content = _.Content,
+                    CreationDate = _.CreationDate,
+                    PersianCreationDate = DateHelper.ToPersianDdate(_.CreationDate.ToLocalTime()),
+                    CreatorUserId = _.CreatorUserId,
+                    CreatorUserName = _.CreatorUserName,
+                    DislikeCount = _.DislikeCount,
+                    ReferenceId = _.ReferenceId,
+                    ReferenceType = _.ReferenceType,
+                    LikeCount = _.LikeCount,
+                    userStatus = !string.IsNullOrWhiteSpace(currentUserId) ? (_httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] != null ?
+                      (_httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] == "true" ? userStatus.Like : userStatus.Dislike) :
+                     userStatus.NoAction) : userStatus.UnAuthorized,
+                    Childrens = GetChildren(list, _.CommentId, currentUserId)
+                }).ToList();
+            }
             return result;
         }
 

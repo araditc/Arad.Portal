@@ -324,32 +324,43 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                 {
                     filter.Set("PageSize", "20");
                 }
-               
+
+                ReferenceType referenceType;
+                Enum.TryParse<ReferenceType>(filter["refType"].ToString(), true, out referenceType);
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
-
-                long totalCount = await _commentContext.Collection.Find(_=>!_.IsDeleted && _.AssociatedDomainId == dbUser.Domains.FirstOrDefault(a => a.IsOwner).DomainId).CountDocumentsAsync();
-                var totalList = _commentContext.Collection.AsQueryable().Where(_=>!_.IsDeleted);
+                long totalCount = 0;
+                IQueryable<Entities.General.Comment.Comment> totalList = null;
+                if(dbUser.IsSystemAccount)
+                {
+                    totalCount = await _commentContext.Collection.Find(_ => _.ReferenceType == referenceType).CountDocumentsAsync();
+                    totalList = _commentContext.Collection.AsQueryable().Where(_ => _.ReferenceType == referenceType);
+                }else
+                {
+                    totalCount = await _commentContext.Collection.Find(_ => _.ReferenceType == referenceType && _.AssociatedDomainId == dbUser.Domains.FirstOrDefault(a=> a.IsOwner).DomainId).CountDocumentsAsync();
+                    totalList = _commentContext.Collection.AsQueryable().Where(_ => _.ReferenceType == referenceType &&  _.AssociatedDomainId == dbUser.Domains.FirstOrDefault(a => a.IsOwner).DomainId);
+                }
                 
-                if(!string.IsNullOrWhiteSpace(filter["refType"]))
-                {
-                    totalList = totalList.Where(_ => _.ReferenceType == (ReferenceType)int.Parse(filter["refType"]));
-                }
-                if (!string.IsNullOrWhiteSpace(filter["userId"]))
-                {
-                    totalList = totalList.Where(_ => _.CreatorUserId == filter["userId"]);
-                }
-                if (!string.IsNullOrWhiteSpace(filter["from"]))
+                //if (!string.IsNullOrWhiteSpace(filter["userId"]))
+                //{
+                //    totalList = totalList.Where(_ => _.CreatorUserId == filter["userId"]);
+                //}
+                if (!string.IsNullOrWhiteSpace(filter["fDate"]))
                 {
                     totalList = totalList
-                        .Where(_ => _.CreationDate >= filter["from"].ToString().ToEnglishDate().ToUniversalTime());
+                        .Where(_ => _.CreationDate >= filter["fDate"].ToString().ToEnglishDate().ToUniversalTime());
                 }
-                if (!string.IsNullOrWhiteSpace(filter["to"]))
+                if (!string.IsNullOrWhiteSpace(filter["tDate"]))
                 {
                     totalList = totalList
-                        .Where(_ => _.CreationDate <= filter["to"].ToString().ToEnglishDate().ToUniversalTime());
+                        .Where(_ => _.CreationDate <= filter["tDate"].ToString().ToEnglishDate().ToUniversalTime());
                 }
-              
+                if (!string.IsNullOrWhiteSpace(filter["domainId"]))
+                {
+                    totalList = totalList
+                       .Where(_ => _.AssociatedDomainId == filter["domainId"].ToString());
+                }
+                var temp = totalList.ToList();
                 var list = totalList.OrderByDescending(_=>_.CreationDate).Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new CommentViewModel()
                    {
@@ -364,7 +375,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                        DislikeCount = _.DislikeCount,
                        ParentCommentId = _.ParentId,
                        ReferenceId = _.ReferenceId,
-                       ReferenceType = _.ReferenceType
+                       ReferenceType = _.ReferenceType,
+                       IsDeleted = _.IsDeleted,
+                       AssociatedDomainId = _.AssociatedDomainId
+                       
                    }).ToList();
                 foreach (var item in list)
                 {
@@ -390,6 +404,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                             _contentContext.Collection.Find(_ => _.ContentId == item.ReferenceId).FirstOrDefault().Title : "";
                     }
                     item.PersianCreationDate = item.CreationDate.Value.ToPersianDdate();
+                    item.domainName = _domainContext.Collection.Find(_ => _.DomainId == item.AssociatedDomainId).FirstOrDefault().DomainName;
+
                 }
                 result.Items = list;
                 result.CurrentPage = page;

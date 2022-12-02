@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.Comment;
+using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +64,7 @@ namespace Arad.Portal.DataLayer.Models.Content
         public int LikeRate { get; set; }
         public bool HalfLikeRate { get; set; }
         public int DisikeRate { get; set; }
-        public List<Entities.General.Comment.Comment> Comments { get; set; }
+        public List<CommentVM> Comments { get; set; }
         public Entities.General.Content.SourceType? SourceType { get; set; }
         public string SourceTypeId { get; set; }
         public string ContentProviderName { get; set; }

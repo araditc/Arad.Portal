@@ -81,7 +81,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 else
                 {
                     dto.Content = model.Content;
-                    dto.ParentCommentId = model.ParentId;
+                    dto.ParentId = model.ParentId;
                     dto.ReferenceId = model.ReferenceId.Substring(2);
                     if (refId.StartsWith("p*"))
                     {
@@ -92,7 +92,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                             CommentId = dto.CommentId,
                             ReferenceId = dto.ReferenceId,
                             ReferenceType = dto.ReferenceType,
-                            ParentId = dto.ParentCommentId,
+                            ParentId = dto.ParentId,
                             Content = dto.Content,
                             CreationDate = dto.CreationDate,
                             CreatorUserId = dto.CreatorUserId,
@@ -115,7 +115,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                             CommentId = dto.CommentId,
                             ReferenceId = dto.ReferenceId,
                             ReferenceType = dto.ReferenceType,
-                            ParentId = dto.ParentCommentId,
+                            ParentId = dto.ParentId,
                             Content = dto.Content,
                             CreationDate = dto.CreationDate,
                             CreatorUserId = dto.CreatorUserId,

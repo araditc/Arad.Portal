@@ -4,6 +4,10 @@
 
 }
 <style>
+     .proLink{
+        color: black;
+        text-decoration : none;
+    }
 </style>
 <div class="container">
 
@@ -27,22 +31,22 @@
                         @{
                             foreach (var pro in Model.SuggestionProducts)
                             {
-                                                    <div class="col-12 col-md-3">
-                                                        <div class="card" onclick="addProduct(@pro.ProductId)">
-                                                            <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
-                                                                <img src="@($"../filemanager/getScaledImageOnWidth?path={pro.ProductImageUrl}&width={150}")" class="card-img-top" alt="...">
-                                                            </a>
-                                                            <div class="card-body">
-                                                                <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
-                                                                    <p class="card-text text-center">@pro.ProductName</p>
-                                                                </a>
-                                                                <p class="card-title fs-6">
-                                                                    @($"{Convert.ToInt64(pro.CurrentPrice):n0} {ViewBag.CurrencySymbol}")
-                                                                </p>
-                                                            </div>
+                                                            <div class="col-12 col-md-3">
+                                                                <div class="card" onclick="addProduct(@pro.ProductId)">
+                                                                    <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
+                                                                        <img src="@Url.Content($"~/GetScaledImageOnWidth?path={pro.ProductImageUrl}&width={150}")" class="card-img-top" alt="...">
+                                                                    </a>
+                                                                    <div class="card-body">
+                                                                        <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
+                                                                            <p class="card-text text-center">@pro.ProductName</p>
+                                                                        </a>
+                                                                        <p class="card-title fs-6">
+                                                                            @($"{Convert.ToInt64(pro.CurrentPrice):n0} {ViewBag.CurrencySymbol}")
+                                                                        </p>
+                                                                    </div>
 
-                                                        </div>
-                                                    </div>
+                                                                </div>
+                                                            </div>
                             }
                         }
                     </div>
@@ -59,7 +63,7 @@
                     <div class="card-header">  <button type="button" class="btn-close float-end"  aria-label="Close" onclick="DelPro(@(pro.ProductCode))"></button>
                       </div>
                     <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
-                        <img src="@($"../filemanager/getScaledImageOnWidth?path={pro.ProductImageUrl}&width={150}")" class="card-img-top" alt="...">
+                         <img src="@Url.Content($"~/GetScaledImageOnWidth?path={pro.ProductImageUrl}&width={150}")" class="card-img-top" alt="...">
                     </a>
                     <div class="card-body">
                         <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
@@ -92,7 +96,7 @@
                         @{
                             foreach (var pro in Model.ProductComapreList)
                             {
-                                                    <th scope="col">@pro.ProductName</th>
+                                                            <th scope="col">@pro.ProductName</th>
                             }
                         }
                     </tr>
@@ -101,13 +105,13 @@
                     @{
                         foreach (var spec in Model.UnionSpecifications)
                         {
-                                                <tr>
-                                                    <th scope="row">@spec.Text</th>
-                                                    @foreach (var pro in Model.ProductComapreList)
+                                                        <tr>
+                                                            <th scope="row">@spec.Text</th>
+                                                            @foreach (var pro in Model.ProductComapreList)
                                 {
-                                                        <td>@(pro.Specifications.Any(_=>_.SpecificationId == spec.Value) ? pro.Specifications.FirstOrDefault(_=>_.SpecificationId == spec.Value).Values : "-")</td>
+                                                                <td>@(pro.Specifications.Any(_=>_.SpecificationId == spec.Value) ? pro.Specifications.FirstOrDefault(_=>_.SpecificationId == spec.Value).Values : "-")</td>
                                 }
-                                                </tr>
+                                                        </tr>
 
                         }
                     }
@@ -136,36 +140,48 @@
 
             var filter = $("#txtSearch").val();
             $.ajax({
-                url: `/'@ViewBag.LanIcon'/Product/Search?filter=${filter}`,
+                url: '@Url.Action("Search", "Product")' + "?filter=" + filter,
                 contentType: 'application/json',
                 type: 'Get',
                 dataType: 'json',
                 beforeSend: function() { },
-                success: function(result) {
-                    if (result.status == "success") {
+                success: function(result)
+                {
+                    debugger;
+                    if (result.status == "success")
+                    {
                         $("#productResult").html("");
-                        for (var i = 0; i <= result.dataType.length; i++) {
+                        for (var i = 0; i < result.data.length; i++) {
 
-                            var pro = result.dataType[i];
+                            var pro = result.data[i];
 
-                            var html = `<div class="col-12 col-md-3"><div class="card" onclick="addProduct(${pro.ProductCode})">
-                                            <a href="/product/${pro.ProductCode}" class="proLink" role="button">
-                                                <img src="../filemanager/getScaledImageOnWidth?path=${pro.ProductImageUrl}&width=80")" class="card-img-top" alt="...">
+                            var html = `<div class="col-12"><div class="card"> 
+                            <div class="card-body row">
+                            <div class='col-4'>
+                                            <a href="/product/${pro.productCode}" class="proLink" role="button">
+                                                 <img src="/GetScaledImageOnWidth?path=${pro.productImageUrl}&width=75" class="card-img-top" alt="...">
                                             </a>
-                                            <div class="card-body">
-                                                <a href=$"/product/${pro.ProductCode}" class="proLink" role="button">
-                                                    <p class="card-text text-center">${pro.ProductName}</p>
+                                            </div>
+                                            <div class='col-8'>
+                                                <a href="/product/${pro.productCode}" class="proLink" role="button">
+                                                    <p class="card-text text-center">${pro.productName}</p>
                                                 </a>
+                                                </div>
+                                                <div class='d-flex justify-content-center'>
                                                 <p class="card-title fs-6">
-                                                    ${pro.FormattedPrice} ${'@ViewBag.CurrencySymbol'}
+                                                    ${pro.formattedPrice} ${'@ViewBag.CurrencySymbol'}
                                                 </p>
+                                                </div>
                                             </div></div></div>`;
                             $("#productResult").append(html);
                         }
-                    } else {
+                    } 
+                    else 
+                    {
+                         showError(result.msg);
                         $("#productResult").html("");
                     }
-                },
+                }
             })
         });
     });
