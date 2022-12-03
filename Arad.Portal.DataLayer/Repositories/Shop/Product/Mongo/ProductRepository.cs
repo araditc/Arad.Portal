@@ -1426,7 +1426,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             {
                 domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
             }
-            
+            var currencySymbol = _currencyContext.Collection.Find(_ => _.CurrencyId == currencyId).FirstOrDefault().Symbol;
             // FilterDefinitionBuilder<Entities.Shop.Product.Product> builder = new();
             _builder = new();
             FilterDefinition<Entities.Shop.Product.Product> filterDef;
@@ -1457,6 +1457,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                         new ProductOutputDTO()
                         {
                             GroupIds = _.GroupIds,
+                            CurrencySymbol = currencySymbol,
                             Inventory = _.Inventory,
                             Images = _.Images,
                             MultiLingualProperties = _.MultiLingualProperties,
@@ -1479,6 +1480,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                            new ProductOutputDTO()
                            {
                                GroupIds = _.GroupIds,
+                               CurrencySymbol = currencySymbol,
                                Inventory = _.Inventory,
                                Images = _.Images,
                                MultiLingualProperties = _.MultiLingualProperties,
@@ -1501,6 +1503,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                         new ProductOutputDTO()
                         {
                             GroupIds = _.GroupIds,
+                            CurrencySymbol = currencySymbol,
                             Inventory = _.Inventory,
                             Images = _.Images,
                             MultiLingualProperties = _.MultiLingualProperties,
@@ -1523,6 +1526,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                         new ProductOutputDTO()
                         {
                             GroupIds = _.GroupIds,
+                            CurrencySymbol = currencySymbol,
                             Inventory = _.Inventory,
                             Images = _.Images,
                             MultiLingualProperties = _.MultiLingualProperties,
@@ -1898,6 +1902,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             string domainId, SelectedFilter filter)
         {
             var result = new PagedItems<ProductOutputDTO>();
+            var currencySymbol = _currencyContext.Collection.Find(_ => _.CurrencyId == currencyId).FirstOrDefault().Symbol;
+            
             try
             {
                 _builder = new FilterDefinitionBuilder<Entities.Shop.Product.Product>();
@@ -1958,6 +1964,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             new ProductOutputDTO()
                             {
                                 GroupIds = _.GroupIds,
+                                CurrencySymbol = currencySymbol,
                                 Inventory = _.Inventory,
                                 Images = _.Images,
                                 MultiLingualProperties = _.MultiLingualProperties,
@@ -1980,6 +1987,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             new ProductOutputDTO()
                             {
                                 GroupIds = _.GroupIds,
+                                CurrencySymbol = currencySymbol,
                                 Inventory = _.Inventory,
                                 Images = _.Images,
                                 MultiLingualProperties = _.MultiLingualProperties,
@@ -2002,6 +2010,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             new ProductOutputDTO()
                             {
                                 GroupIds = _.GroupIds,
+                                CurrencySymbol = currencySymbol,
                                 Inventory = _.Inventory,
                                 Images = _.Images,
                                 MultiLingualProperties = _.MultiLingualProperties,
@@ -2024,6 +2033,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             new ProductOutputDTO()
                             {
                                 GroupIds = _.GroupIds,
+                                CurrencySymbol = currencySymbol,
                                 Inventory = _.Inventory,
                                 Images = _.Images,
                                 MultiLingualProperties = _.MultiLingualProperties,
@@ -2053,6 +2063,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     pro.OldPrice = res.OldPrice;
                     //testing
                     // pro.OldPrice = ran.Next(0, 56000);
+                    
                     pro.DiscountType = res.DiscountType;
                     pro.DiscountValue = res.DiscountValue;
                     pro.MainImageUrl = pro.Images.Any(_ => _.IsMain) ? pro.Images.FirstOrDefault(_ => _.IsMain).Url : "";

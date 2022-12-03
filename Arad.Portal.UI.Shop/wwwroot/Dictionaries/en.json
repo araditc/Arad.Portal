@@ -2005,6 +2005,10 @@
     "Key": "DiscountType"
   },
   {
+    "Value": "OFF",
+    "Key": "Discount"
+  },
+  {
     "Value": "Product in Promotion",
     "Key": "AffectedProductName"
   },

@@ -34,6 +34,8 @@ using System.IO;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Text.Encodings.Web;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -81,14 +83,83 @@ namespace Arad.Portal.UI.Shop.Controllers
             ViewData["PageTitle"] = Language.GetString("design_Products");
             var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
             var lanId = _lanRepository.FetchBySymbol(CultureInfo.CurrentCulture.Name);
+            ViewBag.CurLangId = lanId;
             var ri = new RegionInfo(System.Threading.Thread.CurrentThread.CurrentUICulture.LCID);
             var curSymbol = ri.ISOCurrencySymbol;
             var currencyDto = _curRepository.GetCurrencyByItsPrefix(curSymbol);
             var res = await _groupRepository.GetFilterList(lanId, domainEntity.DomainId);
+            
             ViewBag.FilterModel = res;
             var model = await _productRepository.GetFilteredProduct(20, 0, currencyDto.CurrencyId, lanId, domainEntity.DomainId, new SelectedFilter());
-
+            if(User.Identity.IsAuthenticated)
+            {
+                var userId = User.GetUserId();
+                var userFavoriteList = _userRepository.GetUserFavoriteList(userId, FavoriteType.Product);
+                foreach (var item in model.Items)
+                {
+                    item.IsLikesByUserBefore = userFavoriteList.Any(_ => _.EntityId == item.ProductId);
+                    #region check cookiepart for loggedUser
+                    var userProductRateCookieName = $"{userId}_pp{item.ProductId}";
+                    if (HttpContext.Request.Cookies[userProductRateCookieName] != null)
+                    {
+                        item.HasRateBefore = true;
+                        item.PreRate = HttpContext.Request.Cookies[userProductRateCookieName];
+                    }
+                    else
+                    {
+                        item.HasRateBefore = false;
+                    }
+                    #endregion
+                }
+            }
+            
             return View("Index", model);
+        }
+
+
+        [AllowAnonymous]
+        [Route("{language?}/Shop")]
+        public IActionResult Shop()
+        {
+
+            var result = _domainRepository.FetchByName(DomainName, false);
+            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            var lanId = _lanRepository.FetchBySymbol(lanIcon);
+            ViewData["DomainTitle"] = this.DomainTitle;
+            ViewData["PageTitle"] = Language.GetString("design_Products");
+
+            if (result.Succeeded)
+            {
+                if (!result.ReturnValue.IsMultiLinguals) //single language
+                {
+                    var lan = result.ReturnValue.DefaultLanguageId;
+                    var lanEntity = _lanRepository.FetchLanguage(lan);
+                    Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
+                    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(lanEntity.Symbol))
+                    , new CookieOptions()
+                    {
+                        Expires = DateTimeOffset.Now.AddYears(1),
+                        Domain = result.ReturnValue.DomainName
+                    });
+                }
+
+
+                if (result.ReturnValue.ProductPageDesign.Any(_ => _.LanguageId == lanId))
+                {
+                    var m = result.ReturnValue.ProductPageDesign.FirstOrDefault(_ => _.LanguageId == lanId);
+                    return View(m.MainPageContainerPart);
+                }
+                else
+                {
+                    return View((new DataLayer.Models.DesignStructure.MainPageContentPart()));
+                }
+            }
+            else
+            {
+                return View(new DataLayer.Models.DesignStructure.MainPageContentPart());
+            }
+
+
         }
 
         [HttpPost]

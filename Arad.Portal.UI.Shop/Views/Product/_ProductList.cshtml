@@ -4,23 +4,34 @@
 @{
     Layout = null;
 }
+<style>
+    a.ratePro {
+        color: transparent;
+    }
+
+        a.ratePro:hover {
+            color: transparent;
+        }
+</style>
 <div class="row">
     @foreach (var item in Model)
     {
         <div class="col-12 col-md-4 col-lg-3 thumb-wrapper my-1 text-center">
+            <a role="button" href="@(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
+                       item.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLangId).UrlFriend : $"/product/{item.ProductCode}")">
             <div class="img-overlay-wrap">
                 @if ((item.DiscountType != null && (item.DiscountType == DiscountType.Percentage || item.DiscountType == DiscountType.Fixed)))
                 {
-                    var val = "";
                     if (item.DiscountType == DiscountType.Percentage)
                     {
-                        val = $"{item.DiscountValue}% OFF";
+                        <span class="discount bg-light rounded fs-5 m-1 ps-2 pe-2 fw-bold">@($"{item.DiscountValue}% {Language.GetString("Discount")}")</span>
                     }
                     else
                     {
-                        val = $"<strike class='p-1 m-1'>{item.DiscountValue}</strike>";
+
+                        <span class="discount bg-light rounded fs-5 m-1 ps-2 pe-2 fw-bold">@($"{Convert.ToInt64(item.DiscountValue):n0} {@Model[0].CurrencySymbol} {Language.GetString("Discount")}")</span>
                     }
-                    <span class="discount bg-light rounded fs-5 m-1 ps-2 pe-2 fw-bold">@val</span>
+                   
                 }
                 else if (item.IsNew)
                 {
@@ -30,42 +41,53 @@
                 <img src="@Url.Content($"~/GetScaledImageOnWidth?path={item.MainImageUrl}&width={150}")" class="img-fluid rounded-3" alt="@item.MainAlt" >
                 <div class="star-rating">
                     <ul class="list-inline bg-white p-1 rounded">
+                            @for (int i = 1; i <= item.LikeRate; i++)
+                            {
+                                <li class="list-inline-item me-0">
+                                    <a role="button" class="ratePro" data-bs-toggle="tooltip" data-bs-placement="bottom" title=@($"{Language.GetString("ContentScore")}_{i}") onclick="Rate(@i, '@item.ProductId', '@item.HasRateBefore', '@item.PreRate');" >
+                                        <i class="fas fa-star"></i>
+                                    </a>
+                                </li>
+                            }
+                            @if (item.HalfLikeRate)
+                            {
+                                <li class="list-inline-item me-0">
+                                    <a role="button" class="ratePro" data-bs-toggle="tooltip" data-bs-placement="bottom" title=@($"{Language.GetString("ContentScore")}_{@item.LikeRate+1}") onclick="Rate(@item.LikeRate+1, '@item.ProductId','@item.HasRateBefore',  '@item.PreRate');">
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </a>
+                                </li>
+                            }
                         @for (int i = (item.HalfLikeRate ? item.LikeRate + 2 : item.LikeRate + 1); i <= 5; i++)
                         {
                             <li class="list-inline-item me-0">
-                                <a>
+                                    <a class="ratePro" title=@($"{Language.GetString("ContentScore")}_{i}") role="button" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="Rate(@i, '@item.ProductId', '@item.HasRateBefore', '@item.PreRate');">
                                     <i class="far fa-star"></i>
                                 </a>
                             </li>
                         }
-                        @if (item.HalfLikeRate)
-                        {
-                            <li class="list-inline-item me-0">
-                                <a>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </a>
-                            </li>
-                        }
-                        @for (int i = 1; i <= item.LikeRate; i++)
-                        {
-                            <li class="list-inline-item me-0">
-                                <a>
-                                    <i class="fas fa-star"></i>
-                                </a>
-                            </li>
-                        }
+                       
+                       
 
 
                     </ul>
                 </div>
                 <div class="likepart float-start border-0 bg-white rounded-circle text-center align-middle ps-2 pe-2 pt-1 ms-2 mt-2">
-                    <a href="#" role="button" class="btnLike">
-                        <i class="far fa-heart"></i>
+                        <a role="button" class="btnLike" data-bs-toggle="tooltip" onclick="AddToFavoriteList('@item.ProductCode', '@item.IsLikesByUserBefore');"
+                       data-bs-placement="bottom" title="@Language.GetString("AlertAndMessage_AddToFavoriteList")">
+                            @if (@item.IsLikesByUserBefore)
+                            {
+                                <i class="fas fa-heart"></i>
+                            }
+                            else
+                            {
+                                <i class="far fa-heart"></i>
+                            }
                     </a>
                 </div>
                 <div class="shoppingCartPart float-end border-0 bg-white rounded-3 text-center align-middle ps-2 pe-2 pt-1 ms-2 mt-2">
-                    <a href="#" role="button" class="btnAddToCard" data-bs-toggle="tooltip" data-bs-placement="bottom" 
-                    title='@Language.GetString("btn_AddToShoppingCart")'>
+                        <a href="@(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
+                       item.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLangId).UrlFriend : $"/product/{item.ProductCode}")" role="button" class="btnAddToCard" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                       title='@Language.GetString("btn_AddToShoppingCart")'>
                         <i class="fas fa-shopping-cart"></i>
                     </a>
                 </div>
@@ -78,14 +100,83 @@
                 </h6>
 
                 <p class="item-price">
-                    <strike class="ps-3 float-start">
-                        <span>@item.OldPrice</span>
-                        <span>@ViewBag.CurrencySymbol</span>
-                    </strike>
-                    <b class="float-end"><span>@item.PriceValWithPromotion</span><span class="ps-2">@ViewBag.CurrencySymbol</span></b>
+                    @if (item.OldPrice > 0)
+                    {
+                        <del class="ps-3 float-start">
+                            <span>@($"{Convert.ToInt64(item.OldPrice):n0}")</span>
+                            <span>@ViewBag.CurrencySymbol</span>
+                        </del>
+                    }
+                    <b class="float-end"><span>@($"{Convert.ToInt64(@item.PriceValWithPromotion):n0}")</span><span class="ps-2">@ViewBag.CurrencySymbol</span></b>
                 </p>
 
             </div>
+            </a>
         </div>
     }
 </div>
+
+<script type="text/javascript">
+    function AddToFavoriteList(productCode, islike) {
+        debugger;
+        if (islike == "True") {
+            window.location.href = '@Url.Action("Favorites", "Account")' + "?type=product";
+        }
+        else if ('@User.Identity.IsAuthenticated' == "True") {
+            $.ajax({
+                url: '@Url.Action("AddToFavList", "Comment")' + `?code=${productCode}&name=product`,
+                contentType: "application/json",
+                type: "Get",
+                beforeSend: function () {
+                },
+                success: function (result) {
+                    debugger;
+                    if (result.status == "Succeed") {
+
+                        window.location.reload();
+                    }
+                }
+            });
+        } else
+            window.location.href = '@Url.Action("Login", "Account")' + `?returnUrl=${'@ViewBag.LanIcon'}/product/${productCode}`;
+
+    }
+
+    function Rate(score, entityId, hasRateBefore, preRate) {
+        debugger;
+        var isAllow = false;
+        if ('@User.Identity.IsAuthenticated' == 'True') {
+            if (hasRateBefore == "True") {
+                if (score != parseInt(preRate))
+                    isAllow = true;
+            }
+            else {
+                isAllow = true;
+            }
+        } else {
+            window.location.href = '@Url.Action("Login", "Account")' + `?returnUrl=${'@ViewBag.LanIcon'}/product/${productCode}`;
+        }
+        var obj = {};
+        if (isAllow) {
+            debugger;
+            obj.EntityId = entityId;
+            obj.IsNew = hasRateBefore != "True";
+            obj.Score = parseInt(score);
+            obj.IsContent = false;
+            $.ajax({
+                url: '@Url.Action("Rate", "Comment")',
+                contentType: "application/json",
+                data: JSON.stringify(obj),
+                type: "Post",
+                beforeSend: function () {
+                },
+                success: function (result) {
+                    debugger;
+                    if (result.status == "Succeed") {
+
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+    }</script>

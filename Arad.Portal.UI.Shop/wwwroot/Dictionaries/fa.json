@@ -2000,6 +2000,10 @@
     "Key": "DiscountType"
   },
   {
+    "Value": "تخفیف",
+    "Key": "Discount"
+  },
+  {
     "Value": "محصول پروموشن دار",
     "Key": "AffectedProductName"
   },

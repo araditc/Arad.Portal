@@ -2,17 +2,18 @@
 @using Arad.Portal.DataLayer.Models.DesignStructure;
 @model List<Arad.Portal.DataLayer.Models.Product.ProductOutputDTO>
 @{
-    string outerElementAtr ="";
+    string outerElementAtr = "";
     string innerElementsAtr = "";
     var animationTarget = (LoadAnimationType)ViewBag.LoadAnimationType;
-    if(animationTarget == LoadAnimationType.OuterElement)
+    if (animationTarget == LoadAnimationType.OuterElement)
     {
         outerElementAtr = $"data-animation='animated {ViewBag.LoadAnimation}'";
-    }else
+    }
+    else
     {
         innerElementsAtr = $"data-animation='animated {ViewBag.LoadAnimation}'";
     }
-       var baseAdd = Config["BaseAddress"];
+    var baseAdd = Config["BaseAddress"];
 }
 
 
@@ -21,89 +22,97 @@
 
         @foreach (var item in Model)
         {
-             <a   href="@(item.MultiLingualProperties.Any(_=>_.LanguageId == @ViewBag.CurLangId) && 
-                                      !string.IsNullOrWhiteSpace(item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == @ViewBag.CurLangId).UrlFriend) ? 
+            <a href="@(item.MultiLingualProperties.Any(_=>_.LanguageId == @ViewBag.CurLangId) &&
+                                      !string.IsNullOrWhiteSpace(item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == @ViewBag.CurLangId).UrlFriend) ?
                                  $"~{item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == @ViewBag.CurLangId).UrlFriend}"  : $"~/product/{item.ProductCode}"  )" role="button">
-                    <div class="thumb-wrapper m-1 text-center">
-                        <div class="img-overlay-wrap">
-                            @if ((item.DiscountType != null && (item.DiscountType == DiscountType.Percentage || item.DiscountType == DiscountType.Fixed)) )
+                <div class="thumb-wrapper m-1 text-center">
+                    <div class="img-overlay-wrap">
+                        @if ((item.DiscountType != null && (item.DiscountType == DiscountType.Percentage || item.DiscountType == DiscountType.Fixed)))
+                        {
+                            if (item.DiscountType == DiscountType.Percentage)
                             {
-                                var val = "";
-                                if (item.DiscountType == DiscountType.Percentage)
-                                {
-                                    val = $"{item.DiscountValue}% OFF";
-                                }
-                                else
-                                {
-                                    val = $"<strike class='p-1 m-1'>{item.DiscountValue}</strike>";
-                                }
-                                <span class="discount bg-light rounded fs-5 m-1 ps-2 pe-2 fw-bold">@val</span>
+                                <span class="discount bg-light rounded fs-5 m-1 ps-2 pe-2 fw-bold">@($"{item.DiscountValue}% {Language.GetString("Discount")}")</span>
                             }
-                            else if (item.IsNew)
+                            else
                             {
-                                <span class="newp bg-light rounded m-1 ps-2 pe-2">NEW</span>
+                                <span class="discount bg-light rounded fs-5 m-1 ps-2 pe-2 fw-bold">@($"{Convert.ToInt64(item.DiscountValue):n0} {@Model[0].CurrencySymbol} {Language.GetString("Discount")}")</span>
                             }
-               
-                            <img src="@($"../filemanager/GetScaledImageOnWidth?path={item.MainImageUrl}&width={150}")" class="img-fluid rounded-3" alt="@item.MainAlt"  @innerElementsAtr>
-                            <div class="star-rating">
-                                <ul class="list-inline bg-white p-1 rounded">
-                                     @for (int i = (item.HalfLikeRate ? item.LikeRate + 2 : item.LikeRate + 1); i <= 5; i++)
-                                    {
-                                        <li class="list-inline-item me-0">
-                                            <a>
-                                                <i class="far fa-star"></i>
-                                            </a>
-                                        </li>
-                                    }
-                                    @if (item.HalfLikeRate)
-                                    {
-                                        <li class="list-inline-item me-0">
-                                            <a>
-                                                <i class="fas fa-star-half-alt"></i>
-                                            </a>
-                                        </li>
-                                    }
-                                     @for (int i = 1; i <= item.LikeRate; i++)
-                                    {
-                                        <li class="list-inline-item me-0">
-                                            <a>
-                                                <i class="fas fa-star"></i>
-                                            </a>
-                                        </li>
-                                    }
-                       
 
-                                </ul>
-                            </div>
-                            <div class="likepart float-start border-0 bg-white rounded-circle text-center align-middle ps-2 pe-2 pt-1 ms-2 mt-2">
-                                <a href="#" role="button" class="btnLike">
-                                    <i class="far fa-heart"></i>
-                                </a>
-                            </div>
-                            <div class="shoppingCartPart float-end border-0 bg-white rounded-3 text-center align-middle ps-2 pe-2 pt-1 ms-2 mt-2">
-                                <a href="#" role="button" class="btnAddToCard" data-bs-toggle="tooltip" data-bs-placement="bottom" title='@Language.GetString("btn_AddToShoppingCart")'>
-                                    <i class="fas fa-shopping-cart"></i>
-                                </a>
-                            </div>
+                        }
+                        else if (item.IsNew)
+                        {
+                            <span class="newp bg-light rounded m-1 ps-2 pe-2">NEW</span>
+                        }
+
+                        <img src="@($"../filemanager/GetScaledImageOnWidth?path={item.MainImageUrl}&width={150}")" class="img-fluid rounded-3" alt="@item.MainAlt" @innerElementsAtr>
+                        <div class="star-rating">
+                            <ul class="list-inline bg-white p-1 rounded">
+                                @for (int i = (item.HalfLikeRate ? item.LikeRate + 2 : item.LikeRate + 1); i <= 5; i++)
+                                {
+                                    <li class="list-inline-item me-0">
+                                        <a>
+                                            <i class="far fa-star"></i>
+                                        </a>
+                                    </li>
+                                }
+                                @if (item.HalfLikeRate)
+                                {
+                                    <li class="list-inline-item me-0">
+                                        <a>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </a>
+                                    </li>
+                                }
+                                @for (int i = 1; i <= item.LikeRate; i++)
+                                {
+                                    <li class="list-inline-item me-0">
+                                        <a>
+                                            <i class="fas fa-star"></i>
+                                        </a>
+                                    </li>
+                                }
 
 
+                            </ul>
                         </div>
-           
-                        <div class="proContent">
-                            <h6 class="m-2">
-                                @(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
-                                            item.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLangId).Name : "")
-                            </h6>
-            
-                            <p class="item-price"><strike class="ps-3 float-start"><span>@item.OldPrice</span>
-                                <span >@ViewBag.CurrencySymbol</span></strike> <b class="float-end">
-                                    <span>@item.PriceValWithPromotion</span><span class="ps-2">@ViewBag.CurrencySymbol</span></b>
-                                    </p>
-              
+                        <div class="likepart float-start border-0 bg-white rounded-circle text-center align-middle ps-2 pe-2 pt-1 ms-2 mt-2">
+                            <a href="#" role="button" class="btnLike">
+                                <i class="far fa-heart"></i>
+                            </a>
                         </div>
+                        <div class="shoppingCartPart float-end border-0 bg-white rounded-3 text-center align-middle ps-2 pe-2 pt-1 ms-2 mt-2">
+                            <a href="#" role="button" class="btnAddToCard" data-bs-toggle="tooltip" data-bs-placement="bottom" title='@Language.GetString("btn_AddToShoppingCart")'>
+                                <i class="fas fa-shopping-cart"></i>
+                            </a>
+                        </div>
+
+
                     </div>
-             </a>
-           
+
+                    <div class="proContent">
+                        <h6 class="m-2">
+                            @(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
+                                item.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLangId).Name : "")
+                        </h6>
+
+                        <p class="item-price">
+                            @if (@item.OldPrice > 0)
+                            {
+                                <del class="ps-3 float-start">
+                                    <span>@($"{Convert.ToInt64(@item.OldPrice):n0}")</span>
+                                    <span>@ViewBag.CurrencySymbol</span>
+                                </del>
+                            }
+                           
+                            <b class="float-end">
+                                <span>@($"{Convert.ToInt64(item.PriceValWithPromotion):n0}")</span><span class="ps-2">@ViewBag.CurrencySymbol</span>
+                            </b>
+                        </p>
+
+                    </div>
+                </div>
+            </a>
+
         }
 
     </div>

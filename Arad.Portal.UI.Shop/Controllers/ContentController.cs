@@ -18,6 +18,8 @@ using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Contracts.General.User;
 using Arad.Portal.DataLayer.Models.Content;
+using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -26,7 +28,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IContentRepository _contentRepository;
         private readonly IHttpContextAccessor _accessor;
         private readonly ILanguageRepository _lanRepository;
-        private readonly IDomainRepository _domainrepository;
+        private readonly IDomainRepository _domainRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserRepository _userRepository;
 
@@ -39,7 +41,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             _contentRepository = contentRepository;
             _accessor = accessor;
-            _domainrepository = domainRepository;
+            _domainRepository = domainRepository;
             _lanRepository = lanRepository;
             _userManager = userManager;
             _userRepository = userRepository;
@@ -51,7 +53,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             var domainName = this.DomainName;
             ViewData["DomainTitle"] = this.DomainTitle;
             ViewData["PageTitle"] = Language.GetString("design_Articles");
-            var domainEntity = _domainrepository.FetchByName(domainName, false).ReturnValue;
+            var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
             string lanSymbol = "";
             string lanId = "";
             if(CultureInfo.CurrentCulture.Name != null)
@@ -73,6 +75,52 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
 
             return View("Index",lst);
+        }
+
+
+        [AllowAnonymous]
+        [Route("{language?}/Articles")]
+        public IActionResult Articles()
+        {
+
+            var result = _domainRepository.FetchByName(DomainName, false);
+            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            var lanId = _lanRepository.FetchBySymbol(lanIcon);
+            ViewData["DomainTitle"] = this.DomainTitle;
+            ViewData["PageTitle"] = Language.GetString("design_Articles");
+
+            if (result.Succeeded)
+            {
+                if (!result.ReturnValue.IsMultiLinguals) //single language
+                {
+                    var lan = result.ReturnValue.DefaultLanguageId;
+                    var lanEntity = _lanRepository.FetchLanguage(lan);
+                    Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
+                    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(lanEntity.Symbol))
+                    , new CookieOptions()
+                    {
+                        Expires = DateTimeOffset.Now.AddYears(1),
+                        Domain = result.ReturnValue.DomainName
+                    });
+                }
+
+
+                if (result.ReturnValue.BlogPageDesign.Any(_ => _.LanguageId == lanId))
+                {
+                    var m = result.ReturnValue.BlogPageDesign.FirstOrDefault(_ => _.LanguageId == lanId);
+                    return View(m.MainPageContainerPart);
+                }
+                else
+                {
+                    return View((new DataLayer.Models.DesignStructure.MainPageContentPart()));
+                }
+            }
+            else
+            {
+                return View(new DataLayer.Models.DesignStructure.MainPageContentPart());
+            }
+
+
         }
 
         [Route("{language}/blog/{**slug}")]

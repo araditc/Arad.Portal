@@ -26,6 +26,13 @@ namespace Arad.Portal.DataLayer.Models.Product
         }
         public string ProductId { get; set; }
 
+        public bool IsLikesByUserBefore { get; set; }
+
+        public bool HasRateBefore { get; set; }
+
+        public string PreRate { get; set; }
+        public string CurrencySymbol { get; set; }
+
         public List<string> GroupIds { get; set; }
 
         public List<string> GroupNames { get; set; }

@@ -94,8 +94,14 @@ namespace Arad.Portal.UI.Shop.Controllers
                 var samanData =
                    domainEntity.DomainPaymentProviders.FirstOrDefault(_ => _.PspType == Enums.PspType.Saman);
 
-                _samanModel = JsonConvert.DeserializeObject<SamanModel>(samanData.DomainValueProvider);
-                senderModel.TerminalId = _samanModel.TerminalId;
+                if(samanData != null)
+                {
+                    _samanModel = JsonConvert.DeserializeObject<SamanModel>(samanData.DomainValueProvider);
+                    senderModel.TerminalId = _samanModel.TerminalId;
+                }else
+                {
+                    return Json(new { status = "error", redirecturl = errorUrl });
+                }
             }
             catch (Exception e)
             {

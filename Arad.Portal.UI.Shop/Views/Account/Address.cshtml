@@ -28,7 +28,7 @@
                         <label>@Language.GetString("Profile_Country")</label><br />
                         <div class="form-group textPlaceholder">
                             <select id="CountryId" name="CountryId" class="form-select selectpicker" asp-items="@(new SelectList(ViewBag.CountryList , "Value", "Text"))"
-                           tabindex="2" placeholder="@Language.GetString("Profile_Province")">
+                                    tabindex="2" placeholder="@Language.GetString("Profile_Country")">
                             </select>
                             <span class="field-validation-error" data-val-result="CountryId"></span>
                         </div>

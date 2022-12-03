@@ -716,7 +716,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                 model.Step = Convert.ToInt32(gap / 10);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 commonSpecIds = new List<string>();
             }
