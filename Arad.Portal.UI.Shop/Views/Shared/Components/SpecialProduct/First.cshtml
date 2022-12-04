@@ -94,10 +94,10 @@
                 </div>
 
                     <div class="proContent">
-                        <h6 class="m-2">
+                        <p class="m-1 fw-bold">
                             @(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
                                 item.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLangId).Name : "")
-                        </h6>
+                        </p>
 
                         <p class="item-price">
                             @if (item.OldPrice > 0)

@@ -90,7 +90,7 @@
             </div>
 
             <div class="proContent">
-                <h6 class="m-2">
+                    <h6>
                     @(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
                 item.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLangId).Name : "")
                 </h6>
