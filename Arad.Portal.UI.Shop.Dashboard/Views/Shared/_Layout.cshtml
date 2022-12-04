@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 @using System.Globalization;
+@using Arad.Portal.DataLayer.Models.DesignStructure
 @using Arad.Portal.GeneralLibrary.Utilities;
 @using Microsoft.AspNetCore.Http;
 @using Arad.Portal.DataLayer.Contracts.General.BasicData;
@@ -224,9 +225,7 @@
     <script src="@Url.Content($"~/js/site.js")" asp-append-version="true"></script>
     <script>
 
-        $(document).ready(function() {
-
-        });
+        
         var entityId;
         var confirmUrl;
         var typeOfRequest;

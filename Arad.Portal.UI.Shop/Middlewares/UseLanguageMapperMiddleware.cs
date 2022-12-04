@@ -142,12 +142,12 @@ namespace Arad.Portal.UI.Shop.Middlewares
                                 if (symbol.Length + 2 > context.Request.Path.Value.Length)
                                 {
                                     pathRequest = "/";
-                                    Log.Fatal($"path request going to be '//////////'");
+                                   // Log.Fatal($"path request going to be '//////////'");
                                 }
                                 else
                                 {
                                     pathRequest = context.Request.Path.Value.Remove(0, symbol.Length + 1);
-                                    Log.Fatal($"remove another langsymble from path and path request is :{pathRequest}");
+                                    //Log.Fatal($"remove another langsymble from path and path request is :{pathRequest}");
                                 }
                                 break;
                             }
@@ -155,13 +155,13 @@ namespace Arad.Portal.UI.Shop.Middlewares
                     }
                     newPath = $"/{defLangSymbol.ToLower()}" +
                    $"{(!string.IsNullOrWhiteSpace(pathRequest) ? pathRequest : context.Request.Path.Value) + (context.Request.QueryString.Value != "/" ? context.Request.QueryString : "")}";
-                    Log.Fatal($"newpath is going to be : {newPath}");
+                    //Log.Fatal($"newpath is going to be : {newPath}");
                     if (newPath.EndsWith("/"))
                     {
                         newPath = newPath.Substring(0, newPath.Length - 1);
                     }
 
-                    Log.Fatal($"Second Redirect : gonna redirect to newPath to be encoded:{newPath}");
+                    //Log.Fatal($"Second Redirect : gonna redirect to newPath to be encoded:{newPath}");
                     var encoded = Url.EncodeIllegalCharacters(newPath);
                     context.Response.Redirect(encoded, true);
                 }

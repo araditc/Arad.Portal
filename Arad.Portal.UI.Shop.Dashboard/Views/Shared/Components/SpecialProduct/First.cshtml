@@ -17,15 +17,15 @@
 }
 
 
-<div class="row mx-1" style="min-height:250px;">
-    <div class="owl-carousel" id="productCarousel" @outerElementAtr>
+<div class="row" style="min-height:330px;">
+    <div class="owl-carousel owl-theme"  @outerElementAtr>
 
         @foreach (var item in Model)
         {
-            <a href="@(item.MultiLingualProperties.Any(_=>_.LanguageId == @ViewBag.CurLangId) &&
-                                      !string.IsNullOrWhiteSpace(item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == @ViewBag.CurLangId).UrlFriend) ?
-                                 $"~{item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == @ViewBag.CurLangId).UrlFriend}"  : $"~/product/{item.ProductCode}"  )" role="button">
-                <div class="thumb-wrapper m-1 text-center">
+         
+            @*col-12 col-md-4   col-lg-3 *@
+            <div class="item thumb-wrapper my-1 text-center">
+                <a role="button" href="#">
                     <div class="img-overlay-wrap">
                         @if ((item.DiscountType != null && (item.DiscountType == DiscountType.Percentage || item.DiscountType == DiscountType.Fixed)))
                         {
@@ -35,6 +35,7 @@
                             }
                             else
                             {
+
                                 <span class="discount bg-light rounded fs-5 m-1 ps-2 pe-2 fw-bold">@($"{Convert.ToInt64(item.DiscountValue):n0} {@Model[0].CurrencySymbol} {Language.GetString("Discount")}")</span>
                             }
 
@@ -44,74 +45,77 @@
                             <span class="newp bg-light rounded m-1 ps-2 pe-2">NEW</span>
                         }
 
-                        <img src="@($"../filemanager/GetScaledImageOnWidth?path={item.MainImageUrl}&width={150}")" class="img-fluid rounded-3" alt="@item.MainAlt" @innerElementsAtr>
+                        <img src="@Url.Content($"../FileManager/GetScaledImageOnWidth?path={item.MainImageUrl}&width={100}")" class="img-fluid rounded-3" alt="@item.MainAlt">
                         <div class="star-rating">
                             <ul class="list-inline bg-white p-1 rounded">
-                                @for (int i = (item.HalfLikeRate ? item.LikeRate + 2 : item.LikeRate + 1); i <= 5; i++)
+                                @for (int i = 1; i <= item.LikeRate; i++)
                                 {
                                     <li class="list-inline-item me-0">
-                                        <a>
-                                            <i class="far fa-star"></i>
+                                        <a role="button" class="ratePro" data-bs-toggle="tooltip" data-bs-placement="bottom" title=@($"{Language.GetString("ContentScore")}_{i}")>
+                                            <i class="fas fa-star"></i>
                                         </a>
                                     </li>
                                 }
                                 @if (item.HalfLikeRate)
                                 {
                                     <li class="list-inline-item me-0">
-                                        <a>
+                                        <a role="button" class="ratePro" data-bs-toggle="tooltip" data-bs-placement="bottom" title=@($"{Language.GetString("ContentScore")}_{@item.LikeRate+1}") >
                                             <i class="fas fa-star-half-alt"></i>
                                         </a>
                                     </li>
                                 }
-                                @for (int i = 1; i <= item.LikeRate; i++)
+                                @for (int i = (item.HalfLikeRate ? item.LikeRate + 2 : item.LikeRate + 1); i <= 5; i++)
                                 {
                                     <li class="list-inline-item me-0">
-                                        <a>
-                                            <i class="fas fa-star"></i>
+                                        <a class="ratePro" title=@($"{Language.GetString("ContentScore")}_{i}") role="button" data-bs-toggle="tooltip" data-bs-placement="bottom" >
+                                            <i class="far fa-star"></i>
                                         </a>
                                     </li>
                                 }
 
-
                             </ul>
                         </div>
                         <div class="likepart float-start border-0 bg-white rounded-circle text-center align-middle ps-2 pe-2 pt-1 ms-2 mt-2">
-                            <a href="#" role="button" class="btnLike">
-                                <i class="far fa-heart"></i>
+                            <a role="button" class="btnLike" data-bs-toggle="tooltip" 
+                           data-bs-placement="bottom" title="@Language.GetString("AlertAndMessage_AddToFavoriteList")">
+                                @if (@item.IsLikesByUserBefore)
+                                {
+                                    <i class="fas fa-heart"></i>
+                                }
+                                else
+                                {
+                                    <i class="far fa-heart"></i>
+                                }
                             </a>
                         </div>
                         <div class="shoppingCartPart float-end border-0 bg-white rounded-3 text-center align-middle ps-2 pe-2 pt-1 ms-2 mt-2">
-                            <a href="#" role="button" class="btnAddToCard" data-bs-toggle="tooltip" data-bs-placement="bottom" title='@Language.GetString("btn_AddToShoppingCart")'>
+                            <a href="#" role="button" class="btnAddToCard" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                           title='@Language.GetString("btn_AddToShoppingCart")'>
                                 <i class="fas fa-shopping-cart"></i>
                             </a>
                         </div>
-
-
                     </div>
 
                     <div class="proContent">
-                        <h6 class="m-2">
+                        <p class="m-1 fw-bold">
                             @(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
                                 item.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLangId).Name : "")
-                        </h6>
+                        </p>
 
                         <p class="item-price">
-                            @if (@item.OldPrice > 0)
+                            @if (item.OldPrice > 0)
                             {
                                 <del class="ps-3 float-start">
-                                    <span>@($"{Convert.ToInt64(@item.OldPrice):n0}")</span>
+                                    <span>@($"{Convert.ToInt64(item.OldPrice):n0}")</span>
                                     <span>@ViewBag.CurrencySymbol</span>
                                 </del>
                             }
-                           
-                            <b class="float-end">
-                                <span>@($"{Convert.ToInt64(item.PriceValWithPromotion):n0}")</span><span class="ps-2">@ViewBag.CurrencySymbol</span>
-                            </b>
+                            <b class="float-end"><span>@($"{Convert.ToInt64(@item.PriceValWithPromotion):n0}")</span><span class="ps-2">@ViewBag.CurrencySymbol</span></b>
                         </p>
 
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
 
         }
 

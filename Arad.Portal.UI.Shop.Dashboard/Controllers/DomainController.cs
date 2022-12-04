@@ -60,8 +60,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _accessor;
-        private string SelectedDomainId = string.Empty;
-      
+        
 
         public DomainController(IDomainRepository domainRepository, UserManager<ApplicationUser> userManager,
             IProviderRepository providerRepository,
@@ -97,7 +96,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> List()
         {
-            SelectedDomainId = "";
+            
             PagedItems<DomainViewModel> result = new PagedItems<DomainViewModel>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userDb = await _userManager.FindByIdAsync(currentUserId);
@@ -321,7 +320,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             //var moduleList = _moduleRepository.GetAllModules();
             //ViewBag.ModuleList = moduleList;
             var domainEntity = _domainRepository.FetchDomain(domainId).ReturnValue;
-            SelectedDomainId = domainId;
+            
             ViewBag.PageType = pageType;
             List<PageDesignContent> finalModel = new List<PageDesignContent>();
             ViewBag.DomainId = domainId;
@@ -400,7 +399,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         #region GetModulesViewComponents
         [HttpGet]
         public IActionResult GetProductModuleViewComponent(ProductOrContentType productType, ProductTemplateDesign selectionTemplate,
-            int count, DataLayer.Entities.General.SliderModule.TransActionType loadAnimation, LoadAnimationType loadAnimationType)
+            int count, DataLayer.Entities.General.SliderModule.TransActionType loadAnimation, LoadAnimationType loadAnimationType, string di)
         {
             var moduleParameters = new ModuleParameters()
             {
@@ -409,7 +408,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 Count = count, 
                 LoadAnimation = loadAnimation,
                 LoadAnimationType = loadAnimationType,
-                DomainId = SelectedDomainId
+                DomainId = di
             };
             return ViewComponent("SpecialProduct", moduleParameters);
         }
@@ -437,7 +436,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpPost]
         public IActionResult GetContentModuleViewComponent(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int? count,
             DataLayer.Entities.General.SliderModule.TransActionType loadAnimation, LoadAnimationType loadAnimationType, SelectionType selectedType, string catId,
-            [FromBody]List<string> selectedIds)
+            [FromBody]List<string> selectedIds, string di)
         {
 
             var moduleParameters = new ModuleParameters()
@@ -450,7 +449,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 SelectionType = selectedType,
                 CatId = catId,
                 SelectedIds = selectedIds,
-                DomainId = SelectedDomainId
+                DomainId = di
             };
             return ViewComponent("ContentTemplates", new { moduleParameters}
             );

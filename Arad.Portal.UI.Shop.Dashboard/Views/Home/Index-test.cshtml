@@ -1,0 +1,60 @@
+﻿@using Arad.Portal.DataLayer.Models.DesignStructure
+@{
+    ViewData["Title"] = "Home Page";
+    var obj = new ModuleParameters()
+            {
+                ProductOrContentType = Arad.Portal.DataLayer.Entities.General.DesignStructure.ProductOrContentType.Newest,
+                ProductTemplateDesign = Arad.Portal.DataLayer.Entities.General.DesignStructure.ProductTemplateDesign.First,
+                Count = 15,
+                LoadAnimation = Arad.Portal.DataLayer.Entities.General.SliderModule.TransActionType.backInUp,
+                LoadAnimationType = LoadAnimationType.InnerElements,
+                DomainId = "1e336912-00e4-4a0a-bee6-20ce8ae49855"
+            };
+}
+<style>
+    #mainContent
+    {
+        background-color: #e1eded30;
+    }
+</style>
+<link href="@Url.Content($"~/lib/owlCarousel/css/owl.carousel.min.css")" rel="stylesheet" />
+<link href="@Url.Content($"~/lib/owlCarousel/css/owl.theme.default.min.css")" rel="stylesheet" />
+<link href="@Url.Content($"~/lib/owlCarousel/css/CarouselCustomArrowKeys.css")" rel="stylesheet" />
+<link href="@Url.Content($"~/css/SpecialProduct.css")" rel="stylesheet" />
+<div class="text-center" @*style="background-color:azure"*@>
+    @await Component.InvokeAsync("SpecialProduct", obj);
+</div>
+
+<script src="@Url.Content($"~/lib/owlCarousel/js/owl.carousel.min.js")"></script>
+<script>
+    $(document).ready(function () {
+        debugger;
+        $(".owl-carousel").owlCarousel({
+            loop: false,
+            rewind: false,
+            rtl: true,
+            navigation: true,
+            /* autoplay: true,*/
+            margin: 2,
+            animateOut: 'fadeOut',
+            animateIn: 'fadeIn',
+            responsiveClass: true,
+            nav: true,
+            dots: false,
+            autoplayHoverPause: false,
+            items: 6,
+            navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>", "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 6
+                },
+                1000: {
+                    items: 10
+                }
+            }
+        });
+    });
+</script>

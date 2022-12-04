@@ -449,6 +449,69 @@
                 $("#toastPanel").hide();
             }, 2000)
         }
+        function AddToFavoriteList(productCode, islike) {
+            debugger;
+            if (islike == "True") {
+                window.location.href = '@Url.Action("Favorites", "Account")' + "?type=product";
+            }
+            else if ('@User.Identity.IsAuthenticated' == "True") {
+                $.ajax({
+                    url: '@Url.Action("AddToFavList", "Comment")' + `?code=${productCode}&name=product`,
+                    contentType: "application/json",
+                    type: "Get",
+                    beforeSend: function () {
+                    },
+                    success: function (result) {
+                        debugger;
+                        if (result.status == "Succeed") {
+
+                            window.location.reload();
+                        }
+                    }
+                });
+            } else
+                window.location.href = '@Url.Action("Login", "Account")' + `?returnUrl=${'@ViewBag.LanIcon'}/product/${productCode}`;
+
+        }
+
+        function Rate(score, entityId, hasRateBefore, preRate) {
+            debugger;
+            var isAllow = false;
+            if ('@User.Identity.IsAuthenticated' == 'True') {
+                if (hasRateBefore == "True") {
+                    if (score != parseInt(preRate))
+                        isAllow = true;
+                }
+                else {
+                    isAllow = true;
+                }
+            } else {
+                window.location.href = '@Url.Action("Login", "Account")' + `?returnUrl=${'@ViewBag.LanIcon'}/product/${productCode}`;
+            }
+            var obj = {};
+            if (isAllow) {
+                debugger;
+                obj.EntityId = entityId;
+                obj.IsNew = hasRateBefore != "True";
+                obj.Score = parseInt(score);
+                obj.IsContent = false;
+                $.ajax({
+                    url: '@Url.Action("Rate", "Comment")',
+                    contentType: "application/json",
+                    data: JSON.stringify(obj),
+                    type: "Post",
+                    beforeSend: function () {
+                    },
+                    success: function (result) {
+                        debugger;
+                        if (result.status == "Succeed") {
+
+                            window.location.reload();
+                        }
+                    }
+                });
+            }
+        }
     </script>
 </body>
 </html>

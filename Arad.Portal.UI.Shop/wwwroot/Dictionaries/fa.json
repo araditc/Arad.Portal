@@ -985,7 +985,7 @@
     "Key": "AlertAndMessage_RequestChangePassword"
   },
   {
-    "Value": "این ماژول دارای پارارمتر نمیباشد تنها دکمه افزودن را کلیک کنید.",
+    "Value": "این ماژول دارای پارامتر نمیباشد تنها دکمه افزودن را کلیک کنید.",
     "Key": "AlertAndMessage_ModuleWithoutParameters"
   },
   {

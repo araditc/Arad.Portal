@@ -37,7 +37,7 @@
     @{
         if(CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir")
         {
-                     <link href="@Url.Content($"~/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
+                         <link href="@Url.Content($"~/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
         }
     }
     <link href="@Url.Content($"~/lib/font-awesome/css/all.css")" rel="stylesheet" />
@@ -1175,16 +1175,18 @@
 
                              $(".owl-carousel").owlCarousel({
                                            loop: true,
+                                           rewind: false,
                                            rtl: true,
                                            navigation : true,
-                                           /* autoplay: true,*/
-                                           margin: 10,
+                                            autoplay: true,
+                                           margin: 3,
                                            animateOut: 'fadeOut',
                                            animateIn: 'fadeIn',
+                                           responsiveClass: true,
                                            nav: true,
-                                           /*dots: true,*/
+                                           dots: false,
                                            autoplayHoverPause: false,
-                                           items: 3,
+                                           items: 6,
                                            navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
                                                      "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
                                            responsive: {
@@ -1192,10 +1194,10 @@
                                                    items: 1
                                                },
                                                600: {
-                                                   items: 3
+                                                   items: 6
                                                },
                                                1000: {
-                                                   items: 5
+                                                   items: 8
                                                }
                                            }
                                        });
@@ -2590,7 +2592,7 @@
                  {
                      case "productlist":
                          url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType
-                             +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation + "&loadAnimationType=" + loadAnimationType;
+                             +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation + "&loadAnimationType=" + loadAnimationType +"&di="+ '@domainId';
 
                          obj.ParametersValue.ProductTemplateDesign = selectedTemplate;
                          obj.ParametersValue.Count = count;
@@ -2603,7 +2605,7 @@
                          
                           url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType 
                             +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation +
-                            "&loadAnimationType=" + loadAnimationType+"&selectedType=" + selectedType +"&catId="+ catId;
+                            "&loadAnimationType=" + loadAnimationType+"&selectedType=" + selectedType +"&catId="+ catId +"&di="+ '@domainId';
                          dataToSend = JSON.stringify(selectedIds);
 
                         
@@ -2660,31 +2662,34 @@
                              $(parent).find(".htmlColumnContentPreview").html(result);
                              if(obj.ModuleName.toLowerCase() =="productlist")
                              {
+                                 debugger;
                                   $(".owl-carousel").owlCarousel({
-                                         loop: true,
-                                         rtl: true,
-                                         navigation : true,
-                                         /* autoplay: true,*/
-                                         margin: 10,
-                                         animateOut: 'fadeOut',
-                                         animateIn: 'fadeIn',
-                                         nav: true,
-                                         /*dots: true,*/
-                                         autoplayHoverPause: false,
-                                         items: 3,
-                                         navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
-                                         "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
-                                         responsive: {
-                                             0: {
-                                                 items: 1
-                                             },
-                                             600: {
-                                                 items: 3
-                                             },
-                                             1000: {
-                                                 items: 5
-                                             }
-                                         }
+                                        loop: true,
+                                        rewind: false,
+                                        rtl: true,
+                                        navigation : true,
+                                        autoplay: true,
+                                        margin: 3,
+                                        animateOut: 'fadeOut',
+                                        animateIn: 'fadeIn',
+                                        responsiveClass: true,
+                                        nav: true,
+                                        dots: false,
+                                        autoplayHoverPause: false,
+                                        items: 6,
+                                        navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
+                                        "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+                                        responsive: {
+                                            0: {
+                                                items: 1
+                                            },
+                                            600: {
+                                                items: 6
+                                            },
+                                            1000: {
+                                                items: 8
+                                            }
+                                        }
                                     });
                              }
                              else if(obj.ModuleName.toLowerCase() =="imagetextslider")

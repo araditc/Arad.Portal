@@ -691,7 +691,7 @@
         "Title": "AddNewCurrency",
         "LevelNo": 2,
         "Priority": 6,
-        "Icon": "fa fa-dollar",
+        "Icon": "fas fa-dollar-sign",
         "ClientAddress": "/Currency/List",
         "Actions": [
           {
