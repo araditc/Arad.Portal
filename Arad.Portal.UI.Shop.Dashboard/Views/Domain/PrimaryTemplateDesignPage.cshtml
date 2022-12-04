@@ -1186,7 +1186,7 @@
                                            nav: true,
                                            dots: false,
                                            autoplayHoverPause: false,
-                                           items: 6,
+                                           items: 7,
                                            navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
                                                      "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
                                            responsive: {
@@ -1194,10 +1194,10 @@
                                                    items: 1
                                                },
                                                600: {
-                                                   items: 6
+                                                   items: 5
                                                },
                                                1000: {
-                                                   items: 8
+                                                   items: 7
                                                }
                                            }
                                        });
@@ -1742,9 +1742,8 @@
                                                     data : JSON.stringify(obj),
                                                     async : false,
                                                     dataType : "html",
-                                                    statusCode:
-                                                    {
-                                                        200: function(data) {
+                                                   
+                                                        success: function(data) {
                                                             debugger;
                                                             var tag = "headerSection";
                                                             var divId = `#${tag}_paramSection`;
@@ -1760,8 +1759,12 @@
                                                                 CKEDITOR.dtd.$removeEmpty['i'] = false;
                                                                 CKEDITOR.dtd.$removeEmpty['span'] = false;
                                                             });
-                                                        }
-                                                    }
+                                                        },
+                                                        error: function(xhr, ajaxOptions, thrownError) {
+                                                     alert(xhr.status);
+                                                    },
+
+                                                   
                                                 });
 
                                             }
@@ -2676,7 +2679,7 @@
                                         nav: true,
                                         dots: false,
                                         autoplayHoverPause: false,
-                                        items: 6,
+                                        items: 7,
                                         navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
                                         "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
                                         responsive: {
@@ -2684,10 +2687,10 @@
                                                 items: 1
                                             },
                                             600: {
-                                                items: 6
+                                                items: 5
                                             },
                                             1000: {
-                                                items: 8
+                                                items: 7
                                             }
                                         }
                                     });

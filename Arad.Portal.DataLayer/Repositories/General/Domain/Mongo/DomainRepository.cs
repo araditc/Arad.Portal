@@ -21,6 +21,7 @@ using Arad.Portal.DataLayer.Entities.General.Domain;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo;
+using Arad.Portal.DataLayer.Models.DesignStructure;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 {
@@ -408,13 +409,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             if (entity != null)
             {
 
-                #region Add Modification
-                var currentModifications = entity.Modifications;
-                var mod = GetCurrentModification($"Change domain by userId={this.GetUserId()} and UserName={this.GetUserName()} at datetime={DateTime.Now.ToPersianDdate()}");
-                currentModifications.Add(mod);
-                #endregion
+                //#region Add Modification
+                //var currentModifications = entity.Modifications;
+                //var mod = GetCurrentModification($"Change domain by userId={this.GetUserId()} and UserName={this.GetUserName()} at datetime={DateTime.Now.ToPersianDdate()}");
+                //currentModifications.Add(mod);
+                //#endregion
 
-                entity.Modifications = currentModifications;
+                //entity.Modifications = currentModifications;
                 entity.DomainName = dto.DomainName;
                 entity.OwnerUserId = dto.OwnerUserId;
                 entity.OwnerUserName = dto.OwnerUserName;
@@ -463,8 +464,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 entity.InvoiceNumberProcedure = (InvoiceNumberProcedure)Convert.ToInt32(dto.InvoiceNumberProcedure);
                 entity.DomainPaymentProviders = _mapper.Map<List<ProviderDetail>>(dto.DomainPaymentProviders);
                 entity.DefaultShippingTypeId = dto.DefaultShippingTypeId;
-
-                entity.HomePageDesign = dto.HomePageDesign;
 
                 var updateResult = await _context.Collection.ReplaceOneAsync(_ => _.DomainId == dto.DomainId, entity);
 
@@ -767,6 +766,68 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
         public bool HasDefaultDomain()
         {
             return _context.Collection.AsQueryable().Any(_=>_.IsDefault);
+        }
+
+        public async Task<Result> UpdateDynamicPagesOfDomain(DomainPageModel model)
+        {
+            var res = new Result();
+            var domainEntity = await _context.Collection.Find(_ => _.DomainId == model.DomainId).FirstOrDefaultAsync();
+            var obj = new PageDesignContent()
+            {
+                LanguageId = model.LanguageId,
+                HeaderPart = model.HeaderPart,
+                FooterPart = model.FooterPart,
+                MainPageContainerPart = model.MainPageContainerPart
+            };
+
+            switch (model.PageType)
+            {
+                case PageType.HomePage:
+                    if (domainEntity.HomePageDesign.Any(_ => _.LanguageId == model.LanguageId))
+                    {
+                        var home = domainEntity.HomePageDesign.FirstOrDefault(_ => _.LanguageId == model.LanguageId);
+                        home.HeaderPart = obj.HeaderPart;
+                        home.FooterPart = obj.FooterPart;
+                        home.MainPageContainerPart = obj.MainPageContainerPart;
+                    }
+                    else
+                    {
+                        domainEntity.HomePageDesign.Add(obj);
+                    }
+                    break;
+                case PageType.BlogPage:
+                    if (domainEntity.BlogPageDesign.Any(_ => _.LanguageId == model.LanguageId))
+                    {
+                        var blog = domainEntity.BlogPageDesign.FirstOrDefault(_ => _.LanguageId == model.LanguageId);
+                        blog.HeaderPart = obj.HeaderPart;
+                        blog.FooterPart = obj.FooterPart;
+                        blog.MainPageContainerPart = obj.MainPageContainerPart;
+                    }
+                    else
+                    {
+                        domainEntity.BlogPageDesign.Add(obj);
+                    }
+                    break;
+                case PageType.ProductPage:
+                    if (domainEntity.ProductPageDesign.Any(_ => _.LanguageId == model.LanguageId))
+                    {
+                        var pro = domainEntity.ProductPageDesign.FirstOrDefault(_ => _.LanguageId == model.LanguageId);
+                        pro.HeaderPart = obj.HeaderPart;
+                        pro.FooterPart = obj.FooterPart;
+                        pro.MainPageContainerPart = obj.MainPageContainerPart;
+                    }
+                    else
+                    {
+                        domainEntity.ProductPageDesign.Add(obj);
+                    }
+                    break;
+            }
+            var result = await _context.Collection.ReplaceOneAsync(_ => _.DomainId == model.DomainId, domainEntity);
+            if(result.IsAcknowledged)
+            {
+                res.Succeeded = true;
+            }
+            return res;
         }
     }
 }

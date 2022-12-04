@@ -399,6 +399,37 @@
             }
         }
         $(document).ready(function() {
+            $(".owl-carousel").owlCarousel({
+                loop: true,
+                rewind: false,
+                rtl: true,
+                navigation: true,
+                autoplay: true,
+                margin: 3,
+                animateOut: 'fadeOut',
+                animateIn: 'fadeIn',
+                responsiveClass: true,
+                nav: true,
+                dots: false,
+                autoplayHoverPause: false,
+                items: 7,
+                navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
+                    "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    600: {
+                        items: 5
+                    },
+                    1000: {
+                        items: 7
+                    }
+                }
+            });
+
+
+
             changeScreen();
             $(window).resize(changeScreen);
 

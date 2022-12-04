@@ -14,6 +14,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
     {
         Task<Result> AddDomain(DomainDTO dto);
         Task<Result> EditDomain(DomainDTO dto);
+
+        Task<Result> UpdateDynamicPagesOfDomain(DomainPageModel model);
         Task<Result> DomainChangePrice(DomainPrice dto);
         Task<PagedItems<DomainViewModel>> AllDomainList(string queryString, ApplicationUser user);
         Task<Result> DeleteDomain(string domainId, string modificationReason);
@@ -26,6 +28,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
         bool HasDefaultDomain();
         Entities.General.Domain.Domain FetchDomainByName(string domainName);
         Result<DomainDTO> GetDefaultDomain();
+
+        
         SMTP GetSMTPAccount(string domainName);
         Task<Result> Restore(string id);
         List<SelectListModel> GetAllActiveDomains();

@@ -171,62 +171,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
        [HttpPost]
        public async Task<IActionResult> SavePageContent([FromBody]DomainPageModel model)
        {
-            var domainEntity = _domainRepository.FetchDomain(model.DomainId);
-           
-            //var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
-            //var languageId = _lanRepository.FetchBySymbol(lanIcon);
-
-            var obj = new PageDesignContent()
-            {
-                LanguageId = model.LanguageId,
-                HeaderPart = model.HeaderPart,
-                FooterPart = model.FooterPart,
-                MainPageContainerPart = model.MainPageContainerPart
-            };
-           
-            switch (model.PageType)
-            {
-                case PageType.HomePage:
-                    if (domainEntity.ReturnValue.HomePageDesign.Any(_ => _.LanguageId == model.LanguageId))
-                    {
-                        var home = domainEntity.ReturnValue.HomePageDesign.FirstOrDefault(_ => _.LanguageId == model.LanguageId);
-                        home.HeaderPart = obj.HeaderPart;
-                        home.FooterPart = obj.FooterPart;
-                        home.MainPageContainerPart = obj.MainPageContainerPart;
-                    }
-                    else
-                    {
-                        domainEntity.ReturnValue.HomePageDesign.Add(obj);
-                    }
-                    break;
-                case PageType.BlogPage:
-                    if (domainEntity.ReturnValue.BlogPageDesign.Any(_ => _.LanguageId == model.LanguageId))
-                    {
-                        var blog = domainEntity.ReturnValue.BlogPageDesign.FirstOrDefault(_ => _.LanguageId == model.LanguageId);
-                        blog.HeaderPart = obj.HeaderPart;
-                        blog.FooterPart = obj.FooterPart;
-                        blog.MainPageContainerPart = obj.MainPageContainerPart;
-                    }
-                    else
-                    {
-                        domainEntity.ReturnValue.BlogPageDesign.Add(obj);
-                    }
-                    break;
-                case PageType.ProductPage:
-                    if (domainEntity.ReturnValue.ProductPageDesign.Any(_ => _.LanguageId == model.LanguageId))
-                    {
-                        var pro = domainEntity.ReturnValue.ProductPageDesign.FirstOrDefault(_ => _.LanguageId == model.LanguageId);
-                        pro.HeaderPart = obj.HeaderPart;
-                        pro.FooterPart = obj.FooterPart;
-                        pro.MainPageContainerPart = obj.MainPageContainerPart;
-                    }
-                    else
-                    {
-                        domainEntity.ReturnValue.ProductPageDesign.Add(obj);
-                    }
-                    break;
-            }
-            var result = await _domainRepository.EditDomain(domainEntity.ReturnValue);
+            var result = await _domainRepository.UpdateDynamicPagesOfDomain(model);
 
             return Json(result.Succeeded ? new { Status = "Success", result.Message }
                  : new { Status = "Error", result.Message });
