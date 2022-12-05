@@ -21,7 +21,8 @@ namespace Arad.Portal.DataLayer.Entities.General.ContentCategory
 
         public string ParentCategoryId { get; set; }
         /// <summary>
-        /// MultiLingualProperty is an object which we store all field of entities that has different value in languages(string type and list of string ) here name and languageId and UrlFriend will be filled
+        /// MultiLingualProperty is an object which we store all field of entities that has different value in languages(string type and list of string )
+        /// here name and languageId and UrlFriend will be filled
         /// </summary>
         public List<MultiLingualProperty> CategoryNames { get; set; }
 
