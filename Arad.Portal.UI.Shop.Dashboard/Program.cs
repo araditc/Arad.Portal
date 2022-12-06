@@ -25,19 +25,33 @@ namespace Arad.Portal.UI.Shop.Dashboard
                 .AddCommandLine(args)
                 .Build();
             var logAddress = config["LogConfiguration:LogFileDirectory"];
-
-            if (!Directory.Exists(logAddress))
+            if (!string.IsNullOrWhiteSpace(logAddress))
             {
-                Directory.CreateDirectory(logAddress);
-            }
+                if (!Directory.Exists(logAddress))
+                {
+                    Directory.CreateDirectory(logAddress);
+                }
+                var fileName = config["LogConfiguration:LogFileName"];
+                _path = Path.Combine(logAddress, fileName);
 
-            var fileName = config["LogConfiguration:LogFileName"];
-            _path = Path.Combine(logAddress, fileName);
-            if(!File.Exists(_path))
+            }
+            else
+            {
+
+                var dir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Log", "StoreLog");
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+                _path = Path.Combine(dir, "StoreLogs.txt");
+
+
+            }
+            if (!File.Exists(_path))
             {
                 File.Create(_path);
             }
-            
+
             CreateHostBuilder(args).Build().Run();
 
         }

@@ -152,7 +152,7 @@ namespace Arad.Portal.UI.Shop
                 {
                     options.Cookie.IsEssential = true;
                     options.Cookie.SameSite = SameSiteMode.Strict;
-                    options.Cookie.Name = "IdentityCookie";
+                    options.Cookie.Name = "IdentityShopCookie";
                 }
             });
 
@@ -322,26 +322,39 @@ namespace Arad.Portal.UI.Shop
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+            string localStorage = Configuration["LocalStaticFileStorage"];
             try
             {
-                if (!System.IO.Directory.Exists(Configuration["LocalStaticFileStorage"]))
+               
+                if (!string.IsNullOrWhiteSpace(localStorage))
                 {
-                    System.IO.Directory.CreateDirectory(Configuration["LocalStaticFileStorage"]);
+                    if (!System.IO.Directory.Exists(Configuration["LocalStaticFileStorage"]))
+                    {
+                        System.IO.Directory.CreateDirectory(Configuration["LocalStaticFileStorage"]);
+                    }
+                } 
+                else
+                {
+                    localStorage = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot", "TempLocalStorage");
+                    if (!System.IO.Directory.Exists(localStorage))
+                    {
+                        System.IO.Directory.CreateDirectory(localStorage);
+                    }
                 }
-                var path1 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/Contents");
-                var path2 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/ProductGroups");
-                var path3 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/Products");
-                var path4 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/UserProfiles");
-                var path5 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/SliderModule");
-                var path6 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/DomainDesign");
-                var path7 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorContentImages");
-                var path8 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorDomainImages");
-                var path9 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorProductImages");
-                var path10 = Path.Combine(Configuration["LocalStaticFileStorage"], "Log/DashboardLogs");
-                var path11 = Path.Combine(Configuration["LocalStaticFileStorage"], "Log/StoreLogs");
-                var path12 = Path.Combine(Configuration["LocalStaticFileStorage"], "ProductFiles");
-                var path13 = Path.Combine(Configuration["LocalStaticFileStorage"], "LuceneIndexes");
+                
+                var path1 = Path.Combine(localStorage, "images/Contents");
+                var path2 = Path.Combine(localStorage, "images/ProductGroups");
+                var path3 = Path.Combine(localStorage, "images/Products");
+                var path4 = Path.Combine(localStorage, "images/UserProfiles");
+                var path5 = Path.Combine(localStorage, "images/SliderModule");
+                var path6 = Path.Combine(localStorage, "images/DomainDesign");
+                var path7 = Path.Combine(localStorage, "ckEditorContentImages");
+                var path8 = Path.Combine(localStorage, "ckEditorDomainImages");
+                var path9 = Path.Combine(localStorage, "ckEditorProductImages");
+                var path10 = Path.Combine(localStorage, "Log/DashboardLogs");
+                var path11 = Path.Combine(localStorage, "Log/StoreLogs");
+                var path12 = Path.Combine(localStorage, "ProductFiles");
+                var path13 = Path.Combine(localStorage, "LuceneIndexes");
                 List<string> pathes = new List<string>() 
                 { path1, path2, path3, path4, path5, path6, path7, path8, path9, path10, path11, path12, path13 };
 
@@ -361,7 +374,7 @@ namespace Arad.Portal.UI.Shop
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(Configuration["LocalStaticFileStorage"]),
+                FileProvider = new PhysicalFileProvider(localStorage),
                 RequestPath = new PathString("/Images"),
                 //EnableDirectoryBrowsing = false
             });
@@ -470,8 +483,6 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<ISliderRepository, SliderRepository>();
             
             #endregion repositories
-
-
 
         }
 

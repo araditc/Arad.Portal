@@ -89,6 +89,7 @@ using System.Collections.Concurrent;
 using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using MongoDbGenericRepository;
+using Lucene.Net.Search;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {

@@ -86,13 +86,15 @@
 
 
     $(document).ready(function(){
+        debugger;
         $("#btnFilter").click(function() {
+            debugger;
             var obj = {} //an instance of selectedFilter
             obj.GroupIds = [];
             obj.SelectedDynamicFilters = [];
             var priceRange = priceRangeSlider.noUiSlider.get();
-            obj.FirstPrice = parseFloat(priceRange.split(",")[0]);
-            obj.LastPrice = parseFloat(priceRange.split(",")[1]);
+            obj.FirstPrice = parseFloat(priceRange[0]);
+            obj.LastPrice = parseFloat(priceRange[1]);
 
              $.each($("input[name='groupIds']:checked"), function(){
                 obj.GroupIds.push($(this).val());
@@ -113,39 +115,37 @@
                 obj.SelectedDynamicFilters.push(filter)
             });
 
-              $.ajax({
-                        url:  '@Url.Action("Filter", "Product")',
-                        contentType: 'application/json',
-                        data:  JSON.stringify(obj),
-                        type: 'Post',
-                        dataType:'json',
-                        beforeSend: function () {
-                           /* AddLoading($("#addProductCard"));*/
-                        },
-                        success: function (result) {
-                            debugger;
-                            $(".productListSec").html("");
-                            $(".productListSec").load();
-                            $(".paginationSec").html("");
-                            $(".paginationSec").html(result.pagination);
-                            $("#filterObj").val(JSON.stringify(obj));
-                            if (result.sorting.trim() != "") {
-                                $(".sortingSec").html();
-                                $(".sortingSec").html(result.sorting);
-                            }
-                         },
-                        error: function (xhr, ajaxOptions, thrownError)
-                        {
-                            debugger;
-                            alert(xhr.status);
-                            alert(thrownError);
-                        },
-                        complete: function () {
-                           /* removeLoading($("#addProductCard"));*/
+            $.ajax({
+                    url:  '@Url.Action("Filter", "Product")',
+                    contentType: 'application/json',
+                    data:  JSON.stringify(obj),
+                    type: 'Post',
+                    dataType:'json',
+                    beforeSend: function () {
+                        /* AddLoading($("#addProductCard"));*/
+                    },
+                    success: function (result) {
+                        debugger;
+                        $(".productListSec").html("");
+                        $(".productListSec").html(result.products);
+                        $(".paginationSec").html("");
+                        $(".paginationSec").html(result.pagination);
+                        $("#filterObj").val(JSON.stringify(obj));
+                        if (result.sorting.trim() != "") {
+                            $(".sortingSec").html();
+                            $(".sortingSec").html(result.sorting);
                         }
-                });
-
-           
+                        },
+                    error: function (xhr, ajaxOptions, thrownError)
+                    {
+                        debugger;
+                        alert(xhr.status);
+                        alert(thrownError);
+                    },
+                    complete: function () {
+                        /* removeLoading($("#addProductCard"));*/
+                    }
+            });
         });
     })
 

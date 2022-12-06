@@ -37,7 +37,7 @@
     @{
         if(CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir")
         {
-                         <link href="@Url.Content($"~/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
+                             <link href="@Url.Content($"~/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
         }
     }
     <link href="@Url.Content($"~/lib/font-awesome/css/all.css")" rel="stylesheet" />
@@ -107,7 +107,7 @@
     <div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <div class="modal-content col-12">
-                <div class="modal-header">
+                <div class="modal-header">f
                     <div class="col-1">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -2579,7 +2579,8 @@
                              case "LoginAndProfile":
                               if(parid = "isShop")
                               {
-                                  isShop = $("#isShop").is(":checked");
+                                  debugger;
+                                  isShop = $(this).is(":checked");
                               }
                              break;
                              case "MultiLingualFlags":

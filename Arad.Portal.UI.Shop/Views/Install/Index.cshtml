@@ -143,12 +143,6 @@
                                 </select>
                                 <span data-val-result="CurrencyId" class="text-danger"></span>
                             </div>
-                            <div class="form-group col-12 col-md-3">
-                                <label class="form-label">@Language.GetString("PriceValue")</label>
-                                <input type="number" class="form-control" asp-for="PriceValue" />
-                                <span data-val-result="PriceValue" class="text-danger"></span>
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -390,11 +384,7 @@
                 $("span[data-val-result='CurrencyId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
                 flag = true;
             }
-
-            if ($("#PriceValue").val() == "" || $("#PriceValue").val() == "0") {
-                $("span[data-val-result='PriceValue']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                flag = true;
-            }
+            
             if ($("#ConnectionString").val().trim() == "") {
                 $("span[data-val-result='ConnectionString']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;

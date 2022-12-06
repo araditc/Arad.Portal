@@ -78,6 +78,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
         [Route("{language?}/products")]
         public async Task<IActionResult> Index()
+        
         {
             ViewData["DomainTitle"] = this.DomainTitle;
             ViewData["PageTitle"] = Language.GetString("design_Products");

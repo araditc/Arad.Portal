@@ -23,7 +23,8 @@
         {
 
             <div class="item thumb-wrapper my-1 text-center">
-             <a role="button" href="#">
+                <a role="button" href="@(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
+                       item.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLangId).UrlFriend : $"/product/{item.ProductCode})")">
                 <div class="img-overlay-wrap">
                     @if ((item.DiscountType != null && (item.DiscountType == DiscountType.Percentage || item.DiscountType == DiscountType.Fixed)))
                     {
@@ -94,7 +95,7 @@
                 </div>
 
                     <div class="proContent">
-                        <p class="m-1 fw-bold">
+                        <p class="m-1">
                             @(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
                                 item.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLangId).Name : "")
                         </p>

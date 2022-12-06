@@ -15,6 +15,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public bool HasDefaultHomeTemplate { get; set; }
 
+        #region ApplicationUserSection
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -27,12 +28,13 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public string PhoneNumber { get; set; }
 
-        public long PriceValue { get; set; }
-
         public string FullMobile { get; set; }
 
         public string DefaultLanguageId { get; set; }
 
+        #endregion
+
+        #region DomainSection
         public bool IsShop { get; set; }
 
         public bool IsMultiLinguals { get; set; }
@@ -43,6 +45,9 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public string CurrencyId { get; set; }
 
+        #endregion
+
+        #region appsetting
         public string ConnectionString { get; set; }
 
         public string LogFileDirectory { get; set; }
@@ -54,5 +59,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public string AradVas_Password { get; set; }
         public string AradVas_Number { get; set; }
         public string AradVas_Domain { get; set; }
+
+        #endregion
     }
 }

@@ -57,7 +57,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
             ViewBag.LoadAnimationType = moduleParameters.LoadAnimationType;
             
             var lst = _productRepository.GetSpecialProducts(moduleParameters.Count.Value, currencyDto.CurrencyId, moduleParameters.ProductOrContentType.Value, 0, moduleParameters.DomainId);
-            if(User.Identity.IsAuthenticated)
+            foreach (var item in lst)
+            {
+                foreach (var obj in item.MultiLingualProperties)
+                {
+                    obj.Name = obj.Name.Length > 80 ? obj.Name.Substring(0, 80) + "..." : obj.Name;
+                }
+            }
+            if (User.Identity.IsAuthenticated)
             {
                 var userId = _accessor.HttpContext.User.GetUserId();
                 var userFavoriteList = _userRepository.GetUserFavoriteList(userId, FavoriteType.Product);

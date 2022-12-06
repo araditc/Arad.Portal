@@ -86,7 +86,36 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             }
             return result;
         }
-        
+
+
+        private  bool ScrambledEquals<SpecValue>(IEnumerable<SpecValue> list1, IEnumerable<SpecValue> list2)
+        {
+            var cnt = new Dictionary<SpecValue, int>();
+            foreach (SpecValue s in list1)
+            {
+                if (cnt.ContainsKey(s))
+                {
+                    cnt[s]++;
+                }
+                else
+                {
+                    cnt.Add(s, 1);
+                }
+            }
+            foreach (SpecValue s in list2)
+            {
+                if (cnt.ContainsKey(s))
+                {
+                    cnt[s]--;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return cnt.Values.All(c => c == 0);
+        }
+
         public async Task<Result<CartItemsCount>> AddOrChangeProductToUserCart(string productId, int orderCount, List<SpecValue> specValues, string shoppingCartDetailId = "")
         {
             var result = new Result<CartItemsCount>();
@@ -119,14 +148,41 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
            
             if (productEntity != null)
             {
-                if(!string.IsNullOrWhiteSpace(shoppingCartDetailId))
-                //if (userCartEntity.Details.Any(_ => _.Products.Any(a => a.ProductId == productId)))
+                var finalFlag = true;
+                if (!string.IsNullOrWhiteSpace(shoppingCartDetailId) || 
+                    userCartEntity.Details.Any(_ => _.Products.Any(a => a.ProductId == productId)))
                 {
-                    var res = await ChangeProductCountInUserCart(userId, productId, orderCount, specValues, shoppingCartDetailId);
-                    result.Message = res.Message;
-                    result.Succeeded = res.Succeeded;
+                    var purchasePerSeller = userCartEntity.Details.FirstOrDefault(_ => _.Products.Any(a => a.ProductId == productId));
+                   
+                    foreach (var pro in purchasePerSeller.Products.Where(a => a.ProductId == productId))
+                    {
+                        var flag = true;
+                        foreach (var spec in pro.ProductSpecValues)
+                        {
+                            var modelSpec = specValues.FirstOrDefault(a => a.SpecificationId == spec.SpecificationId);
+                            if (modelSpec != null && modelSpec.SpecificationValue == spec.SpecificationValue)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                flag = false;
+                                break;
+                            }
+                        }
+                        if(flag)
+                        {
+                            var res = await ChangeProductCountInUserCart(userId, productId, orderCount, specValues, pro.ShoppingCartDetailId);
+                            result.Message = res.Message;
+                            result.Succeeded = res.Succeeded;
+                            finalFlag = false;
+                        }
+                    }
+                   
+                   
                 }
-                else
+                
+                if(finalFlag)
                 {
                     var currentPriceValue = GetCurrentPrice(productEntity);
                     var res = await GetCurrentDiscountPerUnit(productEntity, currentPriceValue);
@@ -409,7 +465,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             }
             else
             {
-                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
+                result.Message = Language.GetString("AlertAndMessage_ObjectNotFound");
             }
             return result;
         }
@@ -419,7 +475,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             var result = new Result<ShoppingCartDTO>();
             result.ReturnValue = new ShoppingCartDTO();
             var dto = new ShoppingCartDTO();
-            Entities.Shop.ShoppingCart.ShoppingCart userCartEntity = null;
+            Entities.Shop.ShoppingCart.ShoppingCart userCartEntity;
              if(!_context.Collection
                 .Find(_ => _.CreatorUserId == userId && !_.IsDeleted &&
                       _.IsActive && _.AssociatedDomainId == domainId).Any())
@@ -455,104 +511,108 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     var sellerEntity = await _userManager.FindByIdAsync(sellerPurchase.SellerId);
                     var domainOwner = sellerEntity.Domains.FirstOrDefault(_ => _.IsOwner).DomainId;
                     var shippingEntity = _shippingContext.Collection.Find(_ => _.AssociatedDomainId == domainOwner).FirstOrDefault();
-                    var fixedExpense = shippingEntity.AllowedShippingTypes.FirstOrDefault(_ => _.HasFixedExpense).FixedExpenseValue;
-                    finalPaymentPrice += fixedExpense;
-
-                    sellerFactor += sellerPurchase.ShippingExpense;
-                    foreach (var pro in sellerPurchase.Products.Where(_=>!_.IsDeleted))
+                    if(shippingEntity != null)
                     {
-                        var productId = pro.ProductId;
-                        var productEntity = _productContext.ProductCollection
-                       .Find(_ => _.ProductId == productId).FirstOrDefault();
-                       var inventoryDetail = FindProductSpecValuesRecord(productId, pro.ProductSpecValues);
-                        ShoppingCartDetailDTO det = new ShoppingCartDetailDTO();
-                        if (productEntity != null && productEntity.IsActive 
-                            && !productEntity.IsDeleted && inventoryDetail != null && inventoryDetail.Count > 0 )
+                        var fixedExpense = shippingEntity.AllowedShippingTypes.FirstOrDefault(_ => _.HasFixedExpense).FixedExpenseValue;
+                        finalPaymentPrice += fixedExpense;
+
+                        sellerFactor += sellerPurchase.ShippingExpense;
+                        foreach (var pro in sellerPurchase.Products.Where(_ => !_.IsDeleted))
                         {
-                            var activePriceValue = GetCurrentPrice(productEntity);
-                            var discountPerUnit = await GetCurrentDiscountPerUnit(productEntity, activePriceValue);
-                            det = new ShoppingCartDetailDTO
+                            var productId = pro.ProductId;
+                            var productEntity = _productContext.ProductCollection
+                           .Find(_ => _.ProductId == productId).FirstOrDefault();
+                            var inventoryDetail = FindProductSpecValuesRecord(productId, pro.ProductSpecValues);
+                            ShoppingCartDetailDTO det = new ShoppingCartDetailDTO();
+                            if (productEntity != null && productEntity.IsActive
+                                && !productEntity.IsDeleted && inventoryDetail != null && inventoryDetail.Count > 0)
                             {
-                                RowNumber = rowNumber,
-                                ShoppingCartDetailId = pro.ShoppingCartDetailId,
-                                ProductCode = productEntity.ProductCode,
-                                CreationDate = DateTime.Now,
-                                CreatorUserId = userCartEntity.CreatorUserId,
-                                CreatorUserName = userCartEntity.CreatorUserName,
-                                ProductId = productId,
-                                ProductName = pro.ProductName,
-                                OrderCount =  pro.OrderCount,
-                                PricePerUnit = activePriceValue,
-                                ProductSpecValues = pro.ProductSpecValues,
-                                DiscountPricePerUnit = discountPerUnit.DiscountPerUnit,
-                                TotalAmountToPay = (activePriceValue - discountPerUnit.DiscountPerUnit) * pro.OrderCount,
-                                ProductImage = productEntity.Images.Any(_=>_.IsMain) ? 
-                                               productEntity.Images.FirstOrDefault(_ => _.IsMain) : productEntity.Images.FirstOrDefault()
-                            };
-                            finalPaymentPrice += det.TotalAmountToPay;
-                            sellerFactor += det.TotalAmountToPay;
-
-                            #region changing in final amount per unit
-                            decimal previousAmountPerUnit = pro.PricePerUnit - pro.DiscountPricePerUnit;
-                            decimal currentAmountPerUnit = det.PricePerUnit - det.DiscountPricePerUnit;
-
-                            if (previousAmountPerUnit != currentAmountPerUnit)
-                            {
-                                det.PreviousFinalPricePerUnit = previousAmountPerUnit; 
-                                var difference = (currentAmountPerUnit >= previousAmountPerUnit ) ? (currentAmountPerUnit - previousAmountPerUnit) :
-                                                (previousAmountPerUnit - currentAmountPerUnit);
-                                if (previousAmountPerUnit < currentAmountPerUnit)
+                                var activePriceValue = GetCurrentPrice(productEntity);
+                                var discountPerUnit = await GetCurrentDiscountPerUnit(productEntity, activePriceValue);
+                                det = new ShoppingCartDetailDTO
                                 {
-                                    det.Notifications.Add(Language.GetString("AlertAndMessage_ProductPriceIncrease")
-                                        .Replace("[0]", $"{difference} {userCartEntity.ShoppingCartCulture.CurrencySymbol}"));
-                                }
-                                else
+                                    RowNumber = rowNumber,
+                                    ShoppingCartDetailId = pro.ShoppingCartDetailId,
+                                    ProductCode = productEntity.ProductCode,
+                                    CreationDate = DateTime.Now,
+                                    CreatorUserId = userCartEntity.CreatorUserId,
+                                    CreatorUserName = userCartEntity.CreatorUserName,
+                                    ProductId = productId,
+                                    ProductName = pro.ProductName,
+                                    OrderCount = pro.OrderCount,
+                                    PricePerUnit = activePriceValue,
+                                    ProductSpecValues = pro.ProductSpecValues,
+                                    DiscountPricePerUnit = discountPerUnit.DiscountPerUnit,
+                                    TotalAmountToPay = (activePriceValue - discountPerUnit.DiscountPerUnit) * pro.OrderCount,
+                                    ProductImage = productEntity.Images.Any(_ => _.IsMain) ?
+                                                   productEntity.Images.FirstOrDefault(_ => _.IsMain) : productEntity.Images.FirstOrDefault()
+                                };
+                                finalPaymentPrice += det.TotalAmountToPay;
+                                sellerFactor += det.TotalAmountToPay;
+
+                                #region changing in final amount per unit
+                                decimal previousAmountPerUnit = pro.PricePerUnit - pro.DiscountPricePerUnit;
+                                decimal currentAmountPerUnit = det.PricePerUnit - det.DiscountPricePerUnit;
+
+                                if (previousAmountPerUnit != currentAmountPerUnit)
                                 {
-                                    difference = previousAmountPerUnit - currentAmountPerUnit;
-                                    det.Notifications.Add(Language.GetString("AlertAndMessage_ProductPriceDecrease")
-                                        .Replace("[0]", $"{difference} {userCartEntity.ShoppingCartCulture.CurrencySymbol}"));
+                                    det.PreviousFinalPricePerUnit = previousAmountPerUnit;
+                                    var difference = (currentAmountPerUnit >= previousAmountPerUnit) ? (currentAmountPerUnit - previousAmountPerUnit) :
+                                                    (previousAmountPerUnit - currentAmountPerUnit);
+                                    if (previousAmountPerUnit < currentAmountPerUnit)
+                                    {
+                                        det.Notifications.Add(Language.GetString("AlertAndMessage_ProductPriceIncrease")
+                                            .Replace("[0]", $"{difference} {userCartEntity.ShoppingCartCulture.CurrencySymbol}"));
+                                    }
+                                    else
+                                    {
+                                        difference = previousAmountPerUnit - currentAmountPerUnit;
+                                        det.Notifications.Add(Language.GetString("AlertAndMessage_ProductPriceDecrease")
+                                            .Replace("[0]", $"{difference} {userCartEntity.ShoppingCartCulture.CurrencySymbol}"));
+                                    }
                                 }
+                                #endregion changing in final amount pre unit
+
+
+                                //check inventory if it is less than orderCount then change our order Count to our inventory
+                                if (pro.OrderCount > inventoryDetail.Count)
+                                {
+                                    det.OrderCount = inventoryDetail.Count;
+
+                                    det.Notifications.Add(Language.GetString("AlertAndMessage_ProductDecreaseInventory")
+                                        .Replace("[0]", productEntity.Inventory.ToString()));
+                                }
+
                             }
-                            #endregion changing in final amount pre unit
-
-
-                            //check inventory if it is less than orderCount then change our order Count to our inventory
-                            if (pro.OrderCount > inventoryDetail.Count)
+                            else
+                            if (productEntity.IsDeleted || inventoryDetail.Count == 0)
                             {
-                                det.OrderCount = inventoryDetail.Count;
-
-                                det.Notifications.Add(Language.GetString("AlertAndMessage_ProductDecreaseInventory")
-                                    .Replace("[0]", productEntity.Inventory.ToString()));
+                                det = new ShoppingCartDetailDTO
+                                {
+                                    RowNumber = rowNumber,
+                                    ShoppingCartDetailId = pro.ShoppingCartDetailId,
+                                    CreationDate = DateTime.Now,
+                                    CreatorUserId = userCartEntity.CreatorUserId,
+                                    CreatorUserName = userCartEntity.CreatorUserName,
+                                    ProductId = productId,
+                                    ProductName = pro.ProductName,
+                                    OrderCount = 0,
+                                    PricePerUnit = 0,
+                                    DiscountPricePerUnit = 0,
+                                    TotalAmountToPay = 0,
+                                    ProductSpecValues = pro.ProductSpecValues,
+                                    PreviousOrderCount = pro.OrderCount,
+                                    PreviousFinalPricePerUnit = pro.PricePerUnit - pro.DiscountPricePerUnit
+                                };
+                                det.Notifications.Add(Language.GetString("AlertAndMessage_ProductNullCount"));
                             }
-                           
+                            rowNumber += 1;
+                            obj.Products.Add(det);
                         }
-                        else 
-                        if(productEntity.IsDeleted || inventoryDetail.Count == 0)
-                        {
-                            det = new ShoppingCartDetailDTO
-                            {
-                                RowNumber = rowNumber,
-                                ShoppingCartDetailId = pro.ShoppingCartDetailId,
-                                CreationDate = DateTime.Now,
-                                CreatorUserId = userCartEntity.CreatorUserId,
-                                CreatorUserName = userCartEntity.CreatorUserName,
-                                ProductId = productId,
-                                ProductName = pro.ProductName,
-                                OrderCount = 0,
-                                PricePerUnit = 0,
-                                DiscountPricePerUnit = 0,
-                                TotalAmountToPay = 0,
-                                ProductSpecValues = pro.ProductSpecValues,
-                                PreviousOrderCount = pro.OrderCount,
-                                PreviousFinalPricePerUnit = pro.PricePerUnit - pro.DiscountPricePerUnit
-                            };
-                            det.Notifications.Add(Language.GetString("AlertAndMessage_ProductNullCount"));
-                        }
-                        rowNumber += 1;
-                        obj.Products.Add(det);
-                    }
-                    obj.TotalDetailsAmountWithShipping = sellerFactor;
-                    dto.Details.Add(obj);
+                        obj.TotalDetailsAmountWithShipping = sellerFactor;
+                        dto.Details.Add(obj);
+                     }
+                    
                 }
 
             //then update current shopping cart in database

@@ -50,6 +50,13 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             ViewBag.LoadAnimation = loadAnimation;
             ViewBag.LoadAnimationType = loadAnimationType;
             var lst = _productRepository.GetSpecialProducts(count, currencyDto.CurrencyId, productType);
+            foreach (var item in lst)
+            {
+                foreach (var obj in item.MultiLingualProperties)
+                {
+                    obj.Name = obj.Name.Length > 80 ? obj.Name.Substring(0, 80) + "..." : obj.Name;
+                }
+            }
             return selectionTemplate switch
             {
                 ProductTemplateDesign.First => View("First", lst),

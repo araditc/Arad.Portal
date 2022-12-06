@@ -37,6 +37,8 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using KeyVal = Arad.Portal.DataLayer.Models.Shared.KeyVal;
 using Arad.Portal.DataLayer.Contracts.General.BasicData;
 using AspNetCore.Identity.MongoDbCore.Models;
+using IApplicationLifetime = Microsoft.Extensions.Hosting.IApplicationLifetime;
+using Microsoft.Extensions.Hosting.Internal;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -53,6 +55,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IContentRepository _contentRepository;
         private readonly IHttpContextAccessor _accessor;
         private readonly IBasicDataRepository _basicRepository;
+        private IApplicationLifetime _ApplicationLifetime { get; set; }
         private IWebHostEnvironment _Environment;
         private AppSetting _appSetting = new AppSetting();
         private bool isReadyToStart = false;
@@ -61,7 +64,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                                  UserManager<ApplicationUser> userManager, IHttpContextAccessor accessor,
                                  ILanguageRepository lanRepository, ICurrencyRepository curRepository,
                                  IMapper mapper, IWebHostEnvironment environment, IConfiguration config,
-                                 IBasicDataRepository basicRepository,
+                                 IBasicDataRepository basicRepository, IApplicationLifetime applicationLifeTime,
                                  IContentCategoryRepository categoryRepository, IContentRepository contentRepository ):base(accessor, domainRepository)
         {
             _domainRepository = domainRepository;
@@ -76,16 +79,13 @@ namespace Arad.Portal.UI.Shop.Controllers
             _Environment = environment;
             _configuration = config;
             _basicRepository = basicRepository;
+            _ApplicationLifetime = applicationLifeTime;
         }
         public IActionResult Index()
         {
             var model = new InstallModel();
             _appSetting = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile("appsettings.json").Build().Get<AppSetting>();
-            //model.AradVas_Domain = _appSetting.SendSmsConfig.AradVas_Domain;
-            //model.AradVas_Number = _appSetting.SendSmsConfig.AradVas_Number;
-            //model.AradVas_Link_1 = _appSetting.SendSmsConfig.AradVas_Link_1;
-            //model.AradVas_Password = _appSetting.SendSmsConfig.AradVas_Password;
-            //model.AradVas_UserName = _appSetting.SendSmsConfig.AradVas_UserName;
+            
             //var defaultDomainResult = _domainRepository.FetchDefaultDomain();
             //var domainEntity = _mapper.Map<Domain>(defaultDomainResult.ReturnValue);
             //if(defaultDomainResult.Succeeded)
@@ -135,22 +135,14 @@ namespace Arad.Portal.UI.Shop.Controllers
                     IsMultiLinguals = model.IsMultiLinguals
                 };
 
-                var price = new Price() { CurrencyId = model.CurrencyId, StartDate = DateTime.Now, IsActive = true, PriceValue = model.PriceValue, EndDate = null };
-                domain.Prices.Add(price);
-
+                //var price = new Price() { CurrencyId = model.CurrencyId, StartDate = DateTime.Now, IsActive = true, PriceValue = model.PriceValue, EndDate = null };
+                //domain.Prices.Add(price);
+                domain.Prices = new();
                 _domainRepository.InsertOne(domain);
                 #endregion domain
 
-
                 #region user
-                #region Set claim
-                List<MongoClaim> claims = new()
-                {
-                    new() { Type = ClaimTypes.GivenName, Value = model.FullMobile },
-                    new() { Type = "IsActive", Value = true.ToString() },
-                    new() { Type = "IsSystemAccount", Value = false.ToString() }
-                };
-                #endregion
+               
                 ApplicationUser user = new()
                 {
                     UserName = model.UserName,
@@ -166,9 +158,18 @@ namespace Arad.Portal.UI.Shop.Controllers
                     PhoneNumber = model.FullMobile,
                     PhoneNumberConfirmed = true,
                     Modifications = new(),
-                    Claims = claims,
                     IsSiteUser = true
                 };
+
+                #region Set claim
+                List<MongoClaim> claims = new()
+                {
+                    new() { Type = ClaimTypes.GivenName, Value = model.FullMobile },
+                    new() { Type = "IsActive", Value = true.ToString() },
+                    new() { Type = "IsSystemAccount", Value = false.ToString() }
+                };
+                #endregion
+                user.Claims = claims;
                 user.Domains.Add(new() { DomainId = domain.DomainId, IsOwner = true, DomainName = domain.DomainName });
                 IdentityResult insertResult = await _userManager.CreateAsync(user, model.Password);
                 #endregion
@@ -195,18 +196,22 @@ namespace Arad.Portal.UI.Shop.Controllers
                 await System.IO.File.WriteAllTextAsync(appSettingsPath, Newtonsoft.Json.JsonConvert.SerializeObject(_appSetting, Newtonsoft.Json.Formatting.Indented));
                 #endregion
 
-               
+                _ApplicationLifetime.StopApplication();
+                
 
-               result = new JsonResult(new { Status = "Success", Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_OperarationDoneSuccessfully") });
+                result = new JsonResult(new { Status = "Success", Message = Language.GetString("AlertAndMessage_OperarationDoneSuccessfully") });
 
             }
             catch (Exception)
             {
-                result = new JsonResult(new { Status = "Error", Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ErrorInSaving") });
+                result = new JsonResult(new { Status = "Error", Message = Language.GetString("AlertAndMessage_ErrorInSaving") });
             }
 
             return result;
+            
         }
 
+
+      
     }
 }

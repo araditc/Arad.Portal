@@ -174,5 +174,11 @@ namespace Arad.Portal.UI.Shop.Middlewares
            // await _next.Invoke(context);
 
         }
+
+
+        //private bool IsGoingToInstallation()
+        //{
+
+        //}
     }
 }

@@ -27,14 +27,28 @@ namespace Arad.Portal.UI.Shop
                .AddCommandLine(args)
                .Build();
             var logAddress = config["LogConfiguration:LogFileDirectory"];
-
-            if (!Directory.Exists(logAddress))
+            if(!string.IsNullOrWhiteSpace(logAddress))
             {
-                Directory.CreateDirectory(logAddress);
+                if (!Directory.Exists(logAddress))
+                {
+                    Directory.CreateDirectory(logAddress);
+                }
+                var fileName = config["LogConfiguration:LogFileName"];
+                _path = Path.Combine(logAddress, fileName);
+               
             }
+            else
+            {
 
-            var fileName = config["LogConfiguration:LogFileName"];
-            _path = Path.Combine(logAddress, fileName);
+                var dir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Log", "StoreLog");
+                if(!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+                _path  = Path.Combine(dir, "StoreLogs.txt");
+               
+              
+            }
             if (!File.Exists(_path))
             {
                 File.Create(_path);

@@ -215,7 +215,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             if (!string.IsNullOrWhiteSpace(model.ReturnUrl) && model.ReturnUrl != "/")
             {
-                return Redirect("/"+model.ReturnUrl);
+                return Redirect(HttpContext.Request.Scheme + "://"+ HttpContext.Request.Host + model.ReturnUrl);
             }
 
             
