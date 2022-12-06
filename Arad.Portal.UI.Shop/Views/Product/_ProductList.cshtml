@@ -82,7 +82,7 @@
                 </div>
                 <div class="shoppingCartPart float-end border-0 bg-white rounded-3 text-center align-middle ps-2 pe-2 pt-1 ms-2 mt-2">
                         <a href="@(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
-                       item.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLangId).UrlFriend : $"/product/{item.ProductCode}")" role="button" class="btnAddToCard" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                       (!string.IsNullOrWhiteSpace(item.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLangId).UrlFriend) ? item.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLangId).UrlFriend :  $"/product/{item.ProductCode}"): $"/product/{item.ProductCode}")" role="button" class="btnAddToCard" data-bs-toggle="tooltip" data-bs-placement="bottom"
                        title='@Language.GetString("btn_AddToShoppingCart")'>
                         <i class="fas fa-shopping-cart"></i>
                     </a>
