@@ -829,5 +829,23 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             }
             return res;
         }
+
+        public List<SelectListModel> GetAllEmailEncryptionType()
+        {
+            var result = new List<SelectListModel>();
+
+            foreach (int i in Enum.GetValues(typeof(EmailEncryptionType)))
+            {
+                string name = Enum.GetName(typeof(EmailEncryptionType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            
+            return result;
+        }
     }
 }

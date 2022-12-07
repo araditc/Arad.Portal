@@ -102,7 +102,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 await _signInManager.SignOutAsync();
                 var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
-                return Redirect($"/{lanIcon}/Account/Login");
+                return Redirect(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.ToString() + $"/{lanIcon}/Account/Login");
             }
             else
                 return null;
@@ -215,7 +215,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             if (!string.IsNullOrWhiteSpace(model.ReturnUrl) && model.ReturnUrl != "/")
             {
-                return Redirect(HttpContext.Request.Scheme + "://"+ HttpContext.Request.Host + model.ReturnUrl);
+                return Redirect(HttpContext.Request.Scheme + "://"+ HttpContext.Request.Host.ToString() + model.ReturnUrl);
             }
 
             
@@ -394,7 +394,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
             else
             {
-                return Redirect($"~/{lanIcon}/Account/Login?returnUr=/{lanIcon}/basket/get");
+                return Redirect($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + $"/{lanIcon}/Account/Login?returnUr=/{lanIcon}/basket/get");
             }
 
         }

@@ -390,13 +390,24 @@ namespace Arad.Portal.UI.Shop
             app.UseAuthorization();
             app.UseSession();
             app.ApplyLanguageMapper();
-           
-            app.UseEndpoints(endpoints =>
+            if (Convert.ToBoolean(Configuration["IsFirstRun"]))
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{language?}/{controller=Home}/{action=Index}/{id?}");
-            });
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{language?}/{controller=Install}/{action=Index}");
+                });
+            }else
+            {
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{language?}/{controller=Home}/{action=Index}/{id?}");
+                });
+            }
+           
             app.UseSeedDatabase(ApplicationPath);
         }
 

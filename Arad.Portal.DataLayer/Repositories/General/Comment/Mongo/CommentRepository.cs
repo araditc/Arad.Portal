@@ -173,61 +173,22 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
         public async Task<Result> ChangeApproval(string commentId, bool isApproved)
         {
             var result = new Result();
-            bool finalRes = false;
             var entity = _commentContext.Collection.Find(_ => _.CommentId == commentId).FirstOrDefault();
             if(entity != null)
             {
-                var refType = entity.ReferenceType;
-                if (entity.ReferenceType == ReferenceType.Product)
+                entity.IsApproved = isApproved;
+                var updateResult = await _commentContext.Collection
+                    .ReplaceOneAsync(_ => _.CommentId == commentId, entity);
+                if (updateResult.IsAcknowledged)
                 {
-                    var pro = _productContext.ProductCollection
-                        .Find(_ => _.ProductId == entity.ReferenceId).FirstOrDefault();
-                    if(pro != null)
-                    {
-                        pro.Comments.FirstOrDefault(_ => _.CommentId == commentId).IsApproved = true;
-                        var updateRes = await _productContext.ProductCollection.ReplaceOneAsync(_ => _.ProductId == pro.ProductId, pro);
-                        if (updateRes.IsAcknowledged)
-                        {
-                            finalRes = true;
-                        }
-                    }
-                }
-                else // content
-                {
-                    var content = _contentContext.Collection
-                        .Find(_ => _.ContentId == entity.ReferenceId).FirstOrDefault();
-                    if(content != null)
-                    {
-                        content.Comments.FirstOrDefault(_ => _.CommentId == commentId).IsApproved = true;
-                        var updateRes = await _contentContext.Collection.ReplaceOneAsync(_ => _.ContentId == content.ContentId, content);
-                        if (updateRes.IsAcknowledged)
-                        {
-                            finalRes = true;
-                        }
-                    }
-                    
-                }
-
-                if (finalRes)
-                {
-                    entity.IsApproved = isApproved;
-                    var updateResult = await _commentContext.Collection
-                        .ReplaceOneAsync(_ => _.CommentId == commentId, entity);
-
-                    if (updateResult.IsAcknowledged)
-                    {
-                        result.Succeeded = true;
-                        result.Message = ConstMessages.SuccessfullyDone;
-                    }
-                    else
-                    {
-                        result.Message = ConstMessages.GeneralError;
-                    }
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
                 }
                 else
                 {
-                    result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_InsertError");
+                    result.Message = ConstMessages.GeneralError;
                 }
+            
             }else
             {
                 result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");

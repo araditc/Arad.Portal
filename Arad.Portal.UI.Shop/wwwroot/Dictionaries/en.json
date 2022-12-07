@@ -1783,7 +1783,26 @@
     "Value": "Domain Name",
     "Key": "DomainName"
   },
-
+  {
+    "Value": "Domain SMTP Account Information",
+    "Key": "DomainSMTPAcc"
+  },
+  {
+    "Value": "Domain SMTP Server",
+    "Key": "SMTPServer"
+  },
+  {
+    "Value": "SMTP Server Port",
+    "Key": "ServerPort"
+  },
+  {
+    "Value": "displayName",
+    "Key": "DisplayName"
+  },
+  {
+    "Value": "encryptionType",
+    "Key": "EncryptionType"
+  },
   {
     "Value": "Change Image",
     "Key": "ChangeImage"

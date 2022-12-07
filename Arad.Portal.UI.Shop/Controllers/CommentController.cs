@@ -64,7 +64,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 JsonResult result;
                 var dto = new CommentDTO();
-                bool isAddAllow = false;
+                
                 dto.CommentId = Guid.NewGuid().ToString();
                 dto.CreationDate = DateTime.Now;
                 string refId = model.ReferenceId;
@@ -86,77 +86,35 @@ namespace Arad.Portal.UI.Shop.Controllers
                     if (refId.StartsWith("p*"))
                     {
                         dto.ReferenceType = DataLayer.Entities.General.Comment.ReferenceType.Product;
-                        var pro = _productRepository.FetchProductForComment(dto.ReferenceId);
-                        pro.Comments.Add(new DataLayer.Entities.General.Comment.Comment()
-                        {
-                            CommentId = dto.CommentId,
-                            ReferenceId = dto.ReferenceId,
-                            ReferenceType = dto.ReferenceType,
-                            ParentId = dto.ParentId,
-                            Content = dto.Content,
-                            CreationDate = dto.CreationDate,
-                            CreatorUserId = dto.CreatorUserId,
-                            CreatorUserName = dto.CreatorUserName,
-                            IsActive = true
-                        });
-                        var res = await _productRepository.UpdateProductEntity(pro);
-                        if (res.Succeeded)
-                        {
-                            isAddAllow = true;
-                        }
-
                     }
                     else if (refId.StartsWith("c*"))
                     {
                         dto.ReferenceType = DataLayer.Entities.General.Comment.ReferenceType.Content;
-                        var content = await _contentRepository.ContentSelect(dto.ReferenceId);
-                        content.Comments.Add(new DataLayer.Entities.General.Comment.Comment()
-                        {
-                            CommentId = dto.CommentId,
-                            ReferenceId = dto.ReferenceId,
-                            ReferenceType = dto.ReferenceType,
-                            ParentId = dto.ParentId,
-                            Content = dto.Content,
-                            CreationDate = dto.CreationDate,
-                            CreatorUserId = dto.CreatorUserId,
-                            CreatorUserName = dto.CreatorUserName,
-                            IsActive = true
-                        });
-                        var res = await _contentRepository.UpdateContentEntity(content);
-                        if (res.Succeeded)
-                        {
-                            isAddAllow = true;
-                        }
                     }
 
-                    if (isAddAllow)
+                    
+                    var domainName = HttpContext.Request.Host.ToString();
+                    var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
+                    dto.AssociatedDomainId = domainEntity.DomainId;
+                    Result<DataLayer.Entities.General.Comment.Comment> saveResult = await _commentRepository.Add(dto);
+                    result = Json(saveResult.Succeeded ? new
                     {
-                        var domainName = HttpContext.Request.Host.ToString();
-                        var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
-                        dto.AssociatedDomainId = domainEntity.DomainId;
-                        Result<DataLayer.Entities.General.Comment.Comment> saveResult = await _commentRepository.Add(dto);
-                        result = Json(saveResult.Succeeded ? new
-                        {
-                            Status = "Success",
-                            Message = Language.GetString("AlertAndMessage_SubmitComment"),
-                            username = User.GetUserName(),
-                            date = Arad.Portal.GeneralLibrary.Utilities.DateHelper.ToPersianDdate(saveResult.ReturnValue.CreationDate),
-                            commentid = saveResult.ReturnValue.CommentId,
-                            content = saveResult.ReturnValue.Content,
-                            refid = saveResult.ReturnValue.ReferenceId
-                        }
-                    : new { Status = "Error", saveResult.Message });
-                    }
-                    else
-                    {
-                        result = Json(new { Status = "Error", Message = Language.GetString("AlertAndMessage_InsertError") });
-                    }
+                        Status = "Success",
+                        Message = Language.GetString("AlertAndMessage_SubmitComment"),
+                        username = User.GetUserName(),
+                        date = Arad.Portal.GeneralLibrary.Utilities.DateHelper.ToPersianDdate(saveResult.ReturnValue.CreationDate),
+                        commentid = saveResult.ReturnValue.CommentId,
+                        content = saveResult.ReturnValue.Content,
+                        refid = saveResult.ReturnValue.ReferenceId
+                    } : new { Status = "Error", saveResult.Message });
+
+
                 }
 
                 return result;
             }else
             {
-                return Redirect($"/{lanIcon}/Account/Login");
+                return Redirect($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + $"/{lanIcon}/Account/Login");
             }
         }
 
@@ -201,7 +159,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 }
 
             }
-            return Redirect($"{lanIcon}/Account/Login?returnUrl={lanIcon}/Product/{code}");
+            return Redirect($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + $"/{lanIcon}/Account/Login?returnUrl={lanIcon}/Product/{code}");
         }
 
 
@@ -277,11 +235,11 @@ namespace Arad.Portal.UI.Shop.Controllers
                 }
             }else if (model.IsContent)
             {
-                return Redirect($"{lanIcon}/Account/Login?returnUrl={lanIcon}/blog/{code}");
+                return Redirect($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + $"/{lanIcon}/Account/Login?returnUrl={lanIcon}/blog/{code}");
             }
             else
             {
-                return Redirect($"{lanIcon}/Account/Login?returnUrl={lanIcon}/Product/{code}");
+                return Redirect($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + $"/{lanIcon}/Account/Login?returnUrl={lanIcon}/Product/{code}");
             }
         }
 
@@ -291,11 +249,10 @@ namespace Arad.Portal.UI.Shop.Controllers
             var res = await _userRepository.RemoveToUserFavouriteList(pkey);
             if (res.Succeeded)
             {
-                return
-                    Json(new
-                    {
-                        status = "Succeed"
-                    });
+                return Json(new
+                {
+                    status = "Succeed"
+                });
             }
             else
             {
@@ -304,46 +261,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
         }
 
-
-        //[HttpPost]
-        //public async Task<IActionResult> RatingProduct([FromBody] RateProduct model)
-        //{
-        //    var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
-        //    var productCode = _productRepository.GetProductCode(model.ProductId);
-        //    if (User != null && User.Identity.IsAuthenticated)
-        //    {
-
-        //        var userId = User.GetUserId();
-        //        string prevRate = "";
-        //        var userProductRateCookieName = $"{userId}_p{model.ProductId}";
-        //        if (!model.IsNew)//the user has rated before
-        //        {
-        //            prevRate = HttpContext.Request.Cookies[userProductRateCookieName];
-        //        }
-        //        int preS = !string.IsNullOrWhiteSpace(prevRate) ? Convert.ToInt32(prevRate) : 0;
-
-        //        var res = await _productRepository.RateProduct(model.ProductId, model.Score,
-        //                model.IsNew, preS);
-        //        if (res.Succeeded)
-        //        {
-        //            //set its related cookie
-        //            return
-        //                Json(new
-        //                {
-        //                    status = "Succeed",
-        //                    like = res.ReturnValue.LikeRate,
-        //                    dislike = res.ReturnValue.DisikeRate,
-        //                    half = res.ReturnValue.HalfLikeRate
-        //                });
-        //        }
-        //        else
-        //        {
-        //            return Json(new { status = "error" });
-        //        }
-        //    }
-        //    return Redirect($"{lanIcon}/Account/Login?returnUrl={lanIcon}/Product/{productCode}");
-        //}
-
+        
         [HttpPost]
         public async Task<IActionResult> AddLikeDisLike([FromQuery] string commentId, [FromQuery] bool isLike)
         {
@@ -360,7 +278,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                     : new { Status = "Error", IsLike = isLike });
                 return result;
             }
-                return Redirect($"{lanIcon}/Account/Login");
+                return Redirect($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + $"/{lanIcon}/Account/Login");
         }
 
 

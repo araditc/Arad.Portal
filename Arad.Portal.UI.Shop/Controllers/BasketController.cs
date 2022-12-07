@@ -64,7 +64,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             else
             {
                 //return RedirectToAction("Login", "Account", new { returnUrl = "/basket/AddProToBasket" });
-                return Redirect($"~/{lanIcon}/Account/Login?returnUrl=/{lanIcon}/basket/AddProToBasket?code={model.Code}&cnt={model.Count}");
+                return Redirect($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + $"/{lanIcon}/Account/Login?returnUrl=/{lanIcon}/basket/AddProToBasket?code={model.Code}&cnt={model.Count}");
             }
         }
 
@@ -121,7 +121,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 lanIcon = CultureInfo.CurrentCulture.Name;
             }
-            return Redirect($"~/{lanIcon}/basket/get");
+            return Redirect($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + $"/{lanIcon}/basket/get");
         }
 
         [HttpGet]
@@ -147,7 +147,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
             else
             {
-                return Redirect($"~/{lanIcon}/Account/Login?returnUr=/{lanIcon}/basket/get");
+                return Redirect($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + $"/{lanIcon}/Account/Login?returnUr=/{lanIcon}/basket/get");
             }
 
         }
@@ -166,7 +166,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 });
             }else
             {
-                return Redirect($"~/{lanIcon}/Account/Login?returnUr=/{lanIcon}/basket/get");
+                return Redirect($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + $"/{lanIcon}/Account/Login?returnUr=/{lanIcon}/basket/get");
             }
         }
 
@@ -214,21 +214,21 @@ namespace Arad.Portal.UI.Shop.Controllers
                     {
 
                         TempData["MessageResult"] = true;
-                        return Redirect($"/{lanIcon}/Basket/SendInfo");
+                        return Redirect($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + $"/{lanIcon}/Basket/SendInfo");
                     }
 
 
                     TempData["MessageResult"] = false;
-                    return Redirect($"/{lanIcon}/Basket/SendInfo");
+                    return Redirect($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + $"/{lanIcon}/Basket/SendInfo");
                 }else
                 {
-                    return Redirect($"~/{lanIcon}/Account/Login?returnUrl=/{lanIcon}/basket/DeleteAddress?addressId={addressId}");
+                    return Redirect($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + $"/{lanIcon}/Account/Login?returnUrl=/{lanIcon}/basket/DeleteAddress?addressId={addressId}");
                 }
             }
             catch (Exception x)
             {
                 TempData["MessageResult"] = false;
-                return Redirect($"/{lanIcon}/Basket/SendInfo");
+                return Redirect($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + $"/{lanIcon}/Basket/SendInfo");
                 
             }
         }

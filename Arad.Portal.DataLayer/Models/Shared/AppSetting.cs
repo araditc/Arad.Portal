@@ -21,6 +21,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public SendSmsConfig SendSmsConfig { get; set; }
         public string LocalStaticFileStorage { get; set; }
         public string LocalStaticFileShown { get; set; }
+        public string IsFirstRun { get; set; }
     }
 
     public class LogConfiguration

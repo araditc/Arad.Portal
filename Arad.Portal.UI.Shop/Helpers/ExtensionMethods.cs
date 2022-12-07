@@ -86,7 +86,6 @@ namespace Arad.Portal.UI.Shop.Helpers
                 currencyRepository.InsertOne(currency);
             }
             #endregion currency
-            
 
             #region permission
             var permissionRepository =
@@ -199,7 +198,6 @@ namespace Arad.Portal.UI.Shop.Helpers
                 }
             }
             #endregion
-            
             
             #region providers diffrenet Types
             var providerRepository =

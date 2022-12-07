@@ -88,33 +88,33 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
         }
 
 
-        private  bool ScrambledEquals<SpecValue>(IEnumerable<SpecValue> list1, IEnumerable<SpecValue> list2)
-        {
-            var cnt = new Dictionary<SpecValue, int>();
-            foreach (SpecValue s in list1)
-            {
-                if (cnt.ContainsKey(s))
-                {
-                    cnt[s]++;
-                }
-                else
-                {
-                    cnt.Add(s, 1);
-                }
-            }
-            foreach (SpecValue s in list2)
-            {
-                if (cnt.ContainsKey(s))
-                {
-                    cnt[s]--;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return cnt.Values.All(c => c == 0);
-        }
+        //private  bool ScrambledEquals<SpecValue>(IEnumerable<SpecValue> list1, IEnumerable<SpecValue> list2)
+        //{
+        //    var cnt = new Dictionary<SpecValue, int>();
+        //    foreach (SpecValue s in list1)
+        //    {
+        //        if (cnt.ContainsKey(s))
+        //        {
+        //            cnt[s]++;
+        //        }
+        //        else
+        //        {
+        //            cnt.Add(s, 1);
+        //        }
+        //    }
+        //    foreach (SpecValue s in list2)
+        //    {
+        //        if (cnt.ContainsKey(s))
+        //        {
+        //            cnt[s]--;
+        //        }
+        //        else
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //    return cnt.Values.All(c => c == 0);
+        //}
 
         public async Task<Result<CartItemsCount>> AddOrChangeProductToUserCart(string productId, int orderCount, List<SpecValue> specValues, string shoppingCartDetailId = "")
         {

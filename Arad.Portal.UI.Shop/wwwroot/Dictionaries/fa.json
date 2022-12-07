@@ -1778,7 +1778,26 @@
     "Value": "نام دامنه",
     "Key": "DomainName"
   },
-
+  {
+    "Value": "اطلاعات اکانت SMTP دامنه",
+    "Key": "DomainSMTPAcc"
+  },
+  {
+    "Value": "سرور SMTP",
+    "Key": "SMTPServer"
+  },
+  {
+    "Value": "پورت سرور",
+    "Key": "ServerPort"
+  },
+  {
+    "Value": "نام نمایشی",
+    "Key": "DisplayName"
+  },
+  {
+    "Value": "نوع رمزگزاری",
+    "Key": "EncryptionType"
+  },
   {
     "Value": "تغییر تصویر",
     "Key": "ChangeImage"

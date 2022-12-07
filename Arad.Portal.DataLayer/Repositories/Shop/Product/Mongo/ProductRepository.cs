@@ -558,13 +558,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public async Task<ProductOutputDTO> ProductFetch(string productId)
         {
             var result = new ProductOutputDTO();
+            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
             var entity = await _context.ProductCollection
                 .Find(_ => _.ProductId == productId).FirstOrDefaultAsync();
             if (entity != null)
             {
                 result = _mapper.Map<ProductOutputDTO>(entity);
+                var comments = _commentContext.Collection.Find(_ => _.ReferenceId == entity.ProductId && _.ReferenceType == ReferenceType.Product).ToList();
+                result.Comments = CreateNestedTreeComment(comments, currentUserId);
                 //TODO : 
-               // var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
+                // var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
             }
             return result;
         }
@@ -994,34 +997,25 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public ProductOutputDTO FetchProductWithSlug(string slug, string domainName)
         {
             var result = new ProductOutputDTO();
-            var urlFriend = $"{domainName}/product/{slug}";
+            var urlFriend = $"/product/{slug}";
             var productEntity = _context.ProductCollection
                 .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).FirstOrDefault();
+            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
             if (productEntity != null)
+            {
                 result = _mapper.Map<ProductOutputDTO>(productEntity);
+                var comments = _commentContext.Collection.Find(_ => _.ReferenceId == productEntity.ProductId && _.ReferenceType == ReferenceType.Product).ToList();
+                result.Comments = CreateNestedTreeComment(comments, currentUserId);
+            }
             result.MultiLingualProperties = productEntity.MultiLingualProperties;
 
             return result;
         }
 
-        //public ProductOutputDTO FetchBySlug(string slug, string domainName)
-        //{
-        //    var result = new ProductOutputDTO();
-        //    var urlFriend = $"{domainName}/product/{slug}";
-        //    var productEntity = _context.ProductCollection
-        //        .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).FirstOrDefault();
-        //    if(productEntity != null)
-        //    result = _mapper.Map<ProductOutputDTO>(productEntity);
-        //    result.MultiLingualProperties = productEntity.MultiLingualProperties;
-
-        //    return result;
-        //}
-
         public ProductOutputDTO FetchByCode(string slugOrCode, DomainDTO dto, string userId)
         {
             var result = new ProductOutputDTO();
             var productEntity = new Entities.Shop.Product.Product();
-
             long codeNumber;
             if (long.TryParse(slugOrCode, out codeNumber))
             {
@@ -1066,8 +1060,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             if (productEntity != null)
             {
                 result = _mapper.Map<ProductOutputDTO>(productEntity);
+                var comments = _commentContext.Collection.Find(_ => _.ReferenceId == productEntity.ProductId && _.ReferenceType == ReferenceType.Product).ToList();
+
                 result.Images = result.Images.Where(_ => _.ImageRatio == ImageRatio.Square).ToList();
-                result.Comments = CreateNestedTreeComment(productEntity.Comments, userId);
+                result.Comments = CreateNestedTreeComment(comments, userId);
                 result.MultiLingualProperties = productEntity.MultiLingualProperties;
 
                 #region evaluate finalPrice

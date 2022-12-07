@@ -330,7 +330,7 @@
         $("#btnDelDiscountCode").click(function() {
             var code = $("#discountCode").val();
             var obj = {};
-            obj.Price = parseInt($("finalP").text());
+            obj.Price = parseInt($("#finalP").text());
             if ('@User.Identity.IsAuthenticated' === 'True') {
                 debugger;
                 $.ajax({

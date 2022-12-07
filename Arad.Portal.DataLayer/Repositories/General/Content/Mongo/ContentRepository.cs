@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Models.DesignStructure;
 using Arad.Portal.DataLayer.Entities.Shop.Product;
 using Arad.Portal.DataLayer.Entities.General.Comment;
+using Arad.Portal.DataLayer.Repositories.General.Comment.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
 {
@@ -32,9 +33,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
         private readonly IMapper _mapper;
         private readonly ContentContext _contentContext;
         private readonly DomainContext _domainContext;
+        private readonly CommentContext _commentContext;
         private readonly LanguageContext _languageContext;
         public ContentRepository(IHttpContextAccessor httpContextAccessor,DomainContext domainContext,
            IMapper mapper,
+           CommentContext commentContext,
            ContentContext contentContext,
            IWebHostEnvironment env,
            LanguageContext langContext)
@@ -44,6 +47,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             _contentContext = contentContext;
             _languageContext = langContext;
             _domainContext = domainContext;
+            _commentContext = commentContext;
         }
 
         public async Task<Result<string>> Add(ContentDTO dto)
@@ -107,6 +111,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             var result = new ContentDTO();
             Entities.General.Content.Content entity = null;
             var domainName = this.GetCurrentDomainName();
+            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
             var domain = _domainContext.Collection.Find(_ => _.DomainName.ToLower() == domainName.ToLower()).FirstOrDefault();
             try
             {
@@ -124,6 +129,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 if(entity != null)
                 {
                     result = _mapper.Map<ContentDTO>(entity);
+                    var comments = _commentContext.Collection.Find(_ => _.ReferenceId == entity.ContentId && _.ReferenceType == ReferenceType.Content).ToList();
+                    result.Comments = CreateNestedTreeComment(comments, currentUserId);
                     result.PersianStartShowDate = DateHelper.ToPersianDdate(result.StartShowDate.Value);
                     result.PersianEndShowDate = DateHelper.ToPersianDdate(result.EndShowDate.Value);
                 }
@@ -187,7 +194,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             {
                 result = _mapper.Map<ContentDTO>(contentEntity);
                 var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-                result.Comments = CreateNestedTreeComment(contentEntity.Comments, currentUserId);
+                var commenst = _commentContext.Collection.Find(_ => _.ReferenceId == contentEntity.ContentId && _.ReferenceType == ReferenceType.Content).ToList();
+                result.Comments = CreateNestedTreeComment(commenst, currentUserId);
             }
            
             var r = Helpers.Utilities.ConvertPopularityRate(contentEntity.TotalScore, contentEntity.ScoredCount);

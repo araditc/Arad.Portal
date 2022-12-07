@@ -60,44 +60,42 @@
                     <div class="card-body">
 
                         <div class="row">
-                            <div class="form-group col-12 col-md-4 p-2">
+                            <div class="form-group col-12 col-md-3 p-2">
                                 <label for="Name" class="form-label">@Language.GetString("User_FirstName")</label>
                                 <input asp-for="FirstName" type="text" class="form-control" placeholder="">
                                 <span data-val-result="FirstName" class="text-danger"></span>
                             </div>
-                            <div class="form-group col-12 col-md-4 p-2">
+                            <div class="form-group col-12 col-md-3 p-2">
                                 <label for="LastName" class="form-label">@Language.GetString("User_LastName")</label>
                                 <input asp-for="LastName" type="text" class="form-control" placeholder="">
                                 <span data-val-result="LastName" class="text-danger"></span>
                             </div>
-                            <div class="form-group col-12 col-md-4 p-2">
+                            <div class="form-group col-12 col-md-3 p-2">
                                 <label asp-for="UserName" class="form-label">@Language.GetString("User_UserName")</label>
                                 <input asp-for="UserName" type="text" class="form-control" placeholder="" autocomplete="off">
                                 <span data-val-result="UserName" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-12 col-md-4 p-2">
+                            <div class="form-group col-12 col-md-3 p-2">
                                 <label for="Password" class="form-label">@Language.GetString("User_Password")</label>
                                 <input asp-for="Password" type="password" class="form-control" placeholder="" autocomplete="new-password">
                                 <span data-val-result="Password" class="text-danger"></span>
                             </div>
-                            <div class="form-group col-12 col-md-4 p-2">
+                            <div class="form-group col-12 col-md-3 p-2">
                                 <label class="form-label" for="RePassword">@Language.GetString("User_RePassword")</label>
                                 <input asp-for="RePassword" type="password" class="form-control" placeholder="" autocomplete="new-password">
                                 <span data-val-result="RePassword" class="text-danger"></span>
                             </div>
-                            <div class="form-group col-12 col-md-4 p-2">
+                            <div class="form-group col-12 col-md-3 p-2">
                                 <label asp-for="PhoneNumber" class="form-label">@Language.GetString("User_PhoneNumber")</label><br />
                                 <input asp-for="PhoneNumber" type="tel" class="form-control" placeholder=""><br />
                                 <span data-val-result="PhoneNumber" class="text-danger"></span>
                                 <input id="hidePhone" type="hidden" value="" name="FullMobile" />
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-12 col-md-4 p-2">
-                                <label class="form-label" asp-for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label>
-                                <select class="form-select selectpicker" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList, "Value", "Text"))" data-live-search="true">
+                            <div class="form-group col-12 col-md-3 p-2">
+                                <label class="form-label">@Language.GetString("DefaultLanguage")</label>
+                                <select class="form-select"  asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList, "Value", "Text"))" >
                                 </select>
                                 <span data-val-result="DefaultLanguageId" class="text-danger"></span>
                             </div>
@@ -109,15 +107,16 @@
                         <h5 class="card-title">@Language.GetString("DefaultDomain")</h5>
                     </div>
                     <div class="card-body">
+                       
                         <div class="row">
-                            <div class="form-check m-auto d-inline-block pt-3 fs-6 ms-4">
+                            <div class="form-group col-12 col-md-3 form-check m-auto d-inline-block pt-3 fs-6 ms-4">
                                 <input class="form-check-input" type="checkbox" value="IsShop" asp-for="IsShop">
                                 <label class="form-check-label" for="IsShop">
                                     @Language.GetString("design_IsShopDomain")
                                 </label>
                             </div>
 
-                            <div class="form-check m-auto d-inline-block pt-3 fs-6 ms-4">
+                            <div class="form-group col-12 col-md-3 form-check m-auto d-inline-block pt-3 fs-6 ms-4">
                                 <input class="form-check-input" type="checkbox" value="IsMultiLinguals" asp-for="IsMultiLinguals">
                                 <label class="form-check-label" for="IsMultiLinguals">
                                     @Language.GetString("design_IsMultiLingual")
@@ -139,9 +138,59 @@
                         <div class="row m-1">
                             <div class="form-group col-12 col-md-3">
                                 <label class="form-label">@Language.GetString("Currency")</label>
-                                <select class="form-control selectpicker" data-live-search="true" name="CurrencyId" id="CurrencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
+                                <select class="form-select"  asp-for="CurrencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
                                 </select>
                                 <span data-val-result="CurrencyId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">@Language.GetString("DomainSMTPAcc")</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                         <div class="form-group col-12 col-md-3">
+                                            <label asp-for="@Model.SMTPAccount.Server" class="form-label">@Language.GetString("SMTPServer")</label>
+                                            <input asp-for="@Model.SMTPAccount.Server" type="text" class="form-control" placeholder="" autocomplete="off"/>
+                                            <span data-val-result="Server" class="text-danger"></span>
+                                         </div>
+                                         <div class="form-group col-12 col-md-3">
+                                             <label asp-for="@Model.SMTPAccount.EmailAddress" class="form-label">@Language.GetString("EnumDesc_Email")</label>
+                                             <input type="email" asp-for="@Model.SMTPAccount.EmailAddress" class="form-control" placeholder="" autocomplete="off"/>
+                                             <span data-val-result="EmailAddress" class="text-danger"></span>
+                                         </div>
+                                         <div class="form-group col-12 col-md-3">
+                                            <label asp-for="@Model.SMTPAccount.DisplayName" class="form-label">@Language.GetString("DisplayName")</label>
+                                            <input asp-for="@Model.SMTPAccount.DisplayName" type="text" class="form-control" placeholder="" autocomplete="off" />
+                                            <span data-val-result="DisplayName" class="text-danger"></span>
+                                         </div>
+                                         <div class="form-group col-12 col-md-3">
+                                            <label asp-for="@Model.SMTPAccount.Encryption" class="form-label">@Language.GetString("EncryptionType")</label>
+                                            <select class="form-select"  name="Encryption" id="Encryption" asp-items="@(new SelectList(ViewBag.EncryptionType,"Value","Text"))">
+                                          </select>
+                                            <span data-val-result="Encryption" class="text-danger"></span>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="form-group col-12 col-md-3">
+                                             <label asp-for="@Model.SMTPAccount.ServerPort" class="form-label">@Language.GetString("ServerPort")</label>
+                                            <input asp-for="@Model.SMTPAccount.ServerPort" type="text" class="form-control" placeholder="" autocomplete="off" />
+                                              <span data-val-result="ServerPort" class="text-danger"></span>
+                                         </div>
+                                         <div class="form-group col-12 col-md-3">
+                                            <label asp-for="@Model.SMTPAccount.SMTPAuthUsername" class="form-label">@Language.GetString("Order_UserName")</label>
+                                              <input asp-for="@Model.SMTPAccount.SMTPAuthUsername" type="text" class="form-control" placeholder="" autocomplete="off" />
+                                              <span data-val-result="SMTPAuthUsername" class="text-danger"></span>
+                                         </div>
+                                         <div class="form-group col-12 col-md-3">
+                                            <label asp-for="@Model.SMTPAccount.SMTPAuthPassword" class="form-label">@Language.GetString("Sms_Passworrd")</label>
+                                            <input asp-for="@Model.SMTPAccount.SMTPAuthPassword" type="text" class="form-control" placeholder="" autocomplete="off" />
+                                            <span data-val-result="SMTPAuthPassword" class="text-danger"></span>
+                                         </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -239,8 +288,7 @@
     <script src="~/lib/intl-tel-input/js/utils.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $("#DefaultLanguageId").selectpicker();
-            $("#CurrencyId").selectpicker();
+           
             var input = document.querySelector("#PhoneNumber");
             window.intlTelInput(input,
                 {
@@ -338,6 +386,45 @@
 
         function checkValidation() {
             var flag = false;
+            if ($("#").val().trim() == "") {
+                $("span[data-val-result='']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#").val().trim() == "") {
+                $("span[data-val-result='']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#").val().trim() == "") {
+                $("span[data-val-result='']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#").val().trim() == "") {
+                $("span[data-val-result='']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#").val().trim() == "") {
+                $("span[data-val-result='']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#").val().trim() == "") {
+                $("span[data-val-result='']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#").val().trim() == "") {
+                $("span[data-val-result='']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+           
+
+
+
+
+
+
+
+
+
+
             if ($("#FirstName").val().trim() == "") {
                 $("span[data-val-result='FirstName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;

@@ -85,28 +85,33 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             var model = new InstallModel();
             _appSetting = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile("appsettings.json").Build().Get<AppSetting>();
-            
-            //var defaultDomainResult = _domainRepository.FetchDefaultDomain();
-            //var domainEntity = _mapper.Map<Domain>(defaultDomainResult.ReturnValue);
-            //if(defaultDomainResult.Succeeded)
-            //{
-            //    model.DomainName = domainEntity.DomainName;
-            //    model.DomainId = domainEntity.DomainId;
-            //    model.Title = domainEntity.Title;
-            //    model.PriceValue = domainEntity.Prices.Any(_ => _.EndDate == null && _.IsActive && _.StartDate <= DateTime.UtcNow) ? domainEntity.Prices.FirstOrDefault(_ => _.EndDate == null && _.IsActive && _.StartDate <= DateTime.UtcNow).PriceValue : 0;
-            //    model.IsShop = domainEntity.IsShop;
-            //    model.IsMultiLinguals = domainEntity.IsMultiLinguals;
-            //    model.CurrencyId = domainEntity.DefaultCurrencyId;
-            //}
-            //var sysAccountUser = _userManager.Users.FirstOrDefault(_ => _.IsSystemAccount);
-            //if(sysAccountUser != null)
-            //{
-            //    model.UserId = sysAccountUser.Id;
-            //    model.FirstName = sysAccountUser.Profile.FirstName;
-            //    model.LastName = sysAccountUser.Profile.LastName;
-            //    model.UserName = sysAccountUser.UserName;
-            //}
-            var currencyList = _currencyRepository.GetAllActiveCurrency();
+
+            _appSetting.DatabaseConfig.ConnectionString = "mongodb://localhost:27017/AradPortalTest";
+            _appSetting.DatabaseConfig.DbName = "AradPortalTest";
+
+           //var defaultDomainResult = _domainRepository.FetchDefaultDomain();
+           //var domainEntity = _mapper.Map<Domain>(defaultDomainResult.ReturnValue);
+           //if(defaultDomainResult.Succeeded)
+           //{
+           //    model.DomainName = domainEntity.DomainName;
+           //    model.DomainId = domainEntity.DomainId;
+           //    model.Title = domainEntity.Title;
+           //    model.PriceValue = domainEntity.Prices.Any(_ => _.EndDate == null && _.IsActive && _.StartDate <= DateTime.UtcNow) ? domainEntity.Prices.FirstOrDefault(_ => _.EndDate == null && _.IsActive && _.StartDate <= DateTime.UtcNow).PriceValue : 0;
+           //    model.IsShop = domainEntity.IsShop;
+           //    model.IsMultiLinguals = domainEntity.IsMultiLinguals;
+           //    model.CurrencyId = domainEntity.DefaultCurrencyId;
+           //}
+           //var sysAccountUser = _userManager.Users.FirstOrDefault(_ => _.IsSystemAccount);
+           //if(sysAccountUser != null)
+           //{
+           //    model.UserId = sysAccountUser.Id;
+           //    model.FirstName = sysAccountUser.Profile.FirstName;
+           //    model.LastName = sysAccountUser.Profile.LastName;
+           //    model.UserName = sysAccountUser.UserName;
+           //}
+           var currencyList = _currencyRepository.GetAllActiveCurrency();
+            var encryptionTypes = _domainRepository.GetAllEmailEncryptionType();
+            ViewBag.EncryptionType = encryptionTypes;
             ViewBag.CurrencyList = currencyList;
             var res = _languageRepository.GetAllActiveLanguage();
             res.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
@@ -135,8 +140,20 @@ namespace Arad.Portal.UI.Shop.Controllers
                     IsMultiLinguals = model.IsMultiLinguals
                 };
 
-                //var price = new Price() { CurrencyId = model.CurrencyId, StartDate = DateTime.Now, IsActive = true, PriceValue = model.PriceValue, EndDate = null };
-                //domain.Prices.Add(price);
+                domain.SMTPAccount = new DataLayer.Entities.General.Email.SMTP()
+                {
+                    SMTPId = Guid.NewGuid().ToString(),
+                    Server = model.SMTPAccount.Server,
+                    EmailAddress = model.SMTPAccount.EmailAddress,
+                    DisplayName = model.SMTPAccount.DisplayName,
+                    Encryption = model.SMTPAccount.Encryption,
+                    IgnoreSSLWarning = true,
+                    IsDefault = true,
+                    ServerPort = model.SMTPAccount.ServerPort,
+                    SMTPAuthPassword = model.SMTPAccount.SMTPAuthPassword,
+                    SMTPAuthUsername = model.SMTPAccount.SMTPAuthUsername
+                };
+               
                 domain.Prices = new();
                 _domainRepository.InsertOne(domain);
                 #endregion domain
@@ -191,6 +208,8 @@ namespace Arad.Portal.UI.Shop.Controllers
                 _appSetting.LocalStaticFileStorage = model.LocalStaticFileStorage;
                 _appSetting.LogConfiguration.LogFileDirectory = model.LogFileDirectory;
                 _appSetting.LocalStaticFileShown = domain.DomainName;
+
+                _appSetting.IsFirstRun = false.ToString();
 
                 string appSettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
                 await System.IO.File.WriteAllTextAsync(appSettingsPath, Newtonsoft.Json.JsonConvert.SerializeObject(_appSetting, Newtonsoft.Json.Formatting.Indented));

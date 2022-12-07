@@ -241,7 +241,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             }
             #endregion
 
-
             #region Module
             var moduleRepository =
             (ModuleRepository)scope.ServiceProvider.GetService(typeof(IModuleRepository));
@@ -257,8 +256,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 }
             }
             #endregion
-
-            
 
         }
 

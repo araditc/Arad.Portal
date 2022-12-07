@@ -27,7 +27,7 @@
                     <div class="form-group col-6 col-md-3">
                         <label>@Language.GetString("Profile_Country")</label><br />
                         <div class="form-group textPlaceholder">
-                            <select id="CountryId" name="CountryId" class="form-select selectpicker" asp-items="@(new SelectList(ViewBag.CountryList , "Value", "Text"))"
+                            <select id="CountryId" name="CountryId" class="form-control selectpicker" asp-items="@(new SelectList(ViewBag.CountryList , "Value", "Text"))"
                                     tabindex="2" placeholder="@Language.GetString("Profile_Country")">
                             </select>
                             <span class="field-validation-error" data-val-result="CountryId"></span>
@@ -37,7 +37,7 @@
                    
                         <div class="form-group col-6 col-md-3">
                             <label>@Language.GetString("Profile_State")</label><br />
-                            <select id="ProvinceId" name="ProvinceId" class="form-select selectpicker" 
+                            <select id="ProvinceId" name="ProvinceId" class="form-control selectpicker" 
                               tabindex="2">
                             </select>
                             <span class="field-validation-error" data-val-result="ProvinceId"></span>
@@ -47,7 +47,7 @@
 
                     <div class="form-group col-6 col-md-3">
                              <label>@Language.GetString("Profile_City")</label><br />
-                            <select id="CityId" name="CityId" class="form-select selectpicker" data-placeholder="@Language.GetString("Profile_City")" 
+                            <select id="CityId" name="CityId" class="form-control selectpicker" data-placeholder="@Language.GetString("Profile_City")" 
                             tabindex="2" >
                             </select>
                             <span class="field-validation-error" data-val-result="CityId"></span>

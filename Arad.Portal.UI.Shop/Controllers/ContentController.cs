@@ -119,8 +119,6 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 return View(new DataLayer.Models.DesignStructure.MainPageContentPart());
             }
-
-
         }
 
         [Route("{language}/blog/{**slug}")]
