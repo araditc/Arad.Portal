@@ -113,7 +113,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     q = "?";
                 }
-                q += $"domainId={domainEntity.DomainId}";
+                var domain = currentUser.IsSystemAccount ? "" : domainEntity.DomainId;
+                q += $"domainId={domain}";
                 list = await _promotionRepository.ListUserCoupon(q);
                 ViewBag.PromotionList = _promotionRepository.GetAvailableCouponsOfDomain(domainName);
             }
@@ -221,7 +222,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public IActionResult AssignPromotionToUserAddEdit(string id)
+        public async Task<IActionResult> AssignPromotionToUserAddEdit(string id)
         {
             var domainName = $"{_accessor.HttpContext.Request.Host}";
             UserCouponDTO dto = new UserCouponDTO();
@@ -230,14 +231,30 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 dto = _promotionRepository.FetchUserCoupon(id);
             }
             var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
-            ViewBag.PromotionList = _promotionRepository.GetAvailableCouponsOfDomain(domainName);
-            ViewBag.DomainUsers = _userManager.Users
-                .Where(_ => _.IsActive && !_.IsDeleted && _.Domains.Any(a => a.DomainId == domainEntity.DomainId))
-                .Select(_ => new SelectListModel()
-                {
+            var currentUserId = User.GetUserId();
+            var currentUserEntity = await _userManager.FindByIdAsync(currentUserId);
+
+            ViewBag.PromotionList = _promotionRepository.GetAvailableCouponsOfDomain(currentUserEntity.IsSystemAccount ? "" : domainName);
+            if(currentUserEntity.IsSystemAccount)
+            {
+                ViewBag.DomainUsers = _userManager.Users.Where(_=> _.IsActive && !_.IsDeleted)
+                     .Select(_ => new SelectListModel()
+                     {
+                         Text = _.Profile.FullName,
+                         Value = _.Id
+                     }).ToList();
+            }
+            else
+            {
+                ViewBag.DomainUsers = _userManager.Users
+               .Where(_ => _.IsActive && !_.IsDeleted && _.Domains.Any(a => a.DomainId == domainEntity.DomainId))
+               .Select(_ => new SelectListModel()
+               {
                    Text = _.Profile.FullName,
                    Value = _.Id
-                }).ToList();
+               }).ToList();
+            }
+           
             return View(dto);
         }
 

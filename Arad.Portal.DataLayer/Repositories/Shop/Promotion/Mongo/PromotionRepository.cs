@@ -475,13 +475,26 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
         {
             var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
             var res = new List<SelectListModel>();
-            res = _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId && _.SDate <= DateTime.UtcNow &&
+            if(!string.IsNullOrWhiteSpace(domainName))
+            {
+                res = _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId && _.SDate <= DateTime.UtcNow &&
             (_.EDate >= DateTime.UtcNow || _.EDate == null) && _.IsActive && _.AsUserCoupon)
-                .Project(_=> new SelectListModel()
-                    {
+                .Project(_ => new SelectListModel()
+                {
                     Text = _.CouponCode,
                     Value = _.PromotionId
                 }).ToList();
+            }else
+            {
+                res = _context.Collection.Find(_ => _.SDate <= DateTime.UtcNow &&
+                     (_.EDate >= DateTime.UtcNow || _.EDate == null) && _.IsActive && _.AsUserCoupon)
+                .Project(_ => new SelectListModel()
+                {
+                    Text = _.CouponCode,
+                    Value = _.PromotionId
+                }).ToList();
+            }
+            
             res.Insert(0, new SelectListModel() { Value = "-1", Text = Language.GetString("Choose") });
             return res;
         }
@@ -594,15 +607,25 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 {
                     promotionId = filter["promotionId"];
                 }
-                List<Entities.Shop.Promotion.UserCoupon> list;
-                long totalCount = await _context.UserCouponCollection.Find(_=>_.AssociatedDomainId == domainId && _.PromotionId == promotionId).CountDocumentsAsync();
-
-                list = _context.UserCouponCollection.Find(_ => _.AssociatedDomainId == domainId).ToList();
+                List<UserCoupon> list;
+                long totalCount = 0;
+                if(!string.IsNullOrWhiteSpace(domainId))
+                {
+                    totalCount = await _context.UserCouponCollection.Find(_ => _.AssociatedDomainId == domainId ).CountDocumentsAsync();
+                    list = _context.UserCouponCollection.Find(_ => _.AssociatedDomainId == domainId).ToList();
+                }
+                else
+                {
+                    totalCount = await _context.UserCouponCollection.Find(_ => true).CountDocumentsAsync();
+                    list = _context.UserCouponCollection.Find(_=>true).ToList();
+                }
                 
                 if (!string.IsNullOrWhiteSpace(promotionId))
                 {
                     list = list.Where(_ => _.PromotionId == promotionId).ToList();
+                    totalCount = list.Count();
                 }
+
                if(list.Count > 0 )
                 {
                     list = list.Skip((page - 1) * pageSize).Take(pageSize).ToList();
@@ -716,9 +739,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                     if (promotion.DiscountType == DiscountType.Percentage)
                     {
                         long priceWithoutCode = 0;
-                        var val = promotion.Value.Value / 100;
-                        currentPriceWithCouponCode = priceWithoutCode - (val * priceWithoutCode);
-                        priceWithoutCode = currentPriceWithCouponCode / (1 - val);
+                        var val = 100 - promotion.Value.Value;
+                        priceWithoutCode = ((currentPriceWithCouponCode * 100) / val);
+                        //currentPriceWithCouponCode = priceWithoutCode - (val * priceWithoutCode);
+                        //priceWithoutCode = currentPriceWithCouponCode / (1 - val);
                         res.ReturnValue.Price = priceWithoutCode;
                     }
                     entity.UserIds.Add(userId);

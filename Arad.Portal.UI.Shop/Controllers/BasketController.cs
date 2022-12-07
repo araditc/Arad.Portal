@@ -73,6 +73,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             var res = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
             var currentUserId = User.GetUserId();
+            //test
+            //res.DomainId = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004";
             var result = _promotionRepository.CheckCode(currentUserId, code, res.DomainId, model.Price);
             if(result.Succeeded)
             {
@@ -105,8 +107,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             var result = await _promotionRepository.RevertCodeForUser(currentUserId, code, res.DomainId, model.Price);
             return Json(new
             {
-                status = "Error",
-                val = 0,
+                status = result.Succeeded ? "Succeed" : "Error",
+                val = result.ReturnValue.Price,
                 Message = result.Succeeded ? "" : Language.GetString("AlertAndMessage_InvalidCode")
             });
 
