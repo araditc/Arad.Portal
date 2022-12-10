@@ -96,14 +96,14 @@
                 @for (int i = 1; i <= Model.LikeRate; i++)
                 {
                     <a href="#"
-               role="button" aria-expanded="false" title=@($"{Language.GetString("ContentScore")}_{i}") onclick="Rate(@i);">
+               role="button" aria-expanded="false" title=@($"{Language.GetString("ContentScore")}_{i}") onclick="RateC(@i);">
                         <i class="fas fa-star"></i>
                     </a>
                 }
                 @if (Model.HalfLikeRate)
                 {
                     <a href="#"
-               role="button" aria-expanded="false" title=@($"{Language.GetString("ContentScore")}_{@Model.LikeRate+1}") onclick="Rate(@Model.LikeRate+1);">
+               role="button" aria-expanded="false" title=@($"{Language.GetString("ContentScore")}_{@Model.LikeRate+1}") onclick="RateC(@Model.LikeRate+1);">
                         <i class="fas fa-star-half-alt"></i>
                     </a>
                 }
@@ -111,7 +111,7 @@
                 @for (int i = initial; i <= 5; i++ )
                 {
                     <a href="#"
-                                role="button" aria-expanded="false" onclick="Rate(@i);" title=@($"{Language.GetString("ContentScore")}_{i}")>
+                                role="button" aria-expanded="false" onclick="RateC(@i);" title=@($"{Language.GetString("ContentScore")}_{i}")>
                         <i class="far fa-star"></i>
                     </a>
                 }
@@ -266,7 +266,7 @@
             window.location.href = '@Url.Action("Login", "Account")' + `?returnUrl=${'@ViewBag.LanIcon'}/blog/${contentCode}`;
 
     }
-     function Rate(score) {
+     function RateC(score) {
          debugger;
          var isAllow = false;
         if ('@User.Identity.IsAuthenticated' == "True") {

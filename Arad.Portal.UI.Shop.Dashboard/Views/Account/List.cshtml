@@ -72,11 +72,11 @@
 
                             foreach (var role in roles)
                             {
-                                                <option selected="@(queryString != null && !string.IsNullOrWhiteSpace(queryString["role"])
+                                                        <option selected="@(queryString != null && !string.IsNullOrWhiteSpace(queryString["role"])
                                         && queryString["role"] == role.Id ? "selected" : null)"
                                         value="@role.Id">
-                                                    @role.Title
-                                                </option>
+                                                            @role.Title
+                                                        </option>
                             }
                         }
                     </select>
@@ -188,11 +188,11 @@
                                 @{
                                     if (item.IsActive)
                                     {
-                                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success bg-gradient">@Language.GetString("Active")</button>
+                                                                <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success bg-gradient">@Language.GetString("Active")</button>
                                     }
                                     else
                                     {
-                                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
+                                                                <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
                                     }
                                 }
                             </td>
@@ -283,6 +283,7 @@
     <script>
         var password;
         var userId;
+        var bsAlert = new bootstrap.Toast($("#mainToast"));
         $(document).ready(function () {
             debugger;
          
@@ -394,16 +395,16 @@
 
         function changePassword(id) {
             debugger;
-            userId = id;
+            entityId = id;
             typeOfRequest = 'PUT';
-            confirmUrl = `@Url.Action("ChangePassword")?id=${id}`;
+            confirmUrl = `@Url.Action("ChangePassword")?id=${entityId}`;
             document.getElementById('confirmChangePasswordModalLabel').innerHTML = '@Language.GetString("btn_ChangePassword")';
             document.getElementById('confirmChangePasswordModalBody').innerHTML = '@Language.GetString("AlertAndMessage_ChangePassConfirmation")';
             $('#confirmChangePasswordModal').modal('show');
         }
 
         function copyToClipboard() {
-
+           debugger;
             navigator.clipboard.writeText(password).then(() => {
 
                 $('#showChangePasswordModal').modal('hide');
@@ -412,16 +413,17 @@
                 document.getElementById('mainToastBody').classList.remove('alert-success');
                 document.getElementById('mainToastBody').classList.add('alert-success');
                 document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessage_CopyDone")';
-
+               
+                bsAlert.show();
                 setTimeout(function () {
                     window.location.reload();
                 },
                     1500);
-                bsAlert.show();
             });
         }
 
         function SendPassword() {
+            debugger;
             $('#showChangePasswordModal').modal('hide');
             $("#toastPanel").show();
             document.getElementById('mainToastBody').classList.remove('alert-danger');
@@ -429,7 +431,7 @@
 
             $.ajax({
                 type: "Get",
-                url: `@Url.Action("CreatePasswordNotification")?id=${entityId}&password=${password}`,
+                url: `@Url.Action("CreatePasswordNotification")?userId=${entityId}&password=${password}`,
                 statusCode: {
                     200: function (resultData) {
                         if (resultData.result) {

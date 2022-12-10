@@ -18,6 +18,7 @@ using Arad.Portal.DataLayer.Entities;
 using Arad.Portal.DataLayer.Entities.General.Email;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Microsoft.AspNetCore.Hosting;
+using Serilog;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Notification.Mongo
 {
@@ -90,8 +91,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Notification.Mongo
            List<Entities.General.Notify.Notification> notifications = await _context.Collection.AsQueryable()
                                                               .Where(n => (n.SendStatus == NotificationSendStatus.Store || n.SendStatus == NotificationSendStatus.Error) &&
                                                                           n.ScheduleDate <= DateTime.Now.ToUniversalTime() && n.Type == notificationType && n.ActionType == ActionType.NoExtraAction)
-                                                              .Take(notificationType == NotificationType.Email ? _setting.HowManyEmailsSendEachTime : _setting.HowManySmsSendEachTime)
+                                                              .Take(notificationType == NotificationType.Email ? 20 : 20)
                                                               .ToListAsync();
+
+            Log.Fatal($"GetForSend Notification Count: {notifications}");
 
             foreach (Entities.General.Notify.Notification notification in notifications)
             {

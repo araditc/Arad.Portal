@@ -190,8 +190,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
                 var currencyEntity = _context.Collection.Find(_ => _.CurrencyId == currencyId).FirstOrDefault();
                 if(currencyEntity != null)
                 {
-                    currencyEntity.IsDeleted = true;
-                    var upResult = await _context.Collection.UpdateOneAsync(_ => _.CurrencyId == currencyId, currencyId);
+                   
+                    var upResult = await _context.Collection.DeleteOneAsync(_ => _.CurrencyId == currencyId);
                     if (upResult.IsAcknowledged)
                     {
                         result.Message = ConstMessages.SuccessfullyDone;

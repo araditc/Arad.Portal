@@ -6,6 +6,7 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Hosting;
 using MimeKit;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,15 +35,12 @@ namespace Arad.Portal.UI.Shop.Helpers
         {
             TimerCallback cb = new(OnTimeEvent);
             _timer = new(OnTimeEvent, null, 1000, 10000);
+            Log.Fatal("*************************STTTTTTTttart Email service timer*************************");
         }
 
         private async void OnTimeEvent(object state)
         {
-            if (Logger.LogFlag)
-            {
-                Logger.WriteLogFile(_setting.ServiceName, _setting.LogPath);
-            }
-
+           
             if (_flag)
             {
                 await ReadAndSend();
@@ -103,10 +101,9 @@ namespace Arad.Portal.UI.Shop.Helpers
                     }
                 }
             }
-
-            if (productNotification.Any())
+            foreach (var notify in productNotification)
             {
-                Parallel.ForEach(productNotification, async notify => { await _createNotification.GenerateProductNotificationToUsers("ProductAvailibilityNotify", notify); });
+                await _createNotification.GenerateProductNotificationToUsers("ProductAvailibilityNotify", notify);
             }
 
             sw2.Stop();

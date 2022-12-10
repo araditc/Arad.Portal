@@ -86,7 +86,7 @@
                                         <td style="display:none;">@item.LanguageId</td>
                                         <td>
                                             <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Language.GetString("btn_Delete")"
-                                                    class="btn btn-danger bg-gradient" onclick="deleteFromTable(this);">
+                                                    class="btn btn-sm btn-danger bg-gradient" onclick="deleteFromTable(this);">
                                                 <i class="fa fa-trash" ></i>
                                             </button>
                                         </td>
@@ -229,28 +229,33 @@
         function addToTable() {
             var flag = false;
             debugger;
+            var urlFriend = "";
+            debugger;
+            var selectedLang = $('#languageId').val();
+            if (isUnique(selectedLang, 'multiLingualList', 2, '@Language.GetString("AlertAndMessage_LangUniqueness")'))
+            {
+                if ($("#unitName").val() == "") {
+                    $("span[data-val-result='unitName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                    flag = true;
+                }
+                if ($("#languageId").val() == "-1") {
+                     $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                    flag = true;
+                }
 
-            if ($("#unitName").val() == "") {
-                $("span[data-val-result='unitName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-                flag = true;
-            }
-            if ($("#languageId").val() == null || $("#languageId").val() == "-1") {
-                 $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-                flag = true;
-            }
+                if (!flag) {
+                    var tr = "<tr style='text-align:center;'><td>" + $("#unitName").val() +
+                        "</td><td>" + $('#languageId option:selected').text() +
+                        "</td><td style='display:none;'>" + $("#languageId").val() +
+                        "</td><td><button type='button' data-bs-toggle='tooltip' data-bs-placement='top' title='@Language.GetString("btn_Delete")' " +
+                        " class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromTable(this);'>" +
+                        "<i class='fa fa-trash' ></i></button></td></tr>";
 
-            if (!flag) {
-                var tr = "<tr style='text-align:center;'><td>" + $("#unitName").val() +
-                    "</td><td>" + $('#languageId option:selected').text() +
-                    "</td><td style='display:none;'>" + $("#languageId").val() +
-                    "</td><td><button type='button' data-bs-toggle='tooltip' data-bs-placement='top' title='@Language.GetString("btn_Delete")' " +
-                    " class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromTable(this);'>" +
-                    "<i class='fa fa-trash' ></i></button></td></tr>";
-
-                $("#multiLingualList").append(tr);
-                $("#unitName").val("");
-                $("#languageId").val('@ViewBag.DefLang');
-                $("#languageId").selectpicker("refresh");
+                    $("#multiLingualList").append(tr);
+                    $("#unitName").val("");
+                    $("#languageId").val('@ViewBag.DefLang');
+                    $("#languageId").selectpicker("refresh");
+                }
             }
         }
     </script>

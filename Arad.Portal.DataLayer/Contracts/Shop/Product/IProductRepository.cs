@@ -57,7 +57,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         InventoryDetail FindProductSpecValuesRecord(string productId, List<SpecValue> specValues);
        
-        ProductOutputDTO FetchByCode(string slugOrCode, DomainDTO dto, string userId);
+        ProductOutputDTO FetchByCode(string slugOrCode, DomainDTO dto, string userId = "");
 
         string FetchIdByCode(long productCode);
 

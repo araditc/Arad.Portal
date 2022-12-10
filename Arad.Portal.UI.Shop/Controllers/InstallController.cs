@@ -89,32 +89,31 @@ namespace Arad.Portal.UI.Shop.Controllers
             _appSetting.DatabaseConfig.ConnectionString = "mongodb://localhost:27017/AradPortalTest";
             _appSetting.DatabaseConfig.DbName = "AradPortalTest";
 
-           //var defaultDomainResult = _domainRepository.FetchDefaultDomain();
-           //var domainEntity = _mapper.Map<Domain>(defaultDomainResult.ReturnValue);
-           //if(defaultDomainResult.Succeeded)
-           //{
-           //    model.DomainName = domainEntity.DomainName;
-           //    model.DomainId = domainEntity.DomainId;
-           //    model.Title = domainEntity.Title;
-           //    model.PriceValue = domainEntity.Prices.Any(_ => _.EndDate == null && _.IsActive && _.StartDate <= DateTime.UtcNow) ? domainEntity.Prices.FirstOrDefault(_ => _.EndDate == null && _.IsActive && _.StartDate <= DateTime.UtcNow).PriceValue : 0;
-           //    model.IsShop = domainEntity.IsShop;
-           //    model.IsMultiLinguals = domainEntity.IsMultiLinguals;
-           //    model.CurrencyId = domainEntity.DefaultCurrencyId;
-           //}
-           //var sysAccountUser = _userManager.Users.FirstOrDefault(_ => _.IsSystemAccount);
-           //if(sysAccountUser != null)
-           //{
-           //    model.UserId = sysAccountUser.Id;
-           //    model.FirstName = sysAccountUser.Profile.FirstName;
-           //    model.LastName = sysAccountUser.Profile.LastName;
-           //    model.UserName = sysAccountUser.UserName;
-           //}
-           var currencyList = _currencyRepository.GetAllActiveCurrency();
+            var defaultDomainResult = _domainRepository.FetchDefaultDomain();
+            var domainEntity = _mapper.Map<Domain>(defaultDomainResult.ReturnValue);
+            if (defaultDomainResult.Succeeded)
+            {
+                model.DomainName = domainEntity.DomainName;
+                model.DomainId = domainEntity.DomainId;
+                model.Title = domainEntity.Title;
+                model.IsShop = domainEntity.IsShop;
+                model.IsMultiLinguals = domainEntity.IsMultiLinguals;
+                model.CurrencyId = domainEntity.DefaultCurrencyId;
+            }
+            //var sysAccountUser = _userManager.Users.FirstOrDefault(_ => _.IsSystemAccount);
+            //if(sysAccountUser != null)
+            //{
+            //    model.UserId = sysAccountUser.Id;
+            //    model.FirstName = sysAccountUser.Profile.FirstName;
+            //    model.LastName = sysAccountUser.Profile.LastName;
+            //    model.UserName = sysAccountUser.UserName;
+            //}
+            var currencyList = _currencyRepository.GetAllActiveCurrency();
             var encryptionTypes = _domainRepository.GetAllEmailEncryptionType();
             ViewBag.EncryptionType = encryptionTypes;
             ViewBag.CurrencyList = currencyList;
             var res = _languageRepository.GetAllActiveLanguage();
-            res.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
+            res.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             ViewBag.LangList = res;
             return View(model);
         }

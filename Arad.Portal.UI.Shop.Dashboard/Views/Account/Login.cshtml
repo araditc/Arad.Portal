@@ -113,11 +113,10 @@
                             </span>
 
 
-                            <a class="link-primary small"
-                               asp-controller="Account" asp-action="ChangePassword"
-                               style="text-decoration: none">
-                                @Language.GetString("AlertAndMessage_ForgetPassword")
-                            </a>
+                            <input type="button" class="link-primary small border-0 text-start" id="changePass"
+                                   style="background-color: transparent;" 
+                               value ='@Language.GetString("AlertAndMessage_ForgetPassword")' />
+                            
 
                             <div class="input-group p-0 mb-1">
 
@@ -181,18 +180,6 @@
                             <div class="col-12 p-0">
                                 <input class="btn btn-outline-primary text-bold  w-100"
                                         type="submit" value='@Language.GetString("btn_Login")'>
-                                    
-                               
-                            </div>
-
-                            <div class="loginSignUpSeparator">
-                                <span class="textInSeparator">@Language.GetString("Or")</span>
-                            </div>
-                            <div class="col-12 p-0">
-                                <a class="mt-0 btn btn-outline-secondary  text-bold w-100"
-                                   href="#">
-                                    <span class="text-bold">@Language.GetString("User_Signup")</span>
-                                </a>
                             </div>
                         </form>
                     </div>
@@ -237,6 +224,11 @@
                     $("#toastPanel").hide();
                 }, 2500);
             }
+
+            $("#changePass").click(function(){
+                debugger;
+                window.location.href = '@Url.Action("ChangePassword", "Account")';
+            })
         })
 
     function refreshCaptcha()

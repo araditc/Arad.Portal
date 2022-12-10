@@ -30,6 +30,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
         #region DomainSection
         public bool IsShop { get; set; }
         public bool IsMultiLinguals { get; set; }
+        public string DomainId { get; set; }
         public string DomainName { get; set; }
         public string Title { get; set; }
         public string CurrencyId { get; set; }

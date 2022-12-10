@@ -897,6 +897,10 @@
     "Key": "Validation_EnterUsername"
   },
   {
+    "Value": "نام کاربری یا شماره همراه اشتباه است.",
+    "Key": "Validation_InvalidUserNameOrPhoneNumber"
+  },
+  {
     "Value": "شماره موبایل پیش از این ثبت شده است.",
     "Key": "Validation_MobileNumberAlreadyRegistered"
   },
@@ -919,6 +923,10 @@
   {
     "Value": "لطفا تمام مقادیر مشخصات محصول را انتخاب کنید.",
     "Key": "AlertAndMessage_SelectAllSpecificationValues"
+  },
+  {
+    "Value": "این محصولات به گروه مشترکی تعلق ندارند.",
+    "Key": "AlertAndMessage_NoCommonProductGroups"
   },
   {
     "Value": "برای جلوگیری از تناقض در موجودی لطفا موجودی محصول را بر حسب مشخصه جدید تغییر دهید.",

@@ -909,6 +909,10 @@
     "Key": "Validation_EnterUsername"
   },
   {
+    "Value": "Invalid username or phonenumber",
+    "Key": "Validation_InvalidUserNameOrPhoneNumber"
+  },
+  {
     "Value": "The entered mobile number is already registered.",
     "Key": "Validation_MobileNumberAlreadyRegistered"
   },
@@ -931,6 +935,10 @@
   {
     "Value": "Please select all specification values",
     "Key": "AlertAndMessage_SelectAllSpecificationValues"
+  },
+  {
+    "Value": "These Products doesnt belongs to common product groups",
+    "Key": "AlertAndMessage_NoCommonProductGroups"
   },
   {
     "Value": "To prevent inventory inconsistensy please change product inventory based on new inserted specification",

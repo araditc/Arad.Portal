@@ -683,6 +683,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         [HttpPost]
         public async Task<IActionResult> AddAddress(AddressDto address)
         {
+            ApplicationUser user;
+            string userId;
             try
             {
                 if (!ModelState.IsValid)
@@ -734,25 +736,28 @@ namespace Arad.Portal.UI.Shop.Controllers
                     return Json(new { Status = "error", message = Language.GetString("AlertAndMessage_FillEssentialFields"), ModelStateErrors = errors });
                 }
 
-              
 
-                var userId = User.GetUserId();
-                var user = await _userManager.FindByIdAsync(userId);
-
-                address.Id = Guid.NewGuid().ToString();
-
-                var provinceId = address.ProvinceId;
-                var add = _mapper.Map<Address>(address);
-                user.Profile.Addresses.Add(add);
-
-                var updateAsync = await _userManager.UpdateAsync(user);
-
-                if (updateAsync.Succeeded)
+                if (User.Identity.IsAuthenticated)
                 {
-                    var returnUrl = TempData["ReturnUrl"];
-                    return Json(new { status = "success", Message = Language.GetString("AlertAndMessage_AddressAddedSuccessfully"), Url = returnUrl });
-                }
+                    userId = User.GetUserId();
+                    user = await _userManager.FindByIdAsync(userId);
 
+
+
+                    address.Id = Guid.NewGuid().ToString();
+
+                    var provinceId = address.ProvinceId;
+                    var add = _mapper.Map<Address>(address);
+                    user.Profile.Addresses.Add(add);
+
+                    var updateAsync = await _userManager.UpdateAsync(user);
+
+                    if (updateAsync.Succeeded)
+                    {
+                        var returnUrl = TempData["ReturnUrl"];
+                        return Json(new { status = "success", Message = Language.GetString("AlertAndMessage_AddressAddedSuccessfully"), Url = returnUrl });
+                    }
+                }
                 return Json(new { status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
             }
             catch (Exception x)

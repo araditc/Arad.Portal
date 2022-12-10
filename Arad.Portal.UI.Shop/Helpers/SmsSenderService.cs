@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
+using Serilog;
 
 
 namespace Arad.Portal.UI.Shop.Helpers
@@ -22,31 +23,29 @@ namespace Arad.Portal.UI.Shop.Helpers
     public class SmsSenderService
     {
         private readonly INotificationRepository _notificationRepository;
-        private readonly Setting _setting;
+        //private readonly Setting _setting;
         private readonly CreateNotification _createNotification;
         private Timer _timer;
         private bool _flag = true;
         private static readonly object syncLock = new object();
         public SmsSenderService(INotificationRepository notificationRepository,
-                                Setting setting, CreateNotification createNotification)
+                                /*Setting setting,*/ CreateNotification createNotification)
         {
             _notificationRepository = notificationRepository;
-            _setting = setting;
+            //_setting = setting;
             _createNotification = createNotification;
         }
 
 
         public void StartTimer()
         {
-            TimerCallback cb = new(OnTimeEvent);
-            _timer = new(cb, null, 1000, 10000);
+            //TimerCallback cb = new(OnTimeEvent);
+            _timer = new(OnTimeEvent, null, 1000, 10000);
+            Log.Fatal("*************************STTTTTTTttart SMS service timer*************************");
         }
         private async void OnTimeEvent(object state)
         {
-            if (Logger.LogFlag)
-            {
-                Logger.WriteLogFile(_setting.ServiceName, _setting.LogPath);
-            }
+
 
             if (_flag)
             {
@@ -66,7 +65,11 @@ namespace Arad.Portal.UI.Shop.Helpers
 
             List<Notification> wholeList = await _notificationRepository.GetForSend(NotificationType.Sms);
             List<Notification> smsNotifications = wholeList.Where(_ => _.ActionType == ActionType.NoExtraAction).ToList();
+            Log.Fatal($"ReadAndSend smsNotificationCount: {smsNotifications.Count}");
+
             List<Notification> productNotification = wholeList.Where(_ => _.ActionType == ActionType.ProductAvailibilityReminder).ToList();
+            Log.Fatal($"ReadAndSend productNotificationCount: {productNotification.Count}");
+
             sw1.Stop();
             sw2.Start();
             if (smsNotifications.Any())
@@ -115,16 +118,21 @@ namespace Arad.Portal.UI.Shop.Helpers
                     await _notificationRepository.UpdateMany
                         (smsNotifications.Select(_ => _.NotificationId).ToList(), definition);
                     failedCount++;
-                    Logger.WriteLogFile($"Error in sending SMS. Error is: {e.Message}");
+                  
+                    Log.Fatal($"Error in sending SMS. Error is: {e.Message}");
                 }
             }
             if(productNotification.Any())
             {
-                Parallel.ForEach(productNotification, async notify => { await _createNotification.GenerateProductNotificationToUsers("ProductAvailibilityNotify", notify);  });
+                
+                foreach (var notify in productNotification)
+                {
+                    await _createNotification.GenerateProductNotificationToUsers("ProductAvailibilityNotify", notify);
+                }
             }
 
             sw2.Stop();
-            Logger.WriteLogFile($"RowCount: {smsNotifications.Count}\t " +
+            Log.Fatal($"RowCount: {smsNotifications.Count}\t " +
                                $"ReadTime: {sw1.ElapsedMilliseconds}\t " +
                                $"SendTime: {sw2.ElapsedMilliseconds}\t " +
                                $"SuccessCount: {sucessCount}\t " +

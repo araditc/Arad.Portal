@@ -80,21 +80,21 @@
                     @for (int i = 1; i <= Model.LikeRate; i++)
                     {
                         <a href="#"
-                       role="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title=@($"{Language.GetString("ContentScore")}_{i}") onclick="Rate(@i);" class="ratePro">
+                       role="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title=@($"{Language.GetString("ContentScore")}_{i}") onclick="RatePro(@i);" class="ratePro">
                             <i class="fas fa-star"></i>
                         </a>
                     }
                     @if (Model.HalfLikeRate)
                     {
                         <a href="#" class="ratePro"
-                       role="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title=@($"{Language.GetString("ContentScore")}_{@Model.LikeRate+1}") onclick="Rate(@Model.LikeRate+1);">
+                       role="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title=@($"{Language.GetString("ContentScore")}_{@Model.LikeRate+1}") onclick="RatePro(@Model.LikeRate+1);">
                             <i class="fas fa-star-half-alt"></i>
                         </a>
                     }
                     @for (int i = (Model.HalfLikeRate ? Model.LikeRate + 2 : Model.LikeRate + 1); i <= 5; i++)
                     {
                         <a href="#" class="ratePro"
-                       role="button" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="Rate(@i);" title=@($"{Language.GetString("ContentScore")}_{i}")>
+                       role="button" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="RatePro(@i);" title=@($"{Language.GetString("ContentScore")}_{i}")>
                             <i class="far fa-star"></i>
                         </a>
                     }
@@ -641,7 +641,7 @@ else
 
     }
 
-    function Rate(score) {
+    function RatePro(score) {
         debugger;
         var isAllow = false;
         if ('@User.Identity.IsAuthenticated' == 'True') {

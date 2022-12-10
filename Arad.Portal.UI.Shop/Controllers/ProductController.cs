@@ -36,6 +36,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Text.Encodings.Web;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Authorization;
+using Arad.Portal.DataLayer.Entities.Shop.Product;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -271,7 +272,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
         [HttpGet]
         [Route("{language}/product/AddToComapareList")]
-        public IActionResult AddToComapareList([FromQuery] long code)
+        public async Task<IActionResult> AddToComapareList([FromQuery] long code)
         {
             try
             {
@@ -283,6 +284,20 @@ namespace Arad.Portal.UI.Shop.Controllers
                 if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
                 {
                     compareList = HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}");
+                    if(compareList.Any())
+                    {
+                        var firstElem = compareList[0];
+                        var productEntity = await _productRepository.ProductFetch(firstElem);
+                        var inputEntity = await  _productRepository.ProductFetch(productId);
+                        if(!productEntity.GroupIds.Intersect(inputEntity.GroupIds).Any())
+                        {
+                            return Json(new
+                            {
+                                status = "Error",
+                                message = Language.GetString("AlertAndMessage_NoCommonProductGroups")
+                            });
+                        }
+                    }
                 }
                 if(!compareList.Contains(productId) && compareList.Count <= 4)
                 {
@@ -309,7 +324,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
         [HttpGet]
         [Route("{language}/product/AddToComparePage")]
-        public IActionResult AddToComparePage([FromQuery] long code)
+        public async Task<IActionResult> AddToComparePage([FromQuery] long code)
         {
             var lanIcon = "";
             List<string> compareList = new List<string>();
@@ -324,23 +339,35 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
             }
-            
-            var userId = User.GetUserId();
-            var dto = _productRepository.FetchByCode(code.ToString(), domainEntity, userId);
-            if(!string.IsNullOrWhiteSpace(dto.ProductId))
+
+            var productId = _productRepository.FetchIdByCode(code);
+            if (!string.IsNullOrWhiteSpace(productId))
             {
                 if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
                 {
                     compareList = HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}");
+                    if (compareList.Any())
+                    {
+                        var firstElem = compareList[0];
+                        var productEntity = await _productRepository.ProductFetch(firstElem);
+                        var inputEntity = await _productRepository.ProductFetch(productId);
+                        if (!productEntity.GroupIds.Intersect(inputEntity.GroupIds).Any())
+                        {
+                            return Json(new
+                            {
+                                status = "Error",
+                                message = Language.GetString("AlertAndMessage_NoCommonProductGroups")
+                            });
+                        }
+                    }
                 }
-                if (!compareList.Contains(dto.ProductId) && compareList.Count <= 4)
+                if (!compareList.Contains(productId) && compareList.Count <= 4)
                 {
-                    compareList.Add(dto.ProductId);
+                    compareList.Add(productId);
                 }
                 HttpContext.Session.SetComplexData($"compareList_{remoteIpAddress}_{domainEntity.DomainId}", compareList);
             }
             return Redirect($"/{lanIcon}/Product/Compare");
-
         }
 
 
@@ -360,8 +387,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
             var domainEntity = _domainRepository.FetchByName(DomainName, false).ReturnValue;
             var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString().Replace(".", "");
-            var userId = User.GetUserId();
-            var dto = _productRepository.FetchByCode(code.ToString(), domainEntity, userId);
+            //var userId = User.GetUserId();
+            var dto = _productRepository.FetchByCode(code.ToString(), domainEntity, "");
             if(!string.IsNullOrWhiteSpace(dto.ProductId))
             {
                 if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
