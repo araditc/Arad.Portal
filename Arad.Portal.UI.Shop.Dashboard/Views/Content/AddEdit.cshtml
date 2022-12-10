@@ -380,7 +380,7 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <button type="button" class="btn btn-danger bg-gradient" imgId="@($"img_{@pic.ImageId}")" onclick="deleteFromImageList(this);">
+                                                            <button type="button" class="btn btn-sm btn-danger bg-gradient" imgId="@($"img_{@pic.ImageId}")" onclick="deleteFromImageList(this);">
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
                                                         </td>
@@ -1003,7 +1003,7 @@
                     "' width='" + width + "' height='" + height + "'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/><td class='d-none'>" + $("#imgAspectRatio").val() + "</td><td>" + ratio + "</td><td style='vertical-align:middle;'><div class='form-check d-flex justify-content-center p-0'><input type='radio'  name='isMainImage' class='form-check-input rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_"
+                    "'/><td class='d-none'>" + $("#imgAspectRatio").val() + "</td><td>" + ratio + "</td><td style='vertical-align:middle;'><div class='form-check d-flex justify-content-center p-0'><input type='radio'  name='isMainImage' class='form-check-input rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-sm btn-danger bg-gradient' imgId='img_"
                     + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
 
                 $("#imageList").append(tr);

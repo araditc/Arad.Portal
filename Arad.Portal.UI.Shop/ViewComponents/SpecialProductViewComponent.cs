@@ -38,7 +38,18 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             int count, TransActionType loadAnimation, LoadAnimationType loadAnimationType)
         {
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
-            var defLangSymbol = defaultCulture.Split("|")[0][2..];
+            var domainName = $"{_accessor.HttpContext.Request.Host}";
+            var domainEntity = _domainRepository.FetchByName(domainName, true).ReturnValue;
+            string defLangSymbol;
+            if (defaultCulture != null)
+            {
+                defLangSymbol = defaultCulture.Split("|")[0][2..];
+            }
+            else
+            {
+                var defLangId = domainEntity.DefaultLanguageId;
+                defLangSymbol = _lanRepository.FetchBySymbol(defLangId);
+            }
             CultureInfo currentCultureInfo = new(defLangSymbol, false);
             var ri = new RegionInfo(currentCultureInfo.LCID);
             var currencyPrefix = ri.ISOCurrencySymbol;

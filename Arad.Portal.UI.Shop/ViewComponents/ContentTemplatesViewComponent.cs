@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Content;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 using Arad.Portal.DataLayer.Entities.General.SliderModule;
@@ -20,20 +21,34 @@ namespace Arad.Portal.UI.Shop.ViewComponents
         private readonly IContentRepository _contentRepository;
         private readonly IHttpContextAccessor _accessor;
         private readonly ILanguageRepository _lanRepository;
+        private readonly IDomainRepository _domainRepository;
         public ContentTemplatesViewComponent(IContentRepository contentRepository,
-            IHttpContextAccessor accessor, ILanguageRepository lanRepository)
+            IHttpContextAccessor accessor, ILanguageRepository lanRepository, IDomainRepository domainRepository)
         {
-                _contentRepository = contentRepository;
-                _accessor = accessor;
-               _lanRepository = lanRepository;
-        }
+            _contentRepository = contentRepository;
+            _accessor = accessor;
+            _lanRepository = lanRepository;
+            _domainRepository = domainRepository;
+            _domainRepository = domainRepository;
+         }
         //public IViewComponentResult Invoke(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, 
         //    int count, TransActionType loadAnimation, LoadAnimationType loadAnimationType)
         public IViewComponentResult Invoke(ModuleParameters moduleParameters)
         {
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
+            var domainName = $"{_accessor.HttpContext.Request.Host}";
+            var domainEntity = _domainRepository.FetchByName(domainName, true).ReturnValue;
             List<ContentGlance> lst = new List<ContentGlance>();
-            var defLangSymbol = defaultCulture.Split("|")[0][2..];
+            string defLangSymbol = "";
+            if (defaultCulture != null)
+            {
+                defLangSymbol = defaultCulture.Split("|")[0][2..];
+            }
+            else
+            {
+                var defLangId = domainEntity.DefaultLanguageId;
+                defLangSymbol = _lanRepository.FetchBySymbol(defLangId);
+            }
             CultureInfo currentCultureInfo = new(defLangSymbol, false);
             var langId = _lanRepository.FetchBySymbol(defLangSymbol);
             ViewBag.CurLangId = langId;

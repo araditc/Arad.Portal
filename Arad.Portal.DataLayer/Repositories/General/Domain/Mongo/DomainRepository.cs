@@ -85,9 +85,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                             IsActive = !string.IsNullOrWhiteSpace(price.PriceId) ? price.IsActive : true,
                             Prefix = price.Prefix,
                             PriceValue = price.PriceValue,
-                            StartDate = DateHelper.ToEnglishDate(price.StartDate).ToUniversalTime(),
+                            StartDate = DateHelper.ToEnglishDate(price.StartDate.Split(" ")[0]).ToUniversalTime(),
                             EndDate = !string.IsNullOrWhiteSpace(price.EndDate) ?
-                            GeneralLibrary.Utilities.DateHelper.ToEnglishDate(price.EndDate).ToUniversalTime() : null
+                            GeneralLibrary.Utilities.DateHelper.ToEnglishDate(price.EndDate.Split(" ")[0]).ToUniversalTime() : null
                         };
                         equallentEntity.Prices.Add(p);
                     }
@@ -453,9 +453,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                         IsActive = !string.IsNullOrWhiteSpace(price.PriceId) ? price.IsActive : true,
                         Prefix = price.Prefix,
                         PriceValue = price.PriceValue,
-                        StartDate = DateHelper.ToEnglishDate(price.StartDate).ToUniversalTime(),
+                        StartDate = DateHelper.ToEnglishDate(price.StartDate.Split(" ")[0]).ToUniversalTime(),
                         EndDate = !string.IsNullOrWhiteSpace(price.EndDate) ?
-                        GeneralLibrary.Utilities.DateHelper.ToEnglishDate(price.EndDate).ToUniversalTime() : null
+                        GeneralLibrary.Utilities.DateHelper.ToEnglishDate(price.EndDate.Split(" ")[0]).ToUniversalTime() : null
                     };
                     entity.Prices.Add(p);
                 }

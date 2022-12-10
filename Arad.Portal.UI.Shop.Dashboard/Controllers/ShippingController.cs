@@ -141,11 +141,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(dto.ShippingCoupon.PersianStartDate))
                 {
-                    dto.ShippingCoupon.StartDate = DateHelper.ToEnglishDate(dto.ShippingCoupon.PersianStartDate);
+                    dto.ShippingCoupon.StartDate = DateHelper.ToEnglishDate(dto.ShippingCoupon.PersianStartDate.Split(" ")[0]);
                 }
                 if (!string.IsNullOrWhiteSpace(dto.ShippingCoupon.PersianEndDate))
                 {
-                    dto.ShippingCoupon.EndDate = DateHelper.ToEnglishDate(dto.ShippingCoupon.PersianEndDate);
+                    dto.ShippingCoupon.EndDate = DateHelper.ToEnglishDate(dto.ShippingCoupon.PersianEndDate.Split(" ")[0]);
                 }
                 dto.ShippingSettingId = Guid.NewGuid().ToString();
                 var domainName = _domainRepository.GetDomainName();
@@ -186,11 +186,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(dto.ShippingCoupon.PersianStartDate))
                 {
-                    dto.ShippingCoupon.StartDate = DateHelper.ToEnglishDate(dto.ShippingCoupon.PersianStartDate);
+                    dto.ShippingCoupon.StartDate = DateHelper.ToEnglishDate(dto.ShippingCoupon.PersianStartDate.Split(" ")[0]);
                 }
                 if (!string.IsNullOrWhiteSpace(dto.ShippingCoupon.PersianEndDate))
                 {
-                    dto.ShippingCoupon.EndDate = DateHelper.ToEnglishDate(dto.ShippingCoupon.PersianEndDate);
+                    dto.ShippingCoupon.EndDate = DateHelper.ToEnglishDate(dto.ShippingCoupon.PersianEndDate.Split(" ")[0]);
                 }
                 shippingSetting = _shippingSettingRepository.FetchById(dto.ShippingSettingId);
                 if (shippingSetting == null)

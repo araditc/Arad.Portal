@@ -456,10 +456,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     ModelState.AddModelError(nameof(model.StartDate), Language.GetString("AlertAndMessage_FieldEssential"));
                 }
-                model.StartDate = DateHelper.ToEnglishDate(model.PersianStartDate);
+                model.StartDate = DateHelper.ToEnglishDate(model.PersianStartDate.Split(" ")[0]);
                 if(!string.IsNullOrWhiteSpace(model.PersianExpireDate))
                 {
-                    model.ExpireDate = DateHelper.ToEnglishDate(model.PersianExpireDate);
+                    model.ExpireDate = DateHelper.ToEnglishDate(model.PersianExpireDate.Split(" ")[0]);
                 }
 
             }

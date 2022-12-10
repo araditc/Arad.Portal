@@ -239,7 +239,7 @@
                                                             <td class="ltr">@(price.EndDate != null ? price.EndDate.ToString().Split(" ")[0] : "")</td>
                                                             <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromPriceList(this);">
+                                                                <button type="button" class="btn btn-sm btn-danger bg-gradient" onclick="deleteFromPriceList(this);">
                                                                     <i class="fa fa-trash"></i>
                                                                 </button>
                                                             </td>
@@ -312,7 +312,7 @@
                                                         <td>@item.PspType</td>
                                                         <td>@item.DomainValueProvider</td>
                                                         <td>
-                                                            <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromTable(this);">
+                                                            <button type="button" class="btn btn-sm btn-danger bg-gradient" onclick="deleteFromTable(this);">
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
                                                         </td>
@@ -451,7 +451,7 @@
                 });
 
                 data = `{ ${data.substring(0, data.length - 2)} }`;
-                var btn = "<button type='button' class='btn btn-danger bg-gradient' onclick='deleteFromTable(this);'><i class='fa fa-trash' ></i></botton>";
+                var btn = "<button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromTable(this);'><i class='fa fa-trash' ></i></botton>";
                 var tr = `<tr style='text-align:center;'><td>${$("#providerId option:selected").text()}</td><td>${data}</td><td>${btn}</td></tr>`;
 
                 $("#gatewayInfoes").append(tr);

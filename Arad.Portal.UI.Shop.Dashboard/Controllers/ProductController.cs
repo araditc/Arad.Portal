@@ -296,9 +296,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             item.SDate = DateTime.UtcNow;
                         }else
                         {
-                            item.SDate = CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir" ? DateHelper.ToEnglishDate(item.StartDate) : DateTime.Parse(item.StartDate);
+                            item.SDate = CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir" ? DateHelper.ToEnglishDate(item.StartDate.Split(" ")[0]) : DateTime.Parse(item.StartDate);
                             item.EDate = !string.IsNullOrWhiteSpace(item.EndDate) ?
-                                (CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir" ? DateHelper.ToEnglishDate(item.EndDate) : DateTime.Parse(item.EndDate)) : null;
+                                (CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir" ? DateHelper.ToEnglishDate(item.EndDate.Split(" ")[0]) : DateTime.Parse(item.EndDate)) : null;
                         }
                         
                         item.Prefix = cur.ReturnValue.Symbol;
@@ -483,9 +483,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         item.PriceId = Guid.NewGuid().ToString();
                         item.Symbol = cur.ReturnValue.Symbol;
                         item.Prefix = cur.ReturnValue.Symbol;
-                        item.SDate = CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir" ? DateHelper.ToEnglishDate(item.StartDate) : DateTime.Parse(item.StartDate);
+                        item.SDate = CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir" ? DateHelper.ToEnglishDate(item.StartDate.Split(" ")[0]) : DateTime.Parse(item.StartDate);
                         item.EDate = !string.IsNullOrWhiteSpace(item.EndDate) ?
-                            (CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir" ? DateHelper.ToEnglishDate(item.EndDate) : DateTime.Parse(item.EndDate)  ) : null;
+                            (CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir" ? DateHelper.ToEnglishDate(item.EndDate.Split(" ")[0]) : DateTime.Parse(item.EndDate)  ) : null;
                         item.IsActive = true;
                     }
 

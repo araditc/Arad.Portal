@@ -41,6 +41,9 @@ using MongoDB.Bson;
 using Arad.Portal.DataLayer.Contracts.General.User;
 using Arad.Portal.DataLayer.Contracts.General.CountryParts;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using SixLabors.ImageSharp.Formats;
+using System.IO;
+using SixLabors.ImageSharp;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -965,7 +968,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             #endregion
 
-            var currentUser = await _userManager.FindByNameAsync(model.FullCellPhoneNumber);
+            var currentUser = await _userManager.FindByNameAsync(model.Username);
 
             string pass = Helpers.Utilities.GenerateRandomPassword(new()
             {
@@ -996,6 +999,111 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
                 return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_Error") });
+        }
+
+        [HttpGet]
+        public IActionResult ChangeKnownPassword()
+        {
+            RegisterDTO registerDto = new();
+
+            return View(registerDto);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeKnownPassword([FromForm] RegisterDTO model)
+        {
+            #region Validate
+            if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
+            {
+                ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIncorrectOrExpired"));
+            }
+
+            model.FullCellPhoneNumber = model.FullCellPhoneNumber.Replace("+", "");
+            model.FullCellPhoneNumber = model.FullCellPhoneNumber.Replace(" ", "");
+
+            if (string.IsNullOrWhiteSpace(model.FullCellPhoneNumber))
+            {
+                ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_EnterMobileNumber"));
+            }
+            else
+            {
+                PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
+
+                PhoneNumber phoneNumber = phoneUtil.Parse(model.FullCellPhoneNumber, "IR");
+
+                if (!phoneUtil.IsValidNumber(phoneNumber))
+                {
+                    ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_MobileNumberInvalid1"));
+                }
+                else
+                {
+                    PhoneNumberType numberType = phoneUtil.GetNumberType(phoneNumber); // Produces Mobile , FIXED_LINE 
+
+                    if (numberType != PhoneNumberType.MOBILE)
+                    {
+                        ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_MobileNumberInvalid2"));
+                    }
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(model.SecurityCode))
+            {
+                ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneError"));
+            }
+
+            OTP otp = OtpHelper.Get(model.FullCellPhoneNumber);
+
+            if (otp == null)
+            {
+                ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneError"));
+            }
+            else
+            {
+                if (otp.ExpirationDate >= DateTime.Now.AddMinutes(3))
+                {
+                    ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneTimeOut"));
+                }
+
+                if (!string.IsNullOrWhiteSpace(model.SecurityCode) && !model.SecurityCode.Equals(otp.Code))
+                {
+                    ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneTimeOut"));
+                }
+            }
+
+            var currentUser = await _userManager.FindByNameAsync(model.Username);
+            var checkPass = await _userManager.CheckPasswordAsync(currentUser, model.CurrentPass);
+            if (!checkPass)
+            {
+                ModelState.AddModelError("CurrentPass", Language.GetString("AlertAndMessage_InCorrectPassword"));
+            }
+
+            if (model.NewPass != model.ReNewPass)
+            {
+                ModelState.AddModelError("ReNewPass", Language.GetString("AlertAndMessage_PassWordAndRePassNotEqual"));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                List<AjaxValidationErrorModel> errors = new();
+
+                foreach (string modelStateKey in ModelState.Keys)
+                {
+                    ModelStateEntry modelStateVal = ModelState[modelStateKey];
+                    errors.AddRange(modelStateVal.Errors
+                        .Select(error => new AjaxValidationErrorModel { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
+                }
+
+                return Ok(new { Status = "ModelError", ModelStateErrors = errors });
+            }
+            #endregion
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(currentUser);
+            var changePass = await _userManager.ResetPasswordAsync(currentUser, token, model.NewPass);
+            return Ok(changePass.Succeeded ?
+                new { Status = "Success", Message = Language.GetString("AlertAndMessage_OperationSuccess") } :
+                new { Status = "Error", Message = Language.GetString("AlertAndMessage_Error") });
+
         }
 
         [HttpPut]
@@ -1132,8 +1240,34 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var lst = _userRepository.GetAddressTypes();
             ViewBag.AddressTypes = lst;
             UserProfileDTO dto = _mapper.Map<UserProfileDTO>(user.Profile);
+           if(CultureInfo.CurrentCulture.Name =="fa-IR")
+            {
+                dto.PersianBirthDate = DateHelper.ToPersianDdate(user.Profile.BirthDate);
+            }
             dto.UserName = user.UserName;
             dto.UserID = user.Id;
+            var staticFileStorageURL = _configuration["LocalStaticFileStorage"];
+            if (user.Profile.ProfilePhoto != null)
+            {
+                if (!string.IsNullOrWhiteSpace(user.Profile.ProfilePhoto.Url))
+                {
+                    user.Profile.ProfilePhoto.Url = user.Profile.ProfilePhoto.Url.Replace("\\", "/");
+                    IImageFormat format;
+                    using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(Path.Combine(staticFileStorageURL, user.Profile.ProfilePhoto.Url), out format))
+                    {
+                        var imageEncoder = Configuration.Default.ImageFormatsManager.FindEncoder(format);
+                        using (MemoryStream m = new MemoryStream())
+                        {
+                            image.Save(m, imageEncoder);
+                            byte[] imageBytes = m.ToArray();
+
+                            // Convert byte[] to Base64 String
+                            string base64String = Convert.ToBase64String(imageBytes);
+                            user.Profile.ProfilePhoto.Content = $"data:image/png;base64, {base64String}";
+                        }
+                    }
+                }
+            }
 
             var countries = _countryRepository.GetAllCountries();
             ViewBag.Countries = countries;
@@ -1146,6 +1280,46 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             //await SetViewBag();
 
             return View(dto);
+        }
+
+        [HttpGet]
+        public IActionResult GetStates(string countryName)
+        {
+            try
+            {
+                var states = _countryRepository.GetStates(countryName);
+                var st = states.Select(c => new CountryPartView()
+                {
+                    Id = c.Value,
+                    Name = c.Text
+                }).ToList();
+                return Json(new { Status = "success", Data = st });
+            }
+            catch (Exception e)
+            {
+                return Json(new { status = "error", message = Language.GetString(ConstMessages.InternalServerErrorMessage) });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetCities(string stateId)
+        {
+            try
+            {
+                var cities = _countryRepository.GetCities(stateId);
+                var ci = cities.Select(c => new CountryPartView()
+                {
+                    Id = c.Value,
+                    Name = c.Text
+                }).ToList();
+
+                return Json(new { status = "success", data = ci });
+            }
+
+            catch (Exception e)
+            {
+                return Json(new { status = "error", message = Language.GetString(ConstMessages.InternalServerErrorMessage) });
+            }
         }
 
 
@@ -1169,9 +1343,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 var user = await _userManager.FindByIdAsync(dto.UserID);
                 var pro = _mapper.Map<DataLayer.Models.User.Profile>(dto);
+                if(!string.IsNullOrWhiteSpace(dto.PersianBirthDate))
+                {
+                    pro.BirthDate = DateHelper.ToEnglishDate(dto.PersianBirthDate.Split(" ")[0]);
+                    pro.FullName = dto.FileContent + " " + dto.LastName;
+                }
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
                 var path = "Images/UserProfiles";
-                var img = new Image()
+                var img = new DataLayer.Models.Shared.Image()
                 {
                     Content = dto.FileContent,
                     Title = dto.FileName

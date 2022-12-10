@@ -1,4 +1,6 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Currency;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Contracts.Shop.ProductGroup;
 using Arad.Portal.DataLayer.Models.Shared;
 using Microsoft.AspNetCore.Http;
@@ -19,22 +21,37 @@ namespace Arad.Portal.UI.Shop.ViewComponents
         private readonly IProductGroupRepository _groupRepository;
         private readonly IHttpContextAccessor _accessor;
         private readonly ICurrencyRepository _currencyRepository;
+        private readonly ILanguageRepository _lanRepository;
+        private readonly IDomainRepository _DomainRepository;
         public ProductsInGroupSectionViewComponent(IProductGroupRepository groupRepository,
+            ILanguageRepository lanRepository,IDomainRepository domainRepository,
             IHttpContextAccessor accessor, ICurrencyRepository currencyRepository)
         {
             _accessor = accessor;
             _groupRepository = groupRepository;
             _currencyRepository = currencyRepository;
+            _lanRepository = lanRepository;
+            _DomainRepository = domainRepository;
         }
 
         public IViewComponentResult Invoke(ProductsInGroupSection productSection)
         {
             var result = new CommonViewModel();
             var domainName = $"{_accessor.HttpContext.Request.Host}";
+            var domainEntity = _DomainRepository.FetchByName(domainName, true).ReturnValue;
             result.ProductList = _groupRepository
                 .GetLatestProductInThisGroup(domainName, productSection.ProductGroupId, productSection.CountToTake, productSection.CountToSkip);
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
-            var defLangSymbol = defaultCulture.Split("|")[0][2..];
+            string defLangSymbol;
+            if (defaultCulture != null)
+            {
+                defLangSymbol = defaultCulture.Split("|")[0][2..];
+            }
+            else
+            {
+                var defLangId = domainEntity.DefaultLanguageId;
+                defLangSymbol = _lanRepository.FetchBySymbol(defLangId);
+            }
             CultureInfo currentCultureInfo = new(defLangSymbol, false);
             var ri = new RegionInfo(currentCultureInfo.LCID);
             var currencyPrefix = ri.ISOCurrencySymbol;

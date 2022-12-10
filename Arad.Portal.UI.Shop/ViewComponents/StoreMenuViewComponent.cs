@@ -44,15 +44,23 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
             
             try
             {
+                string symbol;
+                string langId = "";
                 var cookieVal = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
-                string symbol = cookieVal.Split("|")[0][2..];
-                var langId = _languageRepository.FetchBySymbol(symbol.ToLower());
-
+                if(cookieVal != null)
+                {
+                    symbol = cookieVal.Split("|")[0][2..];
+                    langId = _languageRepository.FetchBySymbol(symbol.ToLower());
+                }
                 domainName = $"{_accessor.HttpContext.Request.Host}";
-                ///??? fortesting in debugging mode
-                //domainName = "arad-itc.com";
-               var result = _domainRepository.FetchByName(domainName, false);
-                if(result.Succeeded)
+                var result = _domainRepository.FetchByName(domainName, false);
+                if(langId == "")
+                {
+                    langId = result.ReturnValue.DefaultLanguageId;
+                }
+               
+
+                if (result.Succeeded)
                 {
                     var domainEntity = result.ReturnValue;
                     menues = _menuRepository.StoreList(domainEntity.DomainId, langId, false);

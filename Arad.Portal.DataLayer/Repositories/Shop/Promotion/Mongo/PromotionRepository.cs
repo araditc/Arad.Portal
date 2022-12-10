@@ -206,10 +206,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
 
                     if (CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir")
                     {
-                        equallentModel.SDate = DateHelper.ToEnglishDate(dto.PersianStartDate);
+                        equallentModel.SDate = DateHelper.ToEnglishDate(dto.PersianStartDate.Split(" ")[0]);
                     }
 
-                    if (CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir" && !string.IsNullOrWhiteSpace(dto.PersianEndDate))
+                    if (CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir" && !string.IsNullOrWhiteSpace(dto.PersianEndDate.Split(" ")[0]))
                         equallentModel.EDate = DateHelper.ToEnglishDate(dto.PersianEndDate);
 
                     var modifications = oldEntity.Modifications;
@@ -303,11 +303,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 }
                 if (!string.IsNullOrWhiteSpace(fromDate))
                 {
-                    list = list.Where(_ => _.SDate >= DateHelper.ToEnglishDate(fromDate).ToUniversalTime()).ToList();
+                    list = list.Where(_ => _.SDate >= DateHelper.ToEnglishDate(fromDate.Split(" ")[0]).ToUniversalTime()).ToList();
                 }
                 if (!string.IsNullOrWhiteSpace(toDate))
                 {
-                    list = list.Where(_ => _.EDate <= DateHelper.ToEnglishDate(toDate).ToUniversalTime()).ToList();
+                    list = list.Where(_ => _.EDate <= DateHelper.ToEnglishDate(toDate.Split(" ")[0]).ToUniversalTime()).ToList();
                 }
                 if (!string.IsNullOrWhiteSpace(productId))
                 {

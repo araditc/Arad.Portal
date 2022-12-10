@@ -331,7 +331,7 @@
                                                             <td style="display:none;">@item.SpecificationId</td>
                                                             <td>@item.Values</td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromSpecList(this)">
+                                                                <button type="button" class="btn btn-sm btn-danger bg-gradient" onclick="deleteFromSpecList(this)">
                                                                     <i class="fa fa-trash"></i>
                                                                 </button>
                                                             </td>
@@ -401,7 +401,7 @@
                                                                 </td>
                                                                 <td>@item.Count</td>
                                                                 <td>
-                                                                    <button type="button" class="btn btn-danger btnDel bg-gradient" key="@item.SpecValuesId"  onclick="deleteFromInventoryList(this);">
+                                                                    <button type="button" class="btn btn-sm btn-danger btnDel bg-gradient" key="@item.SpecValuesId"  onclick="deleteFromInventoryList(this);">
                                                                         <i class="fa fa-trash"></i>
                                                                     </button>
                                                                 </td>
@@ -560,7 +560,7 @@
                                                             <td>@item.Description</td>
                                                             <td dir="ltr">@(!string.IsNullOrWhiteSpace(item.UrlFriend) ? item.UrlFriend.Replace("/product/", "") : item.UrlFriend)</td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger btnDel bg-gradient" cnt="@item.Tag" onclick="deleteFromTable(this);">
+                                                                <button type="button" class="btn btn-sm btn-danger btnDel bg-gradient" cnt="@item.Tag" onclick="deleteFromTable(this);">
                                                                     <i class="fa fa-trash"></i>
                                                                 </button>
                                                             </td>
@@ -666,7 +666,7 @@
                                                             <td>@(@price.EndDate != null ? price.EndDate.Value.ToString().Split(" ")[0] : "")</td>
                                                             <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromPriceList(this);">
+                                                                <button type="button" class="btn btn-sm btn-danger bg-gradient" onclick="deleteFromPriceList(this);">
                                                                     <i class="fa fa-trash"></i>
                                                                 </button>
                                                             </td>
@@ -739,7 +739,7 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <button type="button" class="btn btn-danger bg-gradient" imgId="@pic.ImageId" onclick="deleteFromImageList(this);">
+                                                            <button type="button" class="btn btn-sm btn-danger bg-gradient" imgId="@pic.ImageId" onclick="deleteFromImageList(this);">
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
                                                         </td>
@@ -1086,7 +1086,7 @@ else
                 "' width='"+width+"' height='"+height+"'/></td><td style='display:none;'>" + model.ImageId +
                 "</td><td>"+ratio+"</td><td class='d-none'>"+$("#imgAspectRatio").val()+"</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                 "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                "'/></td><td style='vertical-align:middle;'><div class='form-check d-flex justify-content-center p-0'><input type='radio'  name='isMainImage' class='rdbIsMain form-check-input'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' onclick='deleteFromImageList(this);'><i class='fa fa-trash'></i></button></td></tr>";
+                "'/></td><td style='vertical-align:middle;'><div class='form-check d-flex justify-content-center p-0'><input type='radio'  name='isMainImage' class='rdbIsMain form-check-input'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromImageList(this);'><i class='fa fa-trash'></i></button></td></tr>";
 
             $("#imageList").append(tr);
             counter = counter + 1;
@@ -1925,7 +1925,7 @@ else
                tempHtml += "<span class='specSpan' specName='"+obj.name+"'  specVal='" + $("input[name='"+obj.Id+"']:checked").val() + "' specid='"+ obj.Id +"'>"+obj.name+":"+ $("input[name='"+obj.Id+"']:checked").val() + "</span><br/>"
             });
             tr += tempHtml + "</td><td>"+ $("#specValuesInventory").val() + "</td><td>"
-            +"<button type='button' class='btn btn-danger btnDel bg-gradient' key='-1'  onclick='deleteFromInventoryList(this);'><i class='fa fa-trash'></i></button>"
+            +"<button type='button' class='btn btn-sm btn-danger btnDel bg-gradient' key='-1'  onclick='deleteFromInventoryList(this);'><i class='fa fa-trash'></i></button>"
             +"</td></tr>";
 
             if ($("#InventoryList tr").length == 1 && 

@@ -117,7 +117,7 @@
                                             <td>@item.AffectedProductName</td>
                                             <td style="display:none;">@item.AffectedProductId</td>
                                             <td>
-                                                <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromList(this);">
+                                                <button type="button" class="btn btn-sm btn-danger bg-gradient" onclick="deleteFromList(this);">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </td>
@@ -874,7 +874,7 @@
                     + "</td><td style='display:none;'>" + vendorId
                     + "</td><td>" + $("#productId option:selected").text()
                     +"</td><td style='display:none;'>" + $("#productId").val()
-                    + "</td><td><button type='button' class='btn btn-danger bg-gradient' onclick='deleteFromList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
+                    + "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
                 if ($("#infoList tr").length == 1 && $("#infoList tr")[0].children.length == 1) {
                     $("#infoList tr")[0].remove();
                 }

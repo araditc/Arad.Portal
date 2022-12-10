@@ -499,7 +499,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             var equallentModel = _mapper.Map<Entities.General.Content.Content>(dto);
             if(!string.IsNullOrWhiteSpace(dto.PersianStartShowDate))
             {
-                equallentModel.StartShowDate = DateHelper.ToEnglishDate(dto.PersianStartShowDate);
+                equallentModel.StartShowDate = DateHelper.ToEnglishDate(dto.PersianStartShowDate.Split(" ")[0]);
 
             }else if(dto.StartShowDate != null)
             {
@@ -509,7 +509,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
 
             if(!string.IsNullOrWhiteSpace(dto.PersianEndShowDate))
             {
-                equallentModel.EndShowDate = DateHelper.ToEnglishDate(dto.PersianEndShowDate);
+                equallentModel.EndShowDate = DateHelper.ToEnglishDate(dto.PersianEndShowDate.Split(" ")[0]);
             }
             else if(dto.EndShowDate != null)
             {

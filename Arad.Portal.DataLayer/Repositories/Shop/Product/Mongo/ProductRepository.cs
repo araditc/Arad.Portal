@@ -1159,8 +1159,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                    && _.Infoes.Any(a => a.AffectedProductId == productId)).FirstOrDefault();
 
             }
+            if(promotionOnAll != null)
             promotionList.Add(promotionOnAll);
+
+            if(promotionOnProductGroup != null)
             promotionList.Add(promotionOnProductGroup);
+
+            if(promotionOnThisProduct != null)
             promotionList.Add(promotionOnThisProduct);
 
 
