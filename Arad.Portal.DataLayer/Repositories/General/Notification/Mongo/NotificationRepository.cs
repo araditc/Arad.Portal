@@ -91,7 +91,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Notification.Mongo
            List<Entities.General.Notify.Notification> notifications = await _context.Collection.AsQueryable()
                                                               .Where(n => (n.SendStatus == NotificationSendStatus.Store || n.SendStatus == NotificationSendStatus.Error) &&
                                                                           n.ScheduleDate <= DateTime.Now.ToUniversalTime() && n.Type == notificationType && n.ActionType == ActionType.NoExtraAction)
-                                                              .Take(notificationType == NotificationType.Email ? 20 : 20)
+                                                              .Take(20)
                                                               .ToListAsync();
 
             Log.Fatal($"GetForSend Notification Count: {notifications}");

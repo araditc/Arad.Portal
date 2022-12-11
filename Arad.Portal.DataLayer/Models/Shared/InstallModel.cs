@@ -43,11 +43,14 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public string LogFileDirectory { get; set; }
         public string LocalStaticFileStorage { get; set; }
 
-        public string AradVas_Link_1 { get; set; }
-        public string AradVas_UserName { get; set; }
-        public string AradVas_Password { get; set; }
-        public string AradVas_Number { get; set; }
-        public string AradVas_Domain { get; set; }
+        public string SmsEndpoint { get; set; }
+        public string SmsUserName { get; set; }
+        public string SmsPassword { get; set; }
+        public string SmsCompany { get; set; }
+        public string tokenEndpoint { get; set; }
+        public string tokenUserName { get; set; }
+        public string tokenPassword { get; set; }
+
 
         #endregion
     }

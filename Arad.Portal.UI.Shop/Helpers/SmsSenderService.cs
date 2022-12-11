@@ -74,7 +74,6 @@ namespace Arad.Portal.UI.Shop.Helpers
             sw2.Start();
             if (smsNotifications.Any())
             {
-                
 
                 try
                 {
@@ -107,6 +106,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                         await _notificationRepository.UpdateMany
                             (smsNotifications.Select(_ => _.NotificationId).ToList(), definition);
                         failedCount++;
+                        Log.Fatal($"smsResultArray[0]: {smsResultArray[0]}");
                     }
 
                 }
@@ -205,6 +205,62 @@ namespace Arad.Portal.UI.Shop.Helpers
             return ret;
         }
 
+        private async Task Send(RahyabRGMessage data, List<AradMessage> aradMessages)
+        {
+            try
+            {
+                await GetToken();
+                HttpClient client = _clientFactory.CreateClient();
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_accessToken}");
+
+                _fullLogOption.OptionalLog($"api response = {JsonConvert.SerializeObject(data)}");
+                DefaultContractResolver contractResolver = new() { NamingStrategy = new CamelCaseNamingStrategy() };
+                StringContent content = new(JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = contractResolver, Formatting = Formatting.Indented }), Encoding.UTF8, MediaTypeNames.Application.Json);
+                HttpResponseMessage response = await client.PostAsync(_smsEndPointConfig.Endpoint, content);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    List<RahyabRGResponse> resultApi = JsonConvert.DeserializeObject<List<RahyabRGResponse>>(await response.Content.ReadAsStringAsync());
+
+                    if (resultApi != null && resultApi.Any())
+                    {
+                        Logger.WriteLogFile($"sent count: {aradMessages.Count}");
+                        await Update(resultApi.First(), aradMessages);
+                    }
+
+                    // return dataToUpdate;
+                    _upstreamLiveDataQueueDtos.Enqueue(new UpstreamLiveDataQueueDto
+                    {
+                        Model = new UpstreamLiveData
+                        {
+                            DateTime = DateTime.Now,
+                            TotalSent = aradMessages.Count,
+                            TotalDelivered = 0,
+                            UnDeliverableCount = 0,
+                            TotalRejected = 0,
+                            TotalBlocked = 0,
+                            TotalErrors = 0,
+                            TotalNotSent = 0,
+                            TotalReceived = 0,
+                            UpstreamGatewayId = _upstreamGatewayId,
+                            UpstreamGatewayName = _serviceName
+                        }
+                    });
+                }
+                else
+                {
+                    IEnumerable<string> ids = aradMessages.Select(y => y.Id);
+                    await (_dbContext.SaveToSchedule ? _dbContext.Schedule : _dbContext.Outboxes).UpdateManyAsync(x => ids.Contains(x.Id), Builders<AradMessage>.Update.Set(t => t.SendStatus, Enums.SendStatus.Stored));
+                    Logger.WriteLogFile($"status code: {response.StatusCode} message: {await response.Content.ReadAsStringAsync()}");
+                    throw new Exception();
+                }
+
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLogFile($"Error in send method: {e.Message}");
+            }
+        }
         public string[] SendSMS_LikeToLike(string[] Message, string[] DestinationAddress,
            string Number, string userName, string password, string IP_Send, string Company)
         {
