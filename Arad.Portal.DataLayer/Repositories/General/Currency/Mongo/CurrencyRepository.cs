@@ -157,7 +157,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
                        IsDefault = _.IsDefault,
                        CurrencyName = _.CurrencyName,
                        Prefix = _.Prefix,
-                       Symbol = _.Symbol
+                       Symbol = _.Symbol,
+                       IsDeleted = _.IsDeleted
                        
                    }).ToList();
 
@@ -186,12 +187,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
 
             try
             {
-               
+
+
                 var currencyEntity = _context.Collection.Find(_ => _.CurrencyId == currencyId).FirstOrDefault();
-                if(currencyEntity != null)
+                if (currencyEntity != null)
                 {
-                   
-                    var upResult = await _context.Collection.DeleteOneAsync(_ => _.CurrencyId == currencyId);
+                    currencyEntity.IsDeleted = true;
+                    var upResult = await _context.Collection.ReplaceOneAsync(_ => _.CurrencyId == currencyId, currencyEntity);
                     if (upResult.IsAcknowledged)
                     {
                         result.Message = ConstMessages.SuccessfullyDone;
@@ -201,11 +203,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
                     {
                         result.Message = ConstMessages.GeneralError;
                     }
-                }else
+                }
+                else
                 {
                     result.Message = ConstMessages.ObjectNotFound;
                 }
-                
+
             }
             catch (Exception e)
             {
@@ -311,7 +314,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
                 if (currencyEntity != null)
                 {
                     currencyEntity.IsDeleted = false;
-                    var upResult = await _context.Collection.UpdateOneAsync(_ => _.CurrencyId == currencyId, currencyId);
+                    var upResult = await _context.Collection.ReplaceOneAsync(_ => _.CurrencyId == currencyId, currencyEntity);
                     if (upResult.IsAcknowledged)
                     {
                         result.Message = ConstMessages.SuccessfullyDone;

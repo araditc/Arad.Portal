@@ -158,7 +158,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Notification.Mongo
         {
             try
             {
-                entity.Modifications.Add(new() { UserName = this.GetUserName(), DateTime = DateTime.Now, ModificationReason = modificationReason, UserId = this.GetUserId() });
+                //entity.Modifications.Add(new() { UserName = this.GetUserName(), DateTime = DateTime.Now, ModificationReason = modificationReason, UserId = this.GetUserId() });
                 await _context.Collection.ReplaceOneAsync(c => c.NotificationId == entity.NotificationId, entity);
 
                 return new() { Succeeded = true, Message = isWorker ? "Operation success" : GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_OperationSuccess") };

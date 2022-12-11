@@ -47,8 +47,8 @@ namespace Arad.Portal.UI.Shop.Helpers
             string[] randomChars = {
                                        "ABCDEFGHJKLMNPQRSTUVWXYZ", // uppercase 
                                        "abcdefghijkmnpqrstuvwxyz", // lowercase
-                                       "123456789" // digits
-                                       //"" // non-alphanumeric
+                                       "123456789", // digits
+                                       "!@$?" // non-alphanumeric
                                    };
             CryptoRandom rand = new();
             List<char> chars = new();

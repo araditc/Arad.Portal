@@ -283,7 +283,7 @@
     <script>
         var password;
         var userId;
-        var bsAlert = new bootstrap.Toast($("#mainToast"));
+        
         $(document).ready(function () {
             debugger;
          
@@ -408,13 +408,16 @@
             navigator.clipboard.writeText(password).then(() => {
 
                 $('#showChangePasswordModal').modal('hide');
-                $("#toastPanel").show();
-                document.getElementById('mainToastBody').classList.remove('alert-danger');
-                document.getElementById('mainToastBody').classList.remove('alert-success');
-                document.getElementById('mainToastBody').classList.add('alert-success');
+
+                $('#mainToastBody').removeClass("alert-danger");
+                $('#mainToastBody').addClass("alert-success");
                 document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessage_CopyDone")';
-               
-                bsAlert.show();
+
+                var toastDiv = $("#mainToast");
+                $("#toastPanel").show();
+                var toast = new bootstrap.Toast(toastDiv);
+                toast.show();
+
                 setTimeout(function () {
                     window.location.reload();
                 },
@@ -426,8 +429,8 @@
             debugger;
             $('#showChangePasswordModal').modal('hide');
             $("#toastPanel").show();
-            document.getElementById('mainToastBody').classList.remove('alert-danger');
-            document.getElementById('mainToastBody').classList.remove('alert-success');
+           $('#mainToastBody').removeClass("alert-danger");
+            $('#mainToastBody').addClass("alert-success");
 
             $.ajax({
                 type: "Get",
@@ -435,16 +438,22 @@
                 statusCode: {
                     200: function (resultData) {
                         if (resultData.result) {
-                            document.getElementById('mainToastBody').classList.add('alert-success');
+                           
                             document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessage_SuccessfullyDone")';
+                            $('#mainToastBody').removeClass("alert-danger");
+                            $('#mainToastBody').addClass("alert-success");
                         }
                         else {
                             var msg = '@Language.GetString("AlertAndMessage_ErrorTryAgain")';
                             document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
-                            document.getElementById('mainToastBody').classList.add('alert-danger');
+                             $('#mainToastBody').removeClass("alert-success");
+                             $('#mainToastBody').addClass("alert-danger");
                         }
 
-                        bsAlert.show();
+                        var toastDiv = $("#mainToast");
+                        $("#toastPanel").show();
+                        var toast = new bootstrap.Toast(toastDiv);
+                        toast.show();
 
                         setTimeout(function () {
                             $("#toastPanel").hide();

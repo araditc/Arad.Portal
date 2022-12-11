@@ -157,7 +157,8 @@
                     {
                        
                           document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
-                            document.getElementById('mainToastBody').classList.add('alert-success');
+                                $('#mainToastBody').removeClass("alert-danger");
+                                $('#mainToastBody').addClass("alert-success");
                             $("#toastPanel").show();
                              var bsAlert = new bootstrap.Toast($("#mainToast"));
                             bsAlert.show();

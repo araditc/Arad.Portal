@@ -25,10 +25,10 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <meta property="og:title" content="" />
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <title>@($"{@ViewData["PageTitle"]}-{ViewData["DomainTitle"]}")</title>
+    <meta property="og:title" content="@(ViewData[" PageTitle"])" />
+    <meta name="description" content="@(ViewData["SeoDesc"])" />
+    <meta name="keywords" content="@(ViewData["Tags"])">
+    <title>@($"{ViewData["PageTitle"]}-{ViewData["DomainTitle"]}")</title>
 
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     @if (direction == "ltr")
@@ -164,34 +164,34 @@
                                             switch (module.ModuleName)
                                             {
                                                 case "ProductList":
-                                                                    @await Component.InvokeAsync("SpecialProduct",
+                                                                                @await Component.InvokeAsync("SpecialProduct",
                 new { productType = module.ParametersValue.ProductOrContentType,
                 selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
                 loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType })
                                                     ;
                                                     break;
                                                 case "ContentList":
-                                                                    @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
+                                                                                @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
                                                     ;
                                                     break;
                                                 case "HorizantalStoreMenu":
-                                                                    @await Component.InvokeAsync("StoreMenu")
+                                                                                @await Component.InvokeAsync("StoreMenu")
                                                     ;
                                                     break;
                                                 case "ImageTextSlider":
-                                                                    @await Component.InvokeAsync("SliderModule", new { sliderId =  module.ParametersValue.SliderId })
+                                                                                @await Component.InvokeAsync("SliderModule", new { sliderId =  module.ParametersValue.SliderId })
                                                     ;
                                                     break;
                                                 case "LoginAndProfile":
-                                                                    @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId})
+                                                                                @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId})
                                                     ;
                                                     break;
                                                 case "MultiLingualFlags":
-                                                                    @await Component.InvokeAsync("MultiLingual")
+                                                                                @await Component.InvokeAsync("MultiLingual")
                                                     ;
                                                     break;
                                                 case "GeneralSearch":
-                                                                    @await Component.InvokeAsync("GeneralSearch")
+                                                                                @await Component.InvokeAsync("GeneralSearch")
                                                     ;
                                                     break;
                                             }
@@ -207,7 +207,7 @@
                                         var index = column.ColData.LastIndexOf("</div>");
                                         var data = column.ColData.Substring(0, index);
                                         var htmlRaw = data.Replace("<div target=\"editor\">", "");
-                                                        @Html.Raw(@htmlRaw)
+                                                                    @Html.Raw(@htmlRaw)
                                         ;
                                     }
                                 }
@@ -277,34 +277,34 @@
                                         switch (module.ModuleName)
                                         {
                                             case "ProductList":
-                                                                @await Component.InvokeAsync("SpecialProduct",
+                                                                            @await Component.InvokeAsync("SpecialProduct",
                 new { productType = module.ParametersValue.ProductOrContentType,
                 selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
                 loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType })
                                                 ;
                                                 break;
                                             case "ContentList":
-                                                                @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
+                                                                            @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
                                                 ;
                                                 break;
                                             case "HorizantalStoreMenu":
-                                                                @await Component.InvokeAsync("StoreMenu")
+                                                                            @await Component.InvokeAsync("StoreMenu")
                                                 ;
                                                 break;
                                             case "ImageTextSlider":
-                                                                @await Component.InvokeAsync("SliderModule", new { sliderId =  module.ParametersValue.SliderId })
+                                                                            @await Component.InvokeAsync("SliderModule", new { sliderId =  module.ParametersValue.SliderId })
                                                 ;
                                                 break;
                                             case "LoginAndProfile":
-                                                                @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId})
+                                                                            @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId})
                                                 ;
                                                 break;
                                             case "MultiLingualFlags":
-                                                                @await Component.InvokeAsync("MultiLingual")
+                                                                            @await Component.InvokeAsync("MultiLingual")
                                                 ;
                                                 break;
                                             case "GeneralSearch":
-                                                                @await Component.InvokeAsync("GeneralSearch")
+                                                                            @await Component.InvokeAsync("GeneralSearch")
                                                 ;
                                                 break;
                                         }
@@ -315,7 +315,7 @@
                                         var data = column.ColData.Substring(0, index);
                                         var htmlRaw = data.Replace("<div target=\"editor\">", "");
 
-                                                        @Html.Raw(@htmlRaw)
+                                                                    @Html.Raw(@htmlRaw)
                                         ;
                                     }
 
@@ -476,7 +476,8 @@
         function showError(msg) {
 
             document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
-            document.getElementById('mainToastBody').classList.add('alert-danger');
+           $('#mainToastBody').removeClass("alert-success");
+           $('#mainToastBody').addClass("alert-danger");
             $("#toastPanel").show();
             var toast = new bootstrap.Toast($("#mainToast"));
             toast.show();

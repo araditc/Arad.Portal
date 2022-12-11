@@ -348,28 +348,26 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             {
                 domainEntity = _domainContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
             }
-            if(currentUserId != Guid.Empty.ToString())
+            
+            if(!string.IsNullOrWhiteSpace(categoryId))
             {
-                if(!string.IsNullOrWhiteSpace(categoryId))
+                result = _contentContext.Collection
+                    .Find(_ => _.ContentCategoryId == categoryId && _.IsActive && !_.IsDeleted && _.LanguageId == domainEntity.DefaultLanguageId && _.AssociatedDomainId == domainEntity.DomainId)
+                .Project(_ => new SelectListModel()
                 {
-                    result = _contentContext.Collection
-                        .Find(_ => _.ContentCategoryId == categoryId && _.IsActive && !_.IsDeleted && _.LanguageId == domainEntity.DefaultLanguageId && _.AssociatedDomainId == domainEntity.DomainId)
-                  .Project(_ => new SelectListModel()
-                  {
-                      Text = _.Title,
-                      Value = _.ContentId
-                  }).ToList();
-                }
-                else
+                    Text = _.Title,
+                    Value = _.ContentId
+                }).ToList();
+            }
+            else
+            {
+                result = _contentContext.Collection.Find(_ => _.IsActive && _.LanguageId == domainEntity.DefaultLanguageId && !_.IsDeleted && _.AssociatedDomainId == domainEntity.DomainId)
+                .Project(_ => new SelectListModel()
                 {
-                    result = _contentContext.Collection.Find(_ => _.IsActive && _.LanguageId == domainEntity.DefaultLanguageId && !_.IsDeleted && _.AssociatedDomainId == domainEntity.DomainId)
-                  .Project(_ => new SelectListModel()
-                  {
-                      Text = _.Title,
-                      Value = _.ContentId
-                  }).ToList();
+                    Text = _.Title,
+                    Value = _.ContentId
+                }).ToList();
 
-                }
             }
 
             return result;

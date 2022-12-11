@@ -106,11 +106,18 @@
                                         <i  class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
                                @{
-                                    if(@item.IsDeleted)
+                                    if(!@item.IsDeleted)
                                     {
                                           <button onclick="EntityDelete('@item.CurrencyId')" class="btn btn-sm btn-danger bg-gradient">
                                         <i  class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
+                                    }
+                                    else
+                                    {
+                                        <button id="restoreRecord" data-id="@item.CurrencyId" onclick="EntityRestore('@item.CurrencyId')" class="btn btn-sm btn-secondary bg-gradient">
+                                            <i class="fa fa-refresh"></i>
+                                            @Language.GetString("btn_Restore")
+                                        </button>
                                     }
                                }
                               
@@ -167,6 +174,15 @@
         }
 
         function EntityRestore(id) {
+              entityId = id;
+			typeOfRequest = 'Get';
+			confirmUrl = '@Url.Action("Restore", "Currency")' + '/' + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
+			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
+			$('#confirmModal').modal('show');
+        }
+
+          function EntityRestore(id) {
               entityId = id;
 			typeOfRequest = 'Get';
 			confirmUrl = '@Url.Action("Restore", "Currency")' + '/' + id,

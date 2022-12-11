@@ -2,6 +2,7 @@
 using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.Language;
+using Arad.Portal.DataLayer.Entities.General.ContentCategory;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.ContentCategory;
 using Arad.Portal.DataLayer.Models.Shared;
@@ -224,7 +225,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Edit([FromBody] ContentCategoryDTO dto)
         {
             JsonResult result;
-            ContentCategoryDTO model;
+            ContentCategoryDTO model = null;
             if (!ModelState.IsValid)
             {
                 var errors = new List<AjaxValidationErrorModel>();
@@ -239,7 +240,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                model =await _contentCategoryRepository.ContentCategoryFetch(dto.ContentCategoryId, true);
+                model = await _contentCategoryRepository.ContentCategoryFetch(dto.ContentCategoryId, true);
                 if (model == null)
                 {
                     return RedirectToAction("PageOrItemNotFound", "Account");
@@ -254,6 +255,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 item.LanguageSymbol = lan.Symbol;
             }
 
+            if(model.CategoryTypeId != (int)dto.CategoryType)
+            {
+                dto.CategoryType = (ContentCategoryType)model.CategoryTypeId;
+            }
             Result saveResult = await _contentCategoryRepository.Update(dto);
 
             result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }

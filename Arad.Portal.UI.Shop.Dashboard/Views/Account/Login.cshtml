@@ -216,6 +216,7 @@
             if('@ViewBag.Message' != '')
             {
                 $('#mainToastBody').html(`<i class="far fa-check-circle"></i>`+ '@ViewBag.Message');
+                $('#mainToastBody').removeClass("alert-success");
                 $('#mainToastBody').addClass('alert-danger');
                 $("#toastPanel").show();
                 var toast = new bootstrap.Toast($("#mainToast"));

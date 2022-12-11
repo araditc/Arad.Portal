@@ -989,7 +989,8 @@ else
                             if (result.status === "Success") {
                                 debugger;
                                 document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
-                                document.getElementById('mainToastBody').classList.add('alert-success');
+                                $('#mainToastBody').removeClass("alert-danger");
+                                $('#mainToastBody').addClass("alert-success");
                                 $("#toastPanel").show();
                                 var bsAlert = new bootstrap.Toast($("#mainToast"));
                                 bsAlert.show();
@@ -1096,6 +1097,7 @@ else
 
                 var langId = $("#languageId").val();
                 var did = $("#AssociatedDomainId").val();
+               
                 $.ajax({
                     url: '@Url.Action("GetSpecificationGroupList", "ProductSpecificationGroup")'+"?lid="+ langId +"&did=" + did,
                     type: 'Get',
@@ -1133,8 +1135,9 @@ else
             
              var langId = $("#languageId").val();
              var did = $("#AssociatedDomainId").val();
-
-              $.ajax({
+             if(did != "" && langId != "")
+             {
+                  $.ajax({
                     url: `@Url.Action("GetProductUnitList", "ProductUnit")?lid=${langId}&did=${did}`,
                     type: 'Get',
                     dataType: 'json',
@@ -1163,6 +1166,8 @@ else
                     //    alert(thrownError);
                     //}
                 });
+             }
+             
         })
 
         $("#specGroupId").change(function () {
@@ -1430,7 +1435,8 @@ else
                 if($("#InventoryList tr").length > 0 && $("#InventoryList tr")[0].children.length > 1 && $("#specValues option:selected").length > 1)
                 {
                     document.getElementById('mainToastBody').innerHTML = "<i class='fas fa-exclamation-triangle'></i>"+ '@Language.GetString("AlertAndMessage_UpdateProductInventory")';
-                    document.getElementById('mainToastBody').classList.add('alert-danger');
+                    $('#mainToastBody').removeClass('alert-success');
+                    $('#mainToastBody').addClass('alert-danger');
                     $("#toastPanel").show();
                     var toast = new bootstrap.Toast($("#mainToast"));
                     toast.show();
@@ -1456,7 +1462,8 @@ else
         $(tr).remove();
 
          document.getElementById('mainToastBody').innerHTML = "<i class='fas fa-exclamation-triangle'></i>"+ '@Language.GetString("AlertAndMessage_UpdateProductInventory")';
-        document.getElementById('mainToastBody').classList.add('alert-danger');
+         $('#mainToastBody').removeClass('alert-success');
+        $('#mainToastBody').addClass('alert-danger');
         $("#toastPanel").show();
         var toast = new bootstrap.Toast($("#mainToast"));
         toast.show();
@@ -1699,6 +1706,7 @@ else
                                             //show whether this html is valid or not
                                             if (!data.isvalid) {
                                                 $('#mainToastBody').html('<i class="fas fa-exclamation-triangle"></i>@Language.GetString("AlertAndMessage_InvalidEditorContent")');
+                                                $('#mainToastBody').removeClass("alert-success");
                                                 $('#mainToastBody').addClass('alert-danger');
                                                 var toastDiv = $("#mainToast");
                                                 $("#toastPanel").show();

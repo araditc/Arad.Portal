@@ -323,7 +323,8 @@
                             if (result.status === "success") {
 
                                 document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + result.message;
-                                document.getElementById('mainToastBody').classList.add('alert-success');
+                               $('#mainToastBody').removeClass('alert-danger');
+                                $('#mainToastBody').addClass('alert-success');
                                 var toastDiv = $("#mainToast");
                                 $("#toastPanel").show();
                                 var toast = new bootstrap.Toast(toastDiv);
@@ -372,7 +373,8 @@
                     });
                 } else {
                     document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@Language.GetString("AlertAndMessage_FillEssentialFields")'}`;
-                    document.getElementById('mainToastBody').classList.add('alert-danger');
+                    $('#mainToastBody').removeClass("alert-success");
+                    $('#mainToastBody').addClass("alert-danger");
                     $("#toastPanel").show();
                     var toast = new bootstrap.Toast($("#mainToast"));
                     toast.show();

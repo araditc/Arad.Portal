@@ -203,6 +203,11 @@
                     $("span[data-val-result='AssociatedDomainId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
                 }
+                if($("#categoryTypeId").val() == "-1")
+                {
+                    $("span[data-val-result='categoryTypeId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
                 if (!flag) 
                 {
 
@@ -219,7 +224,8 @@
                         if (result.status === "Success") {
                            
                             document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
-                            document.getElementById('mainToastBody').classList.add('alert-success');
+                             $('#mainToastBody').removeClass("alert-danger");
+                             $('#mainToastBody').addClass("alert-success");
                             var bsAlert = new bootstrap.Toast($("#mainToast"));
                             $("#toastPanel").show();
                             bsAlert.show();

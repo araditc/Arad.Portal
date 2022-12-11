@@ -98,7 +98,8 @@
                 if ("@isSuccess" === "False") {
                   
                     document.getElementById('mainToastBody').innerHTML = '<i class="fas fa-exclamation-triangle"></i>'+ "@operationResult.Message";
-                    document.getElementById('mainToastBody').classList.add('alert-danger');
+                    $('#mainToastBody').removeClass('alert-success');
+                    $('#mainToastBody').addClass('alert-danger');
                     $("#toastPanel").css("dispaly", "block");
                     var bsAlert = new bootstrap.Toast($("#mainToast"));
                     bsAlert.show();
@@ -109,7 +110,8 @@
                 }
                 else {
                     document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+ "@operationResult.Message";
-                    document.getElementById('mainToastBody').classList.add('alert-success');
+                     $('#mainToastBody').removeClass("alert-danger");
+                     $('#mainToastBody').addClass("alert-success");
                     $("#toastPanel").css("dispaly", "block");
                     var bsAlert = new bootstrap.Toast($("#mainToast"));
                     bsAlert.show();

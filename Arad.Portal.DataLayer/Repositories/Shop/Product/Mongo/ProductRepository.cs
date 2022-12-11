@@ -704,7 +704,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                        Unit = _.Unit,
                        CreationDate = _.CreationDate
                    }).ToList();
-
+                
                 result.Items = list;
                 result.CurrentPage = page;
                 result.ItemsCount = totalList.Count();

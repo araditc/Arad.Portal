@@ -351,7 +351,8 @@
         function showError(msg) {
 
             document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
-            document.getElementById('mainToastBody').classList.add('alert-danger');
+            $('#mainToastBody').removeClass("alert-success");
+            $('#mainToastBody').addClass('alert-danger');
             $("#toastPanel").show();
             var toast = new bootstrap.Toast($("#mainToast"));
             toast.show();

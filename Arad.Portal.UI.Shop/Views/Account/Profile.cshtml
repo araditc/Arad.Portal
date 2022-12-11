@@ -627,7 +627,8 @@
         function ShowError(message) {
             const bsAlert = new bootstrap.Toast(document.getElementById('notificationToast'));
             document.getElementById('notificationToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
-            document.getElementById('notificationToastBody').classList.add('alert-danger');
+            $('#mainToastBody').removeClass("alert-success");
+            $('#mainToastBody').addClass("alert-danger");
             bsAlert.show();
 
             document.getElementById("image").value = "";
@@ -764,7 +765,8 @@
                             debugger;
                             if (result.status === "Success") {
                                 document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + result.message;
-                                document.getElementById('mainToastBody').classList.add('alert-success');
+                                $('#mainToastBody').removeClass("alert-danger");
+                                $('#mainToastBody').addClass("alert-success");
                                 $("#toastPanel").show();
                                 var bsAlert = new bootstrap.Toast($("#mainToast"));
                                 bsAlert.show();

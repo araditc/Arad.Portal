@@ -111,7 +111,7 @@ namespace Arad.Portal.UI.Shop.Helpers
             {
                 var domain = new Domain()
                 {
-                    DomainId = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004",
+                    DomainId = "1e336912-00e4-4a0a-bee6-20ce8ae49855",
                     DomainName = "http://localhost:3214",
                     IsDefault = true,
                     IsActive = true,
@@ -154,7 +154,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                     },
                     CreationDate = DateTime.UtcNow
                 };
-                user.Domains.Add(new UserDomain() { DomainId = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004", DomainName = "http://localhost:3214", IsOwner = true });
+                user.Domains.Add(new UserDomain() { DomainId = "1e336912-00e4-4a0a-bee6-20ce8ae49855", DomainName = "http://localhost:3214", IsOwner = true });
                 userManager.CreateAsync(user, "Sa@12345").Wait();
             }
             #endregion user

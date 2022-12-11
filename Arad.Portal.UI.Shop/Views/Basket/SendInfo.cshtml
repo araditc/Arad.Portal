@@ -146,7 +146,8 @@ $(document).ready(function() {
                 if($('input[name="address"]:checked').length == 0)
                 {
                      document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@Language.GetString("AlertAndMessage_LoginFirst")'}`;
-                     document.getElementById('mainToastBody').classList.add('alert-danger');
+                    $('#mainToastBody').removeClass("alert-success");
+                    $('#mainToastBody').addClass("alert-danger");
                         var toastDiv = $("#mainToast");
                         $("#toastPanel").show();
                         var toast = new bootstrap.Toast(toastDiv);

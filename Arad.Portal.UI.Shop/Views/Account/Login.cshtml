@@ -162,7 +162,7 @@
                 hiddenInput: "FullUserName"
             });
 
-        function refreshCaptcha()
+   function refreshCaptcha()
     {
         debugger;
         $("#imgCpatcha").attr('src', `@Url.Action("CaptchaImage", "Captcha")?${new Date().getTime()}`);

@@ -276,8 +276,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var userEntity = _userManager.Users.FirstOrDefault(_ => _.Id == currentUserId);
                 // filterDef = builder.Ne(nameof(ApplicationUser.Id), currentUserId);
-
-                var users = _userManager.Users.Where(_ => _.Id != currentUserId);
+                IQueryable<ApplicationUser> users;
+                if(userEntity.IsSystemAccount)
+                {
+                    users = _userManager.Users.Where(_ => true);
+                }else
+                {
+                    users = _userManager.Users.Where(_ => _.Id != currentUserId);
+                }
 
                 NameValueCollection queryParams = HttpUtility.ParseQueryString(Request.QueryString.ToString());
 
@@ -1019,58 +1025,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIncorrectOrExpired"));
             }
 
-            model.FullCellPhoneNumber = model.FullCellPhoneNumber.Replace("+", "");
-            model.FullCellPhoneNumber = model.FullCellPhoneNumber.Replace(" ", "");
-
-            if (string.IsNullOrWhiteSpace(model.FullCellPhoneNumber))
-            {
-                ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_EnterMobileNumber"));
-            }
-            else
-            {
-                PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
-
-                PhoneNumber phoneNumber = phoneUtil.Parse(model.FullCellPhoneNumber, "IR");
-
-                if (!phoneUtil.IsValidNumber(phoneNumber))
-                {
-                    ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_MobileNumberInvalid1"));
-                }
-                else
-                {
-                    PhoneNumberType numberType = phoneUtil.GetNumberType(phoneNumber); // Produces Mobile , FIXED_LINE 
-
-                    if (numberType != PhoneNumberType.MOBILE)
-                    {
-                        ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_MobileNumberInvalid2"));
-                    }
-                }
-            }
-
-            if (string.IsNullOrWhiteSpace(model.SecurityCode))
-            {
-                ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneError"));
-            }
-
-            OTP otp = OtpHelper.Get(model.FullCellPhoneNumber);
-
-            if (otp == null)
-            {
-                ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneError"));
-            }
-            else
-            {
-                if (otp.ExpirationDate >= DateTime.Now.AddMinutes(3))
-                {
-                    ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneTimeOut"));
-                }
-
-                if (!string.IsNullOrWhiteSpace(model.SecurityCode) && !model.SecurityCode.Equals(otp.Code))
-                {
-                    ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneTimeOut"));
-                }
-            }
-
             var currentUser = await _userManager.FindByNameAsync(model.Username);
             var checkPass = await _userManager.CheckPasswordAsync(currentUser, model.CurrentPass);
             if (!checkPass)
@@ -1215,16 +1169,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View();
         }
 
-
-        //private async Task SetViewBag()
-        //{
-        //List<Country> countries = await _countryRepository.GetAll();
-        //string iranCountryId = countries.Any(c => c.Iso.Equals("IR")) ? countries.First(c => c.Iso.Equals("IR")).Id : "";
-
-        //ViewBag.IranCountryId = iranCountryId;
-        //ViewBag.Countries = new SelectList(countries, "Id", "Name", iranCountryId);
-        //ViewBag.Roles = new SelectList(await _roleRepository.GetAll(), "Id", "Title");
-        // }
+        
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
@@ -1240,9 +1185,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var lst = _userRepository.GetAddressTypes();
             ViewBag.AddressTypes = lst;
             UserProfileDTO dto = _mapper.Map<UserProfileDTO>(user.Profile);
-           if(CultureInfo.CurrentCulture.Name =="fa-IR")
+           if(CultureInfo.CurrentCulture.Name =="fa-IR" && user.Profile.BirthDate != null)
             {
-                dto.PersianBirthDate = DateHelper.ToPersianDdate(user.Profile.BirthDate);
+                dto.PersianBirthDate = DateHelper.ToPersianDdate(user.Profile.BirthDate.Value);
             }
             dto.UserName = user.UserName;
             dto.UserID = user.Id;

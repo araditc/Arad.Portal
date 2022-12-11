@@ -645,6 +645,9 @@ namespace Arad.Portal.UI.Shop.Controllers
                 ViewBag.Price = entity.Prices.Any(_ => _.StartDate <= DateTime.Now && _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) ?
                                        entity.Prices.FirstOrDefault(_ => _.StartDate <= DateTime.Now && _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) : null;
                 ViewData["PageTitle"] = entity.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == languageId).Name;
+                ViewData["Tags"] = string.Join(",", entity.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == languageId).TagKeywords);
+                ViewData["SeoTitle"] = entity.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == languageId).SeoTitle;
+                ViewData["SeoDesc"] = entity.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == languageId).SeoDescription;
                 return View(entity);
             }else
             {

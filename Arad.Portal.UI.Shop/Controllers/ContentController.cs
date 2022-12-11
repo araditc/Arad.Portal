@@ -130,7 +130,10 @@ namespace Arad.Portal.UI.Shop.Controllers
             userId = HttpContext.User.Identity.IsAuthenticated ? User.GetUserId() : "";
             var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
             var entity = _contentRepository.FetchByCode(slug);
-            if(entity != null)
+            ViewData["Tags"] = string.Join(",", entity.TagKeywords);
+            ViewData["SeoTitle"] = entity.SeoTitle;
+            ViewData["SeoDesc"] = entity.SeoDescription;
+            if (entity != null)
             {
                 var updateVisitCount = await _contentRepository.UpdateVisitCount(entity.ContentId);
                 if(entity.IsSidebarContentsShowing)

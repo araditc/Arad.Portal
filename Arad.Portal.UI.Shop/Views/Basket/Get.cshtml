@@ -230,7 +230,8 @@
                     } else //error
                     {
                         document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
-                        document.getElementById('mainToastBody').classList.add('alert-danger');
+                        $('#mainToastBody').removeClass("alert-success");
+                        $('#mainToastBody').addClass("alert-danger");
                         $("#toastPanel").show();
                         var toast = new bootstrap.Toast($("#mainToast"));
                         toast.show();
@@ -265,6 +266,7 @@
                             window.location.reload();
 
                             $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${result.message}`);
+                            $('#mainToastBody').removeClass('alert-danger');
                             $('#mainToastBody').addClass('alert-success');
                             $("#toastPanel").show();
                             var toast = new bootstrap.Toast($("#mainToast"));
@@ -276,7 +278,8 @@
                         else {
 
                             document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
-                            document.getElementById('mainToastBody').classList.add('alert-danger');
+                            $('#mainToastBody').removeClass('alert-success');
+                            $('#mainToastBody').addClass('alert-danger');
                             $("#toastPanel").show();
                             var toast = new bootstrap.Toast($("#mainToast"));
                             toast.show();
@@ -313,7 +316,8 @@
                         else {
 
                             document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
-                            document.getElementById('mainToastBody').classList.add('alert-danger');
+                            $('#mainToastBody').removeClass("alert-success");
+                            $('#mainToastBody').addClass("alert-danger");
                             $("#toastPanel").show();
                             var toast = new bootstrap.Toast($("#mainToast"));
                             toast.show();
@@ -349,7 +353,8 @@
                         else {
 
                             document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
-                            document.getElementById('mainToastBody').classList.add('alert-danger');
+                            $('#mainToastBody').removeClass("alert-success");
+                            $('#mainToastBody').addClass("alert-danger");
                             $("#toastPanel").show();
                             var toast = new bootstrap.Toast($("#mainToast"));
                             toast.show();

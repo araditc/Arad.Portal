@@ -93,6 +93,7 @@ using Microsoft.AspNetCore.Identity;
 using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using MongoDbGenericRepository;
+using System.Threading;
 
 namespace Arad.Portal.UI.Shop
 {
@@ -101,13 +102,14 @@ namespace Arad.Portal.UI.Shop
         private readonly IWebHostEnvironment _environment;
         public IConfiguration Configuration { get; }
         public static ConcurrentDictionary<string, OTP> OTP = new();
+       
         public static string ApplicationPath { get; set; }
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             GeneralLibrary.Utilities.Language._hostingEnvironment = env.WebRootPath;
             ApplicationPath = env.ContentRootPath;
-            _environment = env; 
+            _environment = env;
         }
 
 
@@ -203,9 +205,10 @@ namespace Arad.Portal.UI.Shop
             AddRepositoryServices(services);
             services.AddTransient<IRazorPartialToStringRenderer, RazorPartialToStringRenderer>();
             services.AddSingleton<SharedRuntimeData>();
-            
             services.AddSingleton<IHostedService, LifetimeEventsHostedService>();
-           
+            services.AddTransient<CacheCleanerService>();
+            services.AddTransient<SmsSenderService>();
+            services.AddTransient<EmailSenderService>();
 
             ServiceProvider sp = services.BuildServiceProvider();
 
@@ -218,8 +221,9 @@ namespace Arad.Portal.UI.Shop
 
             //smsService
             SmsSenderService smsSender = sp.GetService<SmsSenderService>();
-            if(smsSender != null)
+            if (smsSender != null)
             {
+                Log.Fatal("sms sender is not null");
                 smsSender.StartTimer();
             }
 

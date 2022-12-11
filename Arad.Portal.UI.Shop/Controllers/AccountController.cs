@@ -241,14 +241,14 @@ namespace Arad.Portal.UI.Shop.Controllers
         [HttpGet]
         public IActionResult ChangePassword()
         {
-            RegisterDTO registerDto = new();
+            ChangePassDto registerDto = new();
 
             return View(registerDto);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword([FromForm] RegisterDTO model)
+        public async Task<IActionResult> ChangePassword([FromForm] ChangePassDto model)
         {
             #region Validate
             if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
@@ -257,7 +257,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
 
             model.FullCellPhoneNumber = model.FullCellPhoneNumber.Replace("+", "").Trim();
-
+           
 
             if (string.IsNullOrWhiteSpace(model.FullCellPhoneNumber))
             {
@@ -280,6 +280,17 @@ namespace Arad.Portal.UI.Shop.Controllers
                     if (numberType != PhoneNumberType.MOBILE)
                     {
                         ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_MobileNumberInvalid2"));
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(model.Username))
+                {
+                    ModelState.AddModelError("Username", Language.GetString("Validation_EnterUsername"));
+                }else
+                {
+                    var user = await _userManager.FindByNameAsync(model.Username);
+                    if(user.PhoneNumber != model.FullCellPhoneNumber)
+                    {
+                        ModelState.AddModelError("Username", Language.GetString("Validation_InvalidUserNameOrPhoneNumber"));
                     }
                 }
             }
@@ -324,6 +335,10 @@ namespace Arad.Portal.UI.Shop.Controllers
             #endregion
 
             var currentUser = await _userManager.FindByNameAsync(model.FullCellPhoneNumber);
+            if(currentUser == null)
+            {
+                currentUser = await _userManager.FindByNameAsync(model.Username);
+            }
 
             string pass = Helpers.Utilities.GenerateRandomPassword(new()
             {

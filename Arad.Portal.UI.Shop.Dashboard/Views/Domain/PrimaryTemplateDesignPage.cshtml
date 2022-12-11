@@ -689,6 +689,7 @@
                         $(window).resize(changeScreen);
 
                         $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_FirstChooseLanguage")');
+                         $('#mainToastBody').removeClass("alert-danger");
                         $('#mainToastBody').addClass('alert-success');
 
                         var toastDiv = $("#mainToast");
@@ -1439,6 +1440,7 @@
                                            success: function (result) {
                                                debugger;
                                                $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
+                                                $('#mainToastBody').removeClass("alert-danger");
                                                      $('#mainToastBody').addClass('alert-success');
 
                                                      var toastDiv = $("#mainToast");
@@ -2187,7 +2189,8 @@
                     {
 
                     document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
-                    document.getElementById('mainToastBody').classList.add('alert-danger');
+                    $('#mainToastBody').removeClass("alert-success");
+                    $('#mainToastBody').addClass("alert-danger");
                     $("#toastPanel").show();
                     var toast = new bootstrap.Toast($("#mainToast"));
                     toast.show();
@@ -2402,6 +2405,7 @@
                                  if(!data.isvalid)
                                  {
                                    $('#mainToastBody').html('<i class="fas fa-exclamation-triangle"></i>@Language.GetString("AlertAndMessage_InvalidEditorContent")');
+                                   $('#mainToastBody').removeClass('alert-success');
                                    $('#mainToastBody').addClass('alert-danger');
                                    var toastDiv = $("#mainToast");
                                    $("#toastPanel").show();
@@ -2413,6 +2417,7 @@
                                  }else //it is valid
                                  {
                                      $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_ValidEditorContent")');
+                                      $('#mainToastBody').removeClass("alert-danger");
                                      $('#mainToastBody').addClass('alert-success');
                                      var toast = new bootstrap.Toast($("#mainToast"));
                                      toast.show();

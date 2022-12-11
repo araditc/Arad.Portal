@@ -306,7 +306,8 @@
         if (!cellPhone)
         {
             document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@Language.GetString("Validation_EnterMobileNumber")'}`;
-            document.getElementById('mainToastBody').classList.add('alert-danger');
+            $('#mainToastBody').removeClass("alert-success");
+            $('#mainToastBody').addClass("alert-danger");
             var toastDiv = $("#mainToast");
             $("#toastPanel").show();
             var toast = new bootstrap.Toast(toastDiv);
@@ -328,7 +329,8 @@
                 if (resultData.status === "error")
                 {
                     document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@Language.GetString("AlertAndMessage_CaptchaIncorrectOrExpired")'}`;
-                    document.getElementById('mainToastBody').classList.add('alert-danger');
+                        $('#mainToastBody').removeClass("alert-success");
+                        $('#mainToastBody').addClass("alert-danger");
                     var toastDiv = $("#mainToast");
                     $("#toastPanel").show();
                     var toast = new bootstrap.Toast(toastDiv);
@@ -369,6 +371,7 @@
                                                 $("#SecurityCode").val('');
 
                                                 $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${resultData.message}`);
+                                                $('#mainToastBody').removeClass('alert-danger');
                                                 $('#mainToastBody').addClass('alert-success');
                                                 $("#toastPanel").show();
                                                 var toast = new bootstrap.Toast($("#mainToast"));
@@ -380,7 +383,8 @@
                                             else
                                                 if (resultData.status === "Error") {
                                                     $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${resultData.message}`);
-                                                    $('#mainToastBody').addClass('alert-success');
+                                                    $('#mainToastBody').removeClass('alert-success');
+                                                    $('#mainToastBody').addClass('alert-danger');
                                                     $("#toastPanel").show();
                                                     var toast = new bootstrap.Toast($("#mainToast"));
                                                     toast.show();
@@ -395,7 +399,8 @@
                                 if (resultData.status === "Error")
                                 {
                                     $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${resultData.message}`);
-                                    $('#mainToastBody').addClass('alert-success');
+                                        $('#mainToastBody').removeClass('alert-success');
+                                    $('#mainToastBody').addClass('alert-danger');
                                     $("#toastPanel").show();
                                     var toast = new bootstrap.Toast($("#mainToast"));
                                     toast.show();
@@ -444,6 +449,7 @@
                         if (result.status === "Success")
                         {
                             $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${result.message}`);
+                            $('#mainToastBody').removeClass('alert-danger');
                             $('#mainToastBody').addClass('alert-success');
                             $("#toastPanel").show();
                             var toast = new bootstrap.Toast($("#mainToast"));
@@ -485,7 +491,8 @@
                            
 
                              document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
-                                document.getElementById('mainToastBody').classList.add('alert-danger');
+                                $('#mainToastBody').removeClass("alert-success");
+                                $('#mainToastBody').addClass("alert-danger");
                                 var toastDiv = $("#mainToast");
                                 $("#toastPanel").show();
                                 var toast = new bootstrap.Toast(toastDiv);

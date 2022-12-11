@@ -35,7 +35,7 @@ namespace Arad.Portal.DataLayer.Models.User
         public string NationalCode { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         public Image ProfilePhoto { get; set; }
 
