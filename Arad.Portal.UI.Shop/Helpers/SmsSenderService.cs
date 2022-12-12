@@ -16,7 +16,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
 using Serilog;
-
+using AutoMapper.Configuration;
+using Microsoft.Extensions.Configuration;
+using System.Net.Http;
+using System.Net.Mime;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Arad.Portal.UI.Shop.Helpers
 {
@@ -25,22 +30,27 @@ namespace Arad.Portal.UI.Shop.Helpers
         private readonly INotificationRepository _notificationRepository;
         //private readonly Setting _setting;
         private readonly CreateNotification _createNotification;
+        private readonly  AppSetting _appSettings;
+        private readonly IHttpClientFactory _clientFactory;
         private Timer _timer;
         private bool _flag = true;
+        private string _accessToken;
         private static readonly object syncLock = new object();
-        public SmsSenderService(INotificationRepository notificationRepository,
+        public SmsSenderService(INotificationRepository notificationRepository,IHttpClientFactory clientFactory, 
                                 /*Setting setting,*/ CreateNotification createNotification)
         {
             _notificationRepository = notificationRepository;
-            //_setting = setting;
+            _clientFactory = clientFactory;
             _createNotification = createNotification;
+            _clientFactory = clientFactory;
+            _appSettings = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile("appsettings.json").Build().Get<AppSetting>();
         }
 
 
         public void StartTimer()
         {
             //TimerCallback cb = new(OnTimeEvent);
-            _timer = new(OnTimeEvent, null, 1000, 10000);
+            _timer = new(OnTimeEvent, null, 1000, 900000);
             Log.Fatal("*************************STTTTTTTttart SMS service timer*************************");
         }
         private async void OnTimeEvent(object state)
@@ -74,29 +84,35 @@ namespace Arad.Portal.UI.Shop.Helpers
             sw2.Start();
             if (smsNotifications.Any())
             {
-
                 try
                 {
 
-                    string[] smsResultArray = SendSMS_LikeToLike(smsNotifications.Select(_ => _.Body).ToArray(),
-                        smsNotifications.Select(_ => _.UserPhoneNumber).ToArray(),
-                        smsNotifications[0].SendSmsConfig.AradVas_Number,
-                        smsNotifications[0].SendSmsConfig.AradVas_UserName,
-                        smsNotifications[0].SendSmsConfig.AradVas_Password,
-                        smsNotifications[0].SendSmsConfig.AradVas_Link_1,
-                        smsNotifications[0].SendSmsConfig.AradVas_Domain);
+                    var modelToSend = new RahyabRGMessage();
+                    modelToSend.Number = _appSettings.SmsEndPointConfig.LineNumber;
+                    modelToSend.UserName = _appSettings.SmsEndPointConfig.UserName;
+                    modelToSend.Password = _appSettings.SmsEndPointConfig.Password;
+                    modelToSend.Company = _appSettings.SmsEndPointConfig.Company;
+                    foreach (var notify in smsNotifications)
+                    {
+                        var obj = new SmsLikeToLikeMessage()
+                        {
+                            Message = notify.Body,
+                            DestNumber = notify.UserPhoneNumber
+                        };
+                        modelToSend.ListLikeToLikeMessage.Add(obj);
+                    }
 
-
-                    if (smsResultArray[0] == "CHECK_OK")
+                    var response = await Send(modelToSend);
+                    if(response.StatusCode == HttpStatusCode.OK)
                     {
                         definition = Builders<Notification>.Update.Set(nameof(Notification.SendStatus),
-                            NotificationSendStatus.Posted);
-                        definition.AddToSet(nameof(Notification.BatchId), smsResultArray[1]);
+                                NotificationSendStatus.Posted);
                         definition.AddToSet(nameof(Notification.SentDate), DateTime.Now);
 
                         await _notificationRepository.UpdateMany
                             (smsNotifications.Select(_ => _.NotificationId).ToList(), definition);
                         sucessCount++;
+                        Log.Fatal($"Success HttpResponseStatusCode: {response.StatusCode}");
                     }
                     else
                     {
@@ -106,9 +122,8 @@ namespace Arad.Portal.UI.Shop.Helpers
                         await _notificationRepository.UpdateMany
                             (smsNotifications.Select(_ => _.NotificationId).ToList(), definition);
                         failedCount++;
-                        Log.Fatal($"smsResultArray[0]: {smsResultArray[0]}");
+                        Log.Fatal($"Failed HttpResponseStatusCode: {response.StatusCode}");
                     }
-
                 }
                 catch (Exception e)
                 {
@@ -205,61 +220,45 @@ namespace Arad.Portal.UI.Shop.Helpers
             return ret;
         }
 
-        private async Task Send(RahyabRGMessage data, List<AradMessage> aradMessages)
+        private async Task GetToken()
         {
+            try
+            {
+                Log.Fatal("Start Getting token");
+                HttpClient client = _clientFactory.CreateClient();
+                StringContent content = 
+                    new($"{{\"username\":\"{_appSettings.SmsEndPointConfig.TokenUserName}\", \"password\":\"{_appSettings.SmsEndPointConfig.TokenPassword}\"}}",
+                    Encoding.UTF8, MediaTypeNames.Application.Json);
+                HttpResponseMessage response = await client.PostAsync(_appSettings.SmsEndPointConfig.TokenEndpoint, content);
+                
+                _accessToken = await response.Content.ReadAsStringAsync();
+                
+                Log.Fatal($"access token: {_accessToken}");
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLogFile($"Error in getting token: {e.Message}");
+            }
+        }
+        private async Task<HttpResponseMessage> Send(RahyabRGMessage data)
+        {
+            HttpResponseMessage response = null;
             try
             {
                 await GetToken();
                 HttpClient client = _clientFactory.CreateClient();
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_accessToken}");
-
-                _fullLogOption.OptionalLog($"api response = {JsonConvert.SerializeObject(data)}");
+                Log.Fatal($"Json Data for Send: {JsonConvert.SerializeObject(data)}");
                 DefaultContractResolver contractResolver = new() { NamingStrategy = new CamelCaseNamingStrategy() };
                 StringContent content = new(JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = contractResolver, Formatting = Formatting.Indented }), Encoding.UTF8, MediaTypeNames.Application.Json);
-                HttpResponseMessage response = await client.PostAsync(_smsEndPointConfig.Endpoint, content);
-
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    List<RahyabRGResponse> resultApi = JsonConvert.DeserializeObject<List<RahyabRGResponse>>(await response.Content.ReadAsStringAsync());
-
-                    if (resultApi != null && resultApi.Any())
-                    {
-                        Logger.WriteLogFile($"sent count: {aradMessages.Count}");
-                        await Update(resultApi.First(), aradMessages);
-                    }
-
-                    // return dataToUpdate;
-                    _upstreamLiveDataQueueDtos.Enqueue(new UpstreamLiveDataQueueDto
-                    {
-                        Model = new UpstreamLiveData
-                        {
-                            DateTime = DateTime.Now,
-                            TotalSent = aradMessages.Count,
-                            TotalDelivered = 0,
-                            UnDeliverableCount = 0,
-                            TotalRejected = 0,
-                            TotalBlocked = 0,
-                            TotalErrors = 0,
-                            TotalNotSent = 0,
-                            TotalReceived = 0,
-                            UpstreamGatewayId = _upstreamGatewayId,
-                            UpstreamGatewayName = _serviceName
-                        }
-                    });
-                }
-                else
-                {
-                    IEnumerable<string> ids = aradMessages.Select(y => y.Id);
-                    await (_dbContext.SaveToSchedule ? _dbContext.Schedule : _dbContext.Outboxes).UpdateManyAsync(x => ids.Contains(x.Id), Builders<AradMessage>.Update.Set(t => t.SendStatus, Enums.SendStatus.Stored));
-                    Logger.WriteLogFile($"status code: {response.StatusCode} message: {await response.Content.ReadAsStringAsync()}");
-                    throw new Exception();
-                }
-
+                response = await client.PostAsync(_appSettings.SmsEndPointConfig.Endpoint, content);
+                
             }
             catch (Exception e)
             {
-                Logger.WriteLogFile($"Error in send method: {e.Message}");
+                Log.Fatal($"Error in send method: {e.Message}");
             }
+            return response;
         }
         public string[] SendSMS_LikeToLike(string[] Message, string[] DestinationAddress,
            string Number, string userName, string password, string IP_Send, string Company)

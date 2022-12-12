@@ -47,7 +47,7 @@ namespace Arad.Portal.DataLayer.Helpers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly Setting _setting;
-        private readonly SendSmsConfig _sendSmsConfig;
+        private readonly SmsEndPointConfig _sendSmsConfig;
         private readonly IMessageTemplateRepository _messageTemplateRepository;
         private readonly ISystemSettingRepository _systemSettingRepository;
         private readonly INotificationRepository _notificationRepository;
@@ -66,7 +66,7 @@ namespace Arad.Portal.DataLayer.Helpers
                                   IHttpContextAccessor httpContextAccessor,
                                   Setting setting,
                                   ILanguageRepository lanRepository,
-                                  SendSmsConfig sendSmsConfig,
+                                  SmsEndPointConfig sendSmsConfig,
                                   IDomainRepository domainRepository,
                                   IWebHostEnvironment environment
                                   )
@@ -143,7 +143,7 @@ namespace Arad.Portal.DataLayer.Helpers
                     CreatorUserName = user.UserName,
                     TemplateName = templateName,
                     UserFullName = "",
-                    SendSmsConfig = _sendSmsConfig,
+                    SmsEndPointConfig = _sendSmsConfig,
                     AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId
                 };
 
@@ -156,7 +156,7 @@ namespace Arad.Portal.DataLayer.Helpers
                         break;
 
                     case NotificationType.Sms:
-                        notification.SendSmsConfig = _sendSmsConfig;
+                        notification.SmsEndPointConfig = _sendSmsConfig;
                         notification.UserPhoneNumber = user.PhoneNumber;
 
                         break;
@@ -228,7 +228,7 @@ namespace Arad.Portal.DataLayer.Helpers
                         CreatorUserName = adminUser.UserName,
                         TemplateName = templateName,
                         UserFullName = adminUser.Profile.FullName,
-                        SendSmsConfig = _sendSmsConfig,
+                        SmsEndPointConfig = _sendSmsConfig,
                         SMTP = smtpAccount,
                         AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId,
                         UserPhoneNumber = adminUser.PhoneNumber,
@@ -306,7 +306,7 @@ namespace Arad.Portal.DataLayer.Helpers
                         CreatorUserName = userEntity.UserName,
                         TemplateName = templateName,
                         UserFullName = userEntity.Profile.FullName,
-                        SendSmsConfig = _sendSmsConfig,
+                        SmsEndPointConfig = _sendSmsConfig,
                         SMTP = smtpAccount,
                         AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId,
                         UserPhoneNumber = userEntity.PhoneNumber
@@ -373,7 +373,7 @@ namespace Arad.Portal.DataLayer.Helpers
                         CreatorUserName = user.UserName,
                         TemplateName = templateName,
                         UserFullName = user.Profile.FullName,
-                        SendSmsConfig = _sendSmsConfig,
+                        SmsEndPointConfig = _sendSmsConfig,
                         AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId,
                         UserPhoneNumber = user.PhoneNumber
                     };
@@ -419,7 +419,7 @@ namespace Arad.Portal.DataLayer.Helpers
                     CreatorUserName = user.UserName,
                     TemplateName = "",
                     UserFullName = "",
-                    SendSmsConfig = _sendSmsConfig,
+                    SmsEndPointConfig = _sendSmsConfig,
                     AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId
                 };
 
@@ -432,7 +432,7 @@ namespace Arad.Portal.DataLayer.Helpers
                         break;
 
                     case NotificationType.Sms:
-                        notification.SendSmsConfig = _sendSmsConfig;
+                        notification.SmsEndPointConfig = _sendSmsConfig;
                         notification.UserPhoneNumber = user.PhoneNumber;
 
                         break;
@@ -506,7 +506,7 @@ namespace Arad.Portal.DataLayer.Helpers
                     CreatorUserName = user.UserName,
                     TemplateName = templateName,
                     UserFullName = "",
-                    SendSmsConfig = _sendSmsConfig,
+                    SmsEndPointConfig = _sendSmsConfig,
                     AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId
                 };
 
@@ -519,7 +519,7 @@ namespace Arad.Portal.DataLayer.Helpers
                         break;
 
                     case NotificationType.Sms:
-                        notification.SendSmsConfig = _sendSmsConfig;
+                        notification.SmsEndPointConfig = _sendSmsConfig;
                         notification.UserPhoneNumber = user.PhoneNumber;
 
                         break;
@@ -603,7 +603,7 @@ namespace Arad.Portal.DataLayer.Helpers
                         break;
 
                     case NotificationType.Sms:
-                        notification.SendSmsConfig = _sendSmsConfig;
+                        notification.SmsEndPointConfig = _sendSmsConfig;
                         notification.UserPhoneNumber = user.PhoneNumber;
 
                         break;
@@ -682,7 +682,7 @@ namespace Arad.Portal.DataLayer.Helpers
                     CreatorUserName = user.UserName,
                     TemplateName = templateName,
                     UserFullName = user.Profile.FullName,
-                    SendSmsConfig = _sendSmsConfig,
+                    SmsEndPointConfig = _sendSmsConfig,
                     AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId
                 };
 
@@ -695,7 +695,7 @@ namespace Arad.Portal.DataLayer.Helpers
                         break;
 
                     case NotificationType.Sms:
-                        notification.SendSmsConfig = _sendSmsConfig;
+                        notification.SmsEndPointConfig = _sendSmsConfig;
                         notification.UserPhoneNumber = user.PhoneNumber;
 
                         break;
@@ -778,7 +778,7 @@ namespace Arad.Portal.DataLayer.Helpers
                         CreatorUserName = user.UserName,
                         TemplateName = templateName,
                         UserFullName = "",
-                        SendSmsConfig = _sendSmsConfig,
+                        SmsEndPointConfig = _sendSmsConfig,
                         AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId
                     };
 
@@ -791,7 +791,7 @@ namespace Arad.Portal.DataLayer.Helpers
                             break;
 
                         case NotificationType.Sms:
-                            notification.SendSmsConfig = _sendSmsConfig;
+                            notification.SmsEndPointConfig = _sendSmsConfig;
                             notification.UserPhoneNumber = phoneNumber;
 
                             break;

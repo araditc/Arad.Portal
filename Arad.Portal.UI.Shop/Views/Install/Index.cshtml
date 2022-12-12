@@ -224,36 +224,53 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="fom-group col-12 col-md-4">
+                            <div class="fom-group col-12 col-md-3">
                                 <label class="form-label">@Language.GetString("Sms_LinkAddress")</label>
-                                <input type="text" class="form-control" asp-for="AradVas_Link_1" dir="ltr">
-                                <span data-val-result="AradVas_Link_1" class="text-danger"></span>
+                                <input type="text" class="form-control" asp-for="SmsEndpoint" dir="ltr">
+                                <span data-val-result="SmsEndpoint" class="text-danger"></span>
 
                             </div>
-                            <div class="fom-group col-12 col-md-4">
+                            <div class="fom-group col-12 col-md-3">
                                 <label class="form-label">@Language.GetString("Sms_UserName")</label>
-                                <input type="text" class="form-control" asp-for="AradVas_UserName" dir="ltr">
-                                <span data-val-result="AradVas_UserName" class="text-danger"></span>
+                                <input type="text" class="form-control" asp-for="SmsUserName" dir="ltr">
+                                <span data-val-result="SmsUserName" class="text-danger"></span>
 
                             </div>
-                            <div class="fom-group col-12 col-md-4">
+                            <div class="fom-group col-12 col-md-3">
                                 <label class="form-label">@Language.GetString("Sms_Passworrd")</label>
-                                <input type="text" class="form-control" asp-for="AradVas_Password" dir="ltr">
-                                <span data-val-result="AradVas_Password" class="text-danger"></span>
+                                <input type="text" class="form-control" asp-for="SmsPassword" dir="ltr">
+                                <span data-val-result="SmsPassword" class="text-danger"></span>
 
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="fom-group col-12 col-md-4">
-                                <label class="form-label">@Language.GetString("Sms_LineNumber")</label>
-                                <input type="text" class="form-control" asp-for="AradVas_Number" dir="ltr">
-                                <span data-val-result="AradVas_Number" class="text-danger"></span>
-
-                            </div>
-                            <div class="fom-group col-12 col-md-4">
+                             <div class="fom-group col-12 col-md-3">
                                 <label class="form-label">@Language.GetString("Sms_ComapnyName")</label>
-                                <input type="text" class="form-control" asp-for="AradVas_Domain" dir="ltr">
-                                <span data-val-result="AradVas_Domain" class="text-danger"></span>
+                                <input type="text" class="form-control" asp-for="SmsCompany" dir="ltr">
+                                <span data-val-result="SmsCompany" class="text-danger"></span>
+
+                            </div>
+                           
+                            <div class="fom-group col-12 col-md-3">
+                                <label class="form-label">@Language.GetString("Sms_TokenLink")</label>
+                                <input type="text" class="form-control" asp-for="TokenEndpoint" dir="ltr">
+                                <span data-val-result="TokenEndpoint" class="text-danger"></span>
+
+                            </div>
+                             <div class="fom-group col-12 col-md-3">
+                                <label class="form-label">@Language.GetString("Sms_TokenUserName")</label>
+                                <input type="text" class="form-control" asp-for="TokenUserName" dir="ltr">
+                                <span data-val-result="TokenUserName" class="text-danger"></span>
+
+                            </div>
+                             <div class="fom-group col-12 col-md-3">
+                                <label class="form-label">@Language.GetString("Sms_TokenPassword")</label>
+                                <input type="text" class="form-control" asp-for="TokenPassword" dir="ltr">
+                                <span data-val-result="TokenPassword" class="text-danger"></span>
+
+                            </div>
+                              <div class="fom-group col-12 col-md-3">
+                                <label class="form-label">@Language.GetString("Sms_LineNumber")</label>
+                                <input type="text" class="form-control" asp-for="SmsLineNumber" dir="ltr">
+                                <span data-val-result="SmsLineNumber" class="text-danger"></span>
 
                             </div>
 
@@ -486,24 +503,36 @@
                 $("span[data-val-result='LocalStaticFileStorage']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-            if ($("#AradVas_Link_1").val().trim() == "") {
-                $("span[data-val-result='AradVas_Link_1']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            if ($("#SmsEndpoint").val().trim() == "") {
+                $("span[data-val-result='SmsEndpoint']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-            if ($("#AradVas_UserName").val().trim() == "") {
-                $("span[data-val-result='AradVas_UserName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            if ($("#SmsUserName").val().trim() == "") {
+                $("span[data-val-result='SmsUserName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-            if ($("#AradVas_Password").val().trim() == "") {
-                $("span[data-val-result='AradVas_Password']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            if ($("#SmsPassword").val().trim() == "") {
+                $("span[data-val-result='SmsPassword']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-            if ($("#AradVas_Number").val().trim() == "") {
-                $("span[data-val-result='AradVas_Number']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            if ($("#SmsCompany").val().trim() == "") {
+                $("span[data-val-result='SmsCompany']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-            if ($("#AradVas_Domain").val().trim() == "") {
-                $("span[data-val-result='AradVas_Domain']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            if ($("#TokenEndpoint").val().trim() == "") {
+                $("span[data-val-result='TokenEndpoint']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#TokenUserName").val().trim() == "") {
+                $("span[data-val-result='TokenUserName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#TokenPassword").val().trim() == "") {
+                $("span[data-val-result='TokenPassword']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+             if ($("#SmsLineNumber").val().trim() == "") {
+                $("span[data-val-result='SmsLineNumber']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
 

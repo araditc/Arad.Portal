@@ -803,7 +803,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                                .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value,
                         TemplateName = "ProductNotifyRecord",
                         UserFullName = "",
-                        SendSmsConfig = new SendSmsConfig(),
+                        SmsEndPointConfig = new SmsEndPointConfig(),
                         SMTP = new SMTP(),
                         AssociatedDomainId = domainId,
                         ExtraData = new List<(string, string)> { ("productId", product.ProductId),

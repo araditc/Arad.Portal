@@ -197,11 +197,13 @@ namespace Arad.Portal.UI.Shop.Controllers
                 #endregion
 
                 #region appsetting
-                _appSetting.SendSmsConfig.AradVas_Number = model.AradVas_Number;
-                _appSetting.SendSmsConfig.AradVas_UserName = model.AradVas_UserName;
-                _appSetting.SendSmsConfig.AradVas_Domain = model.AradVas_Domain;
-                _appSetting.SendSmsConfig.AradVas_Password = model.AradVas_Password;
-                _appSetting.SendSmsConfig.AradVas_Link_1 = model.AradVas_Link_1;
+                _appSetting.SmsEndPointConfig.Endpoint = model.SmsEndpoint;
+                _appSetting.SmsEndPointConfig.UserName = model.SmsUserName;
+                _appSetting.SmsEndPointConfig.Password = model.SmsPassword;
+                _appSetting.SmsEndPointConfig.Company = model.SmsCompany;
+                _appSetting.SmsEndPointConfig.TokenEndpoint = model.TokenEndpoint;
+                _appSetting.SmsEndPointConfig.TokenUserName = model.TokenUserName;
+                _appSetting.SmsEndPointConfig.TokenPassword = model.TokenPassword;
 
                 _appSetting.DatabaseConfig.ConnectionString = model.ConnectionString;
                 _appSetting.LocalStaticFileStorage = model.LocalStaticFileStorage;

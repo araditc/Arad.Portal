@@ -12,13 +12,13 @@ namespace Arad.Portal.DataLayer.Models.Shared
         {
             LogConfiguration = new LogConfiguration();
             DatabaseConfig = new DatabaseConfig();
-            SendSmsConfig = new SendSmsConfig();
+            SmsEndPointConfig = new SmsEndPointConfig();
         }
         public LogConfiguration LogConfiguration { get; set; }
         public string AllowedHosts { get; set; }
         public string[] SupportedCultures { get; set; }
         public DatabaseConfig DatabaseConfig { get; set; }
-        public SendSmsConfig SendSmsConfig { get; set; }
+        public SmsEndPointConfig SmsEndPointConfig { get; set; }
         public string LocalStaticFileStorage { get; set; }
         public string LocalStaticFileShown { get; set; }
         public string IsFirstRun { get; set; }
@@ -38,12 +38,5 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public string DbName { get; set; }
     }
 
-    public class SendSmsConfig
-    {
-        public string AradVas_Link_1 { get; set; }
-        public string AradVas_UserName { get; set; }
-        public string AradVas_Password { get; set; }
-        public string AradVas_Number { get; set; }
-        public string AradVas_Domain { get; set; }
-    }
+    
 }

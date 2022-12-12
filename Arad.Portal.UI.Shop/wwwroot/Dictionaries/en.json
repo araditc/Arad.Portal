@@ -210,7 +210,7 @@
     "Key": "design_Layers"
   },
   {
-    "Value": "اسلایدها",
+    "Value": "Slides",
     "Key": "design_Slides"
   },
   {
@@ -3055,6 +3055,10 @@
     "Key": "Sms_LinkAddress"
   },
   {
+    "Value": "Line Number",
+    "Key": "Sms_LineNumber"
+  },
+  {
     "Value": "UserName",
     "Key": "Sms_UserName"
   },
@@ -3063,8 +3067,16 @@
     "Key": "Sms_Passworrd"
   },
   {
-    "Value": "LineNumber",
-    "Key": "Sms_LineNumber"
+    "Value": "TokenLink",
+    "Key": "Sms_TokenLink"
+  },
+  {
+    "Value": "TokenUsername",
+    "Key": "Sms_TokenUserName"
+  },
+  {
+    "Value": "TokenPassword",
+    "Key": "Sms_TokenPassword"
   },
   {
     "Value": "Company Name",

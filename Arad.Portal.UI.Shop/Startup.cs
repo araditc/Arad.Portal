@@ -144,8 +144,8 @@ namespace Arad.Portal.UI.Shop
             Configuration.Bind(nameof(Setting), setting);
             services.AddSingleton(setting);
 
-            SendSmsConfig sendSmsConfig = new();
-            Configuration.Bind(nameof(SendSmsConfig), sendSmsConfig);
+            SmsEndPointConfig sendSmsConfig = new();
+            Configuration.Bind(nameof(SmsEndPointConfig), sendSmsConfig);
             services.AddSingleton(sendSmsConfig);
 
             services.ConfigureApplicationCookie(options =>
@@ -228,11 +228,11 @@ namespace Arad.Portal.UI.Shop
             }
 
             //email Service
-            EmailSenderService emailSender = sp.GetService<EmailSenderService>();
-            if (emailSender != null)
-            {
-                emailSender.StartTimer();
-            }
+            //EmailSenderService emailSender = sp.GetService<EmailSenderService>();
+            //if (emailSender != null)
+            //{
+            //    emailSender.StartTimer();
+            //}
 
             #region luceneIndexes
             CheckAndConfigureLuceneIndexs(sp);

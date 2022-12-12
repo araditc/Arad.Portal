@@ -39,7 +39,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Notify
         /// <summary>
         /// the config of sms line which we use for sending sms
         /// </summary>
-        public SendSmsConfig SendSmsConfig { get; set; }
+        public SmsEndPointConfig SmsEndPointConfig { get; set; }
 
         /// <summary>
         /// the fullname (FirstName + ' '+ LastName of user who is creator of this notification
@@ -49,10 +49,6 @@ namespace Arad.Portal.DataLayer.Entities.General.Notify
         public string UserEmail { get; set; }
 
         public string UserPhoneNumber { get; set; }
-
-        public string UpStreamGatewayId { get; set; }
-
-        public string BatchId { get; set; }
 
         public List<Attachment> Attachments { get; set; }
 

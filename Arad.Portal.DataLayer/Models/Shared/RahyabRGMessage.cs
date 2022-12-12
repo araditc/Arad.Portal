@@ -24,7 +24,27 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public string DestNumber { get; set; }
 
         public string Message { get; set; }
-
-        public string MessageId { get; set; }
     }
+
+    public class SmsEndPointConfig
+    {
+
+        public string LineNumber { get; set; }
+
+        public string Endpoint { get; set; }
+
+        public string UserName { get; set; }
+
+        public string Password { get; set; }
+
+        public string Company { get; set; }
+
+        public string TokenEndpoint { get; set; }
+
+        public string TokenUserName { get; set; }
+
+        public string TokenPassword { get; set; }
+    }
+
+   
 }

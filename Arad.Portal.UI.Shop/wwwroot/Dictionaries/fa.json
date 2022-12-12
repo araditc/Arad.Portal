@@ -3045,6 +3045,10 @@
     "Key": "Sms_LinkAddress"
   },
   {
+    "Value": "شماره خط",
+    "Key": "Sms_LineNumber"
+  },
+  {
     "Value": "نام کاربری",
     "Key": "Sms_UserName"
   },
@@ -3053,8 +3057,16 @@
     "Key": "Sms_Passworrd"
   },
   {
-    "Value": "شماره خط",
-    "Key": "Sms_LineNumber"
+    "Value": "لینک دریافت توکن",
+    "Key": "Sms_TokenLink"
+  },
+  {
+    "Value": "نام کاربری لینک دریافت توکن",
+    "Key": "Sms_TokenUserName"
+  },
+  {
+    "Value": "رمز لینک دریافت توکن",
+    "Key": "Sms_TokenPassword"
   },
   {
     "Value": "نام شرکت",

@@ -44,12 +44,13 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public string LocalStaticFileStorage { get; set; }
 
         public string SmsEndpoint { get; set; }
+        public string SmsLineNumber { get; set; }
         public string SmsUserName { get; set; }
         public string SmsPassword { get; set; }
         public string SmsCompany { get; set; }
-        public string tokenEndpoint { get; set; }
-        public string tokenUserName { get; set; }
-        public string tokenPassword { get; set; }
+        public string TokenEndpoint { get; set; }
+        public string TokenUserName { get; set; }
+        public string TokenPassword { get; set; }
 
 
         #endregion
