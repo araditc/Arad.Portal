@@ -35,6 +35,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly DomainContext _domainContext;
+
+       
         public MenuRepository(MenuContext context,
                                 UserManager<ApplicationUser> userManager,
                                 DomainContext domainContext,
@@ -572,6 +574,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 throw;
             }
             return result;
+        }
+
+        public void InsertMany(List<Entities.General.Menu.Menu> menus)
+        {
+            _context.Collection.InsertMany(menus);
         }
     }
 }

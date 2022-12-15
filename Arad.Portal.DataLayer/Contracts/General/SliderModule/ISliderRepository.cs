@@ -30,6 +30,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.SliderModule
         Task<bool> ActiveLayer(string id, bool isActive);
         Task<bool> DeleteLayer(string id);
 
+        void InsertOne(Slider slider);
         List<SelectListModel> ActiveSliderList(string domianId);
     }
 }

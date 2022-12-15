@@ -41,5 +41,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         List<Entities.General.Content.Content> AllContents(string domainId);
         bool IsUniqueUrlFriend(string urlFriend, string domainId, string contentId = "");
         Task<Entities.General.Content.Content> ContentSelect(string contentId);
+
+        void InsertMany(List<Entities.General.Content.Content> contents);
     }
 }

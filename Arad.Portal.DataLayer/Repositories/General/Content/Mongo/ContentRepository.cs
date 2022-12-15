@@ -986,5 +986,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             }
             return result;
         }
+
+        public void InsertMany(List<Entities.General.Content.Content> contents)
+        {
+            _contentContext.Collection.InsertMany(contents);
+        }
     }
 }

@@ -39,8 +39,8 @@
     <script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
 
 </head>
-<body>
-
+<body style="font-size : 14px;">
+<div class="container">
     <div class="position-fixed left-50 top-0 p-5" id="toastPanel" style="z-index: 11;">
         <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
             <div class="toast-header">
@@ -50,7 +50,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-2">
         <div class="col-12">
             <form role="form" id="installForm" asp-action="SaveData" asp-controller="Install" method="post">
                 <div class="card">
@@ -58,7 +58,7 @@
                         <h5 class="card-title">@Language.GetString("User_SysAccount")</h5>
                     </div>
                     <div class="card-body">
-
+                        <input type="hidden" asp-for="UserId" />
                         <div class="row">
                             <div class="form-group col-12 col-md-3 p-2">
                                 <label for="Name" class="form-label">@Language.GetString("User_FirstName")</label>
@@ -75,8 +75,7 @@
                                 <input asp-for="UserName" type="text" class="form-control" placeholder="" autocomplete="off">
                                 <span data-val-result="UserName" class="text-danger"></span>
                             </div>
-                        </div>
-                        <div class="row">
+                       
                             <div class="form-group col-12 col-md-3 p-2">
                                 <label for="Password" class="form-label">@Language.GetString("User_Password")</label>
                                 <input asp-for="Password" type="password" class="form-control" placeholder="" autocomplete="new-password">
@@ -107,7 +106,7 @@
                         <h5 class="card-title">@Language.GetString("DefaultDomain")</h5>
                     </div>
                     <div class="card-body">
-                       
+                       <input type="hidden" asp-for="DomainId"/>
                         <div class="row">
                             <div class="form-group col-12 col-md-3 form-check m-auto d-inline-block pt-3 fs-6 ms-4">
                                 <input class="form-check-input" type="checkbox" value="IsShop" asp-for="IsShop">
@@ -133,9 +132,7 @@
                                 <input type="text" class="form-control" asp-for="Title">
                                 <span data-val-result="Title" class="text-danger"></span>
                             </div>
-                        </div>
-
-                        <div class="row m-1">
+                        
                             <div class="form-group col-12 col-md-3">
                                 <label class="form-label">@Language.GetString("Currency")</label>
                                 <select class="form-select"  asp-for="CurrencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
@@ -145,8 +142,8 @@
                         </div>
 
                         <div class="row">
-                            <div class="card">
-                                <div class="card-header">
+                            <div class="card mt-3">
+                                <div class="card-header mt-2">
                                     <h5 class="card-title">@Language.GetString("DomainSMTPAcc")</h5>
                                 </div>
                                 <div class="card-body">
@@ -155,6 +152,11 @@
                                             <label asp-for="@Model.SMTPAccount.Server" class="form-label">@Language.GetString("SMTPServer")</label>
                                             <input asp-for="@Model.SMTPAccount.Server" type="text" class="form-control" placeholder="" autocomplete="off"/>
                                             <span data-val-result="Server" class="text-danger"></span>
+                                         </div>
+                                          <div class="form-group col-12 col-md-3">
+                                             <label asp-for="@Model.SMTPAccount.ServerPort" class="form-label">@Language.GetString("ServerPort")</label>
+                                            <input asp-for="@Model.SMTPAccount.ServerPort" type="text" class="form-control" placeholder="" autocomplete="off" />
+                                              <span data-val-result="ServerPort" class="text-danger"></span>
                                          </div>
                                          <div class="form-group col-12 col-md-3">
                                              <label asp-for="@Model.SMTPAccount.EmailAddress" class="form-label">@Language.GetString("EnumDesc_Email")</label>
@@ -168,16 +170,9 @@
                                          </div>
                                          <div class="form-group col-12 col-md-3">
                                             <label asp-for="@Model.SMTPAccount.Encryption" class="form-label">@Language.GetString("EncryptionType")</label>
-                                            <select class="form-select"  name="Encryption" id="Encryption" asp-items="@(new SelectList(ViewBag.EncryptionType,"Value","Text"))">
+                                            <select class="form-select"  asp-for="@Model.SMTPAccount.Encryption" asp-items="@(new SelectList(ViewBag.EncryptionType,"Value","Text"))">
                                           </select>
                                             <span data-val-result="Encryption" class="text-danger"></span>
-                                         </div>
-                                    </div>
-                                    <div class="row">
-                                         <div class="form-group col-12 col-md-3">
-                                             <label asp-for="@Model.SMTPAccount.ServerPort" class="form-label">@Language.GetString("ServerPort")</label>
-                                            <input asp-for="@Model.SMTPAccount.ServerPort" type="text" class="form-control" placeholder="" autocomplete="off" />
-                                              <span data-val-result="ServerPort" class="text-danger"></span>
                                          </div>
                                          <div class="form-group col-12 col-md-3">
                                             <label asp-for="@Model.SMTPAccount.SMTPAuthUsername" class="form-label">@Language.GetString("Order_UserName")</label>
@@ -186,7 +181,7 @@
                                          </div>
                                          <div class="form-group col-12 col-md-3">
                                             <label asp-for="@Model.SMTPAccount.SMTPAuthPassword" class="form-label">@Language.GetString("Sms_Passworrd")</label>
-                                            <input asp-for="@Model.SMTPAccount.SMTPAuthPassword" type="text" class="form-control" placeholder="" autocomplete="off" />
+                                            <input asp-for="@Model.SMTPAccount.SMTPAuthPassword" type="password" class="form-control" placeholder="" autocomplete="off" />
                                             <span data-val-result="SMTPAuthPassword" class="text-danger"></span>
                                          </div>
                                     </div>
@@ -238,7 +233,7 @@
                             </div>
                             <div class="fom-group col-12 col-md-3">
                                 <label class="form-label">@Language.GetString("Sms_Passworrd")</label>
-                                <input type="text" class="form-control" asp-for="SmsPassword" dir="ltr">
+                                <input type="password" class="form-control" asp-for="SmsPassword" dir="ltr">
                                 <span data-val-result="SmsPassword" class="text-danger"></span>
 
                             </div>
@@ -263,13 +258,13 @@
                             </div>
                              <div class="fom-group col-12 col-md-3">
                                 <label class="form-label">@Language.GetString("Sms_TokenPassword")</label>
-                                <input type="text" class="form-control" asp-for="TokenPassword" dir="ltr">
+                                <input type="password" class="form-control" asp-for="TokenPassword" dir="ltr">
                                 <span data-val-result="TokenPassword" class="text-danger"></span>
 
                             </div>
                               <div class="fom-group col-12 col-md-3">
                                 <label class="form-label">@Language.GetString("Sms_LineNumber")</label>
-                                <input type="text" class="form-control" asp-for="SmsLineNumber" dir="ltr">
+                                <input type="number" class="form-control" asp-for="SmsLineNumber" dir="ltr">
                                 <span data-val-result="SmsLineNumber" class="text-danger"></span>
 
                             </div>
@@ -319,13 +314,16 @@
 
             $("#installForm").submit(function(e) {
                 e.preventDefault();
+
                 $('span[data-val-result]').each(function() {
                     $(this).html("");
                 });
                 if (!checkValidation()) {
                     var frm = document.getElementById('installForm');
                     var form = new FormData(frm);
-
+                    form.set("IsShop", $("#IsShop").is(":checked"));
+                    form.set("IsMultiLinguals", $("#IsMultiLinguals").is(":checked"));
+                    form.set("HasDefaultHomeTemplate", $("#HasDefaultHomeTemplate").is(":checked"));
                     $.ajax({
                         url: $(this).attr('action'),
                         data: form,
@@ -405,44 +403,34 @@
 
         function checkValidation() {
             var flag = false;
-            if ($("#").val().trim() == "") {
-                $("span[data-val-result='']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            if ($("#SMTPAccount_Server").val().trim() == "") {
+                $("span[data-val-result='Server']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-            if ($("#").val().trim() == "") {
-                $("span[data-val-result='']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            if ($("#SMTPAccount_ServerPort").val().trim() == "") {
+                $("span[data-val-result='ServerPort']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-            if ($("#").val().trim() == "") {
-                $("span[data-val-result='']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            if ($("#SMTPAccount_EmailAddress").val().trim() == "") {
+                $("span[data-val-result='SMTPAccount_EmailAddress']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-            if ($("#").val().trim() == "") {
-                $("span[data-val-result='']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            if ($("#SMTPAccount_DisplayName").val().trim() == "") {
+                $("span[data-val-result='DisplayName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-            if ($("#").val().trim() == "") {
-                $("span[data-val-result='']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            if ($("#SMTPAccount_Encryption").val().trim() == "") {
+                $("span[data-val-result='Encryption']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-            if ($("#").val().trim() == "") {
-                $("span[data-val-result='']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            if ($("#SMTPAccount_SMTPAuthUsername").val().trim() == "") {
+                $("span[data-val-result='SMTPAuthUsername']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-            if ($("#").val().trim() == "") {
-                $("span[data-val-result='']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            if ($("#SMTPAccount_SMTPAuthPassword").val().trim() == "") {
+                $("span[data-val-result='SMTPAuthPassword']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-           
-
-
-
-
-
-
-
-
-
 
             if ($("#FirstName").val().trim() == "") {
                 $("span[data-val-result='FirstName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
@@ -538,6 +526,6 @@
 
         }
     </script>
-
+</div>
 </body>
 </html>

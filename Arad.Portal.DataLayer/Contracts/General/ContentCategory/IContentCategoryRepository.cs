@@ -42,5 +42,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.ContentCategory
 
         bool IsUniqueUrlFriend(string urlFriend, string contentCategoryId = "");
 
+        void InsertMany(List<Entities.General.ContentCategory.ContentCategory> categories);
+
     }
 }

@@ -50,7 +50,7 @@ namespace Arad.Portal.UI.Shop.Helpers
         public void StartTimer()
         {
             //TimerCallback cb = new(OnTimeEvent);
-            _timer = new(OnTimeEvent, null, 1000, 900000);
+            _timer = new(OnTimeEvent, null, 1000, 10000);
             Log.Fatal("*************************STTTTTTTttart SMS service timer*************************");
         }
         private async void OnTimeEvent(object state)

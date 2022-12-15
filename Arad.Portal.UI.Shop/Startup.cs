@@ -227,12 +227,12 @@ namespace Arad.Portal.UI.Shop
                 smsSender.StartTimer();
             }
 
-            //email Service
-            //EmailSenderService emailSender = sp.GetService<EmailSenderService>();
-            //if (emailSender != null)
-            //{
-            //    emailSender.StartTimer();
-            //}
+           // email Service
+            EmailSenderService emailSender = sp.GetService<EmailSenderService>();
+            if (emailSender != null)
+            {
+                emailSender.StartTimer();
+            }
 
             #region luceneIndexes
             CheckAndConfigureLuceneIndexs(sp);
@@ -394,6 +394,9 @@ namespace Arad.Portal.UI.Shop
             app.UseAuthorization();
             app.UseSession();
             app.ApplyLanguageMapper();
+            app.UseSeedDatabase(ApplicationPath);
+
+
             if (Convert.ToBoolean(Configuration["IsFirstRun"]))
             {
                 app.UseEndpoints(endpoints =>
@@ -412,7 +415,7 @@ namespace Arad.Portal.UI.Shop
                 });
             }
            
-            app.UseSeedDatabase(ApplicationPath);
+           
         }
 
         private RequestLocalizationOptions AddMultilingualSettings()

@@ -34,7 +34,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
         private readonly LanguageContext _languageContext;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly DomainContext _domainContext;
-
         public ContentCategoryRepository(IHttpContextAccessor httpContextAccessor,
             IMapper mapper, ContentCategoryContext categoryContext,
             IWebHostEnvironment env,
@@ -497,6 +496,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                 return !_categoryContext.Collection.Find(categoryBuilder.ElemMatch("CategoryNames", multiLingualFilterDefinition) &
                            categoryBuilder.Ne("ContentCategoryId", contentCategoryId)).Any();
             }
+        }
+
+        public void InsertMany(List<Entities.General.ContentCategory.ContentCategory> categories)
+        {
+            _categoryContext.Collection.InsertMany(categories);
         }
     }
 }

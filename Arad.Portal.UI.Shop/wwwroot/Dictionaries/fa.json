@@ -1,3175 +1,3179 @@
 [
-  {
-    "Value": "طراحی صفحه خانه",
-    "Key": "btn_HomePageDesign"
-  },
-  {
-    "Value": "تغییر کلمه عبور",
-    "Key": "btn_ChangePassword"
-  },
-  {
-    "Value": "طراحی صفحه بلاگ",
-    "Key": "btn_ContentPageDesign"
-  },
-  {
-    "Value": "طراحی صفحه محصولات",
-    "Key": "btn_ProductPageDesign"
-  },
-  {
-    "Value": "موجود شد خبرم کن",
-    "Key": "btn_InformMe"
-  },
-  {
-    "Value": "چرخش",
-    "Key": "btn_Rotate"
-  },
-  {
-    "Value": "ورود",
-    "Key": "btn_Login"
-  },
-  {
-    "Value": "برش",
-    "Key": "btn_Crop"
-  },
-  {
-    "Value": "بارگزاری تصویر",
-    "Key": "btn_UploadImage"
-  },
-  {
-    "Value": "حذف نظر",
-    "Key": "ProductCommentDelete"
-  },
-  {
-    "Value": "تایید نظر",
-    "Key": "ProductCommentApprove"
-  },
-  {
-    "Value": "افزودن",
-    "Key": "btn_Add"
-  },
-  {
-    "Value": "اختصاص کوپن به کاربران",
-    "Key": "AssignPromotionToUser"
-  },
-  {
-    "Value": "ایجاد سطر جدید",
-    "Key": "btn_NewRow"
-  },
-  {
-    "Value": "دریافت داده از فایل اکسل",
-    "Key": "btn_ExcelImport"
-  },
-  {
-    "Value": "ذخیره",
-    "Key": "btn_Save"
-  },
-  {
-    "Value": "حذف تصویر",
-    "Key": "btn_ImageUploadDelete"
-  },
-  {
-    "Value": "ذخیره محصول",
-    "Key": "btn_SaveProduct"
-  },
-  {
-    "Value": "ویرایش",
-    "Key": "btn_Edit"
-  },
-  {
-    "Value": "خروج",
-    "Key": "btn_Exit"
-  },
-  {
-    "Value": "ارسال",
-    "Key": "btn_Send"
-  },
-  {
-    "Value": "انتخاب",
-    "Key": "btn_Select"
-  },
-  {
-    "Value": "اعمال کلاس",
-    "Key": "btn_ClassApply"
-  },
-  {
-    "Value": "اعتبارسنجی",
-    "Key": "btn_Validation"
-  },
-  {
-    "Value": "تایید",
-    "Key": "btn_Approved"
-  },
-  {
-    "Value": "تایید",
-    "Key": "btn_Approve"
-  },
-  {
-    "Value": "انصراف",
-    "Key": "btn_Cancel"
-  },
-  {
-    "Value": "بازگشت",
-    "Key": "btn_Back"
-  },
-  {
-    "Value": "بازگردانی",
-    "Key": "btn_Restore"
-  },
-  {
-    "Value": "بستن",
-    "Key": "btn_Close"
-  },
-  {
-    "Value": "کپی",
-    "Key": "btn_Copy"
-  },
-  {
-    "Value": "حذف",
-    "Key": "btn_Delete"
-  },
-  {
-    "Value": "جزییات",
-    "Key": "btn_Detail"
-  },
-  {
-    "Value": "نمایش",
-    "Key": "btn_Show"
-  },
-  {
-    "Value": "پیش نمایش",
-    "Key": "btn_Preview"
-  },
-  {
-    "Value": "تغییر رمز عبور",
-    "Key": "btn_ChangePass"
-  },
-  {
-    "Value": "جستجو",
-    "Key": "btn_Search"
-  },
-  {
-    "Value": "جستجو",
-    "Key": "btn_Find"
-  },
-  {
-    "Value": "بله",
-    "Key": "btn_Confirm"
-  },
-  {
-    "Value": "خیر",
-    "Key": "btn_NotConfirm"
-  },
-  {
-    "Value": "ایجاد محصول از این محتوا",
-    "Key": "btn_CreateProductCopyFromContent"
-  },
-  {
-    "Value": "صفحه ورود",
-    "Key": "LoginPage"
-  },
-  {
-    "Value": "زبانهای قابل پشتیبانی",
-    "Key": "design_SupportedCultures"
-  },
-  {
-    "Value": "دامنه فروشگاهی",
-    "Key": "design_IsShopDomain"
-  },
-  {
-    "Value": "ادامه",
-    "Key": "design_Continue"
-  },
-  {
-    "Value": "دامنه چندزبانه",
-    "Key": "design_IsMultiLingual"
-  },
-  {
-    "Value": "فاصله زمانی تا اسلاید بعدی",
-    "Key": "design_IntervalTime"
-  },
-  {
-    "Value": "animation delay",
-    "Key": "design_AnimationDelay"
-  },
-  {
-    "Value": "تنظیمات استایل سطر",
-    "Key": "design_RowStyle"
-  },
-  {
-    "Value": "تنظیمات استایل ستون",
-    "Key": "design_ColumnStyles"
-  },
-  {
-    "Value": "اسلایدر",
-    "Key": "design_Slider"
-  },
-  {
-    "Value": "اسلاید",
-    "Key": "design_Slide"
-  },
-  {
-    "Value": "لایه ها",
-    "Key": "design_Layers"
-  },
-  {
-    "Value": "اسلایدها",
-    "Key": "design_Slides"
-  },
-  {
-    "Value": "اسلایدهای",
-    "Key": "design_SlidesOf"
-  },
-  {
-    "Value": "اسلایدرها",
-    "Key": "design_Sliders"
-  },
-  {
-    "Value": "اضافه کردن اسلایدر جدید",
-    "Key": "design_AddNewSlider"
-  },
-  {
-    "Value": "تصویر اسلاید",
-    "Key": "design_SlideImages"
-  },
-  {
-    "Value": "عنوان اسلاید",
-    "Key": "design_SlideTitle"
-  },
-  {
-    "Value": "رنگ پس زمینه",
-    "Key": "design_bgColor"
-  },
-  {
-    "Value": "نوع تراکنش",
-    "Key": "design_TransactionType"
-  },
-  {
-    "Value": "افزودن لایه جدید",
-    "Key": "design_AddNewLayer"
-  },
-  {
-    "Value": "مشخصات لینک",
-    "Key": "design_LinkSpecification"
-  },
-  {
-    "Value": "لینک",
-    "Key": "design_Link"
-  },
-  {
-    "Value": "نمایش لینک",
-    "Key": "design_LinkView"
-  },
-  {
-    "Value": "مشخصات Position",
-    "Key": "design_PositionSpecification"
-  },
-  {
-    "Value": "مشخصات Attribute",
-    "Key": "design_AttributeSpecification"
-  },
-  {
-    "Value": "تگ Alt",
-    "Key": "design_AltTag"
-  },
-  {
-    "Value": "مشخصات Style",
-    "Key": "design_StyleSpecification"
-  },
-  {
-    "Value": "CSS سفارشی",
-    "Key": "design_CustomCss"
-  },
-  {
-    "Value": "ویرایش لایه",
-    "Key": "design_EditLayer"
-  },
-  {
-    "Value": "نوع لایه",
-    "Key": "design_LayerType"
-  },
-  {
-    "Value": "افکت زمان بارگزاری",
-    "Key": "design_loadAnimation"
-  },
-  {
-    "Value": "مقصد افکت",
-    "Key": "design_loadAnimationType"
-  },
-  {
-    "Value": "نوع انتخاب آیتم ها",
-    "Key": "design_SelectionType"
-  },
-  {
-    "Value": "گروهها",
-    "Key": "design_CategoryList"
-  },
-  {
-    "Value": "محتواها",
-    "Key": "design_ContentList"
-  },
-  {
-    "Value": "متن محتوا",
-    "Key": "design_ContentText"
-  },
-  {
-    "Value": "نسبت عرض ستونها",
-    "Key": "design_ColSizeRatio"
-  },
-  {
-    "Value": "عکس پس زمینه",
-    "Key": "design_bgPhoto"
-  },
-  {
-    "Value": "فاصله عمودی تا حاشیه",
-    "Key": "design_VerticalPadding"
-  },
-  {
-    "Value": "فاصله افقی تا حاشیه",
-    "Key": "design_HorizantalPadding"
-  },
-  {
-    "Value": "فاصله عمودی از المان بیرونی",
-    "Key": "design_VerticalMargin"
-  },
-  {
-    "Value": "فاصله افقی از المان بیرونی",
-    "Key": "design_HorizantalMargin"
-  },
-  {
-    "Value": "تنظیمات ظاهری",
-    "Key": "design_RowStyles"
-  },
-  {
-    "Value": "انتخاب رنگ پس زمینه",
-    "Key": "design_bg"
-  },
+    {
+        "Value": "طراحی صفحه خانه",
+        "Key": "btn_HomePageDesign"
+    },
+    {
+        "Value": "تغییر کلمه عبور",
+        "Key": "btn_ChangePassword"
+    },
+    {
+        "Value": "طراحی صفحه بلاگ",
+        "Key": "btn_ContentPageDesign"
+    },
+    {
+        "Value": "طراحی صفحه محصولات",
+        "Key": "btn_ProductPageDesign"
+    },
+    {
+        "Value": "موجود شد خبرم کن",
+        "Key": "btn_InformMe"
+    },
+    {
+        "Value": "چرخش",
+        "Key": "btn_Rotate"
+    },
+    {
+        "Value": "ورود",
+        "Key": "btn_Login"
+    },
+    {
+        "Value": "برش",
+        "Key": "btn_Crop"
+    },
+    {
+        "Value": "بارگزاری تصویر",
+        "Key": "btn_UploadImage"
+    },
+    {
+        "Value": "حذف نظر",
+        "Key": "ProductCommentDelete"
+    },
+    {
+        "Value": "تایید نظر",
+        "Key": "ProductCommentApprove"
+    },
+    {
+        "Value": "افزودن",
+        "Key": "btn_Add"
+    },
+    {
+        "Value": "اختصاص کوپن به کاربران",
+        "Key": "AssignPromotionToUser"
+    },
+    {
+        "Value": "ایجاد سطر جدید",
+        "Key": "btn_NewRow"
+    },
+    {
+        "Value": "دریافت داده از فایل اکسل",
+        "Key": "btn_ExcelImport"
+    },
+    {
+        "Value": "ذخیره",
+        "Key": "btn_Save"
+    },
+    {
+        "Value": "حذف تصویر",
+        "Key": "btn_ImageUploadDelete"
+    },
+    {
+        "Value": "ذخیره محصول",
+        "Key": "btn_SaveProduct"
+    },
+    {
+        "Value": "ویرایش",
+        "Key": "btn_Edit"
+    },
+    {
+        "Value": "خروج",
+        "Key": "btn_Exit"
+    },
+    {
+        "Value": "ارسال",
+        "Key": "btn_Send"
+    },
+    {
+        "Value": "انتخاب",
+        "Key": "btn_Select"
+    },
+    {
+        "Value": "اعمال کلاس",
+        "Key": "btn_ClassApply"
+    },
+    {
+        "Value": "اعتبارسنجی",
+        "Key": "btn_Validation"
+    },
+    {
+        "Value": "تایید",
+        "Key": "btn_Approved"
+    },
+    {
+        "Value": "تایید",
+        "Key": "btn_Approve"
+    },
+    {
+        "Value": "انصراف",
+        "Key": "btn_Cancel"
+    },
+    {
+        "Value": "بازگشت",
+        "Key": "btn_Back"
+    },
+    {
+        "Value": "بازگردانی",
+        "Key": "btn_Restore"
+    },
+    {
+        "Value": "بستن",
+        "Key": "btn_Close"
+    },
+    {
+        "Value": "کپی",
+        "Key": "btn_Copy"
+    },
+    {
+        "Value": "حذف",
+        "Key": "btn_Delete"
+    },
+    {
+        "Value": "جزییات",
+        "Key": "btn_Detail"
+    },
+    {
+        "Value": "نمایش",
+        "Key": "btn_Show"
+    },
+    {
+        "Value": "پیش نمایش",
+        "Key": "btn_Preview"
+    },
+    {
+        "Value": "تغییر رمز عبور",
+        "Key": "btn_ChangePass"
+    },
+    {
+        "Value": "جستجو",
+        "Key": "btn_Search"
+    },
+    {
+        "Value": "جستجو",
+        "Key": "btn_Find"
+    },
+    {
+        "Value": "بله",
+        "Key": "btn_Confirm"
+    },
+    {
+        "Value": "خیر",
+        "Key": "btn_NotConfirm"
+    },
+    {
+        "Value": "ایجاد محصول از این محتوا",
+        "Key": "btn_CreateProductCopyFromContent"
+    },
+    {
+        "Value": "صفحه ورود",
+        "Key": "LoginPage"
+    },
+    {
+        "Value": "زبانهای قابل پشتیبانی",
+        "Key": "design_SupportedCultures"
+    },
+    {
+        "Value": "دامنه فروشگاهی",
+        "Key": "design_IsShopDomain"
+    },
+    {
+        "Value": "ادامه",
+        "Key": "design_Continue"
+    },
+    {
+        "Value": "دامنه چندزبانه",
+        "Key": "design_IsMultiLingual"
+    },
+    {
+        "Value": "فاصله زمانی تا اسلاید بعدی",
+        "Key": "design_IntervalTime"
+    },
+    {
+        "Value": "animation delay",
+        "Key": "design_AnimationDelay"
+    },
+    {
+        "Value": "تنظیمات استایل سطر",
+        "Key": "design_RowStyle"
+    },
+    {
+        "Value": "تنظیمات استایل ستون",
+        "Key": "design_ColumnStyles"
+    },
+    {
+        "Value": "اسلایدر",
+        "Key": "design_Slider"
+    },
+    {
+        "Value": "اسلاید",
+        "Key": "design_Slide"
+    },
+    {
+        "Value": "لایه ها",
+        "Key": "design_Layers"
+    },
+    {
+        "Value": "اسلایدها",
+        "Key": "design_Slides"
+    },
+    {
+        "Value": "اسلایدهای",
+        "Key": "design_SlidesOf"
+    },
+    {
+        "Value": "اسلایدرها",
+        "Key": "design_Sliders"
+    },
+    {
+        "Value": "اضافه کردن اسلایدر جدید",
+        "Key": "design_AddNewSlider"
+    },
+    {
+        "Value": "تصویر اسلاید",
+        "Key": "design_SlideImages"
+    },
+    {
+        "Value": "عنوان اسلاید",
+        "Key": "design_SlideTitle"
+    },
+    {
+        "Value": "رنگ پس زمینه",
+        "Key": "design_bgColor"
+    },
+    {
+        "Value": "نوع تراکنش",
+        "Key": "design_TransactionType"
+    },
+    {
+        "Value": "افزودن لایه جدید",
+        "Key": "design_AddNewLayer"
+    },
+    {
+        "Value": "مشخصات لینک",
+        "Key": "design_LinkSpecification"
+    },
+    {
+        "Value": "لینک",
+        "Key": "design_Link"
+    },
+    {
+        "Value": "نمایش لینک",
+        "Key": "design_LinkView"
+    },
+    {
+        "Value": "مشخصات Position",
+        "Key": "design_PositionSpecification"
+    },
+    {
+        "Value": "مشخصات Attribute",
+        "Key": "design_AttributeSpecification"
+    },
+    {
+        "Value": "تگ Alt",
+        "Key": "design_AltTag"
+    },
+    {
+        "Value": "مشخصات Style",
+        "Key": "design_StyleSpecification"
+    },
+    {
+        "Value": "CSS سفارشی",
+        "Key": "design_CustomCss"
+    },
+    {
+        "Value": "ویرایش لایه",
+        "Key": "design_EditLayer"
+    },
+    {
+        "Value": "نوع لایه",
+        "Key": "design_LayerType"
+    },
+    {
+        "Value": "افکت زمان بارگزاری",
+        "Key": "design_loadAnimation"
+    },
+    {
+        "Value": "مقصد افکت",
+        "Key": "design_loadAnimationType"
+    },
+    {
+        "Value": "نوع انتخاب آیتم ها",
+        "Key": "design_SelectionType"
+    },
+    {
+        "Value": "گروهها",
+        "Key": "design_CategoryList"
+    },
+    {
+        "Value": "محتواها",
+        "Key": "design_ContentList"
+    },
+    {
+        "Value": "متن محتوا",
+        "Key": "design_ContentText"
+    },
+    {
+        "Value": "نسبت عرض ستونها",
+        "Key": "design_ColSizeRatio"
+    },
+    {
+        "Value": "عکس پس زمینه",
+        "Key": "design_bgPhoto"
+    },
+    {
+        "Value": "فاصله عمودی تا حاشیه",
+        "Key": "design_VerticalPadding"
+    },
+    {
+        "Value": "فاصله افقی تا حاشیه",
+        "Key": "design_HorizantalPadding"
+    },
+    {
+        "Value": "فاصله عمودی از المان بیرونی",
+        "Key": "design_VerticalMargin"
+    },
+    {
+        "Value": "فاصله افقی از المان بیرونی",
+        "Key": "design_HorizantalMargin"
+    },
+    {
+        "Value": "تنظیمات ظاهری",
+        "Key": "design_RowStyles"
+    },
+    {
+        "Value": "انتخاب رنگ پس زمینه",
+        "Key": "design_bg"
+    },
 
-  {
-    "Value": "کالا",
-    "Key": "Stuff"
-  },
-  {
-    "Value": "بدون رنگ",
-    "Key": "design_NoColor"
-  },
-  {
-    "Value": "حذف تصویر پس زمینه",
-    "Key": "design_ImageDelete"
-  },
-  {
-    "Value": "دریافت قالب برای ورود محصولات از طریق فایل اکسل",
-    "Key": "FileImportExport_GetProductExcelFileTemplate"
-  },
-  {
-    "Value": "فایل زبان",
-    "Key": "FileImportExport_LanguageFile"
-  },
-  {
-    "Value": "نوع فایل اکسل نیست.",
-    "Key": "FileImportExport_InvalidContentType"
-  },
-  {
-    "Value": "فایل بارگزاری شده با موفقیت وارد پایگاه داده شد.",
-    "Key": "FileImportExport_ResultMessage"
-  },
-  {
-    "Value": "راهنما",
-    "Key": "FileImportExport_Help"
-  },
-  {
-    "Value": "افزودن پوشه عکس محصولات",
-    "Key": "FileImportExport_ProductImages"
-  },
-  {
-    "Value": "به ازای هر محصول یک عکس مربعی شکل در ابعاد تعریف شده با نام شماره سطر محصول در فایل اکسل را بصورت تجمیعی در پوشه ای با پسوند.zip  و نام دلخواه  قرار داده و پوشه را در قسمت افزودن عکس های محصولات  بارگزاری کنید.\n\t\t\tبطور مثال محصولی که در سطر nام فایل اکسل قرار دارد دارای عکس با نام  n.png  یا n.jpg  میباشد.",
-    "Key": "FileImportExport_AddProductImageHelp"
-  },
-  {
-    "Value": "فایل اکسل محصولات",
-    "Key": "FileImportExport_ProductExcelFile"
-  },
-  {
-    "Value": "فایلی انتخاب نشده است.",
-    "Key": "FileImportExport_NoFileSelected"
-  },
-  {
-    "Value": "افزودن زبان جدید",
-    "Key": "PermissionTitle_AddNewLanguage"
-  },
-  {
-    "Value": "افزودن واحد پول جدید",
-    "Key": "PermissionTitle_AddNewCurrency"
-  },
-  {
-    "Value": "جزییات سفارش",
-    "Key": "PermissionTitle_OrderDetail"
-  },
-  {
-    "Value": "داشبورد",
-    "Key": "PermissionTitle_MainPage"
-  },
-  {
-    "Value": "حذف نظر",
-    "Key": "PermissionTitle_ProductCommentDelete"
-  },
-  {
-    "Value": "تایید نظر",
-    "Key": "PermissionTitle_ProductCommentApprove"
-  },
-  {
-    "Value": "مدیریت کاربران",
-    "Key": "PermissionTitle_UserManagement"
-  },
-  {
-    "Value": "کاربران",
-    "Key": "PermissionTitle_Users"
-  },
-  {
-    "Value": "افزودن کاربر",
-    "Key": "PermissionTitle_AddUser"
-  },
-  {
-    "Value": "افزودن نقش",
-    "Key": "PermissionTitle_RoleAdd"
-  },
-  {
-    "Value": "ویرایش نقش",
-    "Key": "PermissionTitle_RoleEdit"
-  },
-  {
-    "Value": "عملیات حذف",
-    "Key": "PermissionTitle_ActionDelete"
-  },
-  {
-    "Value": "عملیات ثبت",
-    "Key": "PermissionTitle_ActionNew"
-  },
-  {
-    "Value": "تغییر وضعیت",
-    "Key": "PermissionTitle_ChangeStatus"
-  },
-  {
-    "Value": "عملیات ویرایش",
-    "Key": "PermissionTitle_ActionEdit"
-  },
-  {
-    "Value": "عملیات بازگردانی",
-    "Key": "PermissionTitle_ActionRestore"
-  },
-  {
-    "Value": "تغییر وضعیت فعال بودن",
-    "Key": "PermissionTitle_ChangeActivation"
-  },
-  {
-    "Value": "طراحی صفحه اول",
-    "Key": "PermissionTitle_HomePageDesign"
-  },
-  {
-    "Value": "ویرایش کاربر",
-    "Key": "PermissionTitle_EditUser"
-  },
-  {
-    "Value": "لیست نقش ها",
-    "Key": "PermissionTitle_RoleList"
-  },
-  {
-    "Value": "نقش ها",
-    "Key": "PermissionTitle_Roles"
-  },
-  {
-    "Value": "حذف کاربر",
-    "Key": "PermissionTitle_UserDelete"
-  },
-  {
-    "Value": "ویرایش کاربر",
-    "Key": "PermissionTitle_UserEdit"
-  },
-  {
-    "Value": "تغییر کلمه عبور",
-    "Key": "PermissionTitle_UserChangePassword"
-  },
-  {
-    "Value": "فعال یا غیر فعال کردن کاربر",
-    "Key": "PermissionTitle_UserChangeActivation"
-  },
-  {
-    "Value": "بازگردانی کاربر",
-    "Key": "PermissionTitle_UserRestore"
-  },
-  {
-    "Value": "مدیریت محصولات",
-    "Key": "PermissionTitle_ProductManagement"
-  },
-  {
-    "Value": "واحد محصول",
-    "Key": "PermissionTitle_ProductUnit"
-  },
-  {
-    "Value": "گروه محصول",
-    "Key": "PermissionTitle_ProductGroup"
-  },
-  {
-    "Value": "مشخصات محصول",
-    "Key": "PermissionTitle_ProductSpecification"
-  },
-  {
-    "Value": "گروه مشخصات محصول",
-    "Key": "PermissionTitle_ProductSpecificationGroup"
-  },
-  {
-    "Value": "محصولات",
-    "Key": "PermissionTitle_Products"
-  },
-  {
-    "Value": "تخفیفات و جشنواره ها",
-    "Key": "PermissionTitle_Promotions"
-  },
-  {
-    "Value": "مدیریت محتوا",
-    "Key": "PermissionTitle_ContentManagement"
-  },
-  {
-    "Value": "گروه های محتوا",
-    "Key": "PermissionTitle_ContentCategories"
-  },
-  {
-    "Value": "محتوا",
-    "Key": "PermissionTitle_Contents"
-  },
-  {
-    "Value": "نظرات محصولات",
-    "Key": "PermissionTitle_ProductComments"
-  },
-  {
-    "Value": "نظرات محتوا",
-    "Key": "PermissionTitle_ContentComments"
-  },
-  {
-    "Value": "تنظیمات فروشگاه",
-    "Key": "PermissionTitle_StoreSettings"
-  },
-  {
-    "Value": "سفارشات",
-    "Key": "PermissionTitle_Orders"
-  },
-  {
-    "Value": "منوهای فروشگاه",
-    "Key": "PermissionTitle_StoreMenues"
-  },
-  {
-    "Value": "دامنه ها",
-    "Key": "PermissionTitle_Domains"
-  },
-  {
-    "Value": "اسلایدر ها",
-    "Key": "PermissionTitle_Sliders"
-  },
-  {
-    "Value": "تنظیمات حمل و نقل کالا",
-    "Key": "PermissionTitle_ShippingSetting"
-  },
-  {
-    "Value": "یک ستون",
-    "Key": "Template_OneCol"
-  },
-  {
-    "Value": "دو ستون",
-    "Key": "Template_TwoCol"
-  },
-  {
-    "Value": "سه ستون",
-    "Key": "Template_ThreeCol"
-  },
-  {
-    "Value": "چهار ستون",
-    "Key": "Template_FourCol"
-  },
-  {
-    "Value": "شش ستون",
-    "Key": "Template_SixCol"
-  },
-  {
-    "Value": "نوع محتوا",
-    "Key": "Template_ContentType"
-  },
-  {
-    "Value": "ماژول های سیستمی",
-    "Key": "Template_SystemModules"
-  },
-  {
-    "Value": "ویرایشگر",
-    "Key": "Template_Editor"
-  },
+    {
+        "Value": "کالا",
+        "Key": "Stuff"
+    },
+    {
+        "Value": "بدون رنگ",
+        "Key": "design_NoColor"
+    },
+    {
+        "Value": "حذف تصویر پس زمینه",
+        "Key": "design_ImageDelete"
+    },
+    {
+        "Value": "دریافت قالب برای ورود محصولات از طریق فایل اکسل",
+        "Key": "FileImportExport_GetProductExcelFileTemplate"
+    },
+    {
+        "Value": "فایل زبان",
+        "Key": "FileImportExport_LanguageFile"
+    },
+    {
+        "Value": "نوع فایل اکسل نیست.",
+        "Key": "FileImportExport_InvalidContentType"
+    },
+    {
+        "Value": "فایل بارگزاری شده با موفقیت وارد پایگاه داده شد.",
+        "Key": "FileImportExport_ResultMessage"
+    },
+    {
+        "Value": "راهنما",
+        "Key": "FileImportExport_Help"
+    },
+    {
+        "Value": "افزودن پوشه عکس محصولات",
+        "Key": "FileImportExport_ProductImages"
+    },
+    {
+        "Value": "به ازای هر محصول یک عکس مربعی شکل در ابعاد تعریف شده با نام شماره سطر محصول در فایل اکسل را بصورت تجمیعی در پوشه ای با پسوند.zip  و نام دلخواه  قرار داده و پوشه را در قسمت افزودن عکس های محصولات  بارگزاری کنید.\n\t\t\tبطور مثال محصولی که در سطر nام فایل اکسل قرار دارد دارای عکس با نام  n.png  یا n.jpg  میباشد.",
+        "Key": "FileImportExport_AddProductImageHelp"
+    },
+    {
+        "Value": "فایل اکسل محصولات",
+        "Key": "FileImportExport_ProductExcelFile"
+    },
+    {
+        "Value": "فایلی انتخاب نشده است.",
+        "Key": "FileImportExport_NoFileSelected"
+    },
+    {
+        "Value": "افزودن زبان جدید",
+        "Key": "PermissionTitle_AddNewLanguage"
+    },
+    {
+        "Value": "افزودن واحد پول جدید",
+        "Key": "PermissionTitle_AddNewCurrency"
+    },
+    {
+        "Value": "جزییات سفارش",
+        "Key": "PermissionTitle_OrderDetail"
+    },
+    {
+        "Value": "داشبورد",
+        "Key": "PermissionTitle_MainPage"
+    },
+    {
+        "Value": "حذف نظر",
+        "Key": "PermissionTitle_ProductCommentDelete"
+    },
+    {
+        "Value": "تایید نظر",
+        "Key": "PermissionTitle_ProductCommentApprove"
+    },
+    {
+        "Value": "مدیریت کاربران",
+        "Key": "PermissionTitle_UserManagement"
+    },
+    {
+        "Value": "کاربران",
+        "Key": "PermissionTitle_Users"
+    },
+    {
+        "Value": "افزودن کاربر",
+        "Key": "PermissionTitle_AddUser"
+    },
+    {
+        "Value": "افزودن نقش",
+        "Key": "PermissionTitle_RoleAdd"
+    },
+    {
+        "Value": "ویرایش نقش",
+        "Key": "PermissionTitle_RoleEdit"
+    },
+    {
+        "Value": "عملیات حذف",
+        "Key": "PermissionTitle_ActionDelete"
+    },
+    {
+        "Value": "عملیات ثبت",
+        "Key": "PermissionTitle_ActionNew"
+    },
+    {
+        "Value": "تغییر وضعیت",
+        "Key": "PermissionTitle_ChangeStatus"
+    },
+    {
+        "Value": "عملیات ویرایش",
+        "Key": "PermissionTitle_ActionEdit"
+    },
+    {
+        "Value": "عملیات بازگردانی",
+        "Key": "PermissionTitle_ActionRestore"
+    },
+    {
+        "Value": "تغییر وضعیت فعال بودن",
+        "Key": "PermissionTitle_ChangeActivation"
+    },
+    {
+        "Value": "طراحی صفحه اول",
+        "Key": "PermissionTitle_HomePageDesign"
+    },
+    {
+        "Value": "ویرایش کاربر",
+        "Key": "PermissionTitle_EditUser"
+    },
+    {
+        "Value": "لیست نقش ها",
+        "Key": "PermissionTitle_RoleList"
+    },
+    {
+        "Value": "نقش ها",
+        "Key": "PermissionTitle_Roles"
+    },
+    {
+        "Value": "حذف کاربر",
+        "Key": "PermissionTitle_UserDelete"
+    },
+    {
+        "Value": "ویرایش کاربر",
+        "Key": "PermissionTitle_UserEdit"
+    },
+    {
+        "Value": "تغییر کلمه عبور",
+        "Key": "PermissionTitle_UserChangePassword"
+    },
+    {
+        "Value": "فعال یا غیر فعال کردن کاربر",
+        "Key": "PermissionTitle_UserChangeActivation"
+    },
+    {
+        "Value": "بازگردانی کاربر",
+        "Key": "PermissionTitle_UserRestore"
+    },
+    {
+        "Value": "مدیریت محصولات",
+        "Key": "PermissionTitle_ProductManagement"
+    },
+    {
+        "Value": "واحد محصول",
+        "Key": "PermissionTitle_ProductUnit"
+    },
+    {
+        "Value": "گروه محصول",
+        "Key": "PermissionTitle_ProductGroup"
+    },
+    {
+        "Value": "مشخصات محصول",
+        "Key": "PermissionTitle_ProductSpecification"
+    },
+    {
+        "Value": "گروه مشخصات محصول",
+        "Key": "PermissionTitle_ProductSpecificationGroup"
+    },
+    {
+        "Value": "محصولات",
+        "Key": "PermissionTitle_Products"
+    },
+    {
+        "Value": "تخفیفات و جشنواره ها",
+        "Key": "PermissionTitle_Promotions"
+    },
+    {
+        "Value": "مدیریت محتوا",
+        "Key": "PermissionTitle_ContentManagement"
+    },
+    {
+        "Value": "گروه های محتوا",
+        "Key": "PermissionTitle_ContentCategories"
+    },
+    {
+        "Value": "محتوا",
+        "Key": "PermissionTitle_Contents"
+    },
+    {
+        "Value": "نظرات محصولات",
+        "Key": "PermissionTitle_ProductComments"
+    },
+    {
+        "Value": "نظرات محتوا",
+        "Key": "PermissionTitle_ContentComments"
+    },
+    {
+        "Value": "تنظیمات فروشگاه",
+        "Key": "PermissionTitle_StoreSettings"
+    },
+    {
+        "Value": "سفارشات",
+        "Key": "PermissionTitle_Orders"
+    },
+    {
+        "Value": "منوهای فروشگاه",
+        "Key": "PermissionTitle_StoreMenues"
+    },
+    {
+        "Value": "دامنه ها",
+        "Key": "PermissionTitle_Domains"
+    },
+    {
+        "Value": "اسلایدر ها",
+        "Key": "PermissionTitle_Sliders"
+    },
+    {
+        "Value": "تنظیمات حمل و نقل کالا",
+        "Key": "PermissionTitle_ShippingSetting"
+    },
+    {
+        "Value": "یک ستون",
+        "Key": "Template_OneCol"
+    },
+    {
+        "Value": "دو ستون",
+        "Key": "Template_TwoCol"
+    },
+    {
+        "Value": "سه ستون",
+        "Key": "Template_ThreeCol"
+    },
+    {
+        "Value": "چهار ستون",
+        "Key": "Template_FourCol"
+    },
+    {
+        "Value": "شش ستون",
+        "Key": "Template_SixCol"
+    },
+    {
+        "Value": "نوع محتوا",
+        "Key": "Template_ContentType"
+    },
+    {
+        "Value": "ماژول های سیستمی",
+        "Key": "Template_SystemModules"
+    },
+    {
+        "Value": "ویرایشگر",
+        "Key": "Template_Editor"
+    },
 
-  {
-    "Value": "درگاه های پرداخت",
-    "Key": "tbl_PaymentGateways"
-  },
+    {
+        "Value": "درگاه های پرداخت",
+        "Key": "tbl_PaymentGateways"
+    },
 
-  {
-    "Value": "نام سرویس دهنده",
-    "Key": "tbl_ProviderName"
-  },
-  {
-    "Value": "روش ایجاد شماره فاکتور فروشگاه",
-    "Key": "tbl_InvoiceNumberCreationWay"
-  },
-  {
-    "Value": "اولین شماره فاکتور",
-    "Key": "FirstInvoiceNumberPattern"
-  },
-  {
-    "Value": "مقدار افزایشی برای هر فاکتور",
-    "Key": "IncreasementLevel"
-  },
-  {
-    "Value": "اطلاعات درگاه",
-    "Key": "tbl_GatewayInformation"
-  },
-  {
-    "Value": "اطلاعات درگاه های پرداخت دامنه",
-    "Key": "tbl_DomainPaymentGatewaysInfoes"
-  },
-  {
-    "Value": "ردیف",
-    "Key": "tbl_RowName"
-  },
-  {
-    "Value": "روش های حمل بار",
-    "Key": "tbl_ShippingTypes"
-  },
-  {
-    "Value": "روش حمل بار",
-    "Key": "tbl_ShippingType"
-  },
-  {
-    "Value": "آیا هزینه ثابت است؟",
-    "Key": "tbl_HasFixedExpense"
-  },
-  {
-    "Value": "مقدار هزینه ثابت",
-    "Key": "tbl_FixedExpenseValue"
-  },
-  {
-    "Value": "سرویس دهنده",
-    "Key": "tbl_Provider"
-  },
-  {
-    "Value": "از فاکتور با هزینه",
-    "Key": "tbl_FromInvoiceExpense"
-  },
-  {
-    "Value": "هزینه حمل",
-    "Key": "tbl_ShippingExpense"
-  },
-  {
-    "Value": "قیمت",
-    "Key": "tbl_Price"
-  },
-  {
-    "Value": "تصویر اصلی",
-    "Key": "tbl_MainImage"
-  },
-  {
-    "Value": "مقدار ممکن برای این خصیصه",
-    "Key": "specificationName_placeHolder"
-  },
-  {
-    "Value": "واحد محصول",
-    "Key": "tbl_ProductUnit"
-  },
-  {
-    "Value": "نام محصول",
-    "Key": "tbl_ProductName"
-  },
-  {
-    "Value": "تصاویر محصول",
-    "Key": "tbl_ProductImages"
-  },
-  {
-    "Value": "تصاویر محتوا",
-    "Key": "tbl_ContentImages"
-  },
-  {
-    "Value": "نسبت ابعاد تصویر",
-    "Key": "tbl_AspectRatioImage"
-  },
-  {
-    "Value": "گروه محصول",
-    "Key": "tbl_ProductGroup"
-  },
-  {
-    "Value": "نام مشخصه",
-    "Key": "tbl_SpecificationName"
-  },
-  {
-    "Value": "مقادیر خصیصه",
-    "Key": "tbl_SpecificationValues"
-  },
-  {
-    "Value": "گروه پدر",
-    "Key": "tbl_ParentGroup"
-  },
-  {
-    "Value": "نام فروشنده",
-    "Key": "tbl_VendorName"
-  },
-  {
-    "Value": "نام گروه",
-    "Key": "tbl_GroupName"
-  },
-  {
-    "Value": "عنوان منو",
-    "Key": "tbl_MenuTitle"
-  },
-  {
-    "Value": "نام گروه محتوا",
-    "Key": "tbl_CategoryName"
-  },
+    {
+        "Value": "نام سرویس دهنده",
+        "Key": "tbl_ProviderName"
+    },
+    {
+        "Value": "روش ایجاد شماره فاکتور فروشگاه",
+        "Key": "tbl_InvoiceNumberCreationWay"
+    },
+    {
+        "Value": "اولین شماره فاکتور",
+        "Key": "FirstInvoiceNumberPattern"
+    },
+    {
+        "Value": "مقدار افزایشی برای هر فاکتور",
+        "Key": "IncreasementLevel"
+    },
+    {
+        "Value": "اطلاعات درگاه",
+        "Key": "tbl_GatewayInformation"
+    },
+    {
+        "Value": "اطلاعات درگاه های پرداخت دامنه",
+        "Key": "tbl_DomainPaymentGatewaysInfoes"
+    },
+    {
+        "Value": "ردیف",
+        "Key": "tbl_RowName"
+    },
+    {
+        "Value": "روش های حمل بار",
+        "Key": "tbl_ShippingTypes"
+    },
+    {
+        "Value": "روش حمل بار",
+        "Key": "tbl_ShippingType"
+    },
+    {
+        "Value": "آیا هزینه ثابت است؟",
+        "Key": "tbl_HasFixedExpense"
+    },
+    {
+        "Value": "مقدار هزینه ثابت",
+        "Key": "tbl_FixedExpenseValue"
+    },
+    {
+        "Value": "سرویس دهنده",
+        "Key": "tbl_Provider"
+    },
+    {
+        "Value": "از فاکتور با هزینه",
+        "Key": "tbl_FromInvoiceExpense"
+    },
+    {
+        "Value": "هزینه حمل",
+        "Key": "tbl_ShippingExpense"
+    },
+    {
+        "Value": "قیمت",
+        "Key": "tbl_Price"
+    },
+    {
+        "Value": "تصویر اصلی",
+        "Key": "tbl_MainImage"
+    },
+    {
+        "Value": "مقدار ممکن برای این خصیصه",
+        "Key": "specificationName_placeHolder"
+    },
+    {
+        "Value": "واحد محصول",
+        "Key": "tbl_ProductUnit"
+    },
+    {
+        "Value": "نام محصول",
+        "Key": "tbl_ProductName"
+    },
+    {
+        "Value": "تصاویر محصول",
+        "Key": "tbl_ProductImages"
+    },
+    {
+        "Value": "تصاویر محتوا",
+        "Key": "tbl_ContentImages"
+    },
+    {
+        "Value": "نسبت ابعاد تصویر",
+        "Key": "tbl_AspectRatioImage"
+    },
+    {
+        "Value": "گروه محصول",
+        "Key": "tbl_ProductGroup"
+    },
+    {
+        "Value": "نام مشخصه",
+        "Key": "tbl_SpecificationName"
+    },
+    {
+        "Value": "مقادیر خصیصه",
+        "Key": "tbl_SpecificationValues"
+    },
+    {
+        "Value": "گروه پدر",
+        "Key": "tbl_ParentGroup"
+    },
+    {
+        "Value": "نام فروشنده",
+        "Key": "tbl_VendorName"
+    },
+    {
+        "Value": "نام گروه",
+        "Key": "tbl_GroupName"
+    },
+    {
+        "Value": "عنوان منو",
+        "Key": "tbl_MenuTitle"
+    },
+    {
+        "Value": "نام گروه محتوا",
+        "Key": "tbl_CategoryName"
+    },
 
-  {
-    "Value": "نام گروه ها",
-    "Key": "tbl_GroupNames"
-  },
-  {
-    "Value": "کد انحصاری",
-    "Key": "tbl_UniqeCode"
-  },
-  {
-    "Value": "موجودی",
-    "Key": "tbl_Inventory"
-  },
-  {
-    "Value": "موجودی های محصول",
-    "Key": "Product_Inventories"
-  },
-  {
-    "Value": "تعداد موجودی",
-    "Key": "Product_InventoryCount"
-  },
-  {
-    "Value": "مجموعه خصوصیات و مقادیر",
-    "Key": "Product_SpecificationsWithValues"
-  },
-  {
-    "Value": "نام",
-    "Key": "tbl_RoleName"
-  },
-  {
-    "Value": "اول",
-    "Key": "tbl_FirstPage"
-  },
-  {
-    "Value": "اولین",
-    "Key": "tbl_First"
-  },
-  {
-    "Value": "آخرین",
-    "Key": "tbl_Last"
-  },
-  {
-    "Value": "آخر",
-    "Key": "tbl_LastPage"
-  },
-  {
-    "Value": "قبلی",
-    "Key": "tbl_PreviousPage"
-  },
-  {
-    "Value": "بعدی",
-    "Key": "tbl_NextPage"
-  },
-  {
-    "Value": "شناسه محصول",
-    "Key": "tbl_ProductCode"
-  },
-  {
-    "Value": "شناسه گروه محصول",
-    "Key": "tbl_ProductGroupCode"
-  },
-  {
-    "Value": "شناسه محتوا",
-    "Key": "tbl_ContentCode"
-  },
-  {
-    "Value": "شناسه گروه محتوا",
-    "Key": "tbl_ContentCategoryCode"
-  },
-  {
-    "Value": "روش های حمل بار",
-    "Key": "tbl_ShippingWays"
-  },
-  {
-    "Value": "ارسال رایگان برای خرید بالای",
-    "Key": "tbl_FreeShipping"
-  },
-  {
-    "Value": "برای سفارش از [0] هزینه ارسال [1]",
-    "Key": "tbl_ShippingCoupon"
-  },
+    {
+        "Value": "نام گروه ها",
+        "Key": "tbl_GroupNames"
+    },
+    {
+        "Value": "کد انحصاری",
+        "Key": "tbl_UniqeCode"
+    },
+    {
+        "Value": "موجودی",
+        "Key": "tbl_Inventory"
+    },
+    {
+        "Value": "موجودی های محصول",
+        "Key": "Product_Inventories"
+    },
+    {
+        "Value": "تعداد موجودی",
+        "Key": "Product_InventoryCount"
+    },
+    {
+        "Value": "مجموعه خصوصیات و مقادیر",
+        "Key": "Product_SpecificationsWithValues"
+    },
+    {
+        "Value": "نام",
+        "Key": "tbl_RoleName"
+    },
+    {
+        "Value": "اول",
+        "Key": "tbl_FirstPage"
+    },
+    {
+        "Value": "اولین",
+        "Key": "tbl_First"
+    },
+    {
+        "Value": "آخرین",
+        "Key": "tbl_Last"
+    },
+    {
+        "Value": "آخر",
+        "Key": "tbl_LastPage"
+    },
+    {
+        "Value": "قبلی",
+        "Key": "tbl_PreviousPage"
+    },
+    {
+        "Value": "بعدی",
+        "Key": "tbl_NextPage"
+    },
+    {
+        "Value": "شناسه محصول",
+        "Key": "tbl_ProductCode"
+    },
+    {
+        "Value": "شناسه گروه محصول",
+        "Key": "tbl_ProductGroupCode"
+    },
+    {
+        "Value": "شناسه محتوا",
+        "Key": "tbl_ContentCode"
+    },
+    {
+        "Value": "شناسه گروه محتوا",
+        "Key": "tbl_ContentCategoryCode"
+    },
+    {
+        "Value": "روش های حمل بار",
+        "Key": "tbl_ShippingWays"
+    },
+    {
+        "Value": "ارسال رایگان برای خرید بالای",
+        "Key": "tbl_FreeShipping"
+    },
+    {
+        "Value": "برای سفارش از [0] هزینه ارسال [1]",
+        "Key": "tbl_ShippingCoupon"
+    },
 
-  {
-    "Value": "مرد",
-    "Key": "EnumDesc_Male"
-  },
-  {
-    "Value": "زن",
-    "Key": "EnumDesc_Female"
-  },
-  {
-    "Value": "انتخاب آخرین ایتم ها بر اساس نوع محتوا از تمام گروه ها",
-    "Key": "EnumDesc_LatestFromProductOrContentTypeInAllCategories"
-  },
-  {
-    "Value": "انتخاب آخرین ایتم ها بر اساس نوع محتوا از گروه انتخابی",
-    "Key": "EnumDesc_LatestFromProductOrContentTypeSelectedCategory"
-  },
-  {
-    "Value": "انتخاب از لیست محتواها",
-    "Key": "EnumDesc_CustomizedSelection"
-  },
-  {
-    "Value": "انیمیشن بر المان های داخلی",
-    "Key": "EnumDesc_LoadAnimationTypeInner"
-  },
-  {
-    "Value": "انیمیشن بر المان های خارجی",
-    "Key": "EnumDesc_LoadAnimationTypeOuter"
-  },
-  {
-    "Value": "ایمیل",
-    "Key": "EnumDesc_Email"
-  },
-  {
-    "Value": "پیامک",
-    "Key": "EnumDesc_Sms"
-  },
-  {
-    "Value": "اعلان",
-    "Key": "EnumDesc_Notification"
-  },
-  {
-    "Value": "کالای فیزیکی",
-    "Key": "EnumDesc_PhisicalStuff"
-  },
-  {
-    "Value": "فایل",
-    "Key": "EnumDesc_File"
-  },
-  {
-    "Value": "بدون محدودیت دانلود",
-    "Key": "EnumDesc_NoLimitation"
-  },
-  {
-    "Value": "در یک بازه زمانی مشخص قابل دانلود است",
-    "Key": "EnumDesc_TimeDuration"
-  },
-  {
-    "Value": "در یک بازه زمانی مشخص به تعداد مشخص قابل دانلود است",
-    "Key": "EnumDesc_TimeDurationWithCnt"
-  },
-  {
-    "Value": "به تعداد مشخص قابل دانلود است",
-    "Key": "EnumDesc_DownloadCount"
-  },
-  {
-    "Value": "نوع گروه",
-    "Key": "Enum_ContentCategoryType"
-  },
-  {
-    "Value": "جدیدترین ها",
-    "Key": "Enum_Newest"
-  },
-  {
-    "Value": "محبوب ترین ها",
-    "Key": "Enum_MostPopular"
-  },
-  {
-    "Value": "پرفروش ترین ها",
-    "Key": "Enum_BestSale"
-  },
-  {
-    "Value": "پربازدیدترین ها",
-    "Key": "Enum_MostVisited"
-  },
-  {
-    "Value": "نام کاربری را وارد کنید.",
-    "Key": "Validation_EnterUsername"
-  },
-  {
-    "Value": "نام کاربری یا شماره همراه اشتباه است.",
-    "Key": "Validation_InvalidUserNameOrPhoneNumber"
-  },
-  {
-    "Value": "شماره موبایل پیش از این ثبت شده است.",
-    "Key": "Validation_MobileNumberAlreadyRegistered"
-  },
-  {
-    "Value": "تلفن همراه را وارد کنید.",
-    "Key": "Validation_EnterMobileNumber"
-  },
-  {
-    "Value": "شماره همراه وارد شده معتبر نیست.",
-    "Key": "Validation_MobileNumberInvalid1"
-  },
-  {
-    "Value": "شماره وارد شده مربوط به تلفن ثابت می باشد.",
-    "Key": "Validation_MobileNumberInvalid2"
-  },
-  {
-    "Value": "شماره همراه وارد شده معتبر نیست",
-    "Key": "Validation_CellPhoneNumber"
-  },
-  {
-    "Value": "لطفا تمام مقادیر مشخصات محصول را انتخاب کنید.",
-    "Key": "AlertAndMessage_SelectAllSpecificationValues"
-  },
-  {
-    "Value": "این محصولات به گروه مشترکی تعلق ندارند.",
-    "Key": "AlertAndMessage_NoCommonProductGroups"
-  },
-  {
-    "Value": "برای جلوگیری از تناقض در موجودی لطفا موجودی محصول را بر حسب مشخصه جدید تغییر دهید.",
-    "Key": "AlertAndMessage_UpdateProductInventory"
-  },
-  {
-    "Value": "لطفا موجودی محصول را وراد کنید.",
-    "Key": "AlertAndMessage_FillInventory"
-  },
-  {
-    "Value": "لطفا برای تمام خصوصیات مقدار انتخاب کنید",
-    "Key": "AlertAndMessage_FillSpecValues"
-  },
-  {
-    "Value": "لطفا پس از کامل کردن مشخصات محصول, موجودی محصول را وارد کنید (موجودی ها بر حسب مشخصات محصول ساخنه میشود )",
-    "Key": "AlertAndMessage_SpecValuesInsertion"
-  },
-  {
-    "Value": "پست الکترونیکی نامعتبر است.",
-    "Key": "AlertAndMessage_EmailInvalid"
-  },
-  {
-    "Value": "عملیات کپی انجام شد.",
-    "Key": "AlertAndMessage_CopyDone"
-  },
-  {
-    "Value": "این فیلد اجباریست",
-    "Key": "AlertAndMessage_IdRequired"
-  },
-  {
-    "Value": "عملیات با موفقیت انجام شد.",
-    "Key": "AlertAndMessage_SuccessfullyDone"
-  },
-  {
-    "Value": "در صورتیکه تمایل دارید کل cmc در زبان دلخواه شما نمایش داده شود لازم است ابتدا زبان مربوطه را انتخاب کرده سپس قالب زبان را دانلود کرده و مقادیر کلیدها را در زبان مربوطه پرکنید و پس از آن فایل اکسل پر شده را آپلود کنید پس از انجام عملیات زبان مورد نظر به اپلیکیشن اضافه خواهد شد.",
-    "Key": "AlertAndMessage_AddNewLangHelp1"
-  },
-  {
-    "Value": "برای محتوا یا محصول یا منو تنها کافیست در entity مورد نظر رکورد صفات چند زبانه مربوط به آن زبان را اضافه کنید و entity را اپدیت کنید",
-    "Key": "AlertAndMessage_AddNewLangHelp2"
-  },
-  {
-    "Value": "دریافت فایل زبان جدید",
-    "Key": "AlertAndMessage_ImportNewLanguage"
-  },
-  {
-    "Value": "دریافت قالب فایل زبان",
-    "Key": "AlertAndMessage_GetLanguageFileTemplate"
-  },
-  {
-    "Value": "هیچ خصیصیه ای برای مقایسه وجود ندارد.",
-    "Key": "AlertAndMessage_NoSpecificationsToCompare"
-  },
-  {
-    "Value": "هیچ محصولی برای مقایسه افزوده نشده است.",
-    "Key": "AlertAndMessage_NoProductWereAddedToCompare"
-  },
-  {
-    "Value": "لطفا کد وارد شده به گوشی همراه خود را وارد کنید.",
-    "Key": "AlertAndMessage_EnterOtp"
-  },
-  {
-    "Value": "درخواست تغییر کلمه عبور",
-    "Key": "AlertAndMessage_RequestChangePassword"
-  },
-  {
-    "Value": "این ماژول دارای پارامتر نمیباشد تنها دکمه افزودن را کلیک کنید.",
-    "Key": "AlertAndMessage_ModuleWithoutParameters"
-  },
-  {
-    "Value": "کپی طراحی صفحه از زبان دیگر",
-    "Key": "AlertAndMessage_CopyDesigntFromOtherLanguage"
-  },
-  {
-    "Value": "urlFriend تکراری است.",
-    "Key": "AlertAndMessage_UrlFriendIsNotUnique"
-  },
-  {
-    "Value": "لطفا در ابتدا زبان صفحه طراحی را مشخص کنید.",
-    "Key": "AlertAndMessage_FirstChooseLanguage"
-  },
-  {
-    "Value": "تاریخ انقضا باید بعد از تاریخ انتشار باشد.",
-    "Key": "AlertAndMessage_EndDateMustBeGreaterThanStartDate"
-  },
-  {
-    "Value": "کلیه اطلاعات درگاه پرداخت را وارد کنید.",
-    "Key": "AlertAndMessage_PaymentGatewayInfoes"
-  },
-  {
-    "Value": "خطا در ثبت اطلاعات.",
-    "Key": "AlertAndMessage_InsertError"
-  },
-  {
-    "Value": "کد انحصاری تکراری است.",
-    "Key": "AlertAndMessage_DuplicateUniqueCode"
-  },
-  {
-    "Value": "حذف بدلیل وابستگی ها امکان پذیر نمیباشد.",
-    "Key": "AlertAndMessage_DeletedNotAllowedForDependencies"
-  },
-  {
-    "Value": "کد تکراری است.",
-    "Key": "AlertAndMessage_DuplicateCode"
-  },
-  {
-    "Value": "مقدار این فیلد تکراریست.",
-    "Key": "AlerAndMessage_DuplicateField"
-  },
-  {
-    "Value": "در حال حاضر برای این زبان یک سطر وجود دارد.",
-    "Key": "AlertAndMessage_LangUniqueness"
-  },
-  {
-    "Value": "پسورد باید حداقل یک کاراکتر از حروف کوچک a تا z باشد.",
-    "Key": "AlertAndMessage_PasswordRequiresLower"
-  },
-  {
-    "Value": "پسورد باید حداقل یک کاراکتر از حروف بزرگ A تا Z باشد.",
-    "Key": "AlertAndMessage_PasswordRequiresUpper"
-  },
-  {
-    "Value": "محتوای ویرایشگر نامعتبر است.",
-    "Key": "AlertAndMessage_InvalidEditorContent"
-  },
-  {
-    "Value": "تایید محتوای ویرایشگر",
-    "Key": "AlertAndMessage_ValidEditorContent"
-  },
-  {
-    "Value": "این سطر چند ستون دارد؟",
-    "Key": "AlertAndMessage_HowManyColumns"
-  },
-  {
-    "Value": "لطفا در ابتدا سطر جدید ایجاد کنید",
-    "Key": "AlertAndMessage_CreateNewRow"
-  },
-  {
-    "Value": "آیا برای حذف این قسمت از صفه مطمئن هستید؟",
-    "Key": "AlertAndMessage_RemoveBoxConfrim"
-  },
-  {
-    "Value": "برای جلوگیری از بروز خطا و ثبت اطلاعات محصول در پایگاه داده از هرگونه تغببر در ترتیب و نام ستون های قالب  دریافت محصول خودداری کنید.",
-    "Key": "AlertAndMessage_DontChangeExcelTemplate"
-  },
-  {
-    "Value": "دریافت محصولات از طریق فایل اکسل",
-    "Key": "AlertAndMessage_ImportProductFromExcel"
-  },
-  {
-    "Value": "عبارت امنیتی صحیح نیست یا منقضی شده است.",
-    "Key": "AlertAndMessage_CaptchaIncorrectOrExpired"
-  },
-  {
-    "Value": "فرمت فایل نامعتبر است.",
-    "Key": "AlertAndMessage_InvalidFormat"
-  },
-  {
-    "Value": "برای این واحد پول قیمت فعال وجود دارد در صورت همپوشانی بازه های زمانی قیمت قبلی غیر فعال خواهد شد",
-    "Key": "AlertAndMessage_PricePerCurrencyUniqueness"
-  },
-  {
-    "Value": "لطفا زبان پیش فرض کاربر را انتخاب کنید.",
-    "Key": "AlertAndMessage_DefaultLanguageRequired"
-  },
-  {
-    "Value": "لطفا حداقل یک سطر برای جدول مشخصات محصول پرکنید.",
-    "Key": "AlertAndMessage_Specifications"
-  },
-  {
-    "Value": "انتشار در دامنه اصلی",
-    "Key": "AlertAndMessage_IsPublishedOnMainDomain"
-  },
-  {
-    "Value": "هشدار برای موجودی کمتر از:",
-    "Key": "AlertAndMessage_NotifyWhenCountIsLessThan"
-  },
-  {
-    "Value": "فراموشی رمز عبور ؟",
-    "Key": "AlertAndMessage_ForgetPassword"
-  },
-  {
-    "Value": "لطفا نام گروه مشخصات را انتخاب کنید.",
-    "Key": "AlertAndMessage_SelectSpecificationGroup"
-  },
-  {
-    "Value": "این مقدار خصیصه حذف خواهد شد.",
-    "Key": "AlertAndMessage_DeleteSpecificationValue"
-  },
-  {
-    "Value": "لطفا مقدار خصیصه را وارد کنید.",
-    "Key": "AlertAndMessage_FillSpecificationValue"
-  },
-  {
-    "Value": "ابتدا زبان مورد نظر را انتخاب کنید.",
-    "Key": "AlertAndMessage_ChooseLanguage"
-  },
-  {
-    "Value": "لطفا حداقل یک سطر جدول را پرکنید.",
-    "Key": "AlertAndMessage_FillMultiLingualProperty"
-  },
-  {
-    "Value": "لطفا حداقل یک سطر جدول را پرکنید.",
-    "Key": "AlertAndMessage_FillShippingWay"
-  },
-  {
-    "Value": "لطفا یک سطر قیمت معتبر و فعال برای محصول وارد کنید.",
-    "Key": "AlertAndMessage_FillPriceList"
-  },
-  {
-    "Value": "لطفا حدااقل یک آیتم به لیست اضافه کنید.",
-    "Key": "AlertAndMessage_FillList"
-  },
-  {
-    "Value": "لطفا زبان مربوطه را انتخاب کنید.",
-    "Key": "AlertAndMessage_FillLangId"
-  },
-  {
-    "Value": "پر کردن این فیلد ضروریست.",
-    "Key": "AlertAndMessage_FieldEssential"
-  },
-  {
-    "Value": "انتخاب یک گزینه الزامی است.",
-    "Key": "AlertAndMessage_OptionEssential"
-  },
-  {
-    "Value": "حداقل یک دسترسی باید انتخاب شود.",
-    "Key": "AlertAndMessage_PermissionSelectLimitation"
-  },
-  {
-    "Value": "خطا",
-    "Key": "AlertAndMessage_Error"
-  },
-  {
-    "Value": "موفقیت",
-    "Key": "AlertAndMessage_Success"
-  },
-  {
-    "Value": "برای تغییر رمز اطمینان دارید؟",
-    "Key": "AlertAndMessage_ChangePassSureness"
-  },
-  {
-    "Value": "لطفا نام کاربری را وارد کنید.",
-    "Key": "AlertAndMessage_UserNameRequired"
-  },
-  {
-    "Value": "لطفا دامنه کاربر را انتخاب کنید.",
-    "Key": "AlertAndMessage_DomainRequired"
-  },
-  {
-    "Value": "لطفا نام کاربر را وارد کنید.",
-    "Key": "AlertAndMessage_NameRequired"
-  },
-  {
-    "Value": "لطفا نام خانوادگی را وارد کنید.",
-    "Key": "AlertAndMessage_LastNameRequired"
-  },
-  {
-    "Value": "لطفا شماره موبایل را وارد نمایید.",
-    "Key": "AlertAndMessage_PhoneNumberRequired"
-  },
-  {
-    "Value": "لطفانقش کاربر را انتخاب کنید.",
-    "Key": "AlertAndMessage_UserRoleRequired"
-  },
-  {
-    "Value": "لطفا کلمه غبور را وارد کنید.",
-    "Key": "AlertAndMessage_PasswordRequired"
-  },
-  {
-    "Value": "پسورد باید ترکیبی از حروف وعدد باشد.",
-    "Key": "AlertAndMessage_PasswordValidation"
-  },
-  {
-    "Value": "لطفا تکرار پسورد را وارد کنید.",
-    "Key": "AlertAndMessage_RePasswordRequired"
-  },
-  {
-    "Value": "کلمه عبور و تکرار کلمه عبور باید یکسان باشند.",
-    "Key": "AlertAndMessage_PasswordRepassWordCompare"
-  },
-  {
-    "Value": "طول 0 نیاید کمتر از 1 باشد.",
-    "Key": "AlertAndMessage_MinLength"
-  },
-  {
-    "Value": "عدد نباید کمتر از صفر باشد.",
-    "Key": "AlertAndMessage_NumberLessThanZero"
-  },
-  {
-    "Value": "لطفا فیلدهای ضروری تکمیل گردد.",
-    "Key": "AlertAndMessage_FillEssentialFields"
-  },
-  {
-    "Value": "داده مورد نظر یافت نشد",
-    "Key": "AlertAndMessage_DataWasNotFound"
-  },
-  {
-    "Value": "شی مورد نظر یافت نشد.",
-    "Key": "AlertAndMessage_ObjectNotFound"
-  },
-  {
-    "Value": "آیا برای حذف اطمینان دارید؟",
-    "Key": "AlertAndMessage_DeletionSureness"
-  },
-  {
-    "Value": "آیا برای بازگردانی اطمینان دارید؟",
-    "Key": "AlertAndMessage_RestorationSureness"
-  },
-  {
-    "Value": "مطمئن هستید؟",
-    "Key": "AlertAndMessage_AreYouSure"
-  },
-  {
-    "Value": "عبارت امنیتی صحیح نیست یا منقضی شده است.",
-    "Key": "AlertAndMessage_CaptchaIsExpired"
-  },
-  {
-    "Value": "نام کاربری یا کلمه عبور اشتباه است.",
-    "Key": "AlertAndMessage_InvalidUsernameOrPassword"
-  },
-  {
-    "Value": "حساب کاربری توسط ادمین غیر فعال شده است.",
-    "Key": "AlertAndMessage_InActiveUserAccount"
-  },
-  {
-    "Value": "نام کاربری تکراری می باشد.",
-    "Key": "AlertAndMessage_DuplicateUsername"
-  },
-  {
-    "Value": "کاربر با موفقیت ایجاد شد.",
-    "Key": "AlertAndMessage_UserCreatedSuccessfully"
-  },
-  {
-    "Value": "با این شماره موبایل قبلا کاربری ثبت نام شده است.",
-    "Key": "AlertAndMessage_DuplicatePhoneNumber"
-  },
-  {
-    "Value": "شما دسترسی انجام فعالیت جاری را ندارید.",
-    "Key": "AlertAndMessage_NoAccess"
-  },
-  {
-    "Value": "کاربر مورد نظر یافت نشد.",
-    "Key": "AlertAndMessage_NoUserWasFound"
-  },
-  {
-    "Value": "موجودیت مورد نظر یافت نشد.",
-    "Key": "AlertAndMessage_EntityNotFound"
-  },
-  {
-    "Value": "اطلاعاتی برای نمایش موجود نمیباشد.",
-    "Key": "AlertAndMessage_NoDataToShow"
-  },
-  {
-    "Value": "لطفا مجددا امتحان کنید.",
-    "Key": "AlertAndMessage_TryLator"
-  },
-  {
-    "Value": "لطفا فایل آیکون منو را مشخص نمایید.",
-    "Key": "AlertAndMessage_lackOfIcon"
-  },
-  {
-    "Value": "لطفا اولویت را مشخص کنید.",
-    "Key": "AlertAndMessage_lackOfPriority"
-  },
-  {
-    "Value": "لطفا حداقل یک مسیر مشخص نمایید.",
-    "Key": "AlertAndMessage_lackOfRoutes"
-  },
-  {
-    "Value": "لطفا منوی ماژول را مشخص نمایید.",
-    "Key": "AlertAndMessage_lackOfMenuIdofModule"
-  },
-  {
-    "Value": "ویرایش یا موفقیت انجام شد.",
-    "Key": "AlertAndMessage_EditionDoneSuccessfully"
-  },
-  {
-    "Value": "ثبت با موفقیت انجام شد.",
-    "Key": "AlertAndMessage_InsertionDoneSuccessfully"
-  },
-  {
-    "Value": "عملیات حذف با موفقیت انجام گردید.",
-    "Key": "AlertAndMessage_DeletionDoneSuccessfully"
-  },
-  {
-    "Value": "امکان حذف وجود ندارد.",
-    "Key": "AlertAndMessage_DeletionNotAllowed"
-  },
-  {
-    "Value": "عملیات مجاز نمیباشد.",
-    "Key": "AlertAndMessage_NotAllowed"
-  },
-  {
-    "Value": "متوجه شدم",
-    "Key": "AlertAndMessage_GotIt"
-  },
-  {
-    "Value": "این فیلد الزامی است.",
-    "Key": "AlertAndMessage_RequiredErrorMessage"
-  },
-  {
-    "Value": "سایز فایل بیش از حد مجاز است.",
-    "Key": "AlertAndMessage_InvalidFileSize"
-  },
-  {
-    "Value": "جنسیت",
-    "Key": "AlertAndMessage_Gender"
-  },
-  {
-    "Value": "متاسفانه، ظاهرا برخی اطلاعات اشتباه وارد شده است!",
-    "Key": "AlertAndMessage_InternalServerErrorMessage"
-  },
-  {
-    "Value": "خطایی رخ داده است.",
-    "Key": "AlertAndMessage_ExceptionOccured"
-  },
-  {
-    "Value": "لطفا پارامترها را بررسی نمائید.",
-    "Key": "AlertAndMessage_ParameterError"
-  },
-  {
-    "Value": "این آیتم وجود دارد!",
-    "Key": "AlertAndMessage_DuplicateError"
-  },
-  {
-    "Value": "خطای نامشخص.",
-    "Key": "AlertAndMessage_GeneralError"
-  },
-  {
-    "Value": "خطای مدل!",
-    "Key": "AlertAndMessage_ModelError"
-  },
-  {
-    "Value": "خطای Id مدل!",
-    "Key": "AlertAndMessage_ModelHasIdError"
-  },
-  {
-    "Value": "گذرواژه نامعتبر است!",
-    "Key": "AlertAndMessage_InvalidPassword"
-  },
-  {
-    "Value": "سرور پاسخگوی این عملیات نمی باشد!",
-    "Key": "AlertAndMessage_NoServerResponseError"
-  },
-  {
-    "Value": "درخواست نامعتبر می باشد!",
-    "Key": "AlertAndMessage_BadRequestError"
-  },
-  {
-    "Value": "بیش از حد مجاز!",
-    "Key": "AlertAndMessage_RangeLimitExceed"
-  },
-  {
-    "Value": "عملیات با موفقیت انجام شد.",
-    "Key": "AlertAndMessage_OperationDoneSuccessfully"
-  },
-  {
-    "Value": "عملیات ناموفق بود!",
-    "Key": "AlertAndMessage_OperationFailed"
-  },
-  {
-    "Value": "خطا در ذخیره سازی داده!",
-    "Key": "AlertAndMessage_ErrorInSaving"
-  },
-  {
-    "Value": "خطا در بارگزاری عکس",
-    "Key": "AlertAndMessage_ErrorInLoadingImage"
-  },
-  {
-    "Value": "لطفا انتخاب کنید...",
-    "Key": "AlertAndMessage_SelectOne"
-  },
-  {
-    "Value": "لطفا کد پستی را وارد نمائید.",
-    "Key": "AlertAndMessage_EnterPostalCode"
-  },
-  {
-    "Value": "خوش آمدید.",
-    "Key": "AlertAndMessage_Welcome"
-  },
-  {
-    "Value": "خطا، لطفا مجدد تلاش کنید.",
-    "Key": "AlertAndMessage_ErrorTryAgain"
-  },
-  {
-    "Value": "خطا در بارگزاری فایل",
-    "Key": "AlertAndMessage_ErrorInUploadFile"
-  },
-  {
-    "Value": "لطفا حداقل یک آیتم را انتخاب نمائید.",
-    "Key": "AlertAndMessage_SelectAtLeastOneItem"
-  },
-  {
-    "Value": "لطفا یک آیتم را انتخاب کنید.",
-    "Key": "AlertAndMessage_SelectOneItem"
-  },
-  {
-    "Value": "انتخاب کنید",
-    "Key": "AlertAndMessage_Choose"
-  },
-  {
-    "Value": "پیدا نشد.",
-    "Key": "AlertAndMessage_NotFound"
-  },
+    {
+        "Value": "مرد",
+        "Key": "EnumDesc_Male"
+    },
+    {
+        "Value": "زن",
+        "Key": "EnumDesc_Female"
+    },
+    {
+        "Value": "انتخاب آخرین ایتم ها بر اساس نوع محتوا از تمام گروه ها",
+        "Key": "EnumDesc_LatestFromProductOrContentTypeInAllCategories"
+    },
+    {
+        "Value": "انتخاب آخرین ایتم ها بر اساس نوع محتوا از گروه انتخابی",
+        "Key": "EnumDesc_LatestFromProductOrContentTypeSelectedCategory"
+    },
+    {
+        "Value": "انتخاب از لیست محتواها",
+        "Key": "EnumDesc_CustomizedSelection"
+    },
+    {
+        "Value": "انیمیشن بر المان های داخلی",
+        "Key": "EnumDesc_LoadAnimationTypeInner"
+    },
+    {
+        "Value": "انیمیشن بر المان های خارجی",
+        "Key": "EnumDesc_LoadAnimationTypeOuter"
+    },
+    {
+        "Value": "ایمیل",
+        "Key": "EnumDesc_Email"
+    },
+    {
+        "Value": "پیامک",
+        "Key": "EnumDesc_Sms"
+    },
+    {
+        "Value": "اعلان",
+        "Key": "EnumDesc_Notification"
+    },
+    {
+        "Value": "کالای فیزیکی",
+        "Key": "EnumDesc_PhisicalStuff"
+    },
+    {
+        "Value": "فایل",
+        "Key": "EnumDesc_File"
+    },
+    {
+        "Value": "بدون محدودیت دانلود",
+        "Key": "EnumDesc_NoLimitation"
+    },
+    {
+        "Value": "در یک بازه زمانی مشخص قابل دانلود است",
+        "Key": "EnumDesc_TimeDuration"
+    },
+    {
+        "Value": "در یک بازه زمانی مشخص به تعداد مشخص قابل دانلود است",
+        "Key": "EnumDesc_TimeDurationWithCnt"
+    },
+    {
+        "Value": "به تعداد مشخص قابل دانلود است",
+        "Key": "EnumDesc_DownloadCount"
+    },
+    {
+        "Value": "نوع گروه",
+        "Key": "Enum_ContentCategoryType"
+    },
+    {
+        "Value": "جدیدترین ها",
+        "Key": "Enum_Newest"
+    },
+    {
+        "Value": "محبوب ترین ها",
+        "Key": "Enum_MostPopular"
+    },
+    {
+        "Value": "پرفروش ترین ها",
+        "Key": "Enum_BestSale"
+    },
+    {
+        "Value": "پربازدیدترین ها",
+        "Key": "Enum_MostVisited"
+    },
+    {
+        "Value": "نام کاربری را وارد کنید.",
+        "Key": "Validation_EnterUsername"
+    },
+    {
+        "Value": "نام کاربری یا شماره همراه اشتباه است.",
+        "Key": "Validation_InvalidUserNameOrPhoneNumber"
+    },
+    {
+        "Value": "شماره موبایل پیش از این ثبت شده است.",
+        "Key": "Validation_MobileNumberAlreadyRegistered"
+    },
+    {
+        "Value": "تلفن همراه را وارد کنید.",
+        "Key": "Validation_EnterMobileNumber"
+    },
+    {
+        "Value": "شماره همراه وارد شده معتبر نیست.",
+        "Key": "Validation_MobileNumberInvalid1"
+    },
+    {
+        "Value": "شماره وارد شده مربوط به تلفن ثابت می باشد.",
+        "Key": "Validation_MobileNumberInvalid2"
+    },
+    {
+        "Value": "شماره همراه وارد شده معتبر نیست",
+        "Key": "Validation_CellPhoneNumber"
+    },
+    {
+        "Value": "لطفا دوباره برنامه را شروع کنید.",
+        "Key": "AlertAndMessage_RestartApplication"
+    },
+    {
+        "Value": "لطفا تمام مقادیر مشخصات محصول را انتخاب کنید.",
+        "Key": "AlertAndMessage_SelectAllSpecificationValues"
+    },
+    {
+        "Value": "این محصولات به گروه مشترکی تعلق ندارند.",
+        "Key": "AlertAndMessage_NoCommonProductGroups"
+    },
+    {
+        "Value": "برای جلوگیری از تناقض در موجودی لطفا موجودی محصول را بر حسب مشخصه جدید تغییر دهید.",
+        "Key": "AlertAndMessage_UpdateProductInventory"
+    },
+    {
+        "Value": "لطفا موجودی محصول را وراد کنید.",
+        "Key": "AlertAndMessage_FillInventory"
+    },
+    {
+        "Value": "لطفا برای تمام خصوصیات مقدار انتخاب کنید",
+        "Key": "AlertAndMessage_FillSpecValues"
+    },
+    {
+        "Value": "لطفا پس از کامل کردن مشخصات محصول, موجودی محصول را وارد کنید (موجودی ها بر حسب مشخصات محصول ساخنه میشود )",
+        "Key": "AlertAndMessage_SpecValuesInsertion"
+    },
+    {
+        "Value": "پست الکترونیکی نامعتبر است.",
+        "Key": "AlertAndMessage_EmailInvalid"
+    },
+    {
+        "Value": "عملیات کپی انجام شد.",
+        "Key": "AlertAndMessage_CopyDone"
+    },
+    {
+        "Value": "این فیلد اجباریست",
+        "Key": "AlertAndMessage_IdRequired"
+    },
+    {
+        "Value": "عملیات با موفقیت انجام شد.",
+        "Key": "AlertAndMessage_SuccessfullyDone"
+    },
+    {
+        "Value": "در صورتیکه تمایل دارید کل cmc در زبان دلخواه شما نمایش داده شود لازم است ابتدا زبان مربوطه را انتخاب کرده سپس قالب زبان را دانلود کرده و مقادیر کلیدها را در زبان مربوطه پرکنید و پس از آن فایل اکسل پر شده را آپلود کنید پس از انجام عملیات زبان مورد نظر به اپلیکیشن اضافه خواهد شد.",
+        "Key": "AlertAndMessage_AddNewLangHelp1"
+    },
+    {
+        "Value": "برای محتوا یا محصول یا منو تنها کافیست در entity مورد نظر رکورد صفات چند زبانه مربوط به آن زبان را اضافه کنید و entity را اپدیت کنید",
+        "Key": "AlertAndMessage_AddNewLangHelp2"
+    },
+    {
+        "Value": "دریافت فایل زبان جدید",
+        "Key": "AlertAndMessage_ImportNewLanguage"
+    },
+    {
+        "Value": "دریافت قالب فایل زبان",
+        "Key": "AlertAndMessage_GetLanguageFileTemplate"
+    },
+    {
+        "Value": "هیچ خصیصیه ای برای مقایسه وجود ندارد.",
+        "Key": "AlertAndMessage_NoSpecificationsToCompare"
+    },
+    {
+        "Value": "هیچ محصولی برای مقایسه افزوده نشده است.",
+        "Key": "AlertAndMessage_NoProductWereAddedToCompare"
+    },
+    {
+        "Value": "لطفا کد وارد شده به گوشی همراه خود را وارد کنید.",
+        "Key": "AlertAndMessage_EnterOtp"
+    },
+    {
+        "Value": "درخواست تغییر کلمه عبور",
+        "Key": "AlertAndMessage_RequestChangePassword"
+    },
+    {
+        "Value": "این ماژول دارای پارامتر نمیباشد تنها دکمه افزودن را کلیک کنید.",
+        "Key": "AlertAndMessage_ModuleWithoutParameters"
+    },
+    {
+        "Value": "کپی طراحی صفحه از زبان دیگر",
+        "Key": "AlertAndMessage_CopyDesigntFromOtherLanguage"
+    },
+    {
+        "Value": "urlFriend تکراری است.",
+        "Key": "AlertAndMessage_UrlFriendIsNotUnique"
+    },
+    {
+        "Value": "لطفا در ابتدا زبان صفحه طراحی را مشخص کنید.",
+        "Key": "AlertAndMessage_FirstChooseLanguage"
+    },
+    {
+        "Value": "تاریخ انقضا باید بعد از تاریخ انتشار باشد.",
+        "Key": "AlertAndMessage_EndDateMustBeGreaterThanStartDate"
+    },
+    {
+        "Value": "کلیه اطلاعات درگاه پرداخت را وارد کنید.",
+        "Key": "AlertAndMessage_PaymentGatewayInfoes"
+    },
+    {
+        "Value": "خطا در ثبت اطلاعات.",
+        "Key": "AlertAndMessage_InsertError"
+    },
+    {
+        "Value": "کد انحصاری تکراری است.",
+        "Key": "AlertAndMessage_DuplicateUniqueCode"
+    },
+    {
+        "Value": "حذف بدلیل وابستگی ها امکان پذیر نمیباشد.",
+        "Key": "AlertAndMessage_DeletedNotAllowedForDependencies"
+    },
+    {
+        "Value": "کد تکراری است.",
+        "Key": "AlertAndMessage_DuplicateCode"
+    },
+    {
+        "Value": "مقدار این فیلد تکراریست.",
+        "Key": "AlerAndMessage_DuplicateField"
+    },
+    {
+        "Value": "در حال حاضر برای این زبان یک سطر وجود دارد.",
+        "Key": "AlertAndMessage_LangUniqueness"
+    },
+    {
+        "Value": "پسورد باید حداقل یک کاراکتر از حروف کوچک a تا z باشد.",
+        "Key": "AlertAndMessage_PasswordRequiresLower"
+    },
+    {
+        "Value": "پسورد باید حداقل یک کاراکتر از حروف بزرگ A تا Z باشد.",
+        "Key": "AlertAndMessage_PasswordRequiresUpper"
+    },
+    {
+        "Value": "محتوای ویرایشگر نامعتبر است.",
+        "Key": "AlertAndMessage_InvalidEditorContent"
+    },
+    {
+        "Value": "تایید محتوای ویرایشگر",
+        "Key": "AlertAndMessage_ValidEditorContent"
+    },
+    {
+        "Value": "این سطر چند ستون دارد؟",
+        "Key": "AlertAndMessage_HowManyColumns"
+    },
+    {
+        "Value": "لطفا در ابتدا سطر جدید ایجاد کنید",
+        "Key": "AlertAndMessage_CreateNewRow"
+    },
+    {
+        "Value": "آیا برای حذف این قسمت از صفه مطمئن هستید؟",
+        "Key": "AlertAndMessage_RemoveBoxConfrim"
+    },
+    {
+        "Value": "برای جلوگیری از بروز خطا و ثبت اطلاعات محصول در پایگاه داده از هرگونه تغببر در ترتیب و نام ستون های قالب  دریافت محصول خودداری کنید.",
+        "Key": "AlertAndMessage_DontChangeExcelTemplate"
+    },
+    {
+        "Value": "دریافت محصولات از طریق فایل اکسل",
+        "Key": "AlertAndMessage_ImportProductFromExcel"
+    },
+    {
+        "Value": "عبارت امنیتی صحیح نیست یا منقضی شده است.",
+        "Key": "AlertAndMessage_CaptchaIncorrectOrExpired"
+    },
+    {
+        "Value": "فرمت فایل نامعتبر است.",
+        "Key": "AlertAndMessage_InvalidFormat"
+    },
+    {
+        "Value": "برای این واحد پول قیمت فعال وجود دارد در صورت همپوشانی بازه های زمانی قیمت قبلی غیر فعال خواهد شد",
+        "Key": "AlertAndMessage_PricePerCurrencyUniqueness"
+    },
+    {
+        "Value": "لطفا زبان پیش فرض کاربر را انتخاب کنید.",
+        "Key": "AlertAndMessage_DefaultLanguageRequired"
+    },
+    {
+        "Value": "لطفا حداقل یک سطر برای جدول مشخصات محصول پرکنید.",
+        "Key": "AlertAndMessage_Specifications"
+    },
+    {
+        "Value": "انتشار در دامنه اصلی",
+        "Key": "AlertAndMessage_IsPublishedOnMainDomain"
+    },
+    {
+        "Value": "هشدار برای موجودی کمتر از:",
+        "Key": "AlertAndMessage_NotifyWhenCountIsLessThan"
+    },
+    {
+        "Value": "فراموشی رمز عبور ؟",
+        "Key": "AlertAndMessage_ForgetPassword"
+    },
+    {
+        "Value": "لطفا نام گروه مشخصات را انتخاب کنید.",
+        "Key": "AlertAndMessage_SelectSpecificationGroup"
+    },
+    {
+        "Value": "این مقدار خصیصه حذف خواهد شد.",
+        "Key": "AlertAndMessage_DeleteSpecificationValue"
+    },
+    {
+        "Value": "لطفا مقدار خصیصه را وارد کنید.",
+        "Key": "AlertAndMessage_FillSpecificationValue"
+    },
+    {
+        "Value": "ابتدا زبان مورد نظر را انتخاب کنید.",
+        "Key": "AlertAndMessage_ChooseLanguage"
+    },
+    {
+        "Value": "لطفا حداقل یک سطر جدول را پرکنید.",
+        "Key": "AlertAndMessage_FillMultiLingualProperty"
+    },
+    {
+        "Value": "لطفا حداقل یک سطر جدول را پرکنید.",
+        "Key": "AlertAndMessage_FillShippingWay"
+    },
+    {
+        "Value": "لطفا یک سطر قیمت معتبر و فعال برای محصول وارد کنید.",
+        "Key": "AlertAndMessage_FillPriceList"
+    },
+    {
+        "Value": "لطفا حدااقل یک آیتم به لیست اضافه کنید.",
+        "Key": "AlertAndMessage_FillList"
+    },
+    {
+        "Value": "لطفا زبان مربوطه را انتخاب کنید.",
+        "Key": "AlertAndMessage_FillLangId"
+    },
+    {
+        "Value": "پر کردن این فیلد ضروریست.",
+        "Key": "AlertAndMessage_FieldEssential"
+    },
+    {
+        "Value": "انتخاب یک گزینه الزامی است.",
+        "Key": "AlertAndMessage_OptionEssential"
+    },
+    {
+        "Value": "حداقل یک دسترسی باید انتخاب شود.",
+        "Key": "AlertAndMessage_PermissionSelectLimitation"
+    },
+    {
+        "Value": "خطا",
+        "Key": "AlertAndMessage_Error"
+    },
+    {
+        "Value": "موفقیت",
+        "Key": "AlertAndMessage_Success"
+    },
+    {
+        "Value": "برای تغییر رمز اطمینان دارید؟",
+        "Key": "AlertAndMessage_ChangePassSureness"
+    },
+    {
+        "Value": "لطفا نام کاربری را وارد کنید.",
+        "Key": "AlertAndMessage_UserNameRequired"
+    },
+    {
+        "Value": "لطفا دامنه کاربر را انتخاب کنید.",
+        "Key": "AlertAndMessage_DomainRequired"
+    },
+    {
+        "Value": "لطفا نام کاربر را وارد کنید.",
+        "Key": "AlertAndMessage_NameRequired"
+    },
+    {
+        "Value": "لطفا نام خانوادگی را وارد کنید.",
+        "Key": "AlertAndMessage_LastNameRequired"
+    },
+    {
+        "Value": "لطفا شماره موبایل را وارد نمایید.",
+        "Key": "AlertAndMessage_PhoneNumberRequired"
+    },
+    {
+        "Value": "لطفانقش کاربر را انتخاب کنید.",
+        "Key": "AlertAndMessage_UserRoleRequired"
+    },
+    {
+        "Value": "لطفا کلمه غبور را وارد کنید.",
+        "Key": "AlertAndMessage_PasswordRequired"
+    },
+    {
+        "Value": "پسورد باید ترکیبی از حروف وعدد باشد.",
+        "Key": "AlertAndMessage_PasswordValidation"
+    },
+    {
+        "Value": "لطفا تکرار پسورد را وارد کنید.",
+        "Key": "AlertAndMessage_RePasswordRequired"
+    },
+    {
+        "Value": "کلمه عبور و تکرار کلمه عبور باید یکسان باشند.",
+        "Key": "AlertAndMessage_PasswordRepassWordCompare"
+    },
+    {
+        "Value": "طول 0 نیاید کمتر از 1 باشد.",
+        "Key": "AlertAndMessage_MinLength"
+    },
+    {
+        "Value": "عدد نباید کمتر از صفر باشد.",
+        "Key": "AlertAndMessage_NumberLessThanZero"
+    },
+    {
+        "Value": "لطفا فیلدهای ضروری تکمیل گردد.",
+        "Key": "AlertAndMessage_FillEssentialFields"
+    },
+    {
+        "Value": "داده مورد نظر یافت نشد",
+        "Key": "AlertAndMessage_DataWasNotFound"
+    },
+    {
+        "Value": "شی مورد نظر یافت نشد.",
+        "Key": "AlertAndMessage_ObjectNotFound"
+    },
+    {
+        "Value": "آیا برای حذف اطمینان دارید؟",
+        "Key": "AlertAndMessage_DeletionSureness"
+    },
+    {
+        "Value": "آیا برای بازگردانی اطمینان دارید؟",
+        "Key": "AlertAndMessage_RestorationSureness"
+    },
+    {
+        "Value": "مطمئن هستید؟",
+        "Key": "AlertAndMessage_AreYouSure"
+    },
+    {
+        "Value": "عبارت امنیتی صحیح نیست یا منقضی شده است.",
+        "Key": "AlertAndMessage_CaptchaIsExpired"
+    },
+    {
+        "Value": "نام کاربری یا کلمه عبور اشتباه است.",
+        "Key": "AlertAndMessage_InvalidUsernameOrPassword"
+    },
+    {
+        "Value": "حساب کاربری توسط ادمین غیر فعال شده است.",
+        "Key": "AlertAndMessage_InActiveUserAccount"
+    },
+    {
+        "Value": "نام کاربری تکراری می باشد.",
+        "Key": "AlertAndMessage_DuplicateUsername"
+    },
+    {
+        "Value": "کاربر با موفقیت ایجاد شد.",
+        "Key": "AlertAndMessage_UserCreatedSuccessfully"
+    },
+    {
+        "Value": "با این شماره موبایل قبلا کاربری ثبت نام شده است.",
+        "Key": "AlertAndMessage_DuplicatePhoneNumber"
+    },
+    {
+        "Value": "شما دسترسی انجام فعالیت جاری را ندارید.",
+        "Key": "AlertAndMessage_NoAccess"
+    },
+    {
+        "Value": "کاربر مورد نظر یافت نشد.",
+        "Key": "AlertAndMessage_NoUserWasFound"
+    },
+    {
+        "Value": "موجودیت مورد نظر یافت نشد.",
+        "Key": "AlertAndMessage_EntityNotFound"
+    },
+    {
+        "Value": "اطلاعاتی برای نمایش موجود نمیباشد.",
+        "Key": "AlertAndMessage_NoDataToShow"
+    },
+    {
+        "Value": "لطفا مجددا امتحان کنید.",
+        "Key": "AlertAndMessage_TryLator"
+    },
+    {
+        "Value": "لطفا فایل آیکون منو را مشخص نمایید.",
+        "Key": "AlertAndMessage_lackOfIcon"
+    },
+    {
+        "Value": "لطفا اولویت را مشخص کنید.",
+        "Key": "AlertAndMessage_lackOfPriority"
+    },
+    {
+        "Value": "لطفا حداقل یک مسیر مشخص نمایید.",
+        "Key": "AlertAndMessage_lackOfRoutes"
+    },
+    {
+        "Value": "لطفا منوی ماژول را مشخص نمایید.",
+        "Key": "AlertAndMessage_lackOfMenuIdofModule"
+    },
+    {
+        "Value": "ویرایش یا موفقیت انجام شد.",
+        "Key": "AlertAndMessage_EditionDoneSuccessfully"
+    },
+    {
+        "Value": "ثبت با موفقیت انجام شد.",
+        "Key": "AlertAndMessage_InsertionDoneSuccessfully"
+    },
+    {
+        "Value": "عملیات حذف با موفقیت انجام گردید.",
+        "Key": "AlertAndMessage_DeletionDoneSuccessfully"
+    },
+    {
+        "Value": "امکان حذف وجود ندارد.",
+        "Key": "AlertAndMessage_DeletionNotAllowed"
+    },
+    {
+        "Value": "عملیات مجاز نمیباشد.",
+        "Key": "AlertAndMessage_NotAllowed"
+    },
+    {
+        "Value": "متوجه شدم",
+        "Key": "AlertAndMessage_GotIt"
+    },
+    {
+        "Value": "این فیلد الزامی است.",
+        "Key": "AlertAndMessage_RequiredErrorMessage"
+    },
+    {
+        "Value": "سایز فایل بیش از حد مجاز است.",
+        "Key": "AlertAndMessage_InvalidFileSize"
+    },
+    {
+        "Value": "جنسیت",
+        "Key": "AlertAndMessage_Gender"
+    },
+    {
+        "Value": "متاسفانه، ظاهرا برخی اطلاعات اشتباه وارد شده است!",
+        "Key": "AlertAndMessage_InternalServerErrorMessage"
+    },
+    {
+        "Value": "خطایی رخ داده است.",
+        "Key": "AlertAndMessage_ExceptionOccured"
+    },
+    {
+        "Value": "لطفا پارامترها را بررسی نمائید.",
+        "Key": "AlertAndMessage_ParameterError"
+    },
+    {
+        "Value": "این آیتم وجود دارد!",
+        "Key": "AlertAndMessage_DuplicateError"
+    },
+    {
+        "Value": "خطای نامشخص.",
+        "Key": "AlertAndMessage_GeneralError"
+    },
+    {
+        "Value": "خطای مدل!",
+        "Key": "AlertAndMessage_ModelError"
+    },
+    {
+        "Value": "خطای Id مدل!",
+        "Key": "AlertAndMessage_ModelHasIdError"
+    },
+    {
+        "Value": "گذرواژه نامعتبر است!",
+        "Key": "AlertAndMessage_InvalidPassword"
+    },
+    {
+        "Value": "سرور پاسخگوی این عملیات نمی باشد!",
+        "Key": "AlertAndMessage_NoServerResponseError"
+    },
+    {
+        "Value": "درخواست نامعتبر می باشد!",
+        "Key": "AlertAndMessage_BadRequestError"
+    },
+    {
+        "Value": "بیش از حد مجاز!",
+        "Key": "AlertAndMessage_RangeLimitExceed"
+    },
+    {
+        "Value": "عملیات با موفقیت انجام شد.",
+        "Key": "AlertAndMessage_OperationDoneSuccessfully"
+    },
+    {
+        "Value": "عملیات ناموفق بود!",
+        "Key": "AlertAndMessage_OperationFailed"
+    },
+    {
+        "Value": "خطا در ذخیره سازی داده!",
+        "Key": "AlertAndMessage_ErrorInSaving"
+    },
+    {
+        "Value": "خطا در بارگزاری عکس",
+        "Key": "AlertAndMessage_ErrorInLoadingImage"
+    },
+    {
+        "Value": "لطفا انتخاب کنید...",
+        "Key": "AlertAndMessage_SelectOne"
+    },
+    {
+        "Value": "لطفا کد پستی را وارد نمائید.",
+        "Key": "AlertAndMessage_EnterPostalCode"
+    },
+    {
+        "Value": "خوش آمدید.",
+        "Key": "AlertAndMessage_Welcome"
+    },
+    {
+        "Value": "خطا، لطفا مجدد تلاش کنید.",
+        "Key": "AlertAndMessage_ErrorTryAgain"
+    },
+    {
+        "Value": "خطا در بارگزاری فایل",
+        "Key": "AlertAndMessage_ErrorInUploadFile"
+    },
+    {
+        "Value": "لطفا حداقل یک آیتم را انتخاب نمائید.",
+        "Key": "AlertAndMessage_SelectAtLeastOneItem"
+    },
+    {
+        "Value": "لطفا یک آیتم را انتخاب کنید.",
+        "Key": "AlertAndMessage_SelectOneItem"
+    },
+    {
+        "Value": "انتخاب کنید",
+        "Key": "AlertAndMessage_Choose"
+    },
+    {
+        "Value": "پیدا نشد.",
+        "Key": "AlertAndMessage_NotFound"
+    },
 
-  {
-    "Value": "دسترسی محدود شده است.",
-    "Key": "AlertAndMessage_AccessDenied"
-  },
-  {
-    "Value": "عدم دسترسی",
-    "Key": "AlertAndMessage_Inaccessibility"
-  },
-  {
-    "Value": "خطایی رخ داده است.",
-    "Key": "AlertAndMessage_ErrorOccurrence"
-  },
-  {
-    "Value": "گذرواژه فعلی:",
-    "Key": "AlertAndMessage_CurrentPassword"
-  },
-  {
-    "Value": "گذرواژه جدید:",
-    "Key": "AlertAndMessage_NewPassword"
-  },
-  {
-    "Value": "نام کاربری",
-    "Key": "AlertAndMessage_Username"
-  },
-  {
-    "Value": "نام کاربر",
-    "Key": "AlertAndMessage_UserfullName"
-  },
-  {
-    "Value": "گذرواژه",
-    "Key": "AlertAndMessage_Password"
-  },
-  {
-    "Value": "مرا به خاطر بسپار",
-    "Key": "AlertAndMessage_RememberMe"
-  },
-  {
-    "Value": "صفحه یافت نشد.",
-    "Key": "AlertAndMessage_PageNotFound"
-  },
-  {
-    "Value": "پروفایل ناقص است.",
-    "Key": "AlertAndMessage_IncompleteProfile"
-  },
-  {
-    "Value": "لطفا قبل از استفاده از امکانات سیستم، پروفایل خود را تکمیل کنید.",
-    "Key": "AlertAndMessage_IncompleteProfileMessage"
-  },
-  {
-    "Value": "لطفا آیتم های زیر را تکمیل کنید:",
-    "Key": "AlertAndMessage_IncompleteProfileItems"
-  },
+    {
+        "Value": "دسترسی محدود شده است.",
+        "Key": "AlertAndMessage_AccessDenied"
+    },
+    {
+        "Value": "عدم دسترسی",
+        "Key": "AlertAndMessage_Inaccessibility"
+    },
+    {
+        "Value": "خطایی رخ داده است.",
+        "Key": "AlertAndMessage_ErrorOccurrence"
+    },
+    {
+        "Value": "گذرواژه فعلی:",
+        "Key": "AlertAndMessage_CurrentPassword"
+    },
+    {
+        "Value": "گذرواژه جدید:",
+        "Key": "AlertAndMessage_NewPassword"
+    },
+    {
+        "Value": "نام کاربری",
+        "Key": "AlertAndMessage_Username"
+    },
+    {
+        "Value": "نام کاربر",
+        "Key": "AlertAndMessage_UserfullName"
+    },
+    {
+        "Value": "گذرواژه",
+        "Key": "AlertAndMessage_Password"
+    },
+    {
+        "Value": "مرا به خاطر بسپار",
+        "Key": "AlertAndMessage_RememberMe"
+    },
+    {
+        "Value": "صفحه یافت نشد.",
+        "Key": "AlertAndMessage_PageNotFound"
+    },
+    {
+        "Value": "پروفایل ناقص است.",
+        "Key": "AlertAndMessage_IncompleteProfile"
+    },
+    {
+        "Value": "لطفا قبل از استفاده از امکانات سیستم، پروفایل خود را تکمیل کنید.",
+        "Key": "AlertAndMessage_IncompleteProfileMessage"
+    },
+    {
+        "Value": "لطفا آیتم های زیر را تکمیل کنید:",
+        "Key": "AlertAndMessage_IncompleteProfileItems"
+    },
 
-  {
-    "Value": "نوع",
-    "Key": "AlertAndMessage_Type"
-  },
-  {
-    "Value": "انتخاب کنید ...",
-    "Key": "Choose"
-  },
-  {
-    "Value": "کوپن کاربران",
-    "Key": "UserCoupons"
-  },
-  {
-    "Value": "نام گروه مشخصات محصول",
-    "Key": "SpecificationGroupName"
-  },
-  {
-    "Value": "گروه مشخصات",
-    "Key": "SpecificationGroup"
-  },
-  {
-    "Value": "افزودن تخفیفات و جشنواره ها",
-    "Key": "AddPromotion_Title"
-  },
-  {
-    "Value": "بعنوان کوپن برای کاربر",
-    "Key": "Promotion_AsUserCoupon"
-  },
-  {
-    "Value": "کد کوپن",
-    "Key": "Promotion_Code"
-  },
-  {
-    "Value": "ویرایش تخفیفات و جشنواره ها",
-    "Key": "EditPromotion_Title"
-  },
-  {
-    "Value": "افزودن نظر",
-    "Key": "AddComment_Title"
-  },
-  {
-    "Value": "افزودن گروه مشخصات محصول",
-    "Key": "AddProSpecGroupPart_Title"
-  },
-  {
-    "Value": "ویرایش گروه مشخصات محصول",
-    "Key": "EditProSpecGroupPart_Title"
-  },
-  {
-    "Value": "افزودن نقش",
-    "Key": "AddPermissionPart_Title"
-  },
-  {
-    "Value": "افزودن گروه محصول",
-    "Key": "AddProductGroupPart_Title"
-  },
-  {
-    "Value": "افزودن منوهای فروشگاه",
-    "Key": "AddMenu_Title"
-  },
-  {
-    "Value": "ویرایش گروه محصول",
-    "Key": "EditProductGroupPart_Title"
-  },
-  {
-    "Value": "ویرایش دامنه",
-    "Key": "EditDomain_Title"
-  },
-  {
-    "Value": "ویرایش تنظیمات حمل بار",
-    "Key": "Edit_ShippingSetting"
-  },
-  {
-    "Value": "افزودن تنظیمات حمل بار",
-    "Key": "Add_ShippingSetting"
-  },
-  {
-    "Value": "ویرایش محصول",
-    "Key": "EditProductPart_Title"
-  },
-  {
-    "Value": "ویرایش گروه محتوا",
-    "Key": "EditContentCategory_Title"
-  },
-  {
-    "Value": "ویرایش منوهای فروشگاه",
-    "Key": "EditMenu_Title"
-  },
-  {
-    "Value": "افزودن گروه محتوا",
-    "Key": "AddContentCategory_Title"
-  },
-  {
-    "Value": "ویرایش محتوا",
-    "Key": "EditContent_Title"
-  },
-  {
-    "Value": "افزودن محتوا",
-    "Key": "AddContent_Title"
-  },
-  {
-    "Value": "افزودن محصول",
-    "Key": "AddProductPart_Title"
-  },
-  {
-    "Value": "افزودن مشخصات محصول",
-    "Key": "AddProductSpecificationPart_Title"
-  },
-  {
-    "Value": "ویرایش مشخصات محصول",
-    "Key": "EditProductSpecificationPart_Title"
-  },
-  {
-    "Value": "افزودن واحد محصول",
-    "Key": "AddProductUnitPart_Title"
-  },
-  {
-    "Value": "افزودن دامنه",
-    "Key": "AddDomain_Title"
-  },
-  {
-    "Value": "ویرایش واحد محصول",
-    "Key": "EditProductUnitPart_Title"
-  },
-  {
-    "Value": "ویرایش نقش",
-    "Key": "EditPermissionPart_Title"
-  },
-  {
-    "Value": "افزودن کاربر",
-    "Key": "AddUserPart_Title"
-  },
-  {
-    "Value": "اضافه کردن نقش",
-    "Key": "AddRolePart_Title"
-  },
-  {
-    "Value": "ویرایش نقش",
-    "Key": "EditRolePart_Title"
-  },
-  {
-    "Value": "عنوان دسترسی",
-    "Key": "Permission_Name"
-  },
-  {
-    "Value": "آدرس کلاینت",
-    "Key": "Permission_ClientAddress"
-  },
-  {
-    "Value": "نام واحد محصول",
-    "Key": "ProductUnit_Name"
-  },
-  {
-    "Value": "نام نقش",
-    "Key": "Role_Name"
-  },
-  {
-    "Value": "ویرایش نقش ها",
-    "Key": "Role_Edit"
-  },
-  {
-    "Value": "حذف نقش",
-    "Key": "Role_Delete"
-  },
-  {
-    "Value": "کاربر ایجادکننده",
-    "Key": "Role_CreatorUserName"
-  },
-  {
-    "Value": "کاربر سایت است؟",
-    "Key": "User_IsSiteUser"
-  },
-  {
-    "Value": "کپچا",
-    "Key": "User_Captcha"
-  },
-  {
-    "Value": "موبایل",
-    "Key": "User_CellPhoneNumber"
-  },
-  {
-    "Value": "نام",
-    "Key": "User_FirstName"
-  },
-  {
-    "Value": "پنل مدیریت",
-    "Key": "User_ManagementPanel"
-  },
-  {
-    "Value": "نام پدر",
-    "Key": "User_FatherName"
-  },
-  {
-    "Value": "نام خانوادگی",
-    "Key": "User_LastName"
-  },
-  {
-    "Value": "تلفن همراه",
-    "Key": "User_PhoneNumber"
-  },
-  {
-    "Value": "نام کاربری",
-    "Key": "User_UserName"
-  },
-  {
-    "Value": "رمز عبور",
-    "Key": "User_Password"
-  },
-  {
-    "Value": "تکرار رمز عبور",
-    "Key": "User_RePassword"
-  },
-  {
-    "Value": "نام و نام خانوادگی",
-    "Key": "User_FullName"
-  },
-  {
-    "Value": "نام نقش",
-    "Key": "User_RoleName"
-  },
-  {
-    "Value": "تاریخ تولد",
-    "Key": "User_BirthDate"
-  },
-  {
-    "Value": "حاصل ؟",
-    "Key": "User_ResultOfSum"
-  },
-  {
-    "Value": "وضعیت",
-    "Key": "ActivationState"
-  },
-  {
-    "Value": "عنوان",
-    "Key": "Title"
-  },
-  {
-    "Value": "محصول/محتوا",
-    "Key": "SubName"
-  },
-  {
-    "Value": "گروه محصول/محتوا",
-    "Key": "SubGroupName"
-  },
-  {
-    "Value": "توضیحات",
-    "Key": "Description"
-  },
-  {
-    "Value": "فعال",
-    "Key": "Active"
-  },
-  {
-    "Value": "تعداد برای نمایش",
-    "Key": "CountToShow"
-  },
-  {
-    "Value": "قالب نمایش",
-    "Key": "ViewTemplate"
-  },
-  {
-    "Value": "همه",
-    "Key": "All"
-  },
-  {
-    "Value": "نمایش",
-    "Key": "Show"
-  },
-  {
-    "Value": "از",
-    "Key": "From"
-  },
-  {
-    "Value": "تا",
-    "Key": "To"
-  },
-  {
-    "Value": "آیتم",
-    "Key": "Item"
-  },
-  {
-    "Value": "دانلود",
-    "Key": "Download"
-  },
-  {
-    "Value": "دریافت قالب فایل اکسل محصولات",
-    "Key": "GetExcelTemplate"
-  },
-  {
-    "Value": "یا",
-    "Key": "Or"
-  },
-  {
-    "Value": "مالک دامنه",
-    "Key": "DomainOwner"
-  },
-  {
-    "Value": "نام دامنه",
-    "Key": "DomainName"
-  },
-  {
-    "Value": "اطلاعات اکانت SMTP دامنه",
-    "Key": "DomainSMTPAcc"
-  },
-  {
-    "Value": "سرور SMTP",
-    "Key": "SMTPServer"
-  },
-  {
-    "Value": "پورت سرور",
-    "Key": "ServerPort"
-  },
-  {
-    "Value": "نام نمایشی",
-    "Key": "DisplayName"
-  },
-  {
-    "Value": "نوع رمزگزاری",
-    "Key": "EncryptionType"
-  },
-  {
-    "Value": "تغییر تصویر",
-    "Key": "ChangeImage"
-  },
-  {
-    "Value": "لوگوی محتوا",
-    "Key": "FileLogo"
-  },
-  {
-    "Value": "تصویر گروه",
-    "Key": "GroupImage"
-  },
-  {
-    "Value": "تعداد پسندها",
-    "Key": "LikeCount"
-  },
-  {
-    "Value": "تعداد ناپسندها",
-    "Key": "DisLikeCount"
-  },
-  {
-    "Value": "نوع نظر",
-    "Key": "ReferenceType"
-  },
-  {
-    "Value": "عنوان مرجع",
-    "Key": "ReferenceTitle"
-  },
-  {
-    "Value": "تایید",
-    "Key": "IsApproved"
-  },
-  {
-    "Value": "نوع صاحب محتوا",
-    "Key": "SourceType"
-  },
-  {
-    "Value": "نام تولیدکننده محتوا",
-    "Key": "ContentProviderName"
-  },
-  {
-    "Value": "تاریخ شروع نمایش",
-    "Key": "StartShowDate"
-  },
-  {
-    "Value": "تاریخ پایان نمایش",
-    "Key": "EndShowDate"
-  },
-  {
-    "Value": "کلمات کلیدی",
-    "Key": "TagKeywords"
-  },
-  {
-    "Value": "محصولات پروموشن دار",
-    "Key": "ProductsInPromotion"
-  },
-  {
-    "Value": "مقدار",
-    "Key": "Value"
-  },
-  {
-    "Value": "محصول",
-    "Key": "Product"
-  },
-  {
-    "Value": "تعداد خرید",
-    "Key": "BoughtCount"
-  },
-  {
-    "Value": "تعداد محصول رایگان",
-    "Key": "PromotedCountofUnit"
-  },
-  {
-    "Value": "تصویر",
-    "Key": "Image"
-  },
-  {
-    "Value": "تصویر اصلی",
-    "Key": "MainPhoto"
-  },
-  {
-    "Value": "غیر فعال",
-    "Key": "InActive"
-  },
-  {
-    "Value": "فروشنده است؟",
-    "Key": "IsVendor"
-  },
-  {
-    "Value": "فایل محصول",
-    "Key": "ProductFile"
-  },
-  {
-    "Value": "نام فایل محصول",
-    "Key": "ProductFileName"
-  },
-  {
-    "Value": "فروشنده محصول",
-    "Key": "ProductVendor"
-  },
-  {
-    "Value": "تاریخچه قیمت",
-    "Key": "PriceHistory"
-  },
-  {
-    "Value": "نمایش در صورت عدم موجودی",
-    "Key": "ShowInLackOfInventory"
-  },
-  {
-    "Value": "کمبود موجودی کالا",
-    "Key": "LackOfProductInventory"
-  },
-  {
-    "Value": "صفات چند زبانه",
-    "Key": "MultiLingualProperty"
-  },
-  {
-    "Value": "افزودن زبان دیگر",
-    "Key": "AddExtraLanguage"
-  },
-  {
-    "Value": "گروه والد",
-    "Key": "ParentGroup"
-  },
-  {
-    "Value": "منوی والد",
-    "Key": "ParentMenu"
-  },
-  {
-    "Value": "عنوان منوی والد",
-    "Key": "ParentMenuTitle"
-  },
-  {
-    "Value": "نوع منو",
-    "Key": "MenuType"
-  },
-  {
-    "Value": "نظر والد",
-    "Key": "ParentComment"
-  },
-  {
-    "Value": "محتوای نظر",
-    "Key": "ContentComment"
-  },
-  {
-    "Value": "نام دسته بندی والد",
-    "Key": "ParentCategoryName"
-  },
-  {
-    "Value": "نام",
-    "Key": "Name"
-  },
-  {
-    "Value": "نوع کنترل در UI",
-    "Key": "UIControlType"
-  },
-  {
-    "Value": "از تاریخ ایجاد",
-    "Key": "fromCreationDate"
-  },
-  {
-    "Value": "تا تاریخ ایجاد",
-    "Key": "toCreationDate"
-  },
-  {
-    "Value": "محصولات تخفبف دار",
-    "Key": "ProductWithDiscount"
-  },
-  {
-    "Value": "محصولات موجود",
-    "Key": "ExistentProducts"
-  },
-  {
-    "Value": "تخفیفات و جشنواره ها",
-    "Key": "Promotion"
-  },
-  {
-    "Value": "محصولات دارای ترفیع",
-    "Key": "ProductsOnPromotion"
-  },
-  {
-    "Value": "موجودی کمتر از",
-    "Key": "ProductInventoryLessThan"
-  },
-  {
-    "Value": "توضیحات سئو",
-    "Key": "SeoDescription"
-  },
-  {
-    "Value": "عنوان سئو",
-    "Key": "SeoTitle"
-  },
-  {
-    "Value": "UrlFriend",
-    "Key": "UrlFriend"
-  },
-  {
-    "Value": "Url",
-    "Key": "Url"
-  },
-  {
-    "Value": "بله",
-    "Key": "Yes"
-  },
-  {
-    "Value": "خیر",
-    "Key": "No"
-  },
-  {
-    "Value": "واحد پول",
-    "Key": "Currency"
-  },
-  {
-    "Value": "نوع",
-    "Key": "Type"
-  },
-  {
-    "Value": "نوع تخفیف",
-    "Key": "DiscountType"
-  },
-  {
-    "Value": "تخفیف",
-    "Key": "Discount"
-  },
-  {
-    "Value": "محصول پروموشن دار",
-    "Key": "AffectedProductName"
-  },
-  {
-    "Value": "گروه محصول پروموشن دار",
-    "Key": "AffectedProductGroupName"
-  },
-  {
-    "Value": "محصول رایگان",
-    "Key": "PromotedProductName"
-  },
-  {
-    "Value": "طبقه بندی",
-    "Key": "Classification"
-  },
-  {
-    "Value": "واحد پول پیش فرض",
-    "Key": "DefaultCurrency"
-  },
-  {
-    "Value": "دامنه پیش فرض",
-    "Key": "DefaultDomain"
-  },
-  {
-    "Value": "قیمت",
-    "Key": "PriceValue"
-  },
-  {
-    "Value": "نقش های کاربری",
-    "Key": "User_Roles"
-  },
-  {
-    "Value": "شماره موبایل کامل",
-    "Key": "User_FullMobile"
-  },
-  {
-    "Value": "نقش کاربر",
-    "Key": "User_Role"
-  },
-  {
-    "Value": "ثبت نام",
-    "Key": "User_Signup"
-  },
-  {
-    "Value": "ورود/ ثبت نام",
-    "Key": "User_LoginRegister"
-  },
-  {
-    "Value": "از تاریخ",
-    "Key": "FromDate"
-  },
-  {
-    "Value": "تا تاریخ",
-    "Key": "ToDate"
-  },
-  {
-    "Value": "بازگردانی",
-    "Key": "Restore"
-  },
-  {
-    "Value": "تاریخ ثبت",
-    "Key": "CreationDate"
-  },
-  {
-    "Value": "ویرایش کاربر",
-    "Key": "User_Edit"
-  },
-  {
-    "Value": "تغییر کلمه عبور",
-    "Key": "User_ChangePass"
-  },
+    {
+        "Value": "نوع",
+        "Key": "AlertAndMessage_Type"
+    },
+    {
+        "Value": "انتخاب کنید ...",
+        "Key": "Choose"
+    },
+    {
+        "Value": "کوپن کاربران",
+        "Key": "UserCoupons"
+    },
+    {
+        "Value": "نام گروه مشخصات محصول",
+        "Key": "SpecificationGroupName"
+    },
+    {
+        "Value": "گروه مشخصات",
+        "Key": "SpecificationGroup"
+    },
+    {
+        "Value": "افزودن تخفیفات و جشنواره ها",
+        "Key": "AddPromotion_Title"
+    },
+    {
+        "Value": "بعنوان کوپن برای کاربر",
+        "Key": "Promotion_AsUserCoupon"
+    },
+    {
+        "Value": "کد کوپن",
+        "Key": "Promotion_Code"
+    },
+    {
+        "Value": "ویرایش تخفیفات و جشنواره ها",
+        "Key": "EditPromotion_Title"
+    },
+    {
+        "Value": "افزودن نظر",
+        "Key": "AddComment_Title"
+    },
+    {
+        "Value": "افزودن گروه مشخصات محصول",
+        "Key": "AddProSpecGroupPart_Title"
+    },
+    {
+        "Value": "ویرایش گروه مشخصات محصول",
+        "Key": "EditProSpecGroupPart_Title"
+    },
+    {
+        "Value": "افزودن نقش",
+        "Key": "AddPermissionPart_Title"
+    },
+    {
+        "Value": "افزودن گروه محصول",
+        "Key": "AddProductGroupPart_Title"
+    },
+    {
+        "Value": "افزودن منوهای فروشگاه",
+        "Key": "AddMenu_Title"
+    },
+    {
+        "Value": "ویرایش گروه محصول",
+        "Key": "EditProductGroupPart_Title"
+    },
+    {
+        "Value": "ویرایش دامنه",
+        "Key": "EditDomain_Title"
+    },
+    {
+        "Value": "ویرایش تنظیمات حمل بار",
+        "Key": "Edit_ShippingSetting"
+    },
+    {
+        "Value": "افزودن تنظیمات حمل بار",
+        "Key": "Add_ShippingSetting"
+    },
+    {
+        "Value": "ویرایش محصول",
+        "Key": "EditProductPart_Title"
+    },
+    {
+        "Value": "ویرایش گروه محتوا",
+        "Key": "EditContentCategory_Title"
+    },
+    {
+        "Value": "ویرایش منوهای فروشگاه",
+        "Key": "EditMenu_Title"
+    },
+    {
+        "Value": "افزودن گروه محتوا",
+        "Key": "AddContentCategory_Title"
+    },
+    {
+        "Value": "ویرایش محتوا",
+        "Key": "EditContent_Title"
+    },
+    {
+        "Value": "افزودن محتوا",
+        "Key": "AddContent_Title"
+    },
+    {
+        "Value": "افزودن محصول",
+        "Key": "AddProductPart_Title"
+    },
+    {
+        "Value": "افزودن مشخصات محصول",
+        "Key": "AddProductSpecificationPart_Title"
+    },
+    {
+        "Value": "ویرایش مشخصات محصول",
+        "Key": "EditProductSpecificationPart_Title"
+    },
+    {
+        "Value": "افزودن واحد محصول",
+        "Key": "AddProductUnitPart_Title"
+    },
+    {
+        "Value": "افزودن دامنه",
+        "Key": "AddDomain_Title"
+    },
+    {
+        "Value": "ویرایش واحد محصول",
+        "Key": "EditProductUnitPart_Title"
+    },
+    {
+        "Value": "ویرایش نقش",
+        "Key": "EditPermissionPart_Title"
+    },
+    {
+        "Value": "افزودن کاربر",
+        "Key": "AddUserPart_Title"
+    },
+    {
+        "Value": "اضافه کردن نقش",
+        "Key": "AddRolePart_Title"
+    },
+    {
+        "Value": "ویرایش نقش",
+        "Key": "EditRolePart_Title"
+    },
+    {
+        "Value": "عنوان دسترسی",
+        "Key": "Permission_Name"
+    },
+    {
+        "Value": "آدرس کلاینت",
+        "Key": "Permission_ClientAddress"
+    },
+    {
+        "Value": "نام واحد محصول",
+        "Key": "ProductUnit_Name"
+    },
+    {
+        "Value": "نام نقش",
+        "Key": "Role_Name"
+    },
+    {
+        "Value": "ویرایش نقش ها",
+        "Key": "Role_Edit"
+    },
+    {
+        "Value": "حذف نقش",
+        "Key": "Role_Delete"
+    },
+    {
+        "Value": "کاربر ایجادکننده",
+        "Key": "Role_CreatorUserName"
+    },
+    {
+        "Value": "کاربر سایت است؟",
+        "Key": "User_IsSiteUser"
+    },
+    {
+        "Value": "کپچا",
+        "Key": "User_Captcha"
+    },
+    {
+        "Value": "موبایل",
+        "Key": "User_CellPhoneNumber"
+    },
+    {
+        "Value": "نام",
+        "Key": "User_FirstName"
+    },
+    {
+        "Value": "پنل مدیریت",
+        "Key": "User_ManagementPanel"
+    },
+    {
+        "Value": "نام پدر",
+        "Key": "User_FatherName"
+    },
+    {
+        "Value": "نام خانوادگی",
+        "Key": "User_LastName"
+    },
+    {
+        "Value": "تلفن همراه",
+        "Key": "User_PhoneNumber"
+    },
+    {
+        "Value": "نام کاربری",
+        "Key": "User_UserName"
+    },
+    {
+        "Value": "رمز عبور",
+        "Key": "User_Password"
+    },
+    {
+        "Value": "تکرار رمز عبور",
+        "Key": "User_RePassword"
+    },
+    {
+        "Value": "نام و نام خانوادگی",
+        "Key": "User_FullName"
+    },
+    {
+        "Value": "نام نقش",
+        "Key": "User_RoleName"
+    },
+    {
+        "Value": "تاریخ تولد",
+        "Key": "User_BirthDate"
+    },
+    {
+        "Value": "حاصل ؟",
+        "Key": "User_ResultOfSum"
+    },
+    {
+        "Value": "وضعیت",
+        "Key": "ActivationState"
+    },
+    {
+        "Value": "عنوان",
+        "Key": "Title"
+    },
+    {
+        "Value": "محصول/محتوا",
+        "Key": "SubName"
+    },
+    {
+        "Value": "گروه محصول/محتوا",
+        "Key": "SubGroupName"
+    },
+    {
+        "Value": "توضیحات",
+        "Key": "Description"
+    },
+    {
+        "Value": "فعال",
+        "Key": "Active"
+    },
+    {
+        "Value": "تعداد برای نمایش",
+        "Key": "CountToShow"
+    },
+    {
+        "Value": "قالب نمایش",
+        "Key": "ViewTemplate"
+    },
+    {
+        "Value": "همه",
+        "Key": "All"
+    },
+    {
+        "Value": "نمایش",
+        "Key": "Show"
+    },
+    {
+        "Value": "از",
+        "Key": "From"
+    },
+    {
+        "Value": "تا",
+        "Key": "To"
+    },
+    {
+        "Value": "آیتم",
+        "Key": "Item"
+    },
+    {
+        "Value": "دانلود",
+        "Key": "Download"
+    },
+    {
+        "Value": "دریافت قالب فایل اکسل محصولات",
+        "Key": "GetExcelTemplate"
+    },
+    {
+        "Value": "یا",
+        "Key": "Or"
+    },
+    {
+        "Value": "مالک دامنه",
+        "Key": "DomainOwner"
+    },
+    {
+        "Value": "نام دامنه",
+        "Key": "DomainName"
+    },
+    {
+        "Value": "اطلاعات اکانت SMTP دامنه",
+        "Key": "DomainSMTPAcc"
+    },
+    {
+        "Value": "سرور SMTP",
+        "Key": "SMTPServer"
+    },
+    {
+        "Value": "پورت سرور",
+        "Key": "ServerPort"
+    },
+    {
+        "Value": "نام نمایشی",
+        "Key": "DisplayName"
+    },
+    {
+        "Value": "نوع رمزگزاری",
+        "Key": "EncryptionType"
+    },
+    {
+        "Value": "تغییر تصویر",
+        "Key": "ChangeImage"
+    },
+    {
+        "Value": "لوگوی محتوا",
+        "Key": "FileLogo"
+    },
+    {
+        "Value": "تصویر گروه",
+        "Key": "GroupImage"
+    },
+    {
+        "Value": "تعداد پسندها",
+        "Key": "LikeCount"
+    },
+    {
+        "Value": "تعداد ناپسندها",
+        "Key": "DisLikeCount"
+    },
+    {
+        "Value": "نوع نظر",
+        "Key": "ReferenceType"
+    },
+    {
+        "Value": "عنوان مرجع",
+        "Key": "ReferenceTitle"
+    },
+    {
+        "Value": "تایید",
+        "Key": "IsApproved"
+    },
+    {
+        "Value": "نوع صاحب محتوا",
+        "Key": "SourceType"
+    },
+    {
+        "Value": "نام تولیدکننده محتوا",
+        "Key": "ContentProviderName"
+    },
+    {
+        "Value": "تاریخ شروع نمایش",
+        "Key": "StartShowDate"
+    },
+    {
+        "Value": "تاریخ پایان نمایش",
+        "Key": "EndShowDate"
+    },
+    {
+        "Value": "کلمات کلیدی",
+        "Key": "TagKeywords"
+    },
+    {
+        "Value": "محصولات پروموشن دار",
+        "Key": "ProductsInPromotion"
+    },
+    {
+        "Value": "مقدار",
+        "Key": "Value"
+    },
+    {
+        "Value": "محصول",
+        "Key": "Product"
+    },
+    {
+        "Value": "تعداد خرید",
+        "Key": "BoughtCount"
+    },
+    {
+        "Value": "تعداد محصول رایگان",
+        "Key": "PromotedCountofUnit"
+    },
+    {
+        "Value": "تصویر",
+        "Key": "Image"
+    },
+    {
+        "Value": "تصویر اصلی",
+        "Key": "MainPhoto"
+    },
+    {
+        "Value": "غیر فعال",
+        "Key": "InActive"
+    },
+    {
+        "Value": "فروشنده است؟",
+        "Key": "IsVendor"
+    },
+    {
+        "Value": "فایل محصول",
+        "Key": "ProductFile"
+    },
+    {
+        "Value": "نام فایل محصول",
+        "Key": "ProductFileName"
+    },
+    {
+        "Value": "فروشنده محصول",
+        "Key": "ProductVendor"
+    },
+    {
+        "Value": "تاریخچه قیمت",
+        "Key": "PriceHistory"
+    },
+    {
+        "Value": "نمایش در صورت عدم موجودی",
+        "Key": "ShowInLackOfInventory"
+    },
+    {
+        "Value": "کمبود موجودی کالا",
+        "Key": "LackOfProductInventory"
+    },
+    {
+        "Value": "صفات چند زبانه",
+        "Key": "MultiLingualProperty"
+    },
+    {
+        "Value": "افزودن زبان دیگر",
+        "Key": "AddExtraLanguage"
+    },
+    {
+        "Value": "گروه والد",
+        "Key": "ParentGroup"
+    },
+    {
+        "Value": "منوی والد",
+        "Key": "ParentMenu"
+    },
+    {
+        "Value": "عنوان منوی والد",
+        "Key": "ParentMenuTitle"
+    },
+    {
+        "Value": "نوع منو",
+        "Key": "MenuType"
+    },
+    {
+        "Value": "نظر والد",
+        "Key": "ParentComment"
+    },
+    {
+        "Value": "محتوای نظر",
+        "Key": "ContentComment"
+    },
+    {
+        "Value": "نام دسته بندی والد",
+        "Key": "ParentCategoryName"
+    },
+    {
+        "Value": "نام",
+        "Key": "Name"
+    },
+    {
+        "Value": "نوع کنترل در UI",
+        "Key": "UIControlType"
+    },
+    {
+        "Value": "از تاریخ ایجاد",
+        "Key": "fromCreationDate"
+    },
+    {
+        "Value": "تا تاریخ ایجاد",
+        "Key": "toCreationDate"
+    },
+    {
+        "Value": "محصولات تخفبف دار",
+        "Key": "ProductWithDiscount"
+    },
+    {
+        "Value": "محصولات موجود",
+        "Key": "ExistentProducts"
+    },
+    {
+        "Value": "تخفیفات و جشنواره ها",
+        "Key": "Promotion"
+    },
+    {
+        "Value": "محصولات دارای ترفیع",
+        "Key": "ProductsOnPromotion"
+    },
+    {
+        "Value": "موجودی کمتر از",
+        "Key": "ProductInventoryLessThan"
+    },
+    {
+        "Value": "توضیحات سئو",
+        "Key": "SeoDescription"
+    },
+    {
+        "Value": "عنوان سئو",
+        "Key": "SeoTitle"
+    },
+    {
+        "Value": "UrlFriend",
+        "Key": "UrlFriend"
+    },
+    {
+        "Value": "Url",
+        "Key": "Url"
+    },
+    {
+        "Value": "بله",
+        "Key": "Yes"
+    },
+    {
+        "Value": "خیر",
+        "Key": "No"
+    },
+    {
+        "Value": "واحد پول",
+        "Key": "Currency"
+    },
+    {
+        "Value": "نوع",
+        "Key": "Type"
+    },
+    {
+        "Value": "نوع تخفیف",
+        "Key": "DiscountType"
+    },
+    {
+        "Value": "تخفیف",
+        "Key": "Discount"
+    },
+    {
+        "Value": "محصول پروموشن دار",
+        "Key": "AffectedProductName"
+    },
+    {
+        "Value": "گروه محصول پروموشن دار",
+        "Key": "AffectedProductGroupName"
+    },
+    {
+        "Value": "محصول رایگان",
+        "Key": "PromotedProductName"
+    },
+    {
+        "Value": "طبقه بندی",
+        "Key": "Classification"
+    },
+    {
+        "Value": "واحد پول پیش فرض",
+        "Key": "DefaultCurrency"
+    },
+    {
+        "Value": "دامنه پیش فرض",
+        "Key": "DefaultDomain"
+    },
+    {
+        "Value": "قیمت",
+        "Key": "PriceValue"
+    },
+    {
+        "Value": "نقش های کاربری",
+        "Key": "User_Roles"
+    },
+    {
+        "Value": "شماره موبایل کامل",
+        "Key": "User_FullMobile"
+    },
+    {
+        "Value": "نقش کاربر",
+        "Key": "User_Role"
+    },
+    {
+        "Value": "ثبت نام",
+        "Key": "User_Signup"
+    },
+    {
+        "Value": "ورود/ ثبت نام",
+        "Key": "User_LoginRegister"
+    },
+    {
+        "Value": "از تاریخ",
+        "Key": "FromDate"
+    },
+    {
+        "Value": "تا تاریخ",
+        "Key": "ToDate"
+    },
+    {
+        "Value": "بازگردانی",
+        "Key": "Restore"
+    },
+    {
+        "Value": "تاریخ ثبت",
+        "Key": "CreationDate"
+    },
+    {
+        "Value": "ویرایش کاربر",
+        "Key": "User_Edit"
+    },
+    {
+        "Value": "تغییر کلمه عبور",
+        "Key": "User_ChangePass"
+    },
 
-  {
-    "Value": "فیلتر",
-    "Key": "Filter"
-  },
-  {
-    "Value": "محتوا",
-    "Key": "Content"
-  },
-  {
-    "Value": "عنوان محتوا",
-    "Key": "ContentTitle"
-  },
-  {
-    "Value": "ویژگیهای محصول(توضیحات اضافه درباره محصول)",
-    "Key": "ProductSpecs"
-  },
-  {
-    "Value": "منوهای فروشگاه",
-    "Key": "Menu_StoreMenues"
-  },
-  {
-    "Value": "نظرات محصولات",
-    "Key": "Menu_ProductComments"
-  },
-  {
-    "Value": "نظرات محتوا",
-    "Key": "Menu_ContentComments"
-  },
-  {
-    "Value": "تخفیفات و جشنواره ها",
-    "Key": "Menu_Promotion"
-  },
-  {
-    "Value": "گروه مشخصات محصول",
-    "Key": "Menu_ProductSpecificationGroup"
-  },
-  {
-    "Value": "دسترسی ها",
-    "Key": "Menu_Permissions"
-  },
-  {
-    "Value": "محصولات",
-    "Key": "Menu_Products"
-  },
-  {
-    "Value": "محصول",
-    "Key": "Menu_Product"
-  },
-  {
-    "Value": "واحدهای محصول",
-    "Key": "Menu_ProductUnits"
-  },
-  {
-    "Value": "واحد محصول",
-    "Key": "Menu_ProductUnit"
-  },
-  {
-    "Value": "گروه های محصول",
-    "Key": "Menu_ProductGroups"
-  },
-  {
-    "Value": "دامنه ها",
-    "Key": "Menu_domains"
-  },
-  {
-    "Value": "تنظیمات حمل بار",
-    "Key": "Menu_ShippingSetting"
-  },
-  {
-    "Value": "گروه محتوا",
-    "Key": "Menu_ContentCategory"
-  },
-  {
-    "Value": "محتوا",
-    "Key": "Menu_Content"
-  },
-  {
-    "Value": "مشخصات محصول",
-    "Key": "Menu_ProductSpecifications"
-  },
-  {
-    "Value": "نقش ها",
-    "Key": "Menu_Roles"
-  },
-  {
-    "Value": "نقش",
-    "Key": "Role"
-  },
-  {
-    "Value": "پروفایل کاربری",
-    "Key": "Menu_Profile"
-  },
-  {
-    "Value": "سفارش های من",
-    "Key": "Menu_MyOrders"
-  },
-  {
-    "Value": "مسیرهای مختلف را با , از هم جداکنید.",
-    "Key": "Menu_RoutePlaceHolder"
-  },
-  {
-    "Value": "افزودن",
-    "Key": "Menu_Add"
-  },
-  {
-    "Value": "نام واحد پول",
-    "Key": "Menu_CurrencyName"
-  },
-  {
-    "Value": "پیشوند واحد پول",
-    "Key": "Menu_CurrencyPrefix"
-  },
-  {
-    "Value": "سیمبل واحد پول",
-    "Key": "Menu_CurrencySymbol"
-  },
-  {
-    "Value": "واحد پول پیش فرض",
-    "Key": "Menu_CurrencyIsDefault"
-  },
-  {
-    "Value": "آیکان",
-    "Key": "Menu_Icon"
-  },
-  {
-    "Value": "بدون تغییر",
-    "Key": "WithoutModification"
-  },
-  {
-    "Value": "سیستم مدیریت پورتال آراد",
-    "Key": "Menu_Dashboard_HomeTitle"
-  },
-  {
-    "Value": "امکان نظر دادن برای محتوا",
-    "Key": "Content_IsCommentBoxShowing"
-  },
-  {
-    "Value": "امکان امتیازدهی به محتوا",
-    "Key": "Content_IsRateBoxShowing"
-  },
-  {
-    "Value": "اسلایدر عکس نمایش داده شود؟",
-    "Key": "Content_IsSliderShowing"
-  },
-  {
-    "Value": "نمایش ماژول محتواهای گروه در کنار محتوای جاری",
-    "Key": "Content_IsSidebarContentsShowing"
-  },
-  {
-    "Value": "تعداد نمایش",
-    "Key": "Content_CountToShow"
-  },
-  {
-    "Value": "خروج",
-    "Key": "Exit"
-  },
-  {
-    "Value": "با خرید",
-    "Key": "byBuying"
-  },
-  {
-    "Value": "ناموجود",
-    "Key": "UnAvailable"
-  },
-  {
-    "Value": "غیرمجاز",
-    "Key": "UnAuthorize"
-  },
-  {
-    "Value": "هدیه :",
-    "Key": "AsGift"
-  },
-  {
-    "Value": "تاریخ شروع",
-    "Key": "StartDate"
-  },
-  {
-    "Value": "تاریخ پایان",
-    "Key": "EndDate"
-  },
-  {
-    "Value": "تصویر پروفایل",
-    "Key": "ProfilePic"
-  },
-  {
-    "Value": "ویرایش پروفایل کاربری",
-    "Key": "EditUserProfile"
-  },
-  {
-    "Value": "اطلاعات پایه",
-    "Key": "Title_BasicInfo"
-  },
-  {
-    "Value": "برش تصویر",
-    "Key": "CropImage"
-  },
-  {
-    "Value": "ترتیب",
-    "Key": "Order"
-  },
-  {
-    "Value": "جزییات سفارش",
-    "Key": "Order_Detail"
-  },
-  {
-    "Value": "تغییر وضعیت سفارش",
-    "Key": "Order_changeOrderStatus"
-  },
-  {
-    "Value": "تاریخ ثبت اولیه",
-    "Key": "Order_RegisteredDate"
-  },
-  {
-    "Value": "تخفبف واحد",
-    "Key": "Order_DiscountPerUnit"
-  },
-  {
-    "Value": "قیمت نهایی پس از تخفیف",
-    "Key": "Order_FinlaPriceAfterDiscount"
-  },
-  {
-    "Value": "شماره فاکتور",
-    "Key": "Order_InvoiceNumber"
-  },
-  {
-    "Value": "تاریخ پرداخت",
-    "Key": "Order_PaymentDate"
-  },
-  {
-    "Value": "نام کاربر",
-    "Key": "Order_UserFullName"
-  },
-  {
-    "Value": "نام کاربری",
-    "Key": "Order_UserName"
-  },
-  {
-    "Value": "مبلغ سفارش",
-    "Key": "Order_Amount"
-  },
-  {
-    "Value": "تعداد اقلام سفارش",
-    "Key": "Order_OrderItemCount"
-  },
-  {
-    "Value": "وضعیت پرداخت",
-    "Key": "Order_PaymentStatus"
-  },
-  {
-    "Value": "وضعیت سفارش",
-    "Key": "Order_OrderStatus"
-  },
-  {
-    "Value": "تعداد سفارش",
-    "Key": "OrderCnt"
-  },
-  {
-    "Value": "برگشت",
-    "Key": "Return"
-  },
-  {
-    "Value": "جستجو",
-    "Key": "Search"
-  },
-  {
-    "Value": "زبان مربوطه",
-    "Key": "RelatedLanguage"
-  },
-  {
-    "Value": "قیمت جاری دامنه",
-    "Key": "CurrentDomainPrice"
-  },
-  {
-    "Value": "دامنه مربوطه",
-    "Key": "AssociatedDomain"
-  },
-  {
-    "Value": "زبان پیش فرض",
-    "Key": "DefaultLanguage"
-  },
-  {
-    "Value": "روش حمل پیش فرض",
-    "Key": "DefaultShippingType"
-  },
-  {
-    "Value": "زبان فایل قالب محصولات",
-    "Key": "ProductTemplateLanguage"
-  },
-  {
-    "Value": "نام زبان",
-    "Key": "LanguageName"
-  },
-  {
-    "Value": "نوع محصول",
-    "Key": "ProductType"
-  },
-  {
-    "Value": "محدودیت دانلود",
-    "Key": "DownloadLimitation"
-  },
-  {
-    "Value": "تعداد روز مجاز برای  دانلود",
-    "Key": "AllowedDownloadDuration"
-  },
-  {
-    "Value": "تعداد دفعات مجاز برای دانلود",
-    "Key": "AllowedDownloadNumber"
-  },
-  {
-    "Value": "زبان مبدا برای کپی",
-    "Key": "LanguageToCopy"
-  },
-  {
-    "Value": "تغییر گذرواژه",
-    "Key": "ChangePassword"
-  },
-  {
-    "Value": "ذخیره",
-    "Key": "Save"
-  },
-  {
-    "Value": "رمز عبور جاری",
-    "Key": "ChangePassword_CurrentPassword"
-  },
-  {
-    "Value": "رمز عبور جدید",
-    "Key": "ChangePassword_NewPassword"
-  },
-  {
-    "Value": "تکرار رمز عبور",
-    "Key": "ChangePassword_ConfirmPassword"
-  },
-  {
-    "Value": "ایجاد گذر واژه توسط سیستم",
-    "Key": "ChangePassword_CreatePasswordBySystem"
-  },
-  {
-    "Value": "گذر واژه ایجاد شده شما : {0} برای کپی اینجا را کلیک کنید.",
-    "Key": "ChangePassword_CreatePasswordBySystemCopy"
-  },
-  {
-    "Value": "عنوان",
-    "Key": "Entities_Title"
-  },
-  {
-    "Value": "زیرنویس",
-    "Key": "Entities_SubTitle"
-  },
-  {
-    "Value": "تغییرات",
-    "Key": "TableHeader_Modifications"
-  },
+    {
+        "Value": "فیلتر",
+        "Key": "Filter"
+    },
+    {
+        "Value": "محتوا",
+        "Key": "Content"
+    },
+    {
+        "Value": "عنوان محتوا",
+        "Key": "ContentTitle"
+    },
+    {
+        "Value": "ویژگیهای محصول(توضیحات اضافه درباره محصول)",
+        "Key": "ProductSpecs"
+    },
+    {
+        "Value": "منوهای فروشگاه",
+        "Key": "Menu_StoreMenues"
+    },
+    {
+        "Value": "نظرات محصولات",
+        "Key": "Menu_ProductComments"
+    },
+    {
+        "Value": "نظرات محتوا",
+        "Key": "Menu_ContentComments"
+    },
+    {
+        "Value": "تخفیفات و جشنواره ها",
+        "Key": "Menu_Promotion"
+    },
+    {
+        "Value": "گروه مشخصات محصول",
+        "Key": "Menu_ProductSpecificationGroup"
+    },
+    {
+        "Value": "دسترسی ها",
+        "Key": "Menu_Permissions"
+    },
+    {
+        "Value": "محصولات",
+        "Key": "Menu_Products"
+    },
+    {
+        "Value": "محصول",
+        "Key": "Menu_Product"
+    },
+    {
+        "Value": "واحدهای محصول",
+        "Key": "Menu_ProductUnits"
+    },
+    {
+        "Value": "واحد محصول",
+        "Key": "Menu_ProductUnit"
+    },
+    {
+        "Value": "گروه های محصول",
+        "Key": "Menu_ProductGroups"
+    },
+    {
+        "Value": "دامنه ها",
+        "Key": "Menu_domains"
+    },
+    {
+        "Value": "تنظیمات حمل بار",
+        "Key": "Menu_ShippingSetting"
+    },
+    {
+        "Value": "گروه محتوا",
+        "Key": "Menu_ContentCategory"
+    },
+    {
+        "Value": "محتوا",
+        "Key": "Menu_Content"
+    },
+    {
+        "Value": "مشخصات محصول",
+        "Key": "Menu_ProductSpecifications"
+    },
+    {
+        "Value": "نقش ها",
+        "Key": "Menu_Roles"
+    },
+    {
+        "Value": "نقش",
+        "Key": "Role"
+    },
+    {
+        "Value": "پروفایل کاربری",
+        "Key": "Menu_Profile"
+    },
+    {
+        "Value": "سفارش های من",
+        "Key": "Menu_MyOrders"
+    },
+    {
+        "Value": "مسیرهای مختلف را با , از هم جداکنید.",
+        "Key": "Menu_RoutePlaceHolder"
+    },
+    {
+        "Value": "افزودن",
+        "Key": "Menu_Add"
+    },
+    {
+        "Value": "نام واحد پول",
+        "Key": "Menu_CurrencyName"
+    },
+    {
+        "Value": "پیشوند واحد پول",
+        "Key": "Menu_CurrencyPrefix"
+    },
+    {
+        "Value": "سیمبل واحد پول",
+        "Key": "Menu_CurrencySymbol"
+    },
+    {
+        "Value": "واحد پول پیش فرض",
+        "Key": "Menu_CurrencyIsDefault"
+    },
+    {
+        "Value": "آیکان",
+        "Key": "Menu_Icon"
+    },
+    {
+        "Value": "بدون تغییر",
+        "Key": "WithoutModification"
+    },
+    {
+        "Value": "سیستم مدیریت پورتال آراد",
+        "Key": "Menu_Dashboard_HomeTitle"
+    },
+    {
+        "Value": "امکان نظر دادن برای محتوا",
+        "Key": "Content_IsCommentBoxShowing"
+    },
+    {
+        "Value": "امکان امتیازدهی به محتوا",
+        "Key": "Content_IsRateBoxShowing"
+    },
+    {
+        "Value": "اسلایدر عکس نمایش داده شود؟",
+        "Key": "Content_IsSliderShowing"
+    },
+    {
+        "Value": "نمایش ماژول محتواهای گروه در کنار محتوای جاری",
+        "Key": "Content_IsSidebarContentsShowing"
+    },
+    {
+        "Value": "تعداد نمایش",
+        "Key": "Content_CountToShow"
+    },
+    {
+        "Value": "خروج",
+        "Key": "Exit"
+    },
+    {
+        "Value": "با خرید",
+        "Key": "byBuying"
+    },
+    {
+        "Value": "ناموجود",
+        "Key": "UnAvailable"
+    },
+    {
+        "Value": "غیرمجاز",
+        "Key": "UnAuthorize"
+    },
+    {
+        "Value": "هدیه :",
+        "Key": "AsGift"
+    },
+    {
+        "Value": "تاریخ شروع",
+        "Key": "StartDate"
+    },
+    {
+        "Value": "تاریخ پایان",
+        "Key": "EndDate"
+    },
+    {
+        "Value": "تصویر پروفایل",
+        "Key": "ProfilePic"
+    },
+    {
+        "Value": "ویرایش پروفایل کاربری",
+        "Key": "EditUserProfile"
+    },
+    {
+        "Value": "اطلاعات پایه",
+        "Key": "Title_BasicInfo"
+    },
+    {
+        "Value": "برش تصویر",
+        "Key": "CropImage"
+    },
+    {
+        "Value": "ترتیب",
+        "Key": "Order"
+    },
+    {
+        "Value": "جزییات سفارش",
+        "Key": "Order_Detail"
+    },
+    {
+        "Value": "تغییر وضعیت سفارش",
+        "Key": "Order_changeOrderStatus"
+    },
+    {
+        "Value": "تاریخ ثبت اولیه",
+        "Key": "Order_RegisteredDate"
+    },
+    {
+        "Value": "تخفبف واحد",
+        "Key": "Order_DiscountPerUnit"
+    },
+    {
+        "Value": "قیمت نهایی پس از تخفیف",
+        "Key": "Order_FinlaPriceAfterDiscount"
+    },
+    {
+        "Value": "شماره فاکتور",
+        "Key": "Order_InvoiceNumber"
+    },
+    {
+        "Value": "تاریخ پرداخت",
+        "Key": "Order_PaymentDate"
+    },
+    {
+        "Value": "نام کاربر",
+        "Key": "Order_UserFullName"
+    },
+    {
+        "Value": "نام کاربری",
+        "Key": "Order_UserName"
+    },
+    {
+        "Value": "مبلغ سفارش",
+        "Key": "Order_Amount"
+    },
+    {
+        "Value": "تعداد اقلام سفارش",
+        "Key": "Order_OrderItemCount"
+    },
+    {
+        "Value": "وضعیت پرداخت",
+        "Key": "Order_PaymentStatus"
+    },
+    {
+        "Value": "وضعیت سفارش",
+        "Key": "Order_OrderStatus"
+    },
+    {
+        "Value": "تعداد سفارش",
+        "Key": "OrderCnt"
+    },
+    {
+        "Value": "برگشت",
+        "Key": "Return"
+    },
+    {
+        "Value": "جستجو",
+        "Key": "Search"
+    },
+    {
+        "Value": "زبان مربوطه",
+        "Key": "RelatedLanguage"
+    },
+    {
+        "Value": "قیمت جاری دامنه",
+        "Key": "CurrentDomainPrice"
+    },
+    {
+        "Value": "دامنه مربوطه",
+        "Key": "AssociatedDomain"
+    },
+    {
+        "Value": "زبان پیش فرض",
+        "Key": "DefaultLanguage"
+    },
+    {
+        "Value": "روش حمل پیش فرض",
+        "Key": "DefaultShippingType"
+    },
+    {
+        "Value": "زبان فایل قالب محصولات",
+        "Key": "ProductTemplateLanguage"
+    },
+    {
+        "Value": "نام زبان",
+        "Key": "LanguageName"
+    },
+    {
+        "Value": "نوع محصول",
+        "Key": "ProductType"
+    },
+    {
+        "Value": "محدودیت دانلود",
+        "Key": "DownloadLimitation"
+    },
+    {
+        "Value": "تعداد روز مجاز برای  دانلود",
+        "Key": "AllowedDownloadDuration"
+    },
+    {
+        "Value": "تعداد دفعات مجاز برای دانلود",
+        "Key": "AllowedDownloadNumber"
+    },
+    {
+        "Value": "زبان مبدا برای کپی",
+        "Key": "LanguageToCopy"
+    },
+    {
+        "Value": "تغییر گذرواژه",
+        "Key": "ChangePassword"
+    },
+    {
+        "Value": "ذخیره",
+        "Key": "Save"
+    },
+    {
+        "Value": "رمز عبور جاری",
+        "Key": "ChangePassword_CurrentPassword"
+    },
+    {
+        "Value": "رمز عبور جدید",
+        "Key": "ChangePassword_NewPassword"
+    },
+    {
+        "Value": "تکرار رمز عبور",
+        "Key": "ChangePassword_ConfirmPassword"
+    },
+    {
+        "Value": "ایجاد گذر واژه توسط سیستم",
+        "Key": "ChangePassword_CreatePasswordBySystem"
+    },
+    {
+        "Value": "گذر واژه ایجاد شده شما : {0} برای کپی اینجا را کلیک کنید.",
+        "Key": "ChangePassword_CreatePasswordBySystemCopy"
+    },
+    {
+        "Value": "عنوان",
+        "Key": "Entities_Title"
+    },
+    {
+        "Value": "زیرنویس",
+        "Key": "Entities_SubTitle"
+    },
+    {
+        "Value": "تغییرات",
+        "Key": "TableHeader_Modifications"
+    },
 
-  {
-    "Value": "تعداد کاربران",
-    "Key": "UserListCount"
-  },
-  {
-    "Value": "افزودن آدرس جدید",
-    "Key": "btn_AddNewAddress"
-  },
-  {
-    "Value": "ثبت نام",
-    "Key": "btn_Register"
-  },
-  {
-    "Value": "ادامه فرآیند خرید",
-    "Key": "btn_ContinueBuyingOnline"
-  },
-  {
-    "Value": "اطلاعات ارسال",
-    "Key": "SendInfoes"
-  },
-  {
-    "Value": "افزوذن آدرس جدید",
-    "Key": "AddNewAddress"
-  },
-  {
-    "Value": "بیشتر",
-    "Key": "GetMore"
-  },
-  {
-    "Value": "مقالات",
-    "Key": "design_Articles"
-  },
-  {
-    "Value": "گروه مقالات",
-    "Key": "design_ArticleCategories"
-  },
-  {
-    "Value": "محصولات",
-    "Key": "design_Products"
-  },
-  {
-    "Value": "گروه های محصولات",
-    "Key": "design_ProductGroups"
-  },
-  {
-    "Value": "خانه",
-    "Key": "design_HomePage"
-  },
-  {
-    "Value": "سبد خرید",
-    "Key": "ShoppingCart"
-  },
-  {
-    "Value": "افزودن به سبد خرید",
-    "Key": "btn_AddToShoppingCart"
-  },
-  {
-    "Value": "ثبت",
-    "Key": "btn_Insert"
-  },
-  {
-    "Value": "ورود",
-    "Key": "TextAndPlaceholder_LogIn"
-  },
-  {
-    "Value": "حاصل را وارد کنید",
-    "Key": "TextAndPlaceholder_Captcha"
-  },
-  {
-    "Value": "یا",
-    "Key": "TextAndPlaceholder_Or"
-  },
-  {
-    "Value": "شماره همراه(نام کاربری)",
-    "Key": "TextAndPlaceholder_Mobile_UserName"
-  },
-  {
-    "Value": "شماره تلفن همراه",
-    "Key": "TextAndPlaceholder_Mobile"
-  },
-  {
-    "Value": "نام کاربری",
-    "Key": "TextAndPlaceholder_UserName"
-  },
-  {
-    "Value": "یکبار رمز",
-    "Key": "TextAndPlaceholder_SecurityCode"
-  },
-  {
-    "Value": "موجودی :",
-    "Key": "InventoryInStore"
-  },
-  {
-    "Value": "لطفا نوع آدرس را انتخاب کنید.",
-    "Key": "AlertAndMessage_AddressType"
-  },
-  {
-    "Value": "فایل معتبر نمیباشد.",
-    "Key": "AlertandMessage_FileIsNotValid"
-  },
-  {
-    "Value": "لطفا کشور را انتخاب کنید.",
-    "Key": "AlertAndMessage_CountryId"
-  },
-  {
-    "Value": "لطفا استان را انتخاب کنید.",
-    "Key": "AlertAndMessage_ProvinceId"
-  },
-  {
-    "Value": "لطفا شهر را انتخاب کنید.",
-    "Key": "AlertAndMessage_CityId"
-  },
-  {
-    "Value": "لطفاآدرس یک را وارد کنید.",
-    "Key": "AlertAndMessage_Address1"
-  },
-  {
-    "Value": "آدرس با موفقیت افزوده شد.",
-    "Key": "AlertAndMessage_AddressAddedSuccessfully"
-  },
-  {
-    "Value": "لطفا آدرس خود را ثبت نمایید.",
-    "Key": "AlertAndMessage_AddressInsert"
-  },
-  {
-    "Value": "ابتدا وارد حساب کاربری خود شوید.",
-    "Key": "AlertAndMessage_LoginFirst"
-  },
-  {
-    "Value": "کاربری با این مشخصات یافت نشد.",
-    "Key": "AlertAndMessage_UserNotFound"
-  },
-  {
-    "Value": "آیا برای تغییر کلمه عبور کاربر اطمینان دارید؟",
-    "Key": "AlertAndMessage_ChangePassConfirmation"
-  },
-  {
-    "Value": "این محصول به سبد خرید شما اضافه گردید.",
-    "Key": "AlertAndMessage_ProductCountInCart"
-  },
-  {
-    "Value": "سبد خرید شما خالی است.",
-    "Key": "AlertAndMessage_ShoppingCartIsEmpty"
-  },
-  {
-    "Value": "متاسفانه این محصول [0] افزایش قیمت داشته است.",
-    "Key": "AlertAndMessage_ProductPriceIncrease"
-  },
-  {
-    "Value": "قیمت این محصول [0]  کاهش یافته است.",
-    "Key": "AlertAndMessage_ProductPriceDecrease"
-  },
-  {
-    "Value": "موجودی محصول به [0] کاهش پیدا کرده است.",
-    "Key": "AlertAndMessage_ProductDecreaseInventory"
-  },
-  {
-    "Value": "موجودی محصول مورد نظر به اتمام رسیده است.",
-    "Key": "AlertAndMessage_ProductNullCount"
-  },
-  {
-    "Value": "خطا، لطفا بعدا دوباره تلاش نمایید.",
-    "Key": "AlertAndMessage_SubmitOtpPleaseTryAgainLater"
-  },
-  {
-    "Value": "کد تایید برای شما ارسال شده است.",
-    "Key": "AlertAndMessage_ProfileConfirmPhoneSending"
-  },
-  {
-    "Value": "زمان استفاده از کد تایید به پایان رسیده است.",
-    "Key": "AlertAndMessage_ProfileConfirmPhoneTimeOut"
-  },
-  {
-    "Value": "تایید شماره همراه با خطا مواجه شد.",
-    "Key": "AlertAndMessage_ProfileConfirmPhoneError"
-  },
-  {
-    "Value": "یکبار رمز نامعتبر است",
-    "Key": "AlertAndMessage_SecurityCodeIsInvalid"
-  },
-  {
-    "Value": "عملیات با موفقیت انجام شد.",
-    "Key": "AlertAndMessage_OperationSuccess"
-  },
-  {
-    "Value": "هیچ الگو پیام پیدا نشد.",
-    "Key": "AlertAndMessage_NotFoundMessageTemplate"
-  },
-  {
-    "Value": "تنظیم های ارسال پیامک پیدا نشد.",
-    "Key": "AlertAndMessage_NotFoundSmsSetting"
-  },
-  {
-    "Value": "تنظیم های ارسال ایمیل پیدا نشد.",
-    "Key": "AlertAndMessage_NotFoundSmtp"
-  },
-  {
-    "Value": "نظر خود را اینجا اضافه کنید.",
-    "Key": "AlertAndMessage_WriteComment"
-  },
-  {
-    "Value": "نام کاربری اشتباه است.",
-    "Key": "AlertAndMessage_PasswordIncorrect"
-  },
-  {
-    "Value": "نظر باموفقیت ارسال شد یعد از تایید نمایش داده خواهد شد.",
-    "Key": "AlertAndMessage_SubmitComment"
-  },
-  {
-    "Value": "لطفا کلمه عبور جدید را وارد کنید.",
-    "Key": "AlertAndMessage_NewPasswordRequired"
-  },
-  {
-    "Value": "لطفا کلمه عبور جدید را دوباره وارد کنید.",
-    "Key": "AlertAndMessage_ReNewPasswordRequired"
-  },
-  {
-    "Value": "فارسی",
-    "Key": "Persian"
-  },
-  {
-    "Value": "انگلیسی",
-    "Key": "English"
-  },
-  {
-    "Value": "نام شرکت",
-    "Key": "User_CompanyName"
-  },
-  {
-    "Value": "اطلاعات آدرس",
-    "Key": "User_AddressInfoes"
-  },
-  {
-    "Value": "شماره حساب",
-    "Key": "User_AccountNumber"
-  },
-  {
-    "Value": "نام حساب",
-    "Key": "User_AccountName"
-  },
-  {
-    "Value": "شماره شبا",
-    "Key": "User_Iban"
-  },
-  {
-    "Value": "نام بانک",
-    "Key": "User_BankName"
-  },
-  {
-    "Value": "نوع آدرس",
-    "Key": "Profile_AddressType"
-  },
-  {
-    "Value": "اطلاعات حساب بانکی",
-    "Key": "Profile_BankAccountInfoes"
-  },
-  {
-    "Value": "کشور",
-    "Key": "Profile_Country"
-  },
-  {
-    "Value": "استان",
-    "Key": "Profile_Province"
-  },
-  {
-    "Value": "شهر",
-    "Key": "Profile_City"
-  },
-  {
-    "Value": "آدرس اصلی",
-    "Key": "Profile_IsMainAddress"
-  },
-  {
-    "Value": "کد پستی",
-    "Key": "Profile_ZipCode"
-  },
-  {
-    "Value": "ثبت آدرس",
-    "Key": "Profile_AddAddress"
-  },
-  {
-    "Value": "آدرس یک",
-    "Key": "Profile_Address1"
-  },
-  {
-    "Value": "آدرس دو",
-    "Key": "Profile_Address2"
-  },
-  {
-    "Value": "به این آدرس ارسال شود.",
-    "Key": "Shopping_Senttothisaddress"
-  },
-  {
-    "Value": "پرداخت آنلاین",
-    "Key": "Shopping_OnlinePayment"
-  },
-  {
-    "Value": "تایید پروفایل",
-    "Key": "User_ProfileApprove"
-  },
-  {
-    "Value": "تعداد",
-    "Key": "Count"
-  },
-  {
-    "Value": "هزینه حمل و نقل",
-    "Key": "ShippingExpense"
-  },
-  {
-    "Value": "قیمت واحد",
-    "Key": "PricePerUnit"
-  },
-  {
-    "Value": "مبلغ نهایی",
-    "Key": "FinalPricePerSeller"
-  },
-  {
-    "Value": "جمع مبالغ",
-    "Key": "SumOfAmount"
-  },
-  {
-    "Value": "مبلغ نهایی پرداخت",
-    "Key": "FinalPriceForPayment"
-  },
-  {
-    "Value": "قیمت نهایی",
-    "Key": "FinalPrice"
-  },
-  {
-    "Value": "امتیاز محصول",
-    "Key": "ProductScore"
-  },
-  {
-    "Value": "امتیاز",
-    "Key": "ContentScore"
-  },
-  {
-    "Value": "نظر برای محصول",
-    "Key": "CommentOnProduct"
-  },
-  {
-    "Value": "صفحه اصلی",
-    "Key": "Menu_HomePage"
-  },
-  {
-    "Value": "تعدادموجود :",
-    "Key": "Available"
-  },
-  {
-    "Value": "ثبت نام",
-    "Key": "Action_Register"
-  },
-  {
-    "Value": "ارسال دوباره کد",
-    "Key": "Action_ResendCode"
-  },
-  {
-    "Value": "مرحله بعد",
-    "Key": "Action_Next"
-  },
-  {
-    "Value": "پیش از این ثبت نام کرده ام",
-    "Key": "Action_AlreadyUserName"
-  },
-  {
-    "Value": "حذف کد تخفیف",
-    "Key": "btn_DeleteCouponCode"
-  },
-  {
-    "Value": "سفارش مجدد",
-    "Key": "btn_reorder"
-  },
-  {
-    "Value": "افزودن به لیست مقایسه محصولات",
-    "Key": "btn_AddToCompareList"
-  },
-  {
-    "Value": "مشاهده لیست مقایسه",
-    "Key": "btn_CompareListView"
-  },
-  {
-    "Value": "ذخیره",
-    "Key": "btn_Install"
-  },
-  {
-    "Value": "اعمال",
-    "Key": "btn_Apply"
-  },
-  {
-    "Value": "بدون عملیات اضافی",
-    "Key": "EnumDesc_NoExtraAction"
-  },
-  {
-    "Value": "اعلان موجود شدن محصول",
-    "Key": "EnumDesc_ProductAvailibilityReminder"
-  },
-  {
-    "Value": "پربازدیدترین",
-    "Key": "EnumDesc_MostVisited"
-  },
-  {
-    "Value": "محبوبترین",
-    "Key": "EnumDesc_MostPopular"
-  },
-  {
-    "Value": "پرفروشترین",
-    "Key": "EnumDesc_BestSelling"
-  },
-  {
-    "Value": "جدیدترین",
-    "Key": "EnumDesc_Newest"
-  },
-  {
-    "Value": "گرانترین",
-    "Key": "EnumDesc_MostExpensive"
-  },
-  {
-    "Value": "ارزانترین",
-    "Key": "EnumDesc_Cheapest"
-  },
-  {
-    "Value": "ثبت اولیه تراکنش",
-    "Key": "EnumDesc_InitialTransaction"
-  },
-  {
-    "Value": "ایجاد توکن",
-    "Key": "EnumDesc_TokenGeneration"
-  },
-  {
-    "Value": "هدایت به درگاه پرداخت",
-    "Key": "EnumDesc_LeadToPaymentGateway"
-  },
-  {
-    "Value": "در حال انتظار برای تایید تراکنش",
-    "Key": "EnumDesc_WaitingforTransactionApproval"
-  },
-  {
-    "Value": "موفق و تایید شده",
-    "Key": "EnumDesc_SuccessfullAndApproved"
-  },
-  {
-    "Value": "ناموفق و تایید شده",
-    "Key": "EnumDesc_UnsuccessfullAndApproved"
-  },
-  {
-    "Value": "درحین پرداخت اپلیکیشن استاپ شده و پرداخت  رول بک میشود",
-    "Key": "EnumDesc_RollBack"
-  },
-  {
-    "Value": "درخواست توکن",
-    "Key": "EnumDesc_ClientTokenRequest"
-  },
-  {
-    "Value": "پاسخ درخواست توکن از سمت درگاه",
-    "Key": "EnumDesc_PspTokenResponse"
-  },
-  {
-    "Value": "ارسال اطلاعات به درگاه جهت لاگین",
-    "Key": "EnumDesc_ClientRequestToLogin"
-  },
-  {
-    "Value": "دریافت پاسخ لاگین از درگاه",
-    "Key": "EnumDesc_PspLoginResponse"
-  },
-  {
-    "Value": "ارسال اطلاعات تراکنش جهت ساین",
-    "Key": "EnumDesc_ClientRequestDataToSignIn"
-  },
-  {
-    "Value": "پاسخ درگاه برای ساین اطلاعات تراکنش",
-    "Key": "EnumDesc_PspResponseToDataToSignIn"
-  },
-  {
-    "Value": "ارسال اطلاعات پرداخت از سمت درگاه",
-    "Key": "EnumDesc_PspSendCallback"
-  },
-  {
-    "Value": "درخواست تایید تراکنش از سمت کلاینت",
-    "Key": "EnumDesc_ClientVerifyRequest"
-  },
-  {
-    "Value": "پاسخ تایید تراکنش از درگاه",
-    "Key": "EnumDesc_PspVerifyResponse"
-  },
-  {
-    "Value": "درخواست برگشت تراکنش از سمت کلاینت",
-    "Key": "EnumDesc_ClientRequestReverseTransaction"
-  },
-  {
-    "Value": "پاسخ درگاه برای برگشت تراکنش",
-    "Key": "EnumDesc_PspResponseReverseTransaction"
-  },
-  {
-    "Value": "ثبت سفارش",
-    "Key": "Enum_OrderRegistered"
-  },
-  {
-    "Value": "تایید سفارش",
-    "Key": "Enum_OrderApproved"
-  },
-  {
-    "Value": "لغو شده توسط کاربر",
-    "Key": "Enum_CanceledByUser"
-  },
-  {
-    "Value": "آماده برای ارسال",
-    "Key": "Enum_ReadyToSend"
-  },
-  {
-    "Value": "ارسال شده",
-    "Key": "Enum_Sent"
-  },
-  {
-    "Value": "هیچ طراحی برای این آدرس تعریف نشده است.",
-    "Key": "AlertAndMessage_NoDesignImplementation"
-  },
-  {
-    "Value": "هیچ طراحی برای فوتر تعریف نشده است.",
-    "Key": "AlertAndMessage_NoFooterDesignImplementation"
-  },
-  {
-    "Value": "هیچ طراحی برای هدر تعریف نشده است.",
-    "Key": "AlertAndMessage_NoHeaderDesignImplementation"
-  },
-  {
-    "Value": "به لیست مقایسه افزوده شد",
-    "Key": "AlertAndMessage_AddToCompareList"
-  },
-  {
-    "Value": "افزودن به لیست علاقمندیها",
-    "Key": "AlertAndMessage_AddToFavoriteList"
-  },
-  {
-    "Value": "خطا در حذف.",
-    "Key": "AlertAndMessage_DeleteError"
-  },
-  {
-    "Value": "کلمه عبور کنونی شما اشتباه است",
-    "Key": "AlertAndMessage_InCorrectPassword"
-  },
-  {
-    "Value": "نام کاربری یا کلمه عبور اشتباه است",
-    "Key": "AlertAndMessage_UsernameIncorrect"
-  },
-  {
-    "Value": "کلمه عبور و تکرار کلمه عبور یکسان نیست",
-    "Key": "AlertAndMessage_PassWordAndRePassNotEqual"
-  },
-  {
-    "Value": "کد معتبر نمیباشد.",
-    "Key": "AlertAndMessage_InvalidCode"
-  },
-  {
-    "Value": "هیچ گزینه ای یافت نشد.",
-    "Key": "AlertAndMessage_NoInformationWasFound"
-  },
-  {
-    "Value": "تکرار گذروازه جدید",
-    "Key": "AlertAndMessage_RepeatPassword"
-  },
-  {
-    "Value": "آیا قصد دارید صفحه نمونه خانه را ببینید؟",
-    "Key": "AlertAndMessage_HomepageDefaultDesign"
-  },
-  {
-    "Value": "تنظیمات",
-    "Key": "Setting"
-  },
-  {
-    "Value": "Database Connection String",
-    "Key": "ConnectionString"
-  },
-  {
-    "Value": "آدرس پوشه برای ذخیره سازی فایل های لاگ برنامه",
-    "Key": "LogFileDirectory"
-  },
-  {
-    "Value": "آدرس پوشه برای ذخیره سازی عکسها و فایل های برنامه",
-    "Key": "LocalStaticFileStorage"
-  },
-  {
-    "Value": "اطلاعات خط ارسال sms",
-    "Key": "SmsLineInformation"
-  },
-  {
-    "Value": "لینک آدرس",
-    "Key": "Sms_LinkAddress"
-  },
-  {
-    "Value": "شماره خط",
-    "Key": "Sms_LineNumber"
-  },
-  {
-    "Value": "نام کاربری",
-    "Key": "Sms_UserName"
-  },
-  {
-    "Value": "کلمه عبور",
-    "Key": "Sms_Passworrd"
-  },
-  {
-    "Value": "لینک دریافت توکن",
-    "Key": "Sms_TokenLink"
-  },
-  {
-    "Value": "نام کاربری لینک دریافت توکن",
-    "Key": "Sms_TokenUserName"
-  },
-  {
-    "Value": "رمز لینک دریافت توکن",
-    "Key": "Sms_TokenPassword"
-  },
-  {
-    "Value": "نام شرکت",
-    "Key": "Sms_ComapnyName"
-  },
-  {
-    "Value": "لیست محصولات مورد علاقه",
-    "Key": "User_FavoritProductList"
-  },
-  {
-    "Value": "لیست محتوای مورد علاقه",
-    "Key": "User_FavoritContentList"
-  },
-  {
-    "Value": "کاربر System Account",
-    "Key": "User_SysAccount"
-  },
-  {
-    "Value": "کد ملی",
-    "Key": "User_NationalCode"
-  },
-  {
-    "Value": "ورود",
-    "Key": "User_Login"
-  },
-  {
-    "Value": "ثبت نام",
-    "Key": "User_Register"
-  },
-  {
-    "Value": "جستجوی محصولات",
-    "Key": "Title_Search"
-  },
-  {
-    "Value": "قیمت واحد پس از اعمال تخفیف",
-    "Key": "PricePerUnitWithDiscount"
-  },
-  {
-    "Value": "تعداداقلام سفارش",
-    "Key": "OrderItemCount"
-  },
-  {
-    "Value": "وضعیت سفارش",
-    "Key": "OrderStatus"
-  },
-  {
-    "Value": "وضعیت پرداخت",
-    "Key": "PaymentStatus"
-  },
-  {
-    "Value": "مبلغ سفارش",
-    "Key": "OrderAmount"
-  },
-  {
-    "Value": "نام فروشنده",
-    "Key": "SellerName"
-  },
-  {
-    "Value": "تاریخ سفارش",
-    "Key": "OrderDate"
-  },
-  {
-    "Value": "شماره سفارش",
-    "Key": "InvoiceNumber"
-  },
-  {
-    "Value": "محدوده قیمت",
-    "Key": "PriceRange"
-  },
-  {
-    "Value": "در",
-    "Key": "Search_IN"
-  },
-  {
-    "Value": "فقط کالاهای موجود",
-    "Key": "Search_OnlyAvailableProducts"
-  },
-  {
-    "Value": "فیلتر",
-    "Key": "btn_Filter"
-  },
-  {
-    "Value": "تاکنون سفارشی ثبت نکرده اید.",
-    "Key": "AlertAndMessage_NoOrderToShow"
-  },
-  {
-    "Value": "کد تخفیف",
-    "Key": "User_DiscountCode"
-  },
-  {
-    "Value": "استان",
-    "Key": "Profile_State"
-  },
-  {
-    "Value": "ارسال",
-    "Key": "Action_Send"
-  },
-  {
-    "Value": "گروههای زیر مجموعه",
-    "Key": "Design_SubsetGroups"
-  },
-  {
-    "Value": "محصولات در این گروه",
-    "Key": "Design_ProductsInGroup"
-  }
+    {
+        "Value": "تعداد کاربران",
+        "Key": "UserListCount"
+    },
+    {
+        "Value": "افزودن آدرس جدید",
+        "Key": "btn_AddNewAddress"
+    },
+    {
+        "Value": "ثبت نام",
+        "Key": "btn_Register"
+    },
+    {
+        "Value": "ادامه فرآیند خرید",
+        "Key": "btn_ContinueBuyingOnline"
+    },
+    {
+        "Value": "اطلاعات ارسال",
+        "Key": "SendInfoes"
+    },
+    {
+        "Value": "افزوذن آدرس جدید",
+        "Key": "AddNewAddress"
+    },
+    {
+        "Value": "بیشتر",
+        "Key": "GetMore"
+    },
+    {
+        "Value": "مقالات",
+        "Key": "design_Articles"
+    },
+    {
+        "Value": "گروه مقالات",
+        "Key": "design_ArticleCategories"
+    },
+    {
+        "Value": "محصولات",
+        "Key": "design_Products"
+    },
+    {
+        "Value": "گروه های محصولات",
+        "Key": "design_ProductGroups"
+    },
+    {
+        "Value": "خانه",
+        "Key": "design_HomePage"
+    },
+    {
+        "Value": "سبد خرید",
+        "Key": "ShoppingCart"
+    },
+    {
+        "Value": "افزودن به سبد خرید",
+        "Key": "btn_AddToShoppingCart"
+    },
+    {
+        "Value": "ثبت",
+        "Key": "btn_Insert"
+    },
+    {
+        "Value": "ورود",
+        "Key": "TextAndPlaceholder_LogIn"
+    },
+    {
+        "Value": "حاصل را وارد کنید",
+        "Key": "TextAndPlaceholder_Captcha"
+    },
+    {
+        "Value": "یا",
+        "Key": "TextAndPlaceholder_Or"
+    },
+    {
+        "Value": "شماره همراه(نام کاربری)",
+        "Key": "TextAndPlaceholder_Mobile_UserName"
+    },
+    {
+        "Value": "شماره تلفن همراه",
+        "Key": "TextAndPlaceholder_Mobile"
+    },
+    {
+        "Value": "نام کاربری",
+        "Key": "TextAndPlaceholder_UserName"
+    },
+    {
+        "Value": "یکبار رمز",
+        "Key": "TextAndPlaceholder_SecurityCode"
+    },
+    {
+        "Value": "موجودی :",
+        "Key": "InventoryInStore"
+    },
+    {
+        "Value": "لطفا نوع آدرس را انتخاب کنید.",
+        "Key": "AlertAndMessage_AddressType"
+    },
+    {
+        "Value": "فایل معتبر نمیباشد.",
+        "Key": "AlertandMessage_FileIsNotValid"
+    },
+    {
+        "Value": "لطفا کشور را انتخاب کنید.",
+        "Key": "AlertAndMessage_CountryId"
+    },
+    {
+        "Value": "لطفا استان را انتخاب کنید.",
+        "Key": "AlertAndMessage_ProvinceId"
+    },
+    {
+        "Value": "لطفا شهر را انتخاب کنید.",
+        "Key": "AlertAndMessage_CityId"
+    },
+    {
+        "Value": "لطفاآدرس یک را وارد کنید.",
+        "Key": "AlertAndMessage_Address1"
+    },
+    {
+        "Value": "آدرس با موفقیت افزوده شد.",
+        "Key": "AlertAndMessage_AddressAddedSuccessfully"
+    },
+    {
+        "Value": "لطفا آدرس خود را ثبت نمایید.",
+        "Key": "AlertAndMessage_AddressInsert"
+    },
+    {
+        "Value": "ابتدا وارد حساب کاربری خود شوید.",
+        "Key": "AlertAndMessage_LoginFirst"
+    },
+    {
+        "Value": "کاربری با این مشخصات یافت نشد.",
+        "Key": "AlertAndMessage_UserNotFound"
+    },
+    {
+        "Value": "آیا برای تغییر کلمه عبور کاربر اطمینان دارید؟",
+        "Key": "AlertAndMessage_ChangePassConfirmation"
+    },
+    {
+        "Value": "این محصول به سبد خرید شما اضافه گردید.",
+        "Key": "AlertAndMessage_ProductCountInCart"
+    },
+    {
+        "Value": "سبد خرید شما خالی است.",
+        "Key": "AlertAndMessage_ShoppingCartIsEmpty"
+    },
+    {
+        "Value": "متاسفانه این محصول [0] افزایش قیمت داشته است.",
+        "Key": "AlertAndMessage_ProductPriceIncrease"
+    },
+    {
+        "Value": "قیمت این محصول [0]  کاهش یافته است.",
+        "Key": "AlertAndMessage_ProductPriceDecrease"
+    },
+    {
+        "Value": "موجودی محصول به [0] کاهش پیدا کرده است.",
+        "Key": "AlertAndMessage_ProductDecreaseInventory"
+    },
+    {
+        "Value": "موجودی محصول مورد نظر به اتمام رسیده است.",
+        "Key": "AlertAndMessage_ProductNullCount"
+    },
+    {
+        "Value": "خطا، لطفا بعدا دوباره تلاش نمایید.",
+        "Key": "AlertAndMessage_SubmitOtpPleaseTryAgainLater"
+    },
+    {
+        "Value": "کد تایید برای شما ارسال شده است.",
+        "Key": "AlertAndMessage_ProfileConfirmPhoneSending"
+    },
+    {
+        "Value": "زمان استفاده از کد تایید به پایان رسیده است.",
+        "Key": "AlertAndMessage_ProfileConfirmPhoneTimeOut"
+    },
+    {
+        "Value": "تایید شماره همراه با خطا مواجه شد.",
+        "Key": "AlertAndMessage_ProfileConfirmPhoneError"
+    },
+    {
+        "Value": "یکبار رمز نامعتبر است",
+        "Key": "AlertAndMessage_SecurityCodeIsInvalid"
+    },
+    {
+        "Value": "عملیات با موفقیت انجام شد.",
+        "Key": "AlertAndMessage_OperationSuccess"
+    },
+    {
+        "Value": "هیچ الگو پیام پیدا نشد.",
+        "Key": "AlertAndMessage_NotFoundMessageTemplate"
+    },
+    {
+        "Value": "تنظیم های ارسال پیامک پیدا نشد.",
+        "Key": "AlertAndMessage_NotFoundSmsSetting"
+    },
+    {
+        "Value": "تنظیم های ارسال ایمیل پیدا نشد.",
+        "Key": "AlertAndMessage_NotFoundSmtp"
+    },
+    {
+        "Value": "نظر خود را اینجا اضافه کنید.",
+        "Key": "AlertAndMessage_WriteComment"
+    },
+    {
+        "Value": "نام کاربری اشتباه است.",
+        "Key": "AlertAndMessage_PasswordIncorrect"
+    },
+    {
+        "Value": "نظر باموفقیت ارسال شد یعد از تایید نمایش داده خواهد شد.",
+        "Key": "AlertAndMessage_SubmitComment"
+    },
+    {
+        "Value": "لطفا کلمه عبور جدید را وارد کنید.",
+        "Key": "AlertAndMessage_NewPasswordRequired"
+    },
+    {
+        "Value": "لطفا کلمه عبور جدید را دوباره وارد کنید.",
+        "Key": "AlertAndMessage_ReNewPasswordRequired"
+    },
+    {
+        "Value": "فارسی",
+        "Key": "Persian"
+    },
+    {
+        "Value": "انگلیسی",
+        "Key": "English"
+    },
+    {
+        "Value": "نام شرکت",
+        "Key": "User_CompanyName"
+    },
+    {
+        "Value": "اطلاعات آدرس",
+        "Key": "User_AddressInfoes"
+    },
+    {
+        "Value": "شماره حساب",
+        "Key": "User_AccountNumber"
+    },
+    {
+        "Value": "نام حساب",
+        "Key": "User_AccountName"
+    },
+    {
+        "Value": "شماره شبا",
+        "Key": "User_Iban"
+    },
+    {
+        "Value": "نام بانک",
+        "Key": "User_BankName"
+    },
+    {
+        "Value": "نوع آدرس",
+        "Key": "Profile_AddressType"
+    },
+    {
+        "Value": "اطلاعات حساب بانکی",
+        "Key": "Profile_BankAccountInfoes"
+    },
+    {
+        "Value": "کشور",
+        "Key": "Profile_Country"
+    },
+    {
+        "Value": "استان",
+        "Key": "Profile_Province"
+    },
+    {
+        "Value": "شهر",
+        "Key": "Profile_City"
+    },
+    {
+        "Value": "آدرس اصلی",
+        "Key": "Profile_IsMainAddress"
+    },
+    {
+        "Value": "کد پستی",
+        "Key": "Profile_ZipCode"
+    },
+    {
+        "Value": "ثبت آدرس",
+        "Key": "Profile_AddAddress"
+    },
+    {
+        "Value": "آدرس یک",
+        "Key": "Profile_Address1"
+    },
+    {
+        "Value": "آدرس دو",
+        "Key": "Profile_Address2"
+    },
+    {
+        "Value": "به این آدرس ارسال شود.",
+        "Key": "Shopping_Senttothisaddress"
+    },
+    {
+        "Value": "پرداخت آنلاین",
+        "Key": "Shopping_OnlinePayment"
+    },
+    {
+        "Value": "تایید پروفایل",
+        "Key": "User_ProfileApprove"
+    },
+    {
+        "Value": "تعداد",
+        "Key": "Count"
+    },
+    {
+        "Value": "هزینه حمل و نقل",
+        "Key": "ShippingExpense"
+    },
+    {
+        "Value": "قیمت واحد",
+        "Key": "PricePerUnit"
+    },
+    {
+        "Value": "مبلغ نهایی",
+        "Key": "FinalPricePerSeller"
+    },
+    {
+        "Value": "جمع مبالغ",
+        "Key": "SumOfAmount"
+    },
+    {
+        "Value": "مبلغ نهایی پرداخت",
+        "Key": "FinalPriceForPayment"
+    },
+    {
+        "Value": "قیمت نهایی",
+        "Key": "FinalPrice"
+    },
+    {
+        "Value": "امتیاز محصول",
+        "Key": "ProductScore"
+    },
+    {
+        "Value": "امتیاز",
+        "Key": "ContentScore"
+    },
+    {
+        "Value": "نظر برای محصول",
+        "Key": "CommentOnProduct"
+    },
+    {
+        "Value": "صفحه اصلی",
+        "Key": "Menu_HomePage"
+    },
+    {
+        "Value": "تعدادموجود :",
+        "Key": "Available"
+    },
+    {
+        "Value": "ثبت نام",
+        "Key": "Action_Register"
+    },
+    {
+        "Value": "ارسال دوباره کد",
+        "Key": "Action_ResendCode"
+    },
+    {
+        "Value": "مرحله بعد",
+        "Key": "Action_Next"
+    },
+    {
+        "Value": "پیش از این ثبت نام کرده ام",
+        "Key": "Action_AlreadyUserName"
+    },
+    {
+        "Value": "حذف کد تخفیف",
+        "Key": "btn_DeleteCouponCode"
+    },
+    {
+        "Value": "سفارش مجدد",
+        "Key": "btn_reorder"
+    },
+    {
+        "Value": "افزودن به لیست مقایسه محصولات",
+        "Key": "btn_AddToCompareList"
+    },
+    {
+        "Value": "مشاهده لیست مقایسه",
+        "Key": "btn_CompareListView"
+    },
+    {
+        "Value": "ذخیره",
+        "Key": "btn_Install"
+    },
+    {
+        "Value": "اعمال",
+        "Key": "btn_Apply"
+    },
+    {
+        "Value": "بدون عملیات اضافی",
+        "Key": "EnumDesc_NoExtraAction"
+    },
+    {
+        "Value": "اعلان موجود شدن محصول",
+        "Key": "EnumDesc_ProductAvailibilityReminder"
+    },
+    {
+        "Value": "پربازدیدترین",
+        "Key": "EnumDesc_MostVisited"
+    },
+    {
+        "Value": "محبوبترین",
+        "Key": "EnumDesc_MostPopular"
+    },
+    {
+        "Value": "پرفروشترین",
+        "Key": "EnumDesc_BestSelling"
+    },
+    {
+        "Value": "جدیدترین",
+        "Key": "EnumDesc_Newest"
+    },
+    {
+        "Value": "گرانترین",
+        "Key": "EnumDesc_MostExpensive"
+    },
+    {
+        "Value": "ارزانترین",
+        "Key": "EnumDesc_Cheapest"
+    },
+    {
+        "Value": "ثبت اولیه تراکنش",
+        "Key": "EnumDesc_InitialTransaction"
+    },
+    {
+        "Value": "ایجاد توکن",
+        "Key": "EnumDesc_TokenGeneration"
+    },
+    {
+        "Value": "هدایت به درگاه پرداخت",
+        "Key": "EnumDesc_LeadToPaymentGateway"
+    },
+    {
+        "Value": "در حال انتظار برای تایید تراکنش",
+        "Key": "EnumDesc_WaitingforTransactionApproval"
+    },
+    {
+        "Value": "موفق و تایید شده",
+        "Key": "EnumDesc_SuccessfullAndApproved"
+    },
+    {
+        "Value": "ناموفق و تایید شده",
+        "Key": "EnumDesc_UnsuccessfullAndApproved"
+    },
+    {
+        "Value": "درحین پرداخت اپلیکیشن استاپ شده و پرداخت  رول بک میشود",
+        "Key": "EnumDesc_RollBack"
+    },
+    {
+        "Value": "درخواست توکن",
+        "Key": "EnumDesc_ClientTokenRequest"
+    },
+    {
+        "Value": "پاسخ درخواست توکن از سمت درگاه",
+        "Key": "EnumDesc_PspTokenResponse"
+    },
+    {
+        "Value": "ارسال اطلاعات به درگاه جهت لاگین",
+        "Key": "EnumDesc_ClientRequestToLogin"
+    },
+    {
+        "Value": "دریافت پاسخ لاگین از درگاه",
+        "Key": "EnumDesc_PspLoginResponse"
+    },
+    {
+        "Value": "ارسال اطلاعات تراکنش جهت ساین",
+        "Key": "EnumDesc_ClientRequestDataToSignIn"
+    },
+    {
+        "Value": "پاسخ درگاه برای ساین اطلاعات تراکنش",
+        "Key": "EnumDesc_PspResponseToDataToSignIn"
+    },
+    {
+        "Value": "ارسال اطلاعات پرداخت از سمت درگاه",
+        "Key": "EnumDesc_PspSendCallback"
+    },
+    {
+        "Value": "درخواست تایید تراکنش از سمت کلاینت",
+        "Key": "EnumDesc_ClientVerifyRequest"
+    },
+    {
+        "Value": "پاسخ تایید تراکنش از درگاه",
+        "Key": "EnumDesc_PspVerifyResponse"
+    },
+    {
+        "Value": "درخواست برگشت تراکنش از سمت کلاینت",
+        "Key": "EnumDesc_ClientRequestReverseTransaction"
+    },
+    {
+        "Value": "پاسخ درگاه برای برگشت تراکنش",
+        "Key": "EnumDesc_PspResponseReverseTransaction"
+    },
+    {
+        "Value": "ثبت سفارش",
+        "Key": "Enum_OrderRegistered"
+    },
+    {
+        "Value": "تایید سفارش",
+        "Key": "Enum_OrderApproved"
+    },
+    {
+        "Value": "لغو شده توسط کاربر",
+        "Key": "Enum_CanceledByUser"
+    },
+    {
+        "Value": "آماده برای ارسال",
+        "Key": "Enum_ReadyToSend"
+    },
+    {
+        "Value": "ارسال شده",
+        "Key": "Enum_Sent"
+    },
+    {
+        "Value": "هیچ طراحی برای این آدرس تعریف نشده است.",
+        "Key": "AlertAndMessage_NoDesignImplementation"
+    },
+    {
+        "Value": "هیچ طراحی برای فوتر تعریف نشده است.",
+        "Key": "AlertAndMessage_NoFooterDesignImplementation"
+    },
+    {
+        "Value": "هیچ طراحی برای هدر تعریف نشده است.",
+        "Key": "AlertAndMessage_NoHeaderDesignImplementation"
+    },
+    {
+        "Value": "به لیست مقایسه افزوده شد",
+        "Key": "AlertAndMessage_AddToCompareList"
+    },
+    {
+        "Value": "افزودن به لیست علاقمندیها",
+        "Key": "AlertAndMessage_AddToFavoriteList"
+    },
+    {
+        "Value": "خطا در حذف.",
+        "Key": "AlertAndMessage_DeleteError"
+    },
+    {
+        "Value": "کلمه عبور کنونی شما اشتباه است",
+        "Key": "AlertAndMessage_InCorrectPassword"
+    },
+    {
+        "Value": "نام کاربری یا کلمه عبور اشتباه است",
+        "Key": "AlertAndMessage_UsernameIncorrect"
+    },
+    {
+        "Value": "کلمه عبور و تکرار کلمه عبور یکسان نیست",
+        "Key": "AlertAndMessage_PassWordAndRePassNotEqual"
+    },
+    {
+        "Value": "کد معتبر نمیباشد.",
+        "Key": "AlertAndMessage_InvalidCode"
+    },
+    {
+        "Value": "هیچ گزینه ای یافت نشد.",
+        "Key": "AlertAndMessage_NoInformationWasFound"
+    },
+    {
+        "Value": "تکرار گذروازه جدید",
+        "Key": "AlertAndMessage_RepeatPassword"
+    },
+    {
+        "Value": "آیا قصد دارید صفحه نمونه خانه را ببینید؟",
+        "Key": "AlertAndMessage_HomepageDefaultDesign"
+    },
+    {
+        "Value": "تنظیمات",
+        "Key": "Setting"
+    },
+    {
+        "Value": "Database Connection String",
+        "Key": "ConnectionString"
+    },
+    {
+        "Value": "آدرس پوشه برای ذخیره سازی فایل های لاگ برنامه",
+        "Key": "LogFileDirectory"
+    },
+    {
+        "Value": "آدرس پوشه برای ذخیره سازی عکسها و فایل های برنامه",
+        "Key": "LocalStaticFileStorage"
+    },
+    {
+        "Value": "اطلاعات خط ارسال sms",
+        "Key": "SmsLineInformation"
+    },
+    {
+        "Value": "لینک آدرس",
+        "Key": "Sms_LinkAddress"
+    },
+    {
+        "Value": "شماره خط",
+        "Key": "Sms_LineNumber"
+    },
+    {
+        "Value": "نام کاربری",
+        "Key": "Sms_UserName"
+    },
+    {
+        "Value": "کلمه عبور",
+        "Key": "Sms_Passworrd"
+    },
+    {
+        "Value": "لینک دریافت توکن",
+        "Key": "Sms_TokenLink"
+    },
+    {
+        "Value": "نام کاربری لینک دریافت توکن",
+        "Key": "Sms_TokenUserName"
+    },
+    {
+        "Value": "رمز لینک دریافت توکن",
+        "Key": "Sms_TokenPassword"
+    },
+    {
+        "Value": "نام شرکت",
+        "Key": "Sms_ComapnyName"
+    },
+    {
+        "Value": "لیست محصولات مورد علاقه",
+        "Key": "User_FavoritProductList"
+    },
+    {
+        "Value": "لیست محتوای مورد علاقه",
+        "Key": "User_FavoritContentList"
+    },
+    {
+        "Value": "کاربر System Account",
+        "Key": "User_SysAccount"
+    },
+    {
+        "Value": "کد ملی",
+        "Key": "User_NationalCode"
+    },
+    {
+        "Value": "ورود",
+        "Key": "User_Login"
+    },
+    {
+        "Value": "ثبت نام",
+        "Key": "User_Register"
+    },
+    {
+        "Value": "جستجوی محصولات",
+        "Key": "Title_Search"
+    },
+    {
+        "Value": "قیمت واحد پس از اعمال تخفیف",
+        "Key": "PricePerUnitWithDiscount"
+    },
+    {
+        "Value": "تعداداقلام سفارش",
+        "Key": "OrderItemCount"
+    },
+    {
+        "Value": "وضعیت سفارش",
+        "Key": "OrderStatus"
+    },
+    {
+        "Value": "وضعیت پرداخت",
+        "Key": "PaymentStatus"
+    },
+    {
+        "Value": "مبلغ سفارش",
+        "Key": "OrderAmount"
+    },
+    {
+        "Value": "نام فروشنده",
+        "Key": "SellerName"
+    },
+    {
+        "Value": "تاریخ سفارش",
+        "Key": "OrderDate"
+    },
+    {
+        "Value": "شماره سفارش",
+        "Key": "InvoiceNumber"
+    },
+    {
+        "Value": "محدوده قیمت",
+        "Key": "PriceRange"
+    },
+    {
+        "Value": "در",
+        "Key": "Search_IN"
+    },
+    {
+        "Value": "فقط کالاهای موجود",
+        "Key": "Search_OnlyAvailableProducts"
+    },
+    {
+        "Value": "فیلتر",
+        "Key": "btn_Filter"
+    },
+    {
+        "Value": "تاکنون سفارشی ثبت نکرده اید.",
+        "Key": "AlertAndMessage_NoOrderToShow"
+    },
+    {
+        "Value": "کد تخفیف",
+        "Key": "User_DiscountCode"
+    },
+    {
+        "Value": "استان",
+        "Key": "Profile_State"
+    },
+    {
+        "Value": "ارسال",
+        "Key": "Action_Send"
+    },
+    {
+        "Value": "گروههای زیر مجموعه",
+        "Key": "Design_SubsetGroups"
+    },
+    {
+        "Value": "محصولات در این گروه",
+        "Key": "Design_ProductsInGroup"
+    }
 ]

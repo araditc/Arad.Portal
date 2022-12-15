@@ -847,5 +847,28 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             
             return result;
         }
+
+        public async Task<Result> DomainUpdate(Entities.General.Domain.Domain dom)
+        {
+            var res = new Result();
+            var updateResult = await _context.Collection.ReplaceOneAsync(_ => _.DomainId == dom.DomainId, dom);
+            if(updateResult.IsAcknowledged)
+            {
+                res.Succeeded = true;
+            }
+            return res;
+        }
+
+        public async Task<Result> AddSamplePagetoDomainEntity(Entities.General.Domain.Domain dom, PageDesignContent model)
+        {
+            var res = new Result();
+            dom.HomePageDesign.Add(model);
+            var updateRes = await _context.Collection.ReplaceOneAsync(_ => _.DomainId == dom.DomainId, dom);
+            if(updateRes.IsAcknowledged)
+            {
+                res.Succeeded = true;
+            }
+            return res;
+        }
     }
 }

@@ -29,5 +29,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Menu
         Result<MenuDTO> FetchMenu(string menuId);
          List<SelectListModel> GetAllMenuType();
          StoreMenuVM GetByCode(long menuCode);
+
+        void InsertMany(List<Entities.General.Menu.Menu> menus);
     }
 }

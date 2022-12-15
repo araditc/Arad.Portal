@@ -21,6 +21,9 @@ namespace Arad.Portal.DataLayer.Contracts.General.BasicData
 
         Task<Result> DeleteGroupKeyListInDomain(string domainId, string groupKey);
 
+        Task<Result> UpdateDefaultDomainLastId(long lastId);
+       
+
         
     }
 }

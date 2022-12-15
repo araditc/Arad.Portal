@@ -580,5 +580,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
                 return false;
             }
         }
+
+        public void InsertOne(Slider slider)
+        {
+            _context.Collection.InsertOne(slider);
+        }
     }
 }
