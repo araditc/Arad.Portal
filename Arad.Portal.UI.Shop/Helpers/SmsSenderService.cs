@@ -75,10 +75,18 @@ namespace Arad.Portal.UI.Shop.Helpers
 
             List<Notification> wholeList = await _notificationRepository.GetForSend(NotificationType.Sms);
             List<Notification> smsNotifications = wholeList.Where(_ => _.ActionType == ActionType.NoExtraAction).ToList();
-            Log.Fatal($"ReadAndSend smsNotificationCount: {smsNotifications.Count}");
+            if(smsNotifications.Count != 0)
+            {
+                Log.Fatal($"ReadAndSend smsNotificationCount: {smsNotifications.Count}");
+            }
+            
 
             List<Notification> productNotification = wholeList.Where(_ => _.ActionType == ActionType.ProductAvailibilityReminder).ToList();
-            Log.Fatal($"ReadAndSend productNotificationCount: {productNotification.Count}");
+            if(productNotification.Count != 0)
+            {
+                Log.Fatal($"ReadAndSend productNotificationCount: {productNotification.Count}");
+            }
+           
 
             sw1.Stop();
             sw2.Start();
@@ -147,11 +155,15 @@ namespace Arad.Portal.UI.Shop.Helpers
             }
 
             sw2.Stop();
-            Log.Fatal($"RowCount: {smsNotifications.Count}\t " +
-                               $"ReadTime: {sw1.ElapsedMilliseconds}\t " +
-                               $"SendTime: {sw2.ElapsedMilliseconds}\t " +
-                               $"SuccessCount: {sucessCount}\t " +
-                               $"FailedCount: {failedCount}");
+            if(smsNotifications.Count != 0)
+            {
+                Log.Fatal($"RowCount: {smsNotifications.Count}\t " +
+                              $"ReadTime: {sw1.ElapsedMilliseconds}\t " +
+                              $"SendTime: {sw2.ElapsedMilliseconds}\t " +
+                              $"SuccessCount: {sucessCount}\t " +
+                              $"FailedCount: {failedCount}");
+            }
+           
             _flag = true;
         }
 
