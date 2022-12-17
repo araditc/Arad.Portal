@@ -17,12 +17,12 @@
       {
         "LanguageName": "fa-IR",
         "Subject": "تأیید آدرس ایمیل",
-        "Body": "<p>{$client_name} گرامی,</p><p>از ایجاد حساب {$company_name} سپاسگذاریم.</p><p>خواهشمندیم از پیوند زیر دیدن کرده و وارد حساب خود شوید تا آدرس ایمیل خود را تأیید کرده و ثبت نام خود را تکمیل کنید.</p><p>{$client_email_verification_link}</p><p>شما این ایمیل را به این دلیل دریافت می کنید که اخیراً یک حساب ایجاد کرده اید یا آدرس ایمیل خود را تغییر داده اید. اگر این کار را نکرده اید ، لطفاً با ما تماس بگیرید.</p><p>{$signature}</p>"
+        "Body": "<p>{$client_name} گرامی,</p><p>از ایجاد حساب {$domainName} سپاسگذاریم.</p><p>خواهشمندیم از پیوند زیر دیدن کرده و وارد حساب خود شوید تا آدرس ایمیل خود را تأیید کرده و ثبت نام خود را تکمیل کنید.</p><p>{$client_email_verification_link}</p><p>شما این ایمیل را به این دلیل دریافت می کنید که اخیراً یک حساب ایجاد کرده اید یا آدرس ایمیل خود را تغییر داده اید. اگر این کار را نکرده اید ، لطفاً با ما تماس بگیرید.</p>"
       },
       {
         "LanguageName": "en-US",
         "Subject": "Confirm Your Registration",
-        "Body": "<p>Dear {$client_name},</p><p>Thank you for creating a {$companyname} account.</p><p>Please visit the link below and sign into your account to verify your email address and complete your registration.</p><p>{$client_email_verification_link}</p><p>You are receiving this email because you recently created an account or changed your email address. If you did not do this, please contact us.</p><p>{$signature}</p>"
+        "Body": "<p>Dear {$client_name},</p><p>Thank you for creating a {$domainName} account.</p><p>Please visit the link below and sign into your account to verify your email address and complete your registration.</p><p>{$client_email_verification_link}</p><p>You are receiving this email because you recently created an account or changed your email address. If you did not do this, please contact us.</p><p>{$signature}</p>"
       }
     ]
   },
@@ -43,12 +43,12 @@
       {
         "LanguageName": "fa-IR",
         "Subject": "خوش آمدید",
-        "Body": "<p>{$client_first_name} گرامی,</p><p>از ایجاد حساب {$company_name} سپاسگذاریم. خواهشمندیم این ایمیل را به طور کامل مرور کنید زیرا حاوی اطلاعات مهمی است.</p><p><strong>ورود به سیستم</strong></p><p>در <span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{domainName}</span> می توانید به منطقه مشتری ما دسترسی داشته باشید</p><p>برای ورود به سیستم به آدرس ایمیل و رمز عبوری که هنگام ثبت نام انتخاب کرده اید نیاز دارید.</p><p>اگر به عنوان بخشی از ثبت سفارش جدید با ما یک حساب ایجاد کرده اید ، به زودی یک ایمیل تأیید سفارش دریافت خواهید کرد.</p><p><strong>دریافت پشتیبانی</strong></p><p>در صورت نیاز به کمک یا کمک ، می توانید به منابع پشتیبانی ما در زیر دسترسی پیدا کنید.</p><ul><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/knowledgebase.php\">Knowledgebase</a></li><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/submitticket.php\">Submit a Ticket</a></li></ul><p>{$signature}</p>"
+        "Body": "<p>{$client_first_name} گرامی,</p><p>از ایجاد حساب {$domainName} سپاسگذاریم. خواهشمندیم این ایمیل را به طور کامل مرور کنید زیرا حاوی اطلاعات مهمی است.</p><p><strong>ورود به سیستم</strong></p><p>در <span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{domainName}</span> می توانید به منطقه مشتری ما دسترسی داشته باشید</p><p>برای ورود به سیستم به آدرس ایمیل و رمز عبوری که هنگام ثبت نام انتخاب کرده اید نیاز دارید.</p><p>اگر به عنوان بخشی از ثبت سفارش جدید با ما یک حساب ایجاد کرده اید ، به زودی یک ایمیل تأیید سفارش دریافت خواهید کرد.</p><p><strong>دریافت پشتیبانی</strong></p><p>در صورت نیاز به کمک یا کمک ، می توانید به منابع پشتیبانی ما در زیر دسترسی پیدا کنید.</p><ul><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/knowledgebase.php\">Knowledgebase</a></li><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/submitticket.php\">Submit a Ticket</a></li></ul><p>{$signature}</p>"
       },
       {
         "LanguageName": "en-US",
         "Subject": "Welcome",
-        "Body": "<p>Dear {$client_first_name},</p><p>Thank you for creating a {$companyname} account. Please review this email in its entirety as it contains important information.</p><p><strong>Logging In</strong></p><p>You can access our client area at {$whmcs_link}</p><p>You will need your email address and the password you chose during signup to login.</p><p>If you created an account as part of placing a new order with us, you will shortly receive an order confirmation email.</p><p><strong>Getting Support</strong></p><p>If you need any help or assistance, you can access our support resources below.</p><ul><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/knowledgebase.php\">Knowledgebase</a></li><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/submitticket.php\">Submit a Ticket</a></li></ul><p>{$signature}</p>"
+        "Body": "<p>Dear {$client_first_name},</p><p>Thank you for creating a {$domainName} account. Please review this email in its entirety as it contains important information.</p><p><strong>Logging In</strong></p><p>You can access our client area at {$whmcs_link}</p><p>You will need your email address and the password you chose during signup to login.</p><p>If you created an account as part of placing a new order with us, you will shortly receive an order confirmation email.</p><p><strong>Getting Support</strong></p><p>If you need any help or assistance, you can access our support resources below.</p><ul><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/knowledgebase.php\">Knowledgebase</a></li><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/submitticket.php\">Submit a Ticket</a></li></ul><p>{$signature}</p>"
       }
     ]
   },
@@ -68,12 +68,12 @@
     "MessageTemplateMultiLingual": [
       {
         "LanguageName": "fa-IR",
-        "Subject": "جزئیات ورود شما برای {$company_name}",
+        "Subject": "جزئیات ورود شما برای {$domainName}",
         "Body": "<p>{$client_name} گرامی,</p><p>اخیراً درخواستی مبنی بر بازنشانی گذرواژه برای شما&nbsp; ارسال شده است. اگر شما این را درخواست نکرده اید ، خواهشمندیم این ایمیل را نادیده بگیرید. منقضی می شود و در مدت 2 ساعت بی فایده می شود.</p><p>برای بازنشانی گذرواژه خود ، خواهشمندیم&nbsp;از آدرس اینترنتی زیر دیدن کنید:<br><a href=\"https://cp.arad-itc.com/admin/%7B$pw_reset_url%7D\">{$pw_reset_url}</a></p><p>همنگامی که از پیوند بالا دیدن می کنید ، این فرصت را خواهید داشت که رمز جدیدی را انتخاب کنید.</p><p>{$signature}</p>"
       },
       {
         "LanguageName": "en-US",
-        "Subject": "Your login details for {$company_name}",
+        "Subject": "Your login details for {$domainName}",
         "Body": "<p>Dear {$client_name},</p><p>Recently a request was submitted to reset your password for our client area. If you did not request this, please ignore this email. It will expire and become useless in 2 hours time.</p><p>To reset your password, please visit the url below:<br><a href=\"https://cp.arad-itc.com/admin/%7B$pw_reset_url%7D\">{$pw_reset_url}</a></p><p>When you visit the link above, you will have the opportunity to choose a new password.</p><p>{$signature}</p>"
       }
     ]
@@ -94,12 +94,12 @@
     "MessageTemplateMultiLingual": [
       {
         "LanguageName": "fa-IR",
-        "Subject": "گذرواژه شما برای {$company_name} بازنشانی شده است",
+        "Subject": "گذرواژه شما برای {$domainName} بازنشانی شده است",
         "Body": "<p>{$client_name} گرامی,</p><p>همانطور که درخواست کرده اید ، رمز عبور شما برای منطقه مشتری ما بازنشانی شده است.</p><p>اگر به درخواست شما نبود ، لطفاً بلافاصله با پشتیبانی تماس بگیرید.</p><p>{$signature}</p>"
       },
       {
         "LanguageName": "en-US",
-        "Subject": "Your password has been reset for {$company_name}",
+        "Subject": "Your password has been reset for {$domainName}",
         "Body": "<p>Dear {$client_name},</p><p>As you requested, your password for our client area has now been reset.</p><p>If it was not at your request, then please contact support immediately.</p><p>{$signature}</p>"
       }
     ]
@@ -113,19 +113,19 @@
 
     ],
     "IsActive": true,
-    "TemplateName": "AutomatedPasswordReset",
+    "TemplateName": "AutomatedPasswordResetEmail",
     "TemplateDescription": "بازنشانی خودکار گذر واژه",
     "IsSystemTemplate": true,
     "NotificationType": "2",
     "MessageTemplateMultiLingual": [
       {
         "LanguageName": "fa-IR",
-        "Subject": "گذر واژه جدید شما برای {$company_name}",
+        "Subject": "گذر واژه جدید شما برای {$domainName}",
         "Body": "<p>Dear {$client_name},</p><p>همانگونه که درخواست کرده اید ، رمز عبور شما بازنشانی شده است. اطلاعات ورود به سیستم جدید شما به شرح زیر است:</p><p><span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{$domainName}</span><br>نام کاربری: <span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{$client_name}</span><br>گذر واژه: {$client_password}</p><p>برای تغییر گذر واژه خود به چیزی به یاد ماندنی ، پس از ورود به سیستم ، به پروفایل/تغییر گذر واژه بروید.</p><p>{$signature}</p>"
       },
       {
         "LanguageName": "en-US",
-        "Subject": "Your new password for {$company_name}",
+        "Subject": "Your new password for {$domainName}",
         "Body": "<p>Dear {$client_name},</p><p>As you requested, your password for our client area has now been reset. Your new login details are as follows:</p><p>{$whmcs_link}<br>Email: {$client_email}<br>Password: {$client_password}</p><p>To change your password to something more memorable, after logging in go to Profile &gt; Change Password.</p><p>{$signature}</p>"
       }
     ]
@@ -147,12 +147,12 @@
       {
         "LanguageName": "fa-IR",
         "Subject": "تأیید آدرس ایمیل",
-        "Body": "<p>{$client_name} گرامی,</p><p>از ایجاد حساب {$company_name} سپاسگذاریم.</p><p>خواهشمندیم از پیوند زیر دیدن کرده و وارد حساب خود شوید تا آدرس ایمیل خود را تأیید کرده و ثبت نام خود را تکمیل کنید.</p><p>{$client_email_verification_link}</p><p>شما این ایمیل را به این دلیل دریافت می کنید که اخیراً یک حساب ایجاد کرده اید یا آدرس ایمیل خود را تغییر داده اید. اگر این کار را نکرده اید ، لطفاً با ما تماس بگیرید.</p><p>{$signature}</p>"
+        "Body": "<p>{$client_name} گرامی,</p><p>از ایجاد حساب {$domainName} سپاسگذاریم.</p><p>خواهشمندیم از پیوند زیر دیدن کرده و وارد حساب خود شوید تا آدرس ایمیل خود را تأیید کرده و ثبت نام خود را تکمیل کنید.</p><p>{$client_email_verification_link}</p><p>شما این ایمیل را به این دلیل دریافت می کنید که اخیراً یک حساب ایجاد کرده اید یا آدرس ایمیل خود را تغییر داده اید. اگر این کار را نکرده اید ، لطفاً با ما تماس بگیرید.</p><p>{$signature}</p>"
       },
       {
         "LanguageName": "en-US",
         "Subject": "Confirm Your Registration",
-        "Body": "<p>Dear {$client_name},</p><p>Thank you for creating a {$companyname} account.</p><p>Please visit the link below and sign into your account to verify your email address and complete your registration.</p><p>{$client_email_verification_link}</p><p>You are receiving this email because you recently created an account or changed your email address. If you did not do this, please contact us.</p><p>{$signature}</p>"
+        "Body": "<p>Dear {$client_name},</p><p>Thank you for creating a {$domainName} account.</p><p>Please visit the link below and sign into your account to verify your email address and complete your registration.</p><p>{$client_email_verification_link}</p><p>You are receiving this email because you recently created an account or changed your email address. If you did not do this, please contact us.</p><p>{$signature}</p>"
       }
     ]
   },
@@ -172,12 +172,12 @@
       {
         "LanguageName": "fa-IR",
         "Subject": null,
-        "Body": "{$client_first_name} گرامی,\nاز ایجاد حساب {$company_name} سپاسگذاریم. \nنام کاربری :{$client_name}\nگذر واژه:{$client_password}"
+        "Body": "{$client_name} گرامی,\nاز ایجاد حساب {$domainName} سپاسگذاریم. \nنام کاربری :{$client_name}\nگذر واژه:{$client_password}"
       },
       {
         "LanguageName": "en-US",
         "Subject": null,
-        "Body": "&lt;p&gt;Dear {$client_first_name},&lt;/p&gt;&lt;p&gt;Thank you for creating a {$companyname} account. Please review this email in its entirety as it contains important information.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Logging In&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;You can access our client area at {$whmcs_link}&lt;/p&gt;&lt;p&gt;You will need your email address and the password you chose during signup to login.&lt;/p&gt;&lt;p&gt;If you created an account as part of placing a new order with us, you will shortly receive an order confirmation email.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Getting Support&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;If you need any help or assistance, you can access our support resources below.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/knowledgebase.php&quot;&gt;Knowledgebase&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/submitticket.php&quot;&gt;Submit a Ticket&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;{$signature}&lt;/p&gt;"
+        "Body": "&lt;p&gt;Dear {$client_name},&lt;/p&gt;&lt;p&gt;Thank you for creating a {$domainName} account. Please review this email in its entirety as it contains important information.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Logging In&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;You can access our client area at {$whmcs_link}&lt;/p&gt;&lt;p&gt;You will need your email address and the password you chose during signup to login.&lt;/p&gt;&lt;p&gt;If you created an account as part of placing a new order with us, you will shortly receive an order confirmation email.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Getting Support&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;If you need any help or assistance, you can access our support resources below.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/knowledgebase.php&quot;&gt;Knowledgebase&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/submitticket.php&quot;&gt;Submit a Ticket&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;{$signature}&lt;/p&gt;"
       }
     ]
   },
@@ -202,7 +202,7 @@
       },
       {
         "LanguageName": "en-US",
-        "Subject": "Your login details for {$company_name}",
+        "Subject": "Your login details for {$domainName}",
         "Body": "<p>Dear {$client_name},</p><p>Recently a request was submitted to reset your password for our client area. If you did not request this, please ignore this email. It will expire and become useless in 2 hours time.</p><p>To reset your password, please visit the url below:<br><a href=\"https://cp.arad-itc.com/admin/%7B$pw_reset_url%7D\">{$pw_reset_url}</a></p><p>When you visit the link above, you will have the opportunity to choose a new password.</p><p>{$signature}</p>"
       }
     ]
@@ -272,12 +272,12 @@
       {
         "LanguageName": "fa-IR",
         "Subject": null,
-        "Body": "{$domainName}\\n کلمه عبور جدید شما : {$otp}"
+        "Body": "{$domainName}\\n کلمه عبور جدید شما : {$pass}"
       },
       {
         "LanguageName": "en-US",
         "Subject": null,
-        "Body": "{$domainName}\\n Your New Password : {$otp}"
+        "Body": "{$domainName}\\n Your New Password : {$pass}"
       }
     ]
   },
@@ -319,12 +319,12 @@
     "MessageTemplateMultiLingual": [
       {
         "LanguageName": "fa-IR",
-        "Subject": "سفارش جدید در {$company_name}",
+        "Subject": "سفارش جدید در {$domainName}",
         "Body": "ثبت شده است برای مشاهده جزییات به پنل ادمین مراجعه کنید.  درتاریخ {$date}{$client_name} سفارش جدیدی توسط "
       },
       {
         "LanguageName": "en-US",
-        "Subject": "new order in {$company_name}",
+        "Subject": "new order in {$domainName}",
         "Body": "new order have been regitered by {$client_name} in {$date},check admin panel for details."
       }
     ]
@@ -343,12 +343,12 @@
     "MessageTemplateMultiLingual": [
       {
         "LanguageName": "fa-IR",
-        "Subject": "سفارش جدید شما در {$company_name}",
+        "Subject": "سفارش جدید شما در {$domainName}",
         "Body": "{$client_name} عزیز, سفارش شمادرتاریخ {$date}با موفقیت ثبت شد برای مشاهده جزییات با پنل کاربری خود مراجعه نمایید."
       },
       {
         "LanguageName": "en-US",
-        "Subject": "your new order in {$company_name}",
+        "Subject": "your new order in {$domainName}",
         "Body": "dear {$client_name} your order in {$date} has been registered, please check your user profile for details."
       }
     ]
@@ -392,12 +392,12 @@
       {
         "LanguageName": "fa-IR",
         "Subject": "اعلان موجودی کالا",
-        "Body": "کاریر گرامی کالای {$productName} در تاریخ {$date} در انبار {$company_name} موجود شد."
+        "Body": "کاریر گرامی کالای {$productName} در تاریخ {$date} در انبار {$domainName} موجود شد."
       },
       {
         "LanguageName": "en-US",
         "Subject": "Notify Product Inventory",
-        "Body": "dear user product {$productName} is now available in {$company_name} store in date: {$date}"
+        "Body": "dear user product {$productName} is now available in {$domainName} store in date: {$date}"
       }
     ]
   }

@@ -11,9 +11,7 @@
         .text-danger {
             font-size: 12px;
         }
-        .ltr {
-            direction: ltr;
-        }
+      
     </style>
 }
 
@@ -544,27 +542,28 @@
         function addToTable() {
             var flag = false;
             debugger;
+            if (isUnique(selectedLang, 'multiLingualList', 2, '@Language.GetString("AlertAndMessage_LangUniqueness")')) {
+                if ($("#menuTitle").val() == "") {
+                    $("span[data-val-result='menuTitle']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                    flag = true;
+                }
+                if ($("#languageId").val() == "-1") {
+                        $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                    flag = true;
+                }
 
-            if ($("#menuTitle").val() == "") {
-                $("span[data-val-result='menuTitle']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-                flag = true;
-            }
-            if ($("#languageId").val() == "-1") {
-                 $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-                flag = true;
-            }
+                if (!flag) {
+                    var tr = "<tr style='text-align:center;'><td>" + $("#menuTitle").val() +
+                        "</td><td>" + $('#languageId option:selected').text() +
+                        "</td><td style='display:none;'>" + $("#languageId").val() +
+                        "</td><td><button type='button' class='btn btn-sm btn-danger' onclick='deleteFromTable(this);'>" +
+                        "<i class='fa fa-trash' ></i></button></td></tr>";
 
-            if (!flag) {
-                var tr = "<tr style='text-align:center;'><td>" + $("#menuTitle").val() +
-                    "</td><td>" + $('#languageId option:selected').text() +
-                    "</td><td style='display:none;'>" + $("#languageId").val() +
-                    "</td><td><button type='button' class='btn btn-sm btn-danger' onclick='deleteFromTable(this);'>" +
-                    "<i class='fa fa-trash' ></i></button></td></tr>";
-
-                $("#multiLingualList").append(tr);
-                $("#menuTitle").val("");
-                $("#languageId").val("-1");
-                $("#languageId").selectpicker("refresh");
+                    $("#multiLingualList").append(tr);
+                    $("#menuTitle").val("");
+                    $("#languageId").val("-1");
+                    $("#languageId").selectpicker("refresh");
+                }
             }
         }
     </script>

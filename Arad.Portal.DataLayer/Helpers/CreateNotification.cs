@@ -834,6 +834,7 @@ namespace Arad.Portal.DataLayer.Helpers
             text = text.Replace("{$otp}", IsNullOrEmpty(otp));
             text = text.Replace("{$domainName}", _domainName);
             text = text.Replace("{$productName}", productName);
+            text = text.Replace("{$pass}", passwordBeforeHash);
 
 
             if (!string.IsNullOrWhiteSpace(callbackUrl))

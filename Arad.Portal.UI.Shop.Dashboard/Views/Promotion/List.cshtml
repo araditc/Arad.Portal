@@ -247,8 +247,8 @@
                             <td class="ListCell">@(++i)</td>
                             <td class="ListCell">@item.Title</td>
                             <td class="ListCell">@item.CurrencyName</td>
-                            <td class="ListCell" dir="ltr">@item.SDate.ToString().Split(" ")[0]</td>
-                            <td class="ListCell" dir="ltr">@(@item.EDate != null ? item.EDate.Value.ToString().Split(" ")[0] : "")</td>
+                            <td class="ListCell ltr">@item.SDate.ToString().Split(" ")[0]</td>
+                            <td class="ListCell ltr">@(@item.EDate != null ? item.EDate.Value.ToString().Split(" ")[0] : "")</td>
                             <td class="ListCell">@item.PromotionType</td>
                             <td class="ListCell">@item.DiscountType</td>
                             <td class="ListCell">@(item.AsUserCoupon ? Language.GetString("Yes") : Language.GetString("No"))</td>

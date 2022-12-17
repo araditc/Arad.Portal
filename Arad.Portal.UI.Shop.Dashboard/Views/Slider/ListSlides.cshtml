@@ -21,8 +21,8 @@
                          <label style="background-color: @item.ColoredBackground; width: 25px; height: 15px;"></label>
                     </td>
                     <td class="ListCell">@item.Link</td>
-                    <td class="ListCell">@(@CultureInfo.CurrentCulture.Name == "fa-IR" ? @item.PersianStartDate : @item.StartDate)</td>
-                    <td class="ListCell">@(@CultureInfo.CurrentCulture.Name == "fa-IR" ? @item.PersianExpireDate : @item.ExpireDate)</td>
+                    <td class="ListCell ltr">@(@CultureInfo.CurrentCulture.Name == "fa-IR" ? @item.PersianStartDate : @item.StartDate)</td>
+                    <td class="ListCell ltr">@(@CultureInfo.CurrentCulture.Name == "fa-IR" ? @item.PersianExpireDate : @item.ExpireDate)</td>
                     <td class="ListCell">
                         <a class="btn btn-outline-secondary btn-xs" asp-action="Layers" asp-controller="Slider"  asp-route-sliderId="@ViewBag.SliderId" asp-route-slideId="@item.Id">
                         @Language.GetString("design_Layers")  

@@ -167,7 +167,7 @@
                                 <td class="ListCell">@item.ReferenceType</td>
                                 <td class="ListCell">@item.domainName</td>
                                 <td class="ListCell">@item.ReferenceTitle</td>
-                                <td class="ListCell">@item.PersianCreationDate</td>
+                                <td class="ListCell ltr">@(CultureInfo.CurrentCulture.Name =="fa-ir" ? @item.PersianCreationDate : item.CreationDate.ToString().Split(" ")[0])</td>
                                 <td class="ListCell">@item.CreatorUserName</td>
                                 <td class="ListCell">@item.LikeCount</td>
                                 <td class="ListCell">@item.DislikeCount</td>

@@ -286,7 +286,7 @@
                                     }
                                     @(final)
                                 </td>
-                                <td>@item.CreationDate</td>
+                                <td class="ltr">@item.CreationDate</td>
                                 <td dir="ltr">@(item.MultiLingualProperties.Any(_=>_.LanguageId == langId) ? item.MultiLingualProperties.First(_ => _.LanguageId == langId).UrlFriend : "")</td>
                                 <td>
                                     <button class="btn btn-sm btn-dark bg-gradient" 

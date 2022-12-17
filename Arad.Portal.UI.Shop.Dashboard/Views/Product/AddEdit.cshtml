@@ -662,8 +662,8 @@
                                                             <td>@price.CurrencyName</td>
                                                             <td style="display:none;">@price.CurrencyId</td>
                                                             <td>@($"{Convert.ToInt64(@price.PriceValue):n0}")</td>
-                                                            <td style="direction: ltr;">@price.StartDate.ToString().Split(" ")[0]</td>
-                                                            <td>@(@price.EndDate != null ? price.EndDate.Value.ToString().Split(" ")[0] : "")</td>
+                                                            <td class="ltr">@price.StartDate.ToString().Split(" ")[0]</td>
+                                                            <td class="ltr">@(@price.EndDate != null ? price.EndDate.Value.ToString().Split(" ")[0] : "")</td>
                                                             <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
                                                             <td>
                                                                 <button type="button" class="btn btn-sm btn-danger bg-gradient" onclick="deleteFromPriceList(this);">

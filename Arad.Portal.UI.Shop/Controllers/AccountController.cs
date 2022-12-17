@@ -282,7 +282,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                         ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_MobileNumberInvalid2"));
                     }
                 }
-                if (!string.IsNullOrWhiteSpace(model.Username))
+                if (string.IsNullOrWhiteSpace(model.Username))
                 {
                     ModelState.AddModelError("Username", Language.GetString("Validation_EnterUsername"));
                 }else
@@ -346,7 +346,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 RequireLowercase = true,
                 RequireNonAlphanumeric = true,
                 RequireUppercase = true,
-                RequiredLength = 10,
+                RequiredLength = 7,
                 RequiredUniqueChars = 0
             });
             while (!Password.PasswordIsValid(true, true, true,
@@ -416,7 +416,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([FromForm] RegisterDTO model)
+        public async Task<IActionResult> Register([FromForm] RegisterVM model)
         {
             #region Validate
             if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
@@ -527,7 +527,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             };
             user.Domains.Add(new() { DomainId = domainId, IsOwner = false, DomainName = DomainName });
             string pass = Helpers.Utilities.GenerateRandomPassword(new() { RequireDigit = true, RequireLowercase = true, 
-                RequireNonAlphanumeric = false, RequireUppercase = true, RequiredLength = 6, RequiredUniqueChars = 0 });
+                RequireNonAlphanumeric = false, RequireUppercase = true, RequiredLength = 7, RequiredUniqueChars = 0 });
             IdentityResult insertResult = await _userManager.CreateAsync(user, pass);
 
             if (insertResult.Succeeded)

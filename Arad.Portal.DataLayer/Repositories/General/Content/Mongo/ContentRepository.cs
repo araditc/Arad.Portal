@@ -421,7 +421,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                     totalList = totalList.Where(_ => _.TagKeywords.Contains(filter["filter"]) || _.Contents.Contains(filter["filter"]));
                 }
                 var totalCount = totalList.Count();
-
+                totalList = totalList.Where(_ => _.LanguageId == langId);
                 var list = totalList.OrderByDescending(_=>_.CreationDate).Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ContentViewModel()
                    {

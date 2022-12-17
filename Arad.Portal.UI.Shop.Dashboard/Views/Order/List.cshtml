@@ -53,7 +53,7 @@
                             <td class="ListCell">@(++i)</td>
                             <td class="ListCell">@item.MainInvoiceNumber></td>
                            @* <td class="ListCell">@(CultureInfo.CurrentCulture.Name == "fa-IR" ? DateHelper.ToPersianDdate(item.RegisteredDate) : item.RegisteredDate.ToLocalTime())</td>*@
-                            <td class="ListCell">@(CultureInfo.CurrentCulture.Name == "fa-IR" ? DateHelper.ToPersianDdate(item.PaymentDate) : item.PaymentDate.ToLocalTime())</td>
+                            <td class="ListCell ltr">@(CultureInfo.CurrentCulture.Name == "fa-IR" ? DateHelper.ToPersianDdate(item.PaymentDate) : item.PaymentDate.ToLocalTime())</td>
                             <td class="ListCell">@item.UserFullName</td>
                            @* <td class="ListCell">@item.UserName</td>*@
                             <td class="ListCell d-none">@item.UserId</td>
