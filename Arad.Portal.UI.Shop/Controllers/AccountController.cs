@@ -251,6 +251,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         public async Task<IActionResult> ChangePassword([FromForm] ChangePassDto model)
         {
             #region Validate
+            var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
             if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
             {
                 ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIncorrectOrExpired"));
@@ -418,6 +419,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([FromForm] RegisterVM model)
         {
+            var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
             #region Validate
             if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
             {
@@ -1010,7 +1012,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_ProfileConfirmPhoneSending") });
             }
             #endregion
-
+            var domainEntity = _domainRepository.FetchByName(base.DomainName, false).ReturnValue;
             Result result = await _createNotification.SendOtp("SendOtp", cellPhoneNumber, process.Code);
 
             if (!result.Succeeded)
@@ -1152,7 +1154,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             HttpContext.Session.SetString("Otp", otp);
             HttpContext.Session.SetString("Phone", model.FullCellPhoneNumber);
             HttpContext.Session.SetString("OtpTime", DateTime.Now.ToString(CultureInfo.CurrentCulture));
-
+            var domainEntity = _domainRepository.FetchByName(base.DomainName, false).ReturnValue;
             Result result = await _createNotification.SendOtp("SendOtpForResetPassword", user, otp);
 
             return Ok(result.Succeeded ? new { Status = "Success", result.Message } : new { Status = "Error", result.Message });
@@ -1257,7 +1259,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             HttpContext.Session.SetString("Otp", otp);
             HttpContext.Session.SetString("UserName", user.UserName);
             HttpContext.Session.SetString("OtpTime", DateTime.Now.ToString(CultureInfo.CurrentCulture));
-
+            var domainEntity = _domainRepository.FetchByName(base.DomainName, false).ReturnValue;
             Result result = await _createNotification.SendOtp("AutomatedPasswordReset", user, otp);
 
             if (!result.Succeeded)

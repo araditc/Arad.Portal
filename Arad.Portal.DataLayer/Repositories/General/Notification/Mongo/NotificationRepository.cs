@@ -94,7 +94,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Notification.Mongo
                                                               .Take(20)
                                                               .ToListAsync();
 
-            Log.Fatal($"GetForSend Notification Count: {notifications}");
+            Log.Fatal($"GetForSend Notification Count: {notifications.Count}");
 
             foreach (Entities.General.Notify.Notification notification in notifications)
             {

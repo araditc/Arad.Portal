@@ -250,8 +250,12 @@ namespace Arad.Portal.UI.Shop.Helpers
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_accessToken}");
                 Log.Fatal($"Json Data for Send: {JsonConvert.SerializeObject(data)}");
                 DefaultContractResolver contractResolver = new() { NamingStrategy = new CamelCaseNamingStrategy() };
-                StringContent content = new(JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = contractResolver, Formatting = Formatting.Indented }), Encoding.UTF8, MediaTypeNames.Application.Json);
+                StringContent content = new(JsonConvert.SerializeObject(data, 
+                    new JsonSerializerSettings { ContractResolver = contractResolver, Formatting = Formatting.Indented }), Encoding.UTF8, MediaTypeNames.Application.Json);
                 response = await client.PostAsync(_appSettings.SmsEndPointConfig.Endpoint, content);
+                StringContent responseObj = new(JsonConvert.SerializeObject(response, 
+                    new JsonSerializerSettings { ContractResolver = contractResolver, Formatting = Formatting.Indented }), Encoding.UTF8, MediaTypeNames.Application.Json);
+                Log.Fatal($"whole object after PostAsync : {responseObj}");
                 
             }
             catch (Exception e)

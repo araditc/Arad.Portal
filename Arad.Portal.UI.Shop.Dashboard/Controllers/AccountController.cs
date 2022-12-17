@@ -871,7 +871,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 return NotFound();
             }
-
+            var useId = User.GetUserId();
+            var currentUser = await _userManager.FindByIdAsync(userId);
+            var domain = _domainRepository.FetchDomain(currentUser.Domains.FirstOrDefault(_ => _.IsOwner).DomainId);
             Result result = await _createNotification.Send("AutomatedPasswordReset", user, password);
 
             return Ok(new { Result = result });
@@ -1149,6 +1151,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_ProfileConfirmPhoneSending") });
             }
             #endregion
+            var userId = User.GetUserId();
+            var user = await _userManager.FindByIdAsync(userId);
+            var domain = _domainRepository.FetchDomain(user.Domains.FirstOrDefault(_ => _.IsOwner).DomainId).ReturnValue;
 
             Result result = await _createNotification.SendOtp("SendOtp", cellPhoneNumber, process.Code);
 

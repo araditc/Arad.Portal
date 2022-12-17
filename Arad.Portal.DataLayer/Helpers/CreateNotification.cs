@@ -57,7 +57,7 @@ namespace Arad.Portal.DataLayer.Helpers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILanguageRepository _lanRepository;
         private readonly IWebHostEnvironment _env;
-        private  string _domainName;
+        //private  string _domainName;
 
         public CreateNotification(IMessageTemplateRepository messageTemplateRepository,
                                   ISystemSettingRepository systemSettingRepository,
@@ -88,7 +88,8 @@ namespace Arad.Portal.DataLayer.Helpers
        
         public async Task<Result> ClientSignUp(string templateName, ApplicationUser user, string password)
         {
-            _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+            string _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+            var domainEntity = _domainRepository.FetchByName(_domainName, false).ReturnValue;
             SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
 
             if (smtp == null)
@@ -126,7 +127,7 @@ namespace Arad.Portal.DataLayer.Helpers
                     messageTemplate.MessageTemplateMultiLingual
                     .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject, user);
                 string messageText = GenerateText(notificationType, messageTemplate.MessageTemplateMultiLingual
-                    .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, user, "", "", password);
+                    .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, user, "", "", password, "", domainEntity.Title?? "");
 
                 Notification notification = new()
                 {
@@ -177,7 +178,8 @@ namespace Arad.Portal.DataLayer.Helpers
         {
             try
             {
-                _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+                string _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+                var domainEntity = _domainRepository.FetchByName(_domainName, false).ReturnValue;
                 SMTP smtpAccount = null;
                 if (notificationType == NotificationType.Sms)
                 {
@@ -211,7 +213,7 @@ namespace Arad.Portal.DataLayer.Helpers
                messageTemplate.MessageTemplateMultiLingual
                .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject, null, "", "", "", productName);
                     string messageText = GenerateText(NotificationType.Sms, messageTemplate.MessageTemplateMultiLingual
-                        .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, null, "", "", "", productName);
+                        .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, null, "", "", "", productName, domainEntity.Title?? "");
 
                     Notification notification = new()
                     {
@@ -251,7 +253,8 @@ namespace Arad.Portal.DataLayer.Helpers
         public async Task<Result> GenerateProductNotificationToUsers(string templateName, Notification notification)
         {
             SMTP smtpAccount = null;
-            _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+            string _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+            var domainEntity = _domainRepository.FetchByName(_domainName, false).ReturnValue;
             if (notification.Type == NotificationType.Sms)
             {
                 if (_sendSmsConfig == null)
@@ -289,7 +292,7 @@ namespace Arad.Portal.DataLayer.Helpers
              messageTemplate.MessageTemplateMultiLingual
              .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject, userEntity, "", "", "", productName);
                     string messageText = GenerateText(NotificationType.Sms, messageTemplate.MessageTemplateMultiLingual
-                        .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, userEntity, "", "", "", productName);
+                        .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, userEntity, "", "", "", productName, domainEntity.Title?? "");
 
                     lst.Add(new Notification()
                     {
@@ -335,7 +338,8 @@ namespace Arad.Portal.DataLayer.Helpers
         {
             try
             {
-                _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+                string _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+                var domainEntity = _domainRepository.FetchByName(_domainName, false).ReturnValue;
                 if (_sendSmsConfig == null)
                 {
                     return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundSmsSetting") };
@@ -356,7 +360,7 @@ namespace Arad.Portal.DataLayer.Helpers
                messageTemplate.MessageTemplateMultiLingual
                .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject, user);
                     string messageText = GenerateText(NotificationType.Sms, messageTemplate.MessageTemplateMultiLingual
-                        .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, user, "", "", "");
+                        .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, user, "", "", "", "", domainEntity.Title?? "");
 
                     Notification notification = new()
                     {
@@ -392,7 +396,8 @@ namespace Arad.Portal.DataLayer.Helpers
         }
         public async Task<Result> SendCustomMessage(ApplicationUser user, string messageText)
         {
-            _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+            string _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+            //var domainEntity = _domainRepository.FetchByName(_domainName, false).ReturnValue;
             SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
             if (_sendSmsConfig == null)
             {
@@ -452,7 +457,8 @@ namespace Arad.Portal.DataLayer.Helpers
         public async Task<Result> Send(string templateName, ApplicationUser user, string password)
         {
             //SMTP smtp = await _smtpRepository.GetDefault();
-            _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+            string  _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+            var domainEntity = _domainRepository.FetchByName(_domainName, false).ReturnValue;
             SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
 
             if (smtp == null)
@@ -489,7 +495,7 @@ namespace Arad.Portal.DataLayer.Helpers
                 string title = GenerateText(notificationType,
                     messageTemplate.MessageTemplateMultiLingual.First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject, user);
                 string messageText = GenerateText(notificationType,
-                    messageTemplate.MessageTemplateMultiLingual.First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, user, "", "", password);
+                    messageTemplate.MessageTemplateMultiLingual.First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, user, "", "", password,"", domainEntity.Title?? "");
 
                 Notification notification = new()
                 {
@@ -539,7 +545,7 @@ namespace Arad.Portal.DataLayer.Helpers
         public async Task<Result> SendConfirmEmail(string templateName, ApplicationUser user, string callbackUrl)
         {
             //SMTP smtp = await _smtpRepository.GetDefault(); 
-            _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+            string _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
             SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
             if (smtp == null)
             {
@@ -623,7 +629,8 @@ namespace Arad.Portal.DataLayer.Helpers
         public async Task<Result> SendOtp(string templateName, ApplicationUser user, string otp)
         {
             //SMTP smtp = await _smtpRepository.GetDefault();
-            _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+            string _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+            var domainEntity = _domainRepository.FetchByName(_domainName, false).ReturnValue;
             SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
 
             if (smtp == null)
@@ -665,7 +672,7 @@ namespace Arad.Portal.DataLayer.Helpers
                     user,
                     "",
                     otp,
-                    "");
+                    "", domainEntity.Title?? "");
 
                 Notification notification = new()
                 {
@@ -717,7 +724,8 @@ namespace Arad.Portal.DataLayer.Helpers
             try
             {
                 //SMTP smtp = await _smtpRepository.GetDefault();
-                _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+               string _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+                var domainEntity = _domainRepository.FetchByName(_domainName, false).ReturnValue;
                 SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
 
                 if (smtp == null)
@@ -759,7 +767,7 @@ namespace Arad.Portal.DataLayer.Helpers
                         null,
                         null,
                         otp,
-                        null);
+                        null, domainEntity.Title?? "");
 
                     ApplicationUser user = _userManager.Users.FirstOrDefault(_ => _.IsSystemAccount);
 
@@ -815,9 +823,9 @@ namespace Arad.Portal.DataLayer.Helpers
         }
 
         private string GenerateText(NotificationType notificationType, string text,
-               ApplicationUser user, string callbackUrl = "", string otp = "", string passwordBeforeHash = "", string productName = "")
+               ApplicationUser user, string callbackUrl = "", string otp = "", string passwordBeforeHash = "", string productName = "", string domainTitle = "")
         {
-            _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
+            //_domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
             if (string.IsNullOrWhiteSpace(text))
             {
                 return String.Empty;
@@ -832,7 +840,7 @@ namespace Arad.Portal.DataLayer.Helpers
             text = text.Replace("{$date}", CultureInfo.CurrentCulture.Name == "fa-IR" ? DateTime.Now.ToPersianLetDateTime() : DateTime.Now.ToString(_setting.DateFormat));
             text = text.Replace("{$time}", DateTime.Now.ToString("HH:mm"));
             text = text.Replace("{$otp}", IsNullOrEmpty(otp));
-            text = text.Replace("{$domainName}", _domainName);
+            text = text.Replace("{$domainName}", domainTitle);
             text = text.Replace("{$productName}", productName);
             text = text.Replace("{$pass}", passwordBeforeHash);
 
