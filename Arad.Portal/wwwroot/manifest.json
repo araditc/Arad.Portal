@@ -1,0 +1,23 @@
+{
+  "name": "Arad Pwa Portal",
+  "short_name": "Arad Portal",
+  "orientation": "landscape",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/imgs/NoImage.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "imgs/NoImage.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+
+  "color": "#ffffff",
+  "background_color": "#20c4f4",
+  "theme_color": "#20c4f4"
+}

@@ -1,0 +1,215 @@
+﻿@using System.Collections.Specialized
+@using Arad.Portal.DataLayer.Entities.General.SendMessage
+@using Arad.Portal.GeneralLibrary.Utilities
+@using Arad.Portal.Models.Shared.SendMessage
+@model PagedItems<SendMessageViewModel>
+@{
+    int i = ((Model.CurrentPage - 1) * Model.PageSize);
+    bool isSearch = false;
+    string filter = "";
+    if (!string.IsNullOrWhiteSpace(Model.QueryString))
+    {
+        NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
+        isSearch = !string.IsNullOrWhiteSpace(queryString["filter"]);
+        if (isSearch)
+        {
+            filter = queryString["filter"] ?? "";
+        }
+    }
+
+    string searchCollapseClass = isSearch ? "collapse show" : "collapse";
+    string baseAdd = Config["BaseAddress"];
+}
+
+<div class="card card-dark">
+    <a data-bs-toggle="collapse" role="button" href="#searchCollapse" aria-expanded="@(!isSearch ? "false" : "true")" class="@(!isSearch ? "collapsed" : null)">
+        <div class="card-header">
+            <h5 class="card-title">
+                <i class="fas fa-search">
+                    <span>@UtilityLanguage.GetString("btn_Search")</span>
+                </i>
+            </h5>
+        </div>
+    </a>
+
+    <div id="searchCollapse" class="@searchCollapseClass">
+        <div class="card-body">
+            <div class="row">
+                <div class="form-group col-12 col-md-3">
+                    <label class="form-label">@UtilityLanguage.GetString("Filter")</label>
+                    <input type="text" class="form-control" id="filter" value="@filter" />
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button id="btnSearch" class="btn btn-sm btn-primary bg-gradient float-end" type="button">
+                <i style="position: relative; left: 5px; top: 1px;" class="fa fa-search"></i>
+                @UtilityLanguage.GetString("btn_Search")
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <h5 class="card-title">@UtilityLanguage.GetString("Menu_SendMessageSetting")</h5>
+            </div>
+            <div class="col-12 col-md-3 offset-md-6">
+                <div class="card-tools float-end">
+                    <!-- Dropdown for adding SMS or Email -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success btn-sm dropdown-toggle bg-gradient" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-plus pt-1"></i>&nbsp; @UtilityLanguage.GetString("btn_Add")
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a asp-action="AddEditSms" asp-controller="SendMessage" class="dropdown-item">
+                                    <i class="fa fa-envelope"></i> @UtilityLanguage.GetString("AddSms")
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="AddEditSmtp" asp-controller="SendMessage" class="dropdown-item">
+                                    <i class="fa fa-envelope"></i> @UtilityLanguage.GetString("AddEmail")
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body table-responsive" id="contentCategoryListCard">
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>@UtilityLanguage.GetString("tbl_RowName")</th>
+                    <th>@UtilityLanguage.GetString("Server")</th>
+                    <th>@UtilityLanguage.GetString("Port")</th>
+                    <th>@UtilityLanguage.GetString("UserName")</th>
+                    <th>@UtilityLanguage.GetString("Password")</th>
+                    <th>@UtilityLanguage.GetString("Enum_Provider")</th>
+                    <th>@UtilityLanguage.GetString("BaseAddress")</th>
+                    <th>@UtilityLanguage.GetString("SenderNumber")</th>
+                    <th>@UtilityLanguage.GetString("ApiKey")</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Items.Any())
+                {
+                    foreach (SendMessageViewModel item in Model.Items)
+                    {
+                        <tr>
+                            <td class="ListCell">@(++i)</td>
+
+                            <td class="ListCell">@item.Server</td>
+                            <td class="ListCell">@item.Port</td>
+
+                            @if (item.SendType == SendType.Email)
+                            {
+                                <td class="ListCell">@item.UserName</td>
+                                <td class="ListCell">@item.Password</td>
+                            }
+                            else
+                            {
+                                <td class="ListCell"></td>
+                                <td class="ListCell"></td>
+                            }
+
+                            <td class="ListCell">@item.Provider</td>
+                            <td class="ListCell">@item.BaseAddress</td>
+                            <td class="ListCell">@item.SenderNumber</td>
+                            <td class="ListCell">@item.ApiKey</td>
+
+                            <td>
+                                @if (item.SendType == SendType.SMS)
+                                {
+                                    <a asp-action="AddEditSms" asp-controller="SendMessage" asp-route-id="@item.Id" class="btn btn-sm btn-warning bg-gradient">
+                                        <i class="fa fa-edit"></i> @UtilityLanguage.GetString("btn_Edit")
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-action="AddEditSmtp" asp-controller="SendMessage" asp-route-id="@item.Id" class="btn btn-sm btn-warning bg-gradient">
+                                        <i class="fa fa-edit"></i> @UtilityLanguage.GetString("btn_Edit")
+                                    </a>
+                                }
+                                @if (!item.IsDeleted)
+                                {
+                                    <button onclick="EntityDelete('@item.Id')" class="btn btn-sm btn-danger bg-gradient">
+                                        <i class="fa fa-trash"></i> @UtilityLanguage.GetString("btn_Delete")
+                                    </button>
+                                }
+                                @if (item.IsDeleted)
+                                {
+                                    <button id="restoreRecord" data-id="@item.Id" onclick="EntityRestore('@item.Id')" class="btn btn-sm btn-secondary bg-gradient">
+                                        <i class="fa fa-refresh"></i> @UtilityLanguage.GetString("btn_Restore")
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="10" class="ListCell">
+                            <h6>@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</h6>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card-footer">
+        @await Component.InvokeAsync("Arad.Portal.Areas.Shared.ViewComponents.Pagination", new PageViewModel
+   {
+       CurrentPage = Model.CurrentPage,
+       ItemsCount = Model.ItemsCount,
+       PageSize = Model.PageSize,
+       Navigation = Url.Action("List", "SendMessage"),
+       QueryParams = Model.QueryString
+   })
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            let queryString = window.location.search.substring(1);
+
+            if ("@filter" !== "") {
+                $("#filter").val('@filter');
+            }
+
+            $("#btnSearch").click(function () {
+                if ($("#filter").val() !== "") {
+                    queryString += (queryString !== "" ? "&" : "") + "filter=" + $("#filter").val();
+                }
+                window.location.href = '@Url.Action("List", "SendMessage")' + '?' + queryString;
+            });
+        });
+
+        function EntityDelete(id) {
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("Delete", "SendMessage")' + "/" + id;
+            document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Delete")';
+            document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_DeletionSureness")';
+            $('#confirmModal').modal('show');
+        }
+
+        function EntityRestore(id) {
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("Restore", "SendMessage")' + '/' + id;
+            document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Restore")';
+            document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_RestorationSureness")';
+            $('#confirmModal').modal('show');
+        }
+    </script>
+}

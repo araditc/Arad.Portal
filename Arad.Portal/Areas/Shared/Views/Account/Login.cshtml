@@ -1,0 +1,274 @@
+﻿@using Arad.Portal.Models.Shared.User
+@using System.Globalization
+@inject IConfiguration Config
+
+@model LoginViewModel
+@{
+    Layout = null;
+    string dir = HelpersMethods.GetDirection(CultureInfo.CurrentCulture);
+    string lang = HelpersMethods.GetHtmlLang(CultureInfo.CurrentCulture);
+    string baseAdd = Config["BaseAddress"];
+}
+
+<!DOCTYPE html>
+<html dir="@dir" lang="@lang">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta property="og:title"
+          content="@UtilityLanguage.GetString("LoginPage")" />
+    <meta property="og:type"
+          content="website" />
+    <meta name="apple-mobile-web-app-title" content="@UtilityLanguage.GetString("LoginPage")" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>@UtilityLanguage.GetString("LoginPage")</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <link href="@Url.Content($"~/lib/intl-tel-input/css/intlTelInput.css")" rel="stylesheet" />
+    @if (dir == "ltr")
+    {
+        <link href="@Url.Content($"~/lib/bootstrap5/css/bootstrap.min.css")" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="@Url.Content($"~/lib/bootstrap5/css/bootstrap.rtl.min.css")" rel="stylesheet" />
+        <link href="@Url.Content($"~/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
+    }
+    <link href="@Url.Content($"~/css/login.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/lib/font-awesome/css/all.css")" rel="stylesheet" />
+</head>
+<body style="font-family: IransansWeb" class="hold-transition login-page">
+
+
+    <div class="position-fixed left-50 top-0 p-5" id="toastPanel" style="z-index: 11;">
+        <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
+            <div class="toast-header">
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12 col-md-4 offset-md-4">
+                <div class="card shadow  mt-5 p-4">
+
+                    <img alt=""
+                         src="/logo.png"
+                         style="align-self: center"
+                         width="110" />
+
+                    <div class="card-body">
+                        <form asp-action="Login"
+                              asp-controller="Account" asp-area="Shared" class="row g-3" id="loginForm" method="post">
+                            <input asp-for="@Model.ReturnUrl"
+                                   type="hidden" value="@Model.ReturnUrl" />
+
+
+                            <div class="col-12 input-group p-0 mb-1">
+
+                                <span class="input-group-text"
+                                      id="basic-addon1">
+                                    <i class="fas fa-user"></i>
+                                </span>
+
+                                <input aria-describedby="basic-addon1"
+                                       asp-for="Username"
+                                       class="form-control"
+                                       placeholder="@UtilityLanguage.GetString("AlertAndMessage_Username")"
+                                       type="text">
+                            </div>
+                            <span asp-validation-for="@Model.Username"
+                                  class="text-danger form-validation-alert">
+                            </span>
+                            <div class="col-12 input-group p-0 mb-1">
+
+                                <span class="input-group-text"
+                                      id="basic-addon2">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+
+                                <input aria-describedby="basic-addon2"
+                                       asp-for="@Model.Password"
+                                       class="form-control"
+                                       id="pw_element"
+                                       placeholder="@UtilityLanguage.GetString("AlertAndMessage_Password")"
+                                       type="password">
+
+                                <button class="btn btn-outline-secondary"
+                                        onclick="togglePassword()"
+                                        type="button">
+                                    <i class="fas fa-eye-slash"
+                                       id="ic_span">
+                                    </i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="@Model.Password"
+                                  class="text-danger form-validation-alert">
+                            </span>
+
+
+                            <input type="button" class="link-primary small border-0 text-start" id="changePass"
+                                   style="background-color: transparent;"
+                                   value='@UtilityLanguage.GetString("AlertAndMessage_ForgetPassword")' />
+
+
+                            <div class="input-group p-0 mb-1">
+
+                                @if (dir == "rtl")
+                                {
+                                    <button class="btn btn-outline-secondary"
+                                            onclick="refreshCaptcha()"
+                                            type="button">
+                                        <i class="fas fa-sync"></i>
+                                    </button>
+                                    <input asp-for="@Model.Captcha"
+                                           class="form-control"
+                                           id="Captcha"
+                                           placeholder="@UtilityLanguage.GetString("User_ResultOfSum")"
+                                           type="text"
+                                           value="">
+
+                                    <span class="form-control p-0">
+                                        <img alt="Captcha"
+                                             id="imgCaptcha"
+                                             src="@Url.Action("CaptchaImage", "Captcha" ,new{ Area = "Shared"})"
+                                             style="height: 100% !important; width: 100% !important;">
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="form-control p-0">
+                                        <img alt="Captcha"
+                                             id="imgCaptcha"
+                                             src="@Url.Action("CaptchaImage", "Captcha" ,new{ Area = "Shared"})"
+                                             style="height: 100% !important; width: 100% !important;">
+                                    </span>
+
+                                    <input asp-for="@Model.Captcha"
+                                           class="form-control "
+                                           id="Captcha"
+                                           placeholder="@UtilityLanguage.GetString("User_ResultOfSum")"
+                                           type="text"
+                                           value="">
+                                    <button class="btn btn-outline-secondary"
+                                            onclick="refreshCaptcha()"
+                                            type="button">
+                                        <i class="fas fa-sync"></i>
+                                    </button>
+                                }
+
+                            </div>
+                            <span asp-validation-for="@Model.Captcha"
+                                  class="text-danger form-validation-alert">
+                            </span>
+
+                            <div class="col-12">
+                                <div class="form-check m-auto d-inline-block">
+                                    <input class="form-check-input" type="checkbox" asp-for="@Model.RememberMe">
+                                    <label class="form-check-label" for="RememberMe">
+                                        @UtilityLanguage.GetString("AlertAndMessage_RememberMe")
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-12 p-0">
+                                <input class="btn btn-outline-primary text-bold  w-100"
+                                       type="submit" value='@UtilityLanguage.GetString("btn_Login")'>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                @*                 <ul class="nav mt-3">
+                    <li>
+                        <span class="nav-link p-0 text-secondary small"
+                              style="cursor: pointer;"
+                              onclick="setLang('en-US')">
+                            English
+                        </span>
+                    </li>
+                    <li class="nav-link p-0 text-secondary small">&nbsp;|&nbsp;</li>
+                    <li>
+                        <span class="nav-link p-0 text-secondary small"
+                              style="cursor: pointer;"
+                              onclick="setLang('fa-IR')">
+                            فارسی
+                        </span>
+                    </li>
+                </ul> *@
+
+            </div>
+        </div>
+    </div>
+
+    <script src="@Url.Content($"~/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content($"~/lib/bootstrap5/js/bootstrap.bundle.js")"></script>
+
+    <script>
+        $(document).ready(function () {
+            
+            if ('@ViewBag.Message' != '') {
+                $('#mainToastBody').html(`<i class="far fa-check-circle"></i>` + '@ViewBag.Message');
+                $('#mainToastBody').removeClass("text-bg-success");
+                $('#mainToastBody').addClass('text-bg-danger');
+                $("#toastPanel").show();
+                var toast = new bootstrap.Toast($("#mainToast"));
+                toast.show();
+                setTimeout(function () {
+                    $("#toastPanel").hide();
+                }, 2500);
+            }
+
+            $("#changePass").click(function () {
+                
+                window.location.href = '@Url.Action("ChangePassword", "Account")';
+            })
+        })
+
+        function refreshCaptcha() {
+            $("#imgCaptcha").attr('src', `@Url.Action("CaptchaImage", "Captcha")?${new Date().getTime()}`);
+            $("#inlineFormInputGroup").val('');
+            $("#inlineFormInputGroup").focus();
+            $('#captValidation').empty();
+        }
+
+        function togglePassword() {
+            const pwEle = document.getElementById("pw_element");
+            const btn = document.getElementById("ic_span");
+
+            if (pwEle.type === "password") {
+                pwEle.type = "text";
+                btn.className = "fas fa-eye-slash";
+            }
+            else {
+                pwEle.type = "password";
+                btn.className = "fas fa-eye";
+            }
+        }
+
+        function setLang(lang) {
+            
+            const currentCulture = '@CultureInfo.CurrentCulture.Name';
+            if (currentCulture !== lang) {
+                $.ajax({
+                    type: "GET",
+                    url: `@Url.Action("ChangeLang")?langId=${lang}`,
+                    statusCode: {
+                        200: function () {
+                            
+                            window.location.reload();
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+﻿@using Arad.Portal.Models.Admin
+
+@model TemplateSectionPart
+@{
+
+}
+<div class='row @($"div_{Model.SectionTag}")' >
+    <div class="col-12 text-center">
+        <label class="lblAlertFirstRow form-label fs-5">@UtilityLanguage.GetString("AlertAndMessage_CreateNewRow")</label>
+        <button class="btn btn-success bg-gradient btn-sm float-end addNewRow m-1" id='@($"btnAdd_{Model.SectionTag}")' onclick="addNewRow(this, '@Model.SectionTag');"
+               type="button" >@UtilityLanguage.GetString("btn_NewRow")</button>
+    </div>
+</div>
+<div id="@($"{Model.SectionTag}_paramSection")">
+    
+</div>
+@*<div class="row firstLevel mx-1 parentSrc @($"tem_{Model.SectionTag}") d-none">
+  
+    <div class="col-12 col-md-3"><
+        <label class="lblAlert form-label">@UtilityLanguage.GetString("AlertAndMessage_HowManyColumns")</label>
+        <br />
+        <select  class="form-control selectpicker colCnt" onchange="selectColumns(this);"  data-live-search="true">
+            <option value="1">@UtilityLanguage.GetString("Template_OneCol")</option>
+            <option value="2">@UtilityLanguage.GetString("Template_TwoCol")</option>
+            <option value="3">@UtilityLanguage.GetString("Template_ThreeCol")</option>
+            <option value="4">@UtilityLanguage.GetString("Template_FourCol")</option>
+            <option value="6">@UtilityLanguage.GetString("Template_SixCol")</option>
+        </select>
+    
+    <div class="col-12 contentColumns"></div>
+    </div>
+</div>*@
+

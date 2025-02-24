@@ -1,0 +1,193 @@
+﻿@using Arad.Portal.Models.Shared.Domain
+
+@model PagedItems<DomainViewModel>
+@{
+    int i = ((Model.CurrentPage - 1) * Model.PageSize);
+    bool isSearch = false;
+    System.Collections.Specialized.NameValueCollection queryString = null;
+    string langId = "";
+    if (!string.IsNullOrWhiteSpace(Model.QueryString))
+    {
+        queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
+        queryString.Remove("page");
+    }
+    if (string.IsNullOrEmpty(langId))
+    {
+        langId = ViewBag.DefLangId;
+    }
+    string searchCollapseClass = isSearch ? "collapse show" : "collapse";
+    string baseAdd = Config["BaseAddress"];
+
+}
+
+
+<!--<div class="card card-dark">
+    <a data-toggle="collapse" data-parent="#accordion" href="#searchCollapse"
+       aria-expanded="@(!isSearch ? "false" : "true")" class="@(!isSearch ? " collapsed" : null)">
+
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-search"></i>
+                <span style="margin-right: 5px">@UtilityLanguage.GetString("btn_Search")</span>
+            </h3>
+        </div>
+    </a>
+
+    <div id="searchCollapse"-->
+@*class="@searchCollapseClass"*@
+<!--style="">
+        <div class="card-body">
+
+                <div class="row">
+
+                    <div class="form-group col-md-3">
+                        <label class="form-label">@UtilityLanguage.GetString("DomainName")</label>
+                        <input type="text" id="txtDomainNameFilter" class="form-control" placeholder='@UtilityLanguage.GetString("DomainName")' />
+                    </div>
+                </div>
+
+        </div>
+        <div class="card-footer">
+            <button id="btnSearch" class="btn btn-primary bg-gradient" type="submit">
+                <i style="position: relative; left: 5px; top: 1px;" class="fa fa-search"></i>
+@UtilityLanguage.GetString("btn_Search")
+            </button>
+        </div>
+    </div>
+</div>-->
+<div class="card" id="domainListCard">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <h5 class="card-title">@UtilityLanguage.GetString("Menu_domains")</h5>
+            </div>
+            @if (ViewBag.IsSystemAccount)
+            {
+                <div class="col-12 col-md-4 offset-md-5">
+                    <div class="card-tools float-end">
+                        <a asp-action="AddEdit" asp-controller="Domain" class="btn btn-success bg-gradient btn-sm">
+                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @UtilityLanguage.GetString("btn_Add")
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="card-body table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>@UtilityLanguage.GetString("tbl_RowName")</th>
+                    <th>@UtilityLanguage.GetString("DomainName")</th>
+                    <th>@UtilityLanguage.GetString("DomainOwner")</th>
+                    <th>@UtilityLanguage.GetString("DefaultLanguage")</th>
+                    <th>@UtilityLanguage.GetString("CurrentDomainPrice")</th>
+                    <th>@UtilityLanguage.GetString("DefaultCurrency")</th>
+                    <th>@UtilityLanguage.GetString("DefaultDomain")</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Items.Any())
+                {
+
+                    @foreach (DomainViewModel item in Model.Items)
+                    {
+                        <tr>
+                            <td class="ListCell">@(++i)</td>
+                            <td class="ListCell">@item.DomainName</td>
+                            <td class="ListCell">@item.OwnerUserName</td>
+                            <td class="ListCell">@item.DefaultLanguageName</td>
+                            <td class="ListCell">
+                                @(item.Prices.Any(p => p.StartDate <= DateTime.Now && p.IsActive && p.EndDate == null && p.CurrencyId == item.DefaultCurrencyId) ? item.Prices
+                                    .FirstOrDefault(p => p.StartDate <= DateTime.Now && p.IsActive && p.EndDate == null && p.CurrencyId == item.DefaultCurrencyId).PriceValue : "")
+                            </td>
+                            <td class="ListCell">@item.DefaultCurrencyName</td>
+                            <td class="ListCell">@(item.IsDefault ? UtilityLanguage.GetString("Yes") : UtilityLanguage.GetString("No"))</td>
+                            <td>
+
+                                <a asp-action="AddEdit" asp-controller="Domain" asp-route-id="@item.DomainId" class="btn btn-sm btn-warning bg-gradient">
+                                    <i class="fa fa-edit"></i>@UtilityLanguage.GetString("btn_Edit")
+                                </a>
+                                @if (ViewBag.IsSystemAccount)
+                                {
+                                    @if (!item.IsDeleted)
+                                    {
+                                        <button onclick="EntityDelete('@item.DomainId')" class="btn btn-sm btn-danger bg-gradient">
+                                            <i class="fa fa-trash"></i>@UtilityLanguage.GetString("btn_Delete")
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button id="restoreRecord" onclick="EntityRestore('@item.DomainId')" class="btn btn-sm btn-secondary bg-gradient">
+                                            <i class="fa fa-refresh"></i>
+                                            @UtilityLanguage.GetString("btn_Restore")
+                                        </button>
+                                    }
+                                }
+                                <a asp-action="PageDesign" asp-controller="Domain" asp-route-pageType="@(Enums.PageType.HomePage)" asp-route-domainId="@item.DomainId" class="btn btn-success bg-gradient btn-sm">
+                                    <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @UtilityLanguage.GetString("btn_HomePageDesign")
+                                </a>
+
+                                <a asp-action="PageDesign" asp-controller="Domain" asp-route-pageType="@(Enums.PageType.BlogPage)" asp-route-domainId="@item.DomainId" class="btn btn-success bg-gradient btn-sm">
+                                    <i style="position: relative; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @UtilityLanguage.GetString("btn_ContentPageDesign")
+                                </a>
+
+                                <a asp-action="PageDesign" asp-controller="Domain" asp-route-pageType="@(Enums.PageType.ProductPage)" asp-route-domainId="@item.DomainId" class="btn btn-success bg-gradient btn-sm">
+                                    <i style="position: relative; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @UtilityLanguage.GetString("btn_ProductPageDesign")
+                                </a>
+
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8" class="ListCell">
+                            <h6>@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</h6>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        @await Component.InvokeAsync("Arad.Portal.Areas.Shared.ViewComponents.Pagination", new PageViewModel
+   {
+       CurrentPage = Model.CurrentPage,
+       ItemsCount = Model.ItemsCount,
+       PageSize = Model.PageSize,
+       Navigation = Url.Action("List", "Domain"),
+       QueryParams = Model.QueryString
+   })
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        function EntityDelete(id) {
+            
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("Delete", "Domain")' + "/" + id,
+                document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Delete")';
+            document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_DeletionSureness")';
+            $('#confirmModal').modal('show');
+
+        }
+
+        function EntityRestore(id) {
+            
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("Restore", "Domain")' + '/' + id,
+                document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Restore")';
+            document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_RestorationSureness")';
+            $('#confirmModal').modal('show');
+        }
+    </script>
+}

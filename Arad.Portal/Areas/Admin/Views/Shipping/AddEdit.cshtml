@@ -1,0 +1,466 @@
+﻿@using Arad.Portal.Models.Shared.Setting
+@model ShippingSettingDto
+@{
+    string alert = UtilityLanguage.GetString("AlertAndMessage_GotIt");
+    string error = UtilityLanguage.GetString("AlertAndMessage_Error");
+    string baseAdd = Config["BaseAddress"];
+}
+@section Styles {
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href=@Url.Content("~/lib/datePicker/kamadatepicker.css") rel="stylesheet" />
+    }
+    else
+    {
+        <link href=@Url.Content($"~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css") rel="stylesheet" />
+    }
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+    </style>
+}
+
+<h4>  @UtilityLanguage.GetString("Menu_ShippingSetting") </h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card" id="addShippingSettingCard">
+            <div class="card-header">
+                <h5 class="card-title" data-toggle="tab">
+                    @(!string.IsNullOrWhiteSpace(Model.Id) ?
+                        UtilityLanguage.GetString("Edit_ShippingSetting") : UtilityLanguage.GetString("Add_ShippingSetting"))
+                </h5>
+            </div>
+
+            <div class="card-body">
+                <input type="hidden" value="@Model.Id" asp-for="Id" />
+
+
+                @if (@ViewBag.IsSysAcc)
+                {
+                    <div class="row">
+                        <div class="form-group col-12 col-md-3">
+                            <label asp-for="AssociatedDomainId" class="form-label">@UtilityLanguage.GetString("AssociatedDomain")</label>
+                            <select class="form-control selectpicker" data-live-search="true"
+                                    asp-for="@Model.AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text", Model.AssociatedDomainId))">
+                            </select>
+                            <span data-val-result="AssociatedDomainId" class="text-danger"></span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" value="@Model.AssociatedDomainId" asp-for="AssociatedDomainId" />
+                }
+
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label class="form-label" asp-for="CurrencyId">@UtilityLanguage.GetString("Currency")</label><br />
+                        <select class="form-control selectpicker" asp-for="CurrencyId" data-live-search="true" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text", Model.CurrencyId))">
+                        </select>
+                        <span data-val-result="currencyId" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">@UtilityLanguage.GetString("tbl_ShippingTypes")</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="form-group col-md-3">
+                                        <label class="form-label">@UtilityLanguage.GetString("tbl_ShippingType")</label>
+                                        <select class="form-control selectpicker" id="shippingTypeId" data-live-search="true" asp-items="@(new SelectList(ViewBag.ShippngTypes,"Value","Text"))">
+                                        </select>
+                                        <span data-val-result="shippingTypeId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-2">
+
+
+                                        <div class="form-group col-12 col-md-4 pt-1 pb-2 m-auto">
+                                            <div class="form-check d-inline-block pt-3">
+                                                <input class="form-check-input" type="checkbox" id="chbIsFixedExpense">
+                                                <label class="form-check-label" for="chbIsFixedExpense">
+                                                    @UtilityLanguage.GetString("tbl_HasFixedExpense")
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="form-label">@UtilityLanguage.GetString("tbl_FixedExpenseValue")</label>
+                                        <input type="number" class="form-control" id="fixedExpenseValue" disabled />
+                                        <span data-val-result="fixedExpenseValue" class="text-danger"></span>
+                                    </div>
+                                    @* <div class="form-group col-md-3">
+                                    <label class="form-label">@UtilityLanguage.GetString("tbl_Provider")</label>
+                                    <select class="form-control selectpicker" id="ProviderId" data-live-search="true"
+                                    asp-items="@(new SelectList(ViewBag.Providers,"Value","Text"))">
+                                    </select>
+                                    <span data-val-result="ProviderId" class="text-danger"></span>
+                                    </div>*@
+                                    <div class="form-group col-md-1" style="text-align:center;margin:auto;">
+                                        <div style="margin:auto;display:inline-block;">
+                                            <button type="button" class="btn btn-success btn-sm bg-gradient" onclick="addToList();">
+                                                <i class="fa fa-plus pt-1"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-3">
+                                        <span data-val-result="shippingList" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-12 mt-2">
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr style="text-align:center;">
+                                                    <th>@UtilityLanguage.GetString("tbl_ShippingType")</th>
+                                                    <th class="d-none"></th>
+                                                    <th>@UtilityLanguage.GetString("tbl_HasFixedExpense")</th>
+                                                    <th>@UtilityLanguage.GetString("tbl_FixedExpenseValue")</th>
+                                                    @*  <th>@UtilityLanguage.GetString("tbl_Provider")</th>*@
+                                                    @*<th class="d-none"></th>*@
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="shippingList">
+                                                @if (Model.AllowedShippingTypes.Count != 0)
+                                                {
+                                                    @foreach (ShippingTypeDetailDto item in Model.AllowedShippingTypes)
+                                                    {
+                                                        <tr style="text-align:center;">
+                                                            <td>@item.ShippingTypeText</td>
+                                                            <td class="d-none">@item.ShippingTypeId</td>
+                                                            <td>@(item.HasFixedExpense ? UtilityLanguage.GetString("Yes") : UtilityLanguage.GetString("No"))</td>
+                                                            <td>@($"{Convert.ToInt64(@item.FixedExpenseValue):n0} {Model.CurrencySymbol}")</td>
+                                                            @*<td>@item.ProviderName</td>
+                                                    <td class="d-none">@item.ProviderId</td>*@
+                                                            <td>
+                                                                <button type="button" class="btn btn-sm btn-danger bg-gradient" onclick="deleteFromList(this);">
+                                                                    <i class="fa fa-trash" style="position: relative;padding:3px;"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr style="text-align:center;">
+                                                        <td colspan="7">@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                    </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label class="form-label" asp-for="@Model.ShippingCoupon.FromInvoiceExpense">@UtilityLanguage.GetString("tbl_FreeShipping")</label>
+                        <input type="number" class="form-control" asp-for="@Model.ShippingCoupon.FromInvoiceExpense"
+                               value="@Model.ShippingCoupon.FromInvoiceExpense" min="0" />
+                        <span data-val-result="fromInvoiceExpense" class="text-danger"></span>
+                    </div>
+                    @* <div class="form-group col-md-3">
+                    <label class="form-label" asp-for="@Model.ShippingCoupon.ShippingExpense">@UtilityLanguage.GetString("tbl_ShippingExpense")</label>
+                    <input type="number" class="form-control" asp-for="@Model.ShippingCoupon.ShippingExpense"
+                    value="@Model.ShippingCoupon.ShippingExpense" min="0" />
+                    <span data-val-result="shippingExpense" class="text-danger"></span>
+                    </div>*@
+                    <div class="form-group col-md-3">
+                        <label class="form-label">@UtilityLanguage.GetString("StartDate")</label>
+
+                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                        {
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                                <input autocomplete="off" id="dtpStartDate" type="text" class="form-control" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control datepicker" id="dtpStartDate">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        }
+                        <span data-val-result="startDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label class="form-label">@UtilityLanguage.GetString("EndDate")</label>
+
+                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                        {
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                                <input autocomplete="off" id="dtpEndDate" type="text" class="form-control" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control datepicker" id="dtpEndDate">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        }
+                        <span data-val-result="endDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-md-4 offset-md-8 col-12">
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@UtilityLanguage.GetString("btn_Back")</a>
+                        <input type="button" id="btnAddShippingSetting" value="@UtilityLanguage.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <script src="@Url.Content($"~/lib/datePicker/kamadatepicker.min.js")"></script>
+    }
+    else
+    {
+        <script src="@Url.Content($"~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
+    }
+
+    <script>
+        var currentCurrencySymbol = "";
+        $(document).ready(function () {
+
+            if ("@Model.Id" != "") {
+                LoadData();
+            }
+
+            //datetimepicker
+            if ("@CultureInfo.CurrentCulture.Name" == "fa-IR") {
+                kamaDatepicker('dtpStartDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+                kamaDatepicker('dtpEndDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+            } else {
+                $('.datepicker').datepicker();
+            }
+
+            $("#CurrencyId").change(function () {
+                if ($("#CurrencyId").val() != "" && $("#CurrencyId").val() != "-1") {
+                    var currencyId = $("#CurrencyId").val();
+                    $.ajax({
+                        url: '@Url.Action("GetSymbolOfCurrency", "Shipping")' + `?currencyId=${currencyId}`,
+                        contentType: 'application/json; charset=utf-8',
+                        type: 'GET',
+                        success: function (result) {
+                            currentCurrencySymbol = result.symbol;
+                        }
+                    });
+                }
+            });
+
+            $("#chbIsFixedExpense").click(function () {
+                if ($(this).is(":checked")) {
+                    $("#fixedExpenseValue").removeAttr("disabled");
+                    $("#ProviderId").attr("disabled", "disabled");
+                } else {
+                    $("#ProviderId").removeAttr("disabled")
+                    $("#fixedExpenseValue").attr("disabled", "disabled");
+                }
+            });
+
+            $("#btnAddShippingSetting").click(function () {
+                var flag = false;
+                if ($("#CurrencyId").val() == "" || $("#CurrencyId").val() == "-1") {
+                    $("span[data-val-result='CurrencyId']").html('@UtilityLanguage.GetString("AlertAndMessage_SelectOneItem")');
+                    flag = true;
+                }
+
+                if ($("#shippingList tr").length == 0) {
+                    $("span[data-val-result='shippingList']").html('@UtilityLanguage.GetString("AlertAndMessage_FillShippingWay")');
+                    flag = true;
+                }
+
+                if ($("#ShippingCoupon_FromInvoiceExpense").val() != "0") {
+                    if ($("#dtpStartDate").val() == "") {
+                        $("span[data-val-result='startDate']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+                        flag = true;
+                    }
+                }
+
+                if (!flag) {
+                    var dto = FillDataToSend();
+                    console.log("DTO to send:", dto);
+                    
+                    $.ajax({
+                        url: "@Model.Id" !== "" ? '@Url.Action("Edit", "Shipping")' : '@Url.Action("Add", "Shipping")',
+                        type: 'POST',
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(dto),
+                        success: function (result) {
+                            if (result.Status === "Success") {
+                                // Handle success
+                            } else if (result.Status === "ModelError") {
+                                // Handle model errors
+                            } else if (result.Status === "Error") {
+                                // Handle generic errors
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            console.error("Error occurred: " + thrownError);
+                        },
+                        complete: function () {
+                            // Post-request logic
+                        }
+                    });
+                }
+            });
+
+        });
+
+
+
+        function LoadData() {
+                    if ("@Model.ShippingCoupon.PersianStartDate" != "") {
+                $("#dtpStartDate").val('@Model.ShippingCoupon.PersianStartDate');
+            }
+            if ("@Model.ShippingCoupon.PersianEndDate" != "") {
+                $("#dtpEndDate").val('@Model.ShippingCoupon.PersianEndDate');
+            }
+        }
+
+
+
+        function FillDataToSend() {
+            var obj = {};
+            
+            obj.AllowedShippingTypes = [];
+            obj.ShippingCoupon = {};
+
+            obj.Id = $("#Id").val();
+            obj.AssociatedDomainId = $("#AssociatedDomainId").val();
+            obj.DomainName = $("#AssociatedDomainId option:selected").text();
+            obj.CurrencyId = $("#CurrencyId").val();
+            obj.CurrencySymbol = null; // Optional, will be set on the server
+            obj.IsDeleted = false; // Default value
+
+            // Populate shipping types
+            $("#shippingList tr").each(function () {
+                var innerModel = {};
+                
+                innerModel.ShippingTypeText = $(this).find("td:eq(0)").text();
+                innerModel.ShippingTypeId = parseInt($(this).find("td:eq(1)").text());
+                innerModel.HasFixedExpense = $(this).find("td:eq(2)").text() === '@UtilityLanguage.GetString("Yes")';
+                innerModel.FixedExpenseValue = parseFloat($(this).find("td:eq(3)").text().split(" ")[0].replace(/,/g, ""));
+                innerModel.ProviderId = $(this).find("td:eq(5)").text();
+                innerModel.ProviderName = null; // Optional, if applicable
+                innerModel.FloatingExpense = 0; // Default value
+                obj.AllowedShippingTypes.push(innerModel);
+            });
+
+            // Populate shipping coupon
+            obj.ShippingCoupon.FromInvoiceExpense = parseFloat($("#ShippingCoupon_FromInvoiceExpense").val()) || 0;
+            obj.ShippingCoupon.ShippingExpense = 0;
+            if ('@CultureInfo.CurrentCulture.Name.ToLower()' === "fa-ir") {
+                obj.ShippingCoupon.PersianStartDate = $("#dtpStartDate").val() || "";
+                obj.ShippingCoupon.PersianEndDate = $("#dtpEndDate").val() || "";
+            } else {
+                obj.ShippingCoupon.StartDate = $("#dtpStartDate").val() || null;
+                obj.ShippingCoupon.EndDate = $("#dtpEndDate").val() || null;
+            }
+
+            return obj;
+        }
+
+        function addToList() {
+            
+            var flag = false;
+            $("span[data-val-result='shippingTypeId']").html("");
+            $("span[data-val-result='fixedExpenseValue']").html("");
+            $("span[data-val-result='ProviderId']").html("");
+            if ($("#shippingTypeId").val() == "" || $("#shippingTypeId").val() == "-1") {
+                $("span[data-val-result='shippingTypeId']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if ($("#chbIsFixedExpense").is(":checked") && $("#fixedExpenseValue").val() == "") {
+                $("span[data-val-result='fixedExpenseValue']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            //else
+            //    if (!$("#chbIsFixedExpense").is(":checked") &&
+            //    ($("#ProviderId").val() == "" || $("#ProviderId").val() == "-1")) {
+            //    $("span[data-val-result='ProviderId']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+            //    flag = true;
+            //}
+
+
+            if (!flag) {
+                appendToList();
+            }
+        }
+
+        function appendToList() {
+            
+            var col = "";
+            //var providerName = "";
+            //var providerId = "";
+            //if($("#ProviderId").val() != "-1")
+            //{
+            //    providerId = $("#ProviderId").val();
+            //    providerName = $("#ProviderId option:selected").text();
+            //}
+
+
+            if (currentCurrencySymbol == "") {
+                currentCurrencySymbol = '@Model.CurrencySymbol';
+            }
+            
+            if ($("#chbIsFixedExpense").is(":checked"))
+                col = '@UtilityLanguage.GetString("Yes")';
+            else
+                col = '@UtilityLanguage.GetString("No")';
+            var expense = $("#fixedExpenseValue").val().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            tr = "<tr style='text-align:center;'><td>" + $("#shippingTypeId option:selected").text() +
+                "</td><td class='d-none'>" + $('#shippingTypeId').val() +
+                "</td><td>" + col +
+                "</td><td>" + `${expense} ${currentCurrencySymbol}` +
+                "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromList(this);'>" +
+                "<i class='fa fa-trash' ></i></button></td></tr>";
+            if ($("#shippingList tr").length == 1 && $("#shippingList tr")[0].children.length == 1) {
+                $("#shippingList tr")[0].remove();
+            }
+            $("#shippingList").append(tr);
+
+            $("#fixedExpenseValue").val("0");
+        }
+
+        function deleteFromList(sender) {
+            var tr = $(sender).parent().parent();
+            $(tr).remove();
+        }
+    </script>
+}
+
+
+
+

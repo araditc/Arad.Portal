@@ -1,0 +1,52 @@
+﻿@inject IConfiguration Config
+@{
+    Layout = null;
+    string dir = HelpersMethods.GetDirection(CultureInfo.CurrentCulture);
+    string lang = HelpersMethods.GetHtmlLang(CultureInfo.CurrentCulture);
+    string baseAdd = Config["BaseAddress"];
+}
+<html style="height: auto;" dir="@dir" lang="@lang">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@UtilityLanguage.GetString("AlertAndMessage_Inaccessibility")</title>
+
+    @if (dir == "ltr")
+    {
+        <link href="@Url.Content($"~/lib/bootstrap/css/bootstrap.min.css")" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="@Url.Content($"~/lib/bootstrap/css/bootstrap.rtl.min.css")" rel="stylesheet" />
+        <link href="@Url.Content($"~/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
+    }
+    <link href="@Url.Content($"~/css/login.css")" rel="stylesheet" />
+          
+    <link href="@Url.Content($"~/lib/font-awesome/css/all.css")" rel="stylesheet" />
+
+</head>
+<body style="height: auto;">
+    <div class="wrapper">
+
+        <section class="content">
+            <div class="error-page">
+                <h2 class="headline text-danger">401</h2>
+
+                <div class="error-content">
+                    <h3><i class="fa fa-warning text-danger"></i>@UtilityLanguage.GetString("AlertAndMessage_Inaccessibility")</h3>
+
+                    <p>
+                        @UtilityLanguage.GetString("AlertAndMessage_AccessDenied")
+                    </p>
+
+
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <script src="@Url.Content($"~/lib/jquery/dist/jquery.min.js")" ></script>
+    <script src="@Url.Content($"~/lib/bootstrap/js/bootstrap.bundle.js")"></script>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Arad.Portal.Models.Shared.DesignStructure.ModuleWithParametersValue
+<div id="progress-form">
+    <h3>@UtilityLanguage.GetString("InsertProgressBar")</h3>
+    <div class="form-group">
+        <label for="title">@UtilityLanguage.GetString("Title")</label>
+        <input type="text" class="form-control" id="title">
+    </div>
+    <div class="form-group">
+        <label for="percentage">@UtilityLanguage.GetString("Percentage")</label>
+        <input type="number" class="form-control" id="percentage" min="0" max="100" placeholder="@UtilityLanguage.GetString("EnteringPercentage")">
+    </div>
+    <div class="form-group">
+        <label for="color">@UtilityLanguage.GetString("Color")</label>
+        <select class="form-control" id="color">
+            <option value="bg-success">@UtilityLanguage.GetString("Green")</option>
+            <option value="bg-info">@UtilityLanguage.GetString("Blue")</option>
+            <option value="bg-warning">@UtilityLanguage.GetString("Yellow")</option>
+            <option value="bg-danger">@UtilityLanguage.GetString("Red")</option>
+        </select>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="addProgressBar()">@UtilityLanguage.GetString("AddProgressBar")</button>
+</div>
+
+<div id="progress-bars-container">
+    <h3>@UtilityLanguage.GetString("YourProgressBars")</h3>
+</div>
+
+<div class="col-12 text-center">
+    <button id="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1"
+            cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+            onclick="addModulesWithParams(this);" type="button">
+        @UtilityLanguage.GetString("btn_Add")
+    </button>
+</div>

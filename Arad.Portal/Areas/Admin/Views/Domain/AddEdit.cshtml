@@ -1,0 +1,959 @@
+﻿@model DomainModel
+@using Arad.Portal.DataLayer.Models.Shared
+@using Arad.Portal.Models.Shared
+@using Arad.Portal.Models.Shared.Domain
+@{
+
+    string alert = UtilityLanguage.GetString("AlertAndMessage_GotIt");
+    string error = UtilityLanguage.GetString("AlertAndMessage_Error");
+    string baseAdd = Config["BaseAddress"];
+}
+@section Styles {
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href="@Url.Content($"~/lib/datePicker/kamadatepicker.css")" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="@Url.Content($"~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
+    }
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+    </style>
+}
+
+<h4>  @UtilityLanguage.GetString("Menu_domains") </h4>
+<hr />
+<div aria-hidden="true" aria-labelledby="confirmLabel" class="modal fade" id="showModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onConfirmDialog();" type="button">
+                    @UtilityLanguage.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @UtilityLanguage.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card" id="addDomainCard">
+            <div class="card-header">
+                <h5 class="card-title" data-toggle="tab">
+                    @(!string.IsNullOrWhiteSpace(Model.Id) ?
+                        UtilityLanguage.GetString("EditDomain_Title") : UtilityLanguage.GetString("AddDomain_Title"))
+                </h5>
+            </div>
+
+            <div class="card-body">
+                <input type="hidden" value="@Model.Id" asp-for="Id" />
+                <input type="hidden" value="@Model.LogoImage.ImageId" asp-for="LogoImage.ImageId" />
+                <input type="hidden" value="@Model.FavicoImage.ImageId" asp-for="FavicoImage.ImageId" />
+                <input type="hidden" id="fileContent" />
+                <input type="hidden" id="fileName" />
+                <input type="hidden" id="favicoFileContent" />
+                <input type="hidden" id="favicoFileName" />
+                <div class="row m-1">
+
+                    <div class="form-group col-12 col-md-6 pt-1 pb-2 mt-3 mb-3 ms-4">
+
+                        <div class="form-check m-auto d-inline-block pt-3 fs-6 ms-1">
+                            <input class="form-check-input" type="checkbox" value="@Model.IsDefault" asp-for="@Model.IsDefault">
+                            <label class="form-check-label" asp-for="IsDefault">
+                                @UtilityLanguage.GetString("DefaultDomain")
+                            </label>
+                        </div>
+
+                        <div class="form-check m-auto d-inline-block pt-3 fs-6 ms-4">
+                            <input class="form-check-input" type="checkbox" value="@Model.IsShop" asp-for="@Model.IsShop">
+                            <label class="form-check-label" asp-for="IsShop">
+                                @UtilityLanguage.GetString("design_IsShopDomain")
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-12 col-md-3 ShippingTypeSection d-none">
+                        <label class="form-label" asp-for="DefaultShippingTypeId">@UtilityLanguage.GetString("DefaultShippingType")</label><br />
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="DefaultShippingTypeId" asp-items="@(new SelectList(ViewBag.ShippingTypeList,"Value","Text", Model.DefaultLanguageId))">
+                        </select>
+                        <span data-val-result="DefaultShippingTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row m-1">
+                    <div class="form-check m-auto d-inline-block pt-3 fs-6 ms-4">
+                        <input class="form-check-input" type="checkbox" value="@Model.IsMultiLinguals" asp-for="@Model.IsMultiLinguals">
+                        <label class="form-check-label" asp-for="IsMultiLinguals">
+                            @UtilityLanguage.GetString("design_IsMultiLingual")
+                        </label>
+                    </div>
+
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label" asp-for="SupportedLangId">@UtilityLanguage.GetString("design_SupportedCultures")</label><br />
+                        <select class="form-control selectpicker" data-live-search="true" multiple asp-for="@Model.SupportedLangId" asp-items="@(new MultiSelectList(ViewBag.Activelanguages, "Value","Text"))">
+                        </select>
+                        <span data-val-result="SupportedLangId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label" asp-for="LogoImage">@UtilityLanguage.GetString("design_Logo")</label><br />
+                        <input type="file" class="form-control" data-live-search="true" id="LogoImage" accept="image/jpeg, image/png" />
+                        <span data-val-result="LogoImage" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label" asp-for="FavicoImage">@UtilityLanguage.GetString("design_Favico")</label><br />
+                        <input type="file" class="form-control" data-live-search="true" id="FavicoImage" accept="image/png" />
+                        <span data-val-result="FavicoImage" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row m-1">
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label" asp-for="DefaultLanguageId">@UtilityLanguage.GetString("DefaultLanguage")</label><br />
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.DefaultLanguageId))">
+                        </select>
+                        <span data-val-result="DefaultLanguageId" class="text-danger"></span>
+                    </div>
+                    @if (ViewBag.IsSystemAccount)
+                    {
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="DomainName">@UtilityLanguage.GetString("DomainName")</label><br />
+                            <input type="text" class="form-control" asp-for="DomainName" dir="ltr" autocomplete="off">
+                            <span data-val-result="DomainName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="OwnerUserId">@UtilityLanguage.GetString("DomainOwner")</label><br />
+                            <select class="form-control selectpicker" data-live-search="true" asp-for="OwnerUserId" asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text", Model.OwnerUserId))">
+                            </select>
+                            <span data-val-result="OwnerUserId" class="text-danger"></span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="DomainName">@UtilityLanguage.GetString("DomainName")</label><br />
+                            <input type="text" class="form-control" asp-for="DomainName" dir="ltr" autocomplete="off" disabled="disabled">
+                            <span data-val-result="DomainName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="OwnerUserId">@UtilityLanguage.GetString("DomainOwner")</label><br />
+                            <select class="form-control selectpicker" data-live-search="true" asp-for="OwnerUserId" asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text", Model.OwnerUserId))" disabled="disabled">
+                            </select>
+                            <span data-val-result="OwnerUserId" class="text-danger"></span>
+                        </div>
+                    }
+
+                </div>
+                <div class="row align-items-center alert alert-secondary">
+                    <div class="form-group col-12 col-md-4">
+                        <label class="form-label" for="Title">@UtilityLanguage.GetString("Title")</label><br />
+                        <input type="text" class="form-control" id="Title" placeholder=" ">
+                        <span data-val-result="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-4">
+                        <label class="form-label" for="languageId">@UtilityLanguage.GetString("LanguageName")</label><br />
+                        <select class="form-control selectpicker" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                        </select>
+                        <span data-val-result="languageId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-4" style="text-align:center;margin:auto;">
+                        <div style="margin:auto;display:inline-block;">
+                            <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@UtilityLanguage.GetString("btn_Add")" class="btn btn-success btn-sm bg-gradient" onclick="addTitleToTable();">
+                                <i class="fa fa-plus pt-1"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:1%;">
+                    <div class="card-body table-bordered  table-responsive p-0">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr style="text-align:center;">
+                                    <th>@UtilityLanguage.GetString("Title")</th>
+                                    <th>@UtilityLanguage.GetString("LanguageName")</th>
+                                    <th style="display:none"></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="multiLingualList">
+                                @foreach (MultiLingualProperty item in Model.Titles)
+                                {
+                                    <tr style="text-align:center;">
+                                        <td>@item.Name</td>
+                                        <td>@item.LanguageName</td>
+                                        <td style="display:none;">@item.LanguageId</td>
+                                        <td>
+                                            <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@UtilityLanguage.GetString("btn_Delete")"
+                                                    class="btn btn-sm btn-danger bg-gradient" onclick="deleteTitleFromTable(this);">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                @if (ViewBag.IsSystemAccount)
+                {
+                    <div class="row m-1 InvoiceSection d-none">
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="DefaultCurrencyId">@UtilityLanguage.GetString("DefaultCurrency")</label><br />
+                            <select class="form-control selectpicker" data-live-search="true" asp-for="DefaultCurrencyId" asp-items="@(new SelectList( ViewBag.CurrencyList,"Value","Text", Model.DefaultCurrencyId))">
+                            </select>
+                            <span data-val-result="DefaultCurrencyId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="InvoiceNumberProcedure">@UtilityLanguage.GetString("tbl_InvoiceNumberCreationWay")</label><br />
+                            <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.InvoiceNumberProcedure" asp-items="@(new SelectList( ViewBag.InvoiceNumberEnum,"Value","Text", Model.InvoiceNumberProcedure))">
+                            </select>
+                            <span data-val-result="InvoiceNumberProcedure" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-3 invoiceInitialise">
+                            <label class="form-label" asp-for="InvoiceNumberInitializer">@UtilityLanguage.GetString("FirstInvoiceNumberPattern")</label><br />
+                            <input type="text" class="form-control" asp-for="@Model.InvoiceNumberInitializer" value="@Model.InvoiceNumberInitializer" />
+                            <span data-val-result="InvoiceNumberInitializer" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-3 invoiceInitialise">
+                            <label class="form-label" asp-for="IncreasementValue">@UtilityLanguage.GetString("IncreasementLevel")</label><br />
+                            <input type="number" class="form-control" asp-for="@Model.IncreasementValue" value="@Model.IncreasementValue" />
+                            <span data-val-result="IncreasementValue" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="row m-1">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">@UtilityLanguage.GetString("PriceHistory")</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="form-group col-12 col-md-3">
+                                            <label class="form-label">@UtilityLanguage.GetString("Currency")</label>
+                                            <select class="form-control selectpicker" data-live-search="true" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
+                                            </select>
+                                            <span data-val-result="currencyId" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-12 col-md-2">
+                                            <label class="form-label">@UtilityLanguage.GetString("PriceValue")</label>
+                                            <input type="number" class="form-control" id="priceValue" />
+                                            <span data-val-result="priceValue" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-11 col-md-3">
+                                            <label class="form-label">@UtilityLanguage.GetString("StartDate")</label>
+
+                                            @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                                            {
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                    <input autocomplete="off" id="dtpStartDate" type="text" class="form-control" />
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="input-group date" data-provide="datepicker">
+                                                    <input type="text" class="form-control datepicker" id="dtpStartDate">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                </div>
+                                            }
+                                            <span data-val-result="dtpStartDate" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-1" style="text-align:center;margin:auto;">
+                                            <div style="margin:auto;display:inline-block;">
+                                                <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addPriceToList();">
+                                                    <i class="fa fa-plus pt-1"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-12 col-md-3">
+                                            <span data-val-result="priceList" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <table class="table table-hover table-bordered">
+                                                <thead>
+                                                    <tr style="text-align:center;">
+                                                        <th>@UtilityLanguage.GetString("Currency")</th>
+                                                        <th style="display:none;"></th>
+                                                        <th>@UtilityLanguage.GetString("PriceValue")</th>
+                                                        <th>@UtilityLanguage.GetString("StartDate")</th>
+                                                        <th>@UtilityLanguage.GetString("EndDate")</th>
+                                                        <th>@UtilityLanguage.GetString("ActivationState")</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="priceList">
+                                                    @if (Model.Prices.Count != 0)
+                                                    {
+                                                        @foreach (PriceDto price in Model.Prices)
+                                                        {
+                                                            <tr style="text-align:center;">
+                                                                <td>@price.CurrencyName</td>
+                                                                <td style="display:none;">@price.CurrencyId</td>
+                                                                <td>  @($"{Convert.ToInt64(@price.PriceValue):n0}")</td>
+                                                                <td class="ltr">@price.StartDate.Split(" ")[0]</td>
+                                                                <td class="ltr">@(price.EndDate != null ? price.EndDate.Split(" ")[0] : "")</td>
+                                                                <td>@(price.IsActive ? UtilityLanguage.GetString("Active") : UtilityLanguage.GetString("InActive")) </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-sm btn-danger bg-gradient" onclick="deleteFromPriceList(this);">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr style="text-align:center;">
+                                                            <td colspan="6">@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row m-1">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">@UtilityLanguage.GetString("PriceHistory")</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="form-group col-12 col-md-3">
+                                            <span data-val-result="priceList" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <table class="table table-hover table-bordered">
+                                                <thead>
+                                                    <tr style="text-align:center;">
+                                                        <th>@UtilityLanguage.GetString("Currency")</th>
+                                                        <th style="display:none;"></th>
+                                                        <th>@UtilityLanguage.GetString("PriceValue")</th>
+                                                        <th>@UtilityLanguage.GetString("StartDate")</th>
+                                                        <th>@UtilityLanguage.GetString("EndDate")</th>
+                                                        <th>@UtilityLanguage.GetString("ActivationState")</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="priceList">
+                                                    @if (Model.Prices.Count != 0)
+                                                    {
+                                                        @foreach (PriceDto price in Model.Prices)
+                                                        {
+                                                            <tr style="text-align:center;">
+                                                                <td>@price.CurrencyName</td>
+                                                                <td style="display:none;">@price.CurrencyId</td>
+                                                                <td>  @($"{Convert.ToInt64(@price.PriceValue):n0}")</td>
+                                                                <td class="ltr">@price.StartDate.Split(" ")[0]</td>
+                                                                <td class="ltr">@(price.EndDate != null ? price.EndDate.Split(" ")[0] : "")</td>
+                                                                <td>@(price.IsActive ? UtilityLanguage.GetString("Active") : UtilityLanguage.GetString("InActive")) </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr style="text-align:center;">
+                                                            <td colspan="6">@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">@UtilityLanguage.GetString("tbl_DomainPaymentGatewaysInfoes")</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="form-group col-10 col-md-3">
+                                        <label class="form-label" for="providerId">@UtilityLanguage.GetString("tbl_PaymentGateways")</label>
+                                        <br />
+                                        <select class="form-control selectpicker" id="providerId" asp-items="@(new SelectList(ViewBag.Providers, "Value", "Text"))" data-live-search="true">
+                                        </select>
+                                        <span data-val-result="providerId" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group col-2" style="text-align:center;margin:auto;">
+
+                                        <div id="btnAddSection" style="margin:auto;display:inline-block;">
+                                            <button type="button" id="addProviderParam" class="btn btn-primary bg-gradient d-none btn-sm">
+                                                <i class="fa fa-plus pt-1"></i>
+                                                @UtilityLanguage.GetString("btn_Add")
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="paymentGatewayParameters">
+                                    <span data-val-result="paymentGatewayParameters" class="text-danger"></span>
+
+                                </div>
+
+                                <div class="row" style="margin-top:1%;">
+                                    <span data-val-result="gatewayInfoes" class="text-danger"></span>
+                                    <div class="card-body table-bordered  table-responsive p-0">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr style="text-align:center;">
+                                                    <th>@UtilityLanguage.GetString("tbl_ProviderName")</th>
+                                                    <th>@UtilityLanguage.GetString("tbl_GatewayInformation")</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="gatewayInfoes">
+                                                @foreach (ProviderDetailDto item in Model.DomainPaymentProviders)
+                                                {
+                                                    <tr style="text-align:center;">
+                                                        <td>@item.PspType</td>
+                                                        <td>@item.DomainValueProvider</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-sm btn-danger bg-gradient" onclick="deleteFromTable(this);">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-md-4 offset-md-8 col-12">
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@UtilityLanguage.GetString("btn_Back")</a>
+                        <input type="button" id="btnAddDomain" value="@UtilityLanguage.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <script src="@Url.Content($"~/lib/datePicker/kamadatepicker.min.js")"></script>
+    }
+    else
+    {
+        <script src="@Url.Content($"~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
+    }
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('LogoImage').addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        
+                        const fileContent = e.target.result.split(',')[1]; // Base64 content
+                        document.getElementById('fileContent').value = fileContent;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            document.getElementById('FavicoImage').addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        
+                        const favicoFileContent = e.target.result.split(',')[1]; // Base64 content
+                        const favicoCurrentFileName = file.name;
+
+                        // Set hidden inputs
+                        document.getElementById('favicoFileContent').value = favicoFileContent;
+                        document.getElementById('favicoFileName').value = currentFileName;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+        var active = '@UtilityLanguage.GetString("Active")';
+        var inActive = '@UtilityLanguage.GetString("InActive")';
+        var globalSender;
+        $(document).ready(function () {
+
+            $("#DefaultLanguageId").val('@ViewBag.LangId');
+            $("#DefaultLanguageId").selectpicker("refresh");
+
+            if ('@Model.Id' == "") {
+                $("#InvoiceNumberProcedure").val("-1");
+            } else {
+                if ('@Model.InvoiceNumberProcedure' == "0") {
+                    $(".invoiceInitialise").addClass("d-none");
+                }
+                
+                if ('@Model.IsShop' == 'True') {
+                    $(".InvoiceSection").removeClass("d-none");
+                    $(".ShippingTypeSection").removeClass("d-none");
+                }
+            }
+            //datetimepicker
+            if ("@CultureInfo.CurrentCulture.Name" === "fa-IR") {
+                kamaDatepicker('dtpStartDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+            }
+            else {
+                $('.datepicker').datepicker();
+            }
+
+            $("#InvoiceNumberProcedure").change(function () {
+
+                if ($(this).val() == "0") {
+                    $(".invoiceInitialise").addClass("d-none");
+                }
+                else if ($(this).val() == "1") {
+
+                    $(".invoiceInitialise").removeClass("d-none");
+                }
+            });
+
+            $("#IsShop").click(function () {
+                
+                if ($(this).is(":checked")) {
+                    $(".ShippingTypeSection").removeClass("d-none");
+                    $(".InvoiceSection").removeClass("d-none");
+                } else {
+                    $(".ShippingTypeSection").addClass("d-none");
+                    $(".InvoiceSection").addClass("d-none");
+                }
+            });
+
+            $("#providerId").change(function () {
+                if ($(this).val() != "" && $(this).val() != "-1") {
+                    var pspVal = $(this).val();
+                    $.ajax({
+                        url: `@Url.Action("GetProviderParams", "Domain")?pspVal=${pspVal}`,
+                        contentType: 'application/json',
+                        type: 'Post',
+                        dataType: 'html',
+                        beforeSend: function () {
+                        },
+                        success: function (result) {
+                            result = "<span data-val-result='paymentGatewayParameters' class='text-danger'></span><br/>" + result;
+                            $("#paymentGatewayParameters").html(result);
+                            $("#addProviderParam").removeClass("d-none");
+                        }
+                    });
+                } else
+                    if ($(this).val() == "-1") {
+                        $("#addProviderParam").addClass("d-none");
+                        $("#paymentGatewayParameters").html("");
+                    }
+            });
+
+            $("#addProviderParam").click(function () {
+                
+                $("#paymentGatewayParameters .gatewayPar").each(function () {
+                    if ($(this).val() == "") {
+                        $("span[data-val-result='paymentGatewayParameters']").html('@UtilityLanguage.GetString("AlertAndMessage_PaymentGatewayInfoes")');
+                        return;
+                    }
+                });
+
+                var data = "";
+                $("#paymentGatewayParameters .gatewayPar").each(function () {
+                    var name = $(this).attr("id");
+                    var value = $(this).val();
+
+                    data += `'${name}':'${value}', `;
+                });
+
+                data = `{ ${data.substring(0, data.length - 2)} }`;
+                var btn = "<button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromTable(this);'><i class='fa fa-trash' ></i></botton>";
+                var tr = `<tr style='text-align:center;'><td>${$("#providerId option:selected").text()}</td><td>${data}</td><td>${btn}</td></tr>`;
+
+                $("#gatewayInfoes").append(tr);
+                $("#paymentGatewayParameters .gatewayPar").each(function () {
+                    $(this).val("");
+                });
+            });
+            $("#btnAddDomain").click(function () {
+                
+                var flag = false;
+                if ($("#SupportedLangId").val().length == 0) {
+                    $("span[data-val-result='SupportedLangId']").html('@UtilityLanguage.GetString("AlertAndMessage_SelectAtLeastOneItem")');
+                    flag = true;
+                }
+                if ($("#DomainName").val() == "") {
+                    $("span[data-val-result='DomainName']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+                    flag = true;
+                }
+                if ($("#DefaultLanguageId").val() == "" || $("#DefaultLanguageId").val() == "-1") {
+                    $("span[data-val-result='DefaultLanguageId']").html('@UtilityLanguage.GetString("AlertAndMessage_SelectOneItem")');
+                    flag = true;
+                }
+                if ($("#OwnerUserId").val() == "-1") {
+                    $("span[data-val-result='OwnerUserId']").html('@UtilityLanguage.GetString("AlertAndMessage_SelectOneItem")');
+                    flag = true;
+                }
+                if ($("#priceList tr").length == 0) {
+                    $("span[data-val-result='MultiLingualProperties']").html('@UtilityLanguage.GetString("AlertAndMessage_FillMultiLingualProperty")');
+                    flag = true;
+                }
+                if ($("IsShop").is(":checked") && ("#gatewayInfoes tr").length == 0) {
+                    $("span[data-val-result='gatewayInfoes']").html('@UtilityLanguage.GetString("AlertAndMessage_FillMultiLingualProperty")');
+                    flag = true;
+                }
+                if ($("IsShop").is(":checked") && ($("#InvoiceNumberProcedure").val() == "" || $("#InvoiceNumberProcedure").val() == "-1")) {
+                    $("span[data-val-result='InvoiceNumberProcedure']").html('@UtilityLanguage.GetString("AlertAndMessage_SelectOneItem")');
+                    flag == true;
+                }
+                if ($("IsShop").is(":checked") && ($("#DefaultShippingTypeId").val() == "" || $("#DefaultShippingTypeId").val() == "-1")) {
+                    $("span[data-val-result='DefaultShippingTypeId']").html('@UtilityLanguage.GetString("AlertAndMessage_SelectOneItem")');
+                    flag == true;
+                }
+                if ($("IsShop").is(":checked") && $("#InvoiceNumberProcedure").val() == "1" && $("#InvoiceNumberInitializer").val() == "") {
+                    $("span[data-val-result='InvoiceNumberInitializer']").html('@UtilityLanguage.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
+                if (!flag) {
+
+                    var dto = FillDataToSend();
+                    console.log(dto);
+                    
+                    $.ajax({
+                        url: "@Model.Id" != "" ? `@Url.Action("Edit", "Domain")` : `@Url.Action("Add", "Domain")`,
+                        contentType: 'application/json',
+                        data: JSON.stringify(dto),
+                        type: 'Post',
+                        beforeSend: function () {
+                            
+                            /*  AddLoading($("#addDomainCard"));*/
+                        },
+                        success: function (result) {
+                            
+                            if (result.status === "Success") {
+                                $("#mainToastBody").html('<i class="far fa-check-circle"></i>' + result.message);
+                                $('#mainToastBody').removeClass("text-bg-danger");
+                                $("#mainToastBody").addClass('text-bg-success');
+                                $("#toastPanel").show();
+                                var bsAlert = new bootstrap.Toast($('#mainToast'));
+                                bsAlert.show();
+                                setTimeout(function () {
+                                    $("#toastPanel").hide();
+                                    window.location.href = '@Url.Action("List")';
+                                },
+                                    2000);
+                            }
+                            else
+                                if (result.status === "ModelError") {
+                                    var spanErrorList = $('span[data-val-result]');
+                                    if (spanErrorList.length > 1) {
+                                        spanErrorList.each(function () {
+                                            $(this).html("");
+                                            $(this).parent().removeClass("has-error");
+                                        });
+                                    }
+                                    else {
+                                        spanErrorList.html("");
+                                        spanErrorList.parent().removeClass("has-error");
+                                    }
+                                    if (result.modelStateErrors !== null) {
+                                        result.modelStateErrors.forEach(function (value, index) {
+                                            $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                            $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                        });
+                                    }
+                                }
+                                else
+                                    if (result.status == "Error") {
+                                        showError(result.message);
+                                    }
+                        }
+                    });
+                }
+
+            });
+
+
+        });
+
+
+        function deleteTitleFromTable(sender) {
+            
+            var tr = $(sender).parent().parent();
+            $(tr).remove();
+        }
+        function addTitleToTable() {
+            var flag = false;
+            
+            var urlFriend = "";
+            var selectedLang = $('#languageId').val();
+            if (isUnique(selectedLang, 'multiLingualList', 2, '@UtilityLanguage.GetString("AlertAndMessage_LangUniqueness")')) {
+                if ($("#Title").val() == "") {
+                    $("span[data-val-result='unitName']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+                    flag = true;
+                }
+                if ($("#languageId").val() == "-1") {
+                    $("span[data-val-result='languageId']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+                    flag = true;
+                }
+
+                if (!flag) {
+                    var tr = "<tr style='text-align:center;'><td>" + $("#Title").val() +
+                        "</td><td>" + $('#languageId option:selected').text() +
+                        "</td><td style='display:none;'>" + $("#languageId").val() +
+                        "</td><td><button type='button' data-bs-toggle='tooltip' data-bs-placement='top' title='@UtilityLanguage.GetString("btn_Delete")' " +
+                        " class='btn btn-sm btn-danger bg-gradient' onclick='deleteTitleFromTable(this);'>" +
+                        "<i class='fa fa-trash' ></i></button></td></tr>";
+
+                    $("#multiLingualList").append(tr);
+                    $("#Title").val("");
+                    $("#languageId").val('@ViewBag.DefLang');
+                    $("#languageId").selectpicker("refresh");
+                }
+            }
+        }
+
+
+
+
+        function FillDataToSend() {
+            
+            var obj = {};
+            const fileContent = document.getElementById('fileContent').value;
+            const fileName = document.getElementById('fileName').value;
+            const favicoFileContent = document.getElementById('favicoFileContent').value;
+            const favicoFileName = document.getElementById('favicoFileName').value;
+            obj.Prices = [];
+            obj.SupportedLangId = [];
+            obj.Titles = [];
+            obj.DomainPaymentProviders = [];
+            obj.Id = $("#Id").val();
+            obj.LogoImage = {};
+            obj.FavicoImage = {};
+
+            $("#multiLingualList tr").each(function () {
+                
+                var innerModel = {};
+
+                innerModel.Name = $(this).find("td:eq(0)").text();
+                innerModel.LanguageId = $(this).find("td:eq(2)").text();
+                obj.Titles.push(innerModel);
+            });
+
+
+            if ($("#DomainName").val() != "") {
+                obj.DomainName = $("#DomainName").val();
+            }
+
+            //supportedcultures
+            for (var i = 0; i < $("#SupportedLangId").val().length; i++) {
+                obj.SupportedLangId.push($("#SupportedLangId").val()[i]);
+            }
+
+
+
+            obj.OwnerUserId = $("#OwnerUserId").val();
+            obj.OwnerUserName = $("#OwnerUserId option:selected").text();
+            obj.DefaultLanguageId = $("#DefaultLanguageId").val();
+            obj.DefaultLanguageName = $("#DefaultLanguageId option:selected").text();
+            if ($("#DefaultCurrencyId").val() == "-1")
+                obj.DefaultCurrencyId = "";
+            obj.DefaultCurrencyName = $("#DefaultCurrencyId option:selected").text();
+            obj.IsDefault = $("#IsDefault").is(":checked");
+            obj.IsDeleted = false;
+            obj.IsShop = $("#IsShop").is(":checked");
+            if (obj.IsShop == false) {
+                obj.DefaultCurrencyName = "";
+            }
+            obj.IsMultiLinguals = $("#IsMultiLinguals").is(":checked");
+            obj.InvoiceNumberInitializer = "";
+            obj.IncreasementValue = 0;
+            obj.LastInvoiceNumber = "";
+            obj.LogoImage.ImageId = $("#LogoImage_ImageId").val();
+            obj.LogoImage.FileName = fileName;
+            obj.FavicoImage.ImageId = $("#FavicoImage_ImageId").val();
+            obj.FavicoImage.FileName = favicoFileName;
+            if (fileContent != "") {
+                obj.LogoImage.Content = fileContent;
+            }
+            if (favicoFileContent != "") {
+                obj.FavicoImage.Content = favicoFileContent;
+            }
+
+            obj.LogoImage.IsMain = true;
+            obj.FavicoImage.IsMain = true;
+            if ($("#IsShop").is(":checked")) {
+                obj.InvoiceNumberProcedure = parseInt($("#InvoiceNumberProcedure").val());
+                obj.DefaultShippingTypeId = parseInt($("#DefaultShippingTypeId").val());
+                if ($("#InvoiceNumberProcedure").val() == "1") {
+                    obj.InvoiceNumberInitializer = $("#InvoiceNumberInitializer").val();
+                    obj.IncreasementValue = parseInt($("#IncreasementValue").val());
+                }
+            }
+
+            //prices
+            $("#priceList tr").each(function () {
+
+                var innerModel = {};
+                innerModel.CurrencyId = $(this).find("td:eq(1)").text();
+                innerModel.CurrencyName = $(this).find("td:eq(0)").text();
+                innerModel.PriceValue = parseFloat($(this).find("td:eq(2)").text().replace(/,/g, ""));
+                innerModel.StartDate = $(this).find("td:eq(3)").text();
+                innerModel.EndDate = $(this).find("td:eq(4)").text();
+                innerModel.SDate = null;
+                innerModel.EDate = null;
+                if ($(this).find("td:eq(5)").text().trim() == '@UtilityLanguage.GetString("Active")')
+                    innerModel.IsActive = true;
+                else
+                    innerModel.IsActive = false;
+                innerModel.PriceId = "";
+                innerModel.Symbol = "";
+                innerModel.Prefix = "";
+
+                obj.Prices.push(innerModel);
+
+            });
+
+            //paymentproviders
+            $("#gatewayInfoes tr").each(function () {
+                var innerModel = {};
+                innerModel.Type = $(this).find("td:eq(0)").text();
+                innerModel.DomainValueProvider = $(this).find("td:eq(1)").text();
+                innerModel.PspType = 0;
+                obj.DomainPaymentProviders.push(innerModel);
+
+            });
+            return obj;
+        }
+        function onConfirmDialog() {
+            $(globalSender).parent().find("td:eq(5)").text(inActive);
+            appendToPriceList(tr);
+        }
+        function addPriceToList() {
+            
+            var flag = false;
+            $("span[data-val-result='priceValue']").html("");
+            $("span[data-val-result='startDate']").html("");
+            $("span[data-val-result='endDate']").html("");
+            $("span[data-val-result='currencyId']").html("");
+
+            if ($("#priceValue").val() == "") {
+                $("span[data-val-result='priceValue']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if ($("#dtpStartDate").val() == "") {
+                $("span[data-val-result='startDate']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+
+            if ($("#currencyId").val() == "-1") {
+                $("span[data-val-result='currencyId']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+
+            if (!flag) {
+                var currencyId = $('#currencyId').val();
+
+                var tr = "";
+                if ($("#priceList").find("td:eq(1)").length > 0) {
+                    $("#priceList").find("td:eq(1)").each(function () {
+                        
+                        if ($(this).text() == currencyId && $(this).parent().find("td:eq(4)").text() == "" &&
+                            $(this).parent().find("td:eq(5)").text() == active) {
+                            globalSender = this;
+                            document.getElementById('confirmLabel').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_AreYouSure")';
+                            document.getElementById('confirmBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_PricePerCurrencyUniqueness")';
+                            $('#showModal').modal('show');
+                        }
+                    });
+                } else {
+                    appendToPriceList(tr);
+                }
+            }
+        }
+
+        function appendToPriceList(tr) {
+            tr = "<tr style='text-align:center;'><td>" + $("#currencyId option:selected").text() +
+                "</td><td style='display:none;'>" + $('#currencyId').val() +
+                "</td><td class='ltr'>" + $('#priceValue').val().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+                "</td><td class='ltr'>" + $("#dtpStartDate").val() +
+                "</td><td></td><td>" + active +
+                "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromPriceList(this);'>" +
+                "<i class='fa fa-trash' ></i></button></td></tr>";
+            if ($("#priceList tr").length == 1 && $("#priceList tr")[0].children.length == 1) {
+                $("#priceList tr")[0].remove();
+            }
+            $("#priceList").append(tr);
+            $("#currencyId").val('@ViewBag.DefCurrency');
+            $("#currencyId").selectpicker("refresh");
+            $("#priceValue").val("0");
+            $("#dtpStartDate").val("");
+        }
+
+        function deleteFromTable(sender) {
+            var tr = $(sender).parent().parent();
+            $(tr).remove();
+        }
+
+
+        function deleteFromPriceList(sender) {
+            var tr = $(sender).parent().parent();
+            $(tr).remove();
+        }
+    </script>
+}
+
+
+

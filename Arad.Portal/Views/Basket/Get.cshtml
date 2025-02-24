@@ -1,0 +1,373 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.Product
+@using Arad.Portal.GeneralLibrary.Utilities
+@using Arad.Portal.Models.Shared.ShoppingCart
+@model ShoppingCartDto
+
+<title>@($"{ViewBag.CompanyName}|{UtilityLanguage.GetString("ShoppingBasket")}")</title>
+<style>
+    .pInTb {
+        display: inline-block;
+    }
+
+    .basket th {
+        text-align: center;
+    }
+
+    .basket td {
+        text-align: center;
+    }
+
+    .proLink {
+        color: black;
+        text-decoration: none;
+    }
+</style>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            @if (@Model.Details.Any())
+            {
+
+                @foreach (PurchasePerSellerDto seller in @Model.Details)
+                {
+                    <div class="card m-3 border-1 rounded-3">
+                        <div class="card-header bg-success bg-opacity-10">
+                            <div class="row gy-2 align-middle pt-2">
+                                <div class="col-4 offset-2 col-md-2  offset-4">
+                                    <label class="form-label"> @UtilityLanguage.GetString("tbl_VendorName"): </label>
+                                </div>
+                                <div class="col-4 col-md-2">
+                                    <p><strong>@seller.SellerUserName</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table basket table-bordered table-hover align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">@UtilityLanguage.GetString("Image")</th>
+                                            <th scope="col">@UtilityLanguage.GetString("tbl_ProductName")</th>
+                                            <th scope="col">@UtilityLanguage.GetString("PricePerUnit")</th>
+                                            <th scope="col">@UtilityLanguage.GetString("PermissionTitle_ProductSpecification")</th>
+                                            <th scope="col">@UtilityLanguage.GetString("Count")</th>
+                                            <th scope="col">@UtilityLanguage.GetString("FinalPrice")</th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            foreach (ShoppingCartDetailDto item in seller.Products)
+                                            {
+                                                <tr detailId="@item.ShoppingCartDetailId">
+                                                    <th scope="row">@item.RowNumber</th>
+                                                    <td>
+                                                        @if (item.ProductImage != null)
+                                                        {
+                                                            <a href="@($"/product/{item.ProductCode}")" class="proLink" role="button">
+                                                                <img class="smlImg" src="data:image/jpeg;base64,@item.ProductImage.Content" style="width: 75px;">
+                                                            </a>
+                                                        }
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <a href="@($"/product/{item.ProductCode}")" role="button" class="proLink">
+                                                            <span>@item.ProductName</span>
+                                                        </a>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        @{
+                                                            if (item.PreviousFinalPricePerUnit != 0 && item.PreviousFinalPricePerUnit != item.PricePerUnit - item.DiscountPricePerUnit)
+                                                            {
+                                                                <div>
+                                                                    <p class="pInTb"><s>@($"{Convert.ToInt64(item.PreviousFinalPricePerUnit):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</s></p>
+                                                                    <p class="pInTb"><mark>@($"{Convert.ToInt64(item.PricePerUnit - item.DiscountPricePerUnit): n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div>
+                                                                    <p class="pInTb"><mark>@($"{Convert.ToInt64(item.PricePerUnit - item.DiscountPricePerUnit):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                                                </div>
+
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td class="align-middle text-center specSection">
+                                                        @{
+                                                            @foreach (SpecValue spec in item.ProductSpecValues)
+                                                            {
+                                                                <span class="specSpan" specName="@spec.SpecificationName" specid="@spec.SpecificationId"
+                                                                      specVal="@spec.SpecificationValue">@spec.SpecificationName : @spec.SpecificationValue</span>
+                                                                <br />
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <div class="w-75">
+                                                            <input type="number" class="form-control orderCnt" code='@item.ProductCode' min="1" value="@item.OrderCount" />
+                                                        </div>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <div>
+                                                            <p><mark>@($"{Convert.ToInt64(@item.TotalAmountToPay):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                                        </div>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <button class="btn btn-sm btn-danger bg-gradient deleteItem" parId="@Model.Id" detailId="@item.ShoppingCartDetailId">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <div>
+                                                            @{
+                                                                foreach (string not in item.Notifications)
+                                                                {
+                                                                    <p class="fw-lighter">@not</p>
+                                                                    <br />
+                                                                }
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row mt-2">
+                                <div class="col-4 col-md-2 d-flex justify-content-end align-middle">
+                                    <label class="form-label"> @UtilityLanguage.GetString("ShippingExpense") : </label>
+                                </div>
+                                <div class="col-4 col-md-2">
+                                    <label class="form-control">@($"{Convert.ToInt64(seller.ShippingExpense):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</label>
+                                </div>
+                                <div class="col-4 col-md-2 d-flex justify-content-end align-middle">
+                                    <label class="form-label"> @UtilityLanguage.GetString("User_DiscountCode") : </label>
+                                </div>
+                                <div class="col-4 col-md-2">
+                                    <input type="text" class="form-control" value="" id="discountCode" />
+                                </div>
+                                <div class="col-6 col-md-4">
+                                    <input type="button" class="btn btn-outline-secondary" value='@UtilityLanguage.GetString("btn_Apply")' id="btnDiscountCode" />
+                                    <input type="button" class="btn btn-outline-danger" value="@UtilityLanguage.GetString("btn_DeleteCouponCode")" id="btnDelDiscountCode" />
+                                </div>
+
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4 offset-2 col-md-2 offset-md-4 d-flex justify-content-end align-middle">
+                                    <label class="form-label"> @UtilityLanguage.GetString("SumOfAmount") : </label>
+                                </div>
+                                <div class="col-4 col-md-3 align-middle">
+                                    <p><mark class="fs-5">@($"{Convert.ToInt64(seller.Products.Sum(d => d.TotalAmountToPay) + seller.ShippingExpense):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="row mt-2">
+                    <div class="col-3 offset-3 col-md-2 offset-md-2">
+                        <label class="form-control bg-secondary bg-opacity-10 text-center"> @UtilityLanguage.GetString("FinalPriceForPayment") : </label>
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <p>
+                            <strong class="float-start" id="finalP">@($"{Convert.ToInt64(Model.FinalPriceForPay):n0}")</strong>
+                            <strong class="float-end">@($" {Model.ShoppingCartCulture.CurrencySymbol}")</strong>
+                        </p>
+                    </div>
+                    <div class="col-2 col-md-2">
+                        @if (@Model.Details.Any())
+                        {
+                            <a class="btn btn-success bg-gradient" asp-action="SendInfo">@UtilityLanguage.GetString("btn_ContinueBuyingOnline")</a>
+                        }
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <div class="row">
+                    <p class="text-center m-1 p-1"><strong>@UtilityLanguage.GetString("AlertAndMessage_ShoppingCartIsEmpty")</strong></p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("input.orderCnt").bind('keyup mouseup', function () {
+            
+            var cnt = $(this).val();
+            var code = $(this).attr("code");
+            var tr = $(this).closest("tr");
+            var specVals = [];
+            $(tr).find(".specSection .specSpan").each(function () {
+                var obj = {};
+                obj.SpecificationId = $(this).attr("specid");
+                obj.SpecificationValue = $(this).attr("specVal");
+                specVals.push(obj);
+            });
+            var obj = {};
+            obj.Code = code;
+            obj.Count = parseInt(cnt);
+            obj.SpecVals = specVals;
+            obj.CartDetailId = $(tr).attr("detailId") != undefined ? $(tr).attr("detailId") : "";
+
+            $.ajax({
+                url: "/" + "@ViewBag.LanIcon" + "/basket/AddProToBasket",
+                contentType: 'application/json',
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify(obj),
+                beforeSend: function () {
+                },
+                success: function (result) {
+                    
+                    if (result.status == "Succeed") {
+                        window.location.reload();
+                    } else //error
+                    {
+                        document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
+                        $('#mainToastBody').removeClass("text-bg-success");
+                        $('#mainToastBody').addClass("text-bg-danger");
+                        $("#toastPanel").show();
+                        var toast = new bootstrap.Toast($("#mainToast"));
+                        toast.show();
+                        setTimeout(function () {
+                            $("#toastPanel").hide();
+                        }, 2500);
+                    }
+                }
+            });
+        });
+
+        $(".deleteItem").click(function () {
+            
+            var parId = $(this).attr("parId");
+            var itemId = $(this).attr("detailId");
+
+            if ('@User.Identity.IsAuthenticated' === 'True') {
+                
+
+                $.ajax({
+                    url: `/${'@ViewBag.LanIcon'}/Basket/DeleteItemFromCart?parId=` + parId + "&id=" + itemId,
+                    //contentType: 'application/json',
+                    type: 'Get',
+                    dataType: 'json',
+                    beforeSend: function () {
+                    },
+                    success: function (result) {
+                        if (result.status == "Succeed") {
+                            
+                            window.location.reload();
+
+                            $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${result.message}`);
+                            $('#mainToastBody').removeClass('text-bg-danger');
+                            $('#mainToastBody').addClass('text-bg-success');
+                            $("#toastPanel").show();
+                            var toast = new bootstrap.Toast($("#mainToast"));
+                            toast.show();
+                            setTimeout(function () {
+                                $("#toastPanel").hide();
+                            }, 2500);
+                        }
+                        else {
+
+                            document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
+                            $('#mainToastBody').removeClass('text-bg-success');
+                            $('#mainToastBody').addClass('text-bg-danger');
+                            $("#toastPanel").show();
+                            var toast = new bootstrap.Toast($("#mainToast"));
+                            toast.show();
+                            setTimeout(function () {
+                                $("#toastPanel").hide();
+                            }, 2500);
+                        }
+
+                    }
+                });
+            }
+        });
+
+        $("#btnDiscountCode").click(function () {
+            
+            var obj = {};
+            obj.Price = '@Model.FinalPriceForPay';
+            var code = $("#discountCode").val();
+            if ('@User.Identity.IsAuthenticated' === 'True') {
+                
+                $.ajax({
+                    url: `/${'@ViewBag.LanIcon'}/Basket/CheckCode?code=${code}`,
+                    contentType: 'application/json',
+                    type: 'Post',
+                    data: JSON.stringify(obj),
+                    dataType: 'json',
+                    beforeSend: function () {
+                    },
+                    success: function (result) {
+                        if (result.status == "Succeed") {
+                            
+                            $("#finalP").html(result.val);
+                        }
+                        else {
+
+                            document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
+                            $('#mainToastBody').removeClass("text-bg-success");
+                            $('#mainToastBody').addClass("text-bg-danger");
+                            $("#toastPanel").show();
+                            var toast = new bootstrap.Toast($("#mainToast"));
+                            toast.show();
+                            setTimeout(function () {
+                                $("#toastPanel").hide();
+                            }, 2500);
+                        }
+
+                    }
+                });
+            }
+        });
+
+        $("#btnDelDiscountCode").click(function () {
+            var code = $("#discountCode").val();
+            var obj = {};
+            obj.Price = parseInt($("#finalP").text());
+            if ('@User.Identity.IsAuthenticated' === 'True') {
+                
+                $.ajax({
+                    url: `/${'@ViewBag.LanIcon'}/Basket/RevertCode?code=${code}`,
+                    contentType: 'application/json',
+                    type: 'Post',
+                    dataType: 'json',
+                    data: JSON.stringify(obj),
+                    beforeSend: function () {
+                    },
+                    success: function (result) {
+                        if (result.status == "Succeed") {
+                            
+                            $("#finalP").html(result.val);
+                        }
+                        else {
+
+                            document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
+                            $('#mainToastBody').removeClass("text-bg-success");
+                            $('#mainToastBody').addClass("text-bg-danger");
+                            $("#toastPanel").show();
+                            var toast = new bootstrap.Toast($("#mainToast"));
+                            toast.show();
+                            setTimeout(function () {
+                                $("#toastPanel").hide();
+                            }, 2500);
+                        }
+
+                    }
+                });
+            }
+        });
+    });
+
+</script>

@@ -1,0 +1,12 @@
+﻿@using Arad.Portal.Models.Shared.DesignStructure
+@model ModuleWithParametersValue;
+<div class="row mx-2">
+     <div class="col-12 text-center">
+         <label class="form-label" >@UtilityLanguage.GetString("AlertAndMessage_ModuleWithoutParameters")</label><br/>
+      </div>
+      <div class="col-12 text-center">
+           <button btnid="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1"
+                   cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+                   onclick="addModulesWithParams(this);" type="button">@UtilityLanguage.GetString("btn_Add")</button>
+      </div>
+</div>

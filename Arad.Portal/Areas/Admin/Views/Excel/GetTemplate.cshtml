@@ -1,0 +1,55 @@
+﻿@{
+   
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card pb-0 rounded-3 shadow-sm">
+    <div class="card-header py-2 bg-secondary bg-gradient bg-opacity-10">
+        <p class="my-0 fw-bold col fs-5">
+            @*<i class="fas fa-filter fs-3"></i>*@
+           @UtilityLanguage.GetString("FileImportExport_GetProductExcelFileTemplate")
+        </p>
+    </div>
+    <div class="card-body">
+
+        <form   enctype="multipart/form-data" method="post" role="form">
+            <div class="row g-3 align-items-center">
+            <div class="col-auto">
+
+                <label class="form-label" for="formFile">
+                   @UtilityLanguage.GetString("ProductTemplateLanguage")
+                </label>
+                <select class="form-control selectpicker" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                </select>
+            </div>
+            <div class="col-auto text-end">
+                <button class="btn btn-success btn-sm pe-3 mt-3" id="btnDownloadTemplate"  type="button">
+                    <i class="fas fa-file-download px-1 mt-1">
+                    </i>@UtilityLanguage.GetString("Download")
+                </button>
+                
+            </div>
+             <div class="col-auto text-end">
+                <a asp-action="ImportProductFromExcel" asp-controller="Excel" class="btn btn-sm btn-secondary btnBack bg-gradient mt-3">
+                    <i class="far fa-share-square px-1 mt-1"></i>
+                    @UtilityLanguage.GetString("btn_Back")
+                </a>
+                
+            </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{ 
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnDownloadTemplate").click(function () {
+            
+            var lanId = $("#languageId").val();
+            window.location.href = `@Url.Action("DownloadTemplate", "Excel")?languageId=${lanId}`, 
+            $("#loading").removeClass('is-active');
+        });
+    });
+    </script>
+}

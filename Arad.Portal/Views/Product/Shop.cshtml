@@ -1,0 +1,229 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.DesignStructure
+@using Arad.Portal.Models.Shared.DesignStructure
+@using Serilog;
+@model MainPageContentPart
+@{
+    ViewData["Title"] = UtilityLanguage.GetString("design_Products");
+    IOrderedEnumerable<RowContent> orderdedRows = Model.RowContents.OrderBy(c => c.RowNumber);
+}
+@using HtmlAgilityPack
+@using Newtonsoft.Json
+
+@if (Model != null && Model.RowContents.Count() > 0)
+{
+    @foreach (RowContent row in Model.RowContents.OrderBy(c => c.RowNumber))
+    {
+        <div class="row gx-0 @row.ExtraClassNames" @(row.BGType != null ? ((int)row.BGType.Value == 1 ? $"style:background-color:{row.BgCodeColor};" : $"style=background-image:url({row.BgImage});") : "")>
+            @foreach (ColContent column in row.ColsContent.OrderBy(c => c.ColNumber))
+            {
+                <div class="@column.ColumnClassNames">
+                    @{
+                        HtmlDocument htmlDoc = new();
+                        htmlDoc.LoadHtml(column.ColData);
+                        HtmlNode div = htmlDoc.DocumentNode.Element("div");
+                        if (div.Attributes["target"].Value == "module")
+                        {
+                            ModuleWithParametersValue module = null;
+                            try
+                            {
+                                module = JsonConvert
+                                .DeserializeObject<ModuleWithParametersValue>(column.ColData.Replace("<div target=\"module\">", "")
+                                .Replace("</div>", ""));
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.Fatal($"error in deserializing module div to modulewithparametersvalue={column.ColData}");
+                            }
+                            if (module != null)
+                            {
+                                switch (module.ModuleName)
+                                {
+                                    case "ProductList":
+                                        try
+                                        {
+                                            @await Component.InvokeAsync("SpecialProduct", module.ParametersValue)
+                                            ;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Fatal("error in loding product Module");
+                                        }
+
+                                        break;
+                                    case "ContentList":
+                                        try
+                                        {
+                                            @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
+                                            ;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Fatal("error in loading content module");
+                                        }
+
+                                        break;
+                                    case "HorizantalStoreMenu":
+                                        try
+                                        {
+                                            @await Component.InvokeAsync("StoreMenu")
+                                            ;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Fatal("error in loading menu module");
+                                        }
+
+                                        break;
+                                    case "ImageTextSlider":
+                                        try
+                                        {
+                                            Log.Fatal("before invoke imageSlider");
+                                            @await Component.InvokeAsync("SliderModule", new { sliderId = module.ParametersValue.SliderId, sliderType = module.ParametersValue.SliderType })
+                                            ;
+                                            Log.Fatal("after invoke imageSlider");
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Fatal($"error in loading image slide module={ex}");
+                                        }
+
+                                        break;
+                                    case "LoginAndProfile":
+                                        try
+                                        {
+                                            @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop })
+                                            ;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Fatal("error in loading login and profile");
+                                        }
+
+                                        break;
+                                    case "MultiLingualFlags":
+                                        try
+                                        {
+                                            @await Component.InvokeAsync("MultiLingual")
+                                            ;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Fatal("error in loading multilingual flags");
+                                        }
+                                        break;
+                                    case "GeneralSearch":
+                                        try
+                                        {
+                                            @await Component.InvokeAsync("GeneralSearch")
+                                            ;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Fatal("error in loading generalSearch viewcomponent");
+                                        }
+                                        break;
+                                    case "SocialMedia":
+                                        try
+                                        {
+                                            @await Component.InvokeAsync("SocialMedia", module.ParametersValue)
+                                            ;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Fatal("error in loading SocialMedia viewcomponent");
+                                        }
+                                        break;
+                                    case "FAQ":
+                                        try
+                                        {
+                                            @await Component.InvokeAsync("FAQ", module.ParametersValue.FAQViewModel.FAQItems)
+                                            ;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Fatal("error in loading FAQ viewcomponent");
+                                        }
+                                        break;
+                                    case "ProgressBars":
+                                        try
+                                        {
+                                            @await Component.InvokeAsync("ProgressBars", module.ParametersValue.ProgressBarViewModel.ProgressBars)
+                                            ;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Fatal("error in loading ProgressBars viewcomponent");
+                                        }
+                                        break;
+                                    case "IconBlocks":
+                                        try
+                                        {
+                                            @await Component.InvokeAsync("IconBlocks", module.ParametersValue.IconBlocks)
+                                            ;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Fatal("error in loading IconBlocks viewcomponent");
+                                        }
+                                        break;
+                                    case "PictureWithLabel":
+                                        try
+                                        {
+                                            @await Component.InvokeAsync("PictureWithLabel", module.ParametersValue.PictureWithLabels)
+                                            ;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Fatal("error in loading PictureWithLabel viewcomponent");
+                                        }
+                                        break;
+                                    case "Counter":
+                                        try
+                                        {
+                                            @await Component.InvokeAsync("Counter", module.ParametersValue.Counters)
+                                            ;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Fatal("error in loading Counter viewcomponent");
+                                        }
+                                        break;
+                                    case "ContactUs":
+                                        try
+                                        {
+                                            @await Component.InvokeAsync("ContactUs", module.ParametersValue.ContactUsList)
+                                            ;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Fatal("error in loading ContactUs viewcomponent");
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+                        else if (div.Attributes["target"].Value == "editor")
+                        {
+                            try
+                            {
+                                int index = column.ColData.LastIndexOf("</div>");
+                                string data = column.ColData[..index];
+                                string htmlRaw = data.Replace("<div target=\"editor\">", "");
+                                @Html.Raw(@htmlRaw)
+                                ;
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.Fatal("error in loading editor module");
+                            }
+
+                        }
+                    }
+                </div>
+            }
+        </div>
+    }
+}
+
+
+

@@ -1,0 +1,139 @@
+﻿@using Arad.Portal.Helpers.Admin
+@model ProductImportPage
+@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    OperationResult operationResult = ViewBag.OperationResult ?? new OperationResult();
+    bool isNotNullOperationResult = ViewBag.OperationResult is not null;
+    bool isSuccess = operationResult is { Succeeded: true };
+}
+<div class="card pb-0 rounded-3 shadow-sm">
+    <div class="card-header py-2 bg-secondary bg-gradient bg-opacity-10">
+        <p class="my-0 fw-bold col fs-5">
+            <i class="fas fa-filter fs-3"></i>
+           @UtilityLanguage.GetString("AlertAndMessage_ImportProductFromExcel")
+        </p>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12 offset-md-8 col-md-4">
+                 <a asp-action="GetTemplate" class="float-end btn btn-dark p-3 m-2" >
+                    <i class="fa fa-download px-1 mt-1">
+                    </i>@UtilityLanguage.GetString("GetExcelTemplate")
+             </a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        
+        <form asp-action="ImportProductFromExcel" class="row g-3" enctype="multipart/form-data" method="post" role="form">
+            <div class="row">
+                <div class="form-group col-12 col-md-4">
+                    <label class="form-label" asp-for="@Model.ProductGroupIds">@UtilityLanguage.GetString("tbl_ProductGroup")</label>
+                    <select class="form-control selectpicker" multiple="multiple"
+                            asp-for="@Model.ProductGroupIds" asp-items="@(new MultiSelectList(ViewBag.ProductGroupList,"Value","Text"))" data-live-search="true">
+                    </select>
+                    <span data-val-result="GroupIds" class="text-danger"></span>
+                </div>
+                <div class="form-group col-12 col-md-4">
+
+                    <label class="form-label" asp-for="ProductsExcelFile">
+                        @UtilityLanguage.GetString("FileImportExport_ProductExcelFile")
+                    </label>
+                    <input accept=".xls,.xlsx" class="form-control"  asp-for="ProductsExcelFile"  type="file" />
+                    <span class="text-danger form-validation-alert" asp-validation-for="ProductsExcelFile">
+                    </span>
+                </div>
+                <div class="form-group col-12 col-md-4">
+                    <label class="form-label" asp-for="ProductImages">
+                        @UtilityLanguage.GetString("FileImportExport_ProductImages")
+                    </label>
+                    <input accept=".zip,.rar,.7zip" asp-for="ProductImages" class="form-control" type="file" />
+                    <span class="text-danger form-validation-alert" asp-validation-for="ProductImages"></span>
+                </div>
+
+
+
+            </div>
+
+            <div class="col-12 text-end">
+                <button class="btn btn-success btn-sm pe-3" type="submit">
+                    <i class="far fa-save px-1 mt-1">
+                    </i>@UtilityLanguage.GetString("btn_Save")
+                </button>
+                <a asp-action="List" asp-controller="Product" class="btn btn-secondary btnBack bg-gradient">
+                    <i class="far fa-share-square px-1 mt-1"></i>
+                    @UtilityLanguage.GetString("btn_Back")
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card pb-0 rounded-3 shadow-sm mt-5">
+    <div class="card-header py-2 bg-info bg-gradient bg-opacity-10">
+        <p class="my-0 fw-bold col fs-5">
+            <i class="fas fa-info-circle fs-3"></i>
+            @UtilityLanguage.GetString("FileImportExport_Help")
+        </p>
+    </div>
+    <div class="card-body px-4 ">
+        @*<h5 class="card-title">
+            @UtilityLanguage.GetString("AlertAndMessage_DontChangeExcelTemplate")
+        </h5>*@
+        <h6 class="card-title text-danger py-2">
+            <i class="fas fa-exclamation-triangle"></i>
+            @UtilityLanguage.GetString("AlertAndMessage_DontChangeExcelTemplate")
+        </h6>
+        <p class="card-title text-danger py-2">
+            <i class="fas fa-exclamation-triangle"></i>
+            @UtilityLanguage.GetString("FileImportExport_AddProductImageHelp")
+        </p>
+    </div>
+</div>
+@section Scripts {
+    <script>
+   
+    $(document).ready(function () {
+        
+        if ('@isNotNullOperationResult' === 'True')
+            {
+                //bsAlert.show();
+
+				if ("@isSuccess" === "False")
+                {
+                    document.getElementById('mainToastBody').innerHTML = '<i class="fas fa-exclamation-triangle"></i> @operationResult.Message';
+                    $('#mainToastBody').removeClass("text-bg-success");
+                    $('#mainToastBody').addClass("text-bg-danger");
+                    $("#toastPanel").css("dispaly", "block");
+                    
+                    var toast = new bootstrap.Toast($("#mainToast"));
+                    toast.show();
+                    $("#mainToast").removeClass("fade").removeClass("showing");
+                    setTimeout(function()
+                    {   
+                         $("#toastPanel").hide();
+                    },
+                    2500);
+                }
+                else
+                {
+                    document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @operationResult.Message';
+                    $('#mainToastBody').removeClass("text-bg-danger");
+                    $('#mainToastBody').addClass("text-bg-success");
+                    $("#toastPanel").css("dispaly", "block");
+                    var toast = new bootstrap.Toast($("#mainToast"));
+                    toast.show();
+                    $("#mainToast").removeClass("fade").removeClass("showing");
+                    setTimeout(function()
+                        {
+                        $("#toastPanel").hide();
+                        },
+                        2500);
+                    
+                }
+            }
+           
+    })
+    </script>
+} 

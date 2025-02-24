@@ -1,0 +1,23 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.ProductGroup
+@using Arad.Portal.Models.UI
+@model CommonViewModel
+
+<div class="row">
+    @foreach (ProductGroupDto item in Model.Groups)
+    {
+        <div class="col-6 col-md-3">
+
+            <div class="card m-4 pgCard border-0" >
+                <img class="card-img-top rounded img-fluid" src="@Url.Content($"~/GetscaledimageOnWidth?path={item.GroupImage.Url}&width={500}")"  alt="@item.GroupImage.Title">
+                <div class="card-body text-center" >
+                    <a href="/group/@item.GroupCode" class="btn bg-gradient">
+                        <h6 class="card-title">@(item.MultiLingualProperties.Any(p => p.LanguageId == ViewBag.CurLangId) ? 
+                            item.MultiLingualProperties.FirstOrDefault(p=>p.LanguageId == ViewBag.CurLangId).Name : item.MultiLingualProperties.FirstOrDefault().Name)</h6>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+ 

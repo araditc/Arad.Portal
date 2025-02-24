@@ -1,0 +1,136 @@
+﻿@using Arad.Portal.Models.Shared.Setting
+@model PagedItems<ShippingSettingDto>
+@{
+    int i = ((Model.CurrentPage - 1) * Model.PageSize);
+    bool isSearch = false;
+    System.Collections.Specialized.NameValueCollection queryString = null;
+    string langId = "";
+    if (!string.IsNullOrWhiteSpace(Model.QueryString))
+    {
+        queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
+        queryString.Remove("page");
+    }
+   if(langId == "")
+    {
+        langId = ViewBag.DefLangId;
+    }
+    string searchCollapseClass = isSearch ? "collapse show" : "collapse";
+}
+
+<div class="card" id="shippingSettingListCard">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-3">
+                <h5 class="card-title">@UtilityLanguage.GetString("Menu_ShippingSetting")</h5>
+            </div>
+            <div class="col-md-3 offset-md-6">
+                <div class="card-tools float-end">
+                   
+                        <a asp-action="AddEdit" asp-controller="Shipping" class="btn btn-success btn-sm bg-gradient btn-sm">
+                            <i  class="fa fa-plus pt-1"></i>&nbsp; @UtilityLanguage.GetString("btn_Add")
+                        </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>@UtilityLanguage.GetString("tbl_RowName")</th>
+                    <th>@UtilityLanguage.GetString("DomainName")</th>
+                    <th>@UtilityLanguage.GetString("tbl_ShippingWays")</th>
+                    <th>@UtilityLanguage.GetString("tbl_FreeShipping")</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Items.Any())
+                {
+
+                    @foreach (ShippingSettingDto item in Model.Items)
+                    {
+                        <tr>
+                            <td class="ListCell">@(++i)</td>
+                            <td class="ListCell">@item.DomainName</td>
+                            <td class="ListCell">@(string.Join("|", @item.AllowedShippingTypes.Select(d => d.ShippingTypeText)))</td>
+                            <td class="ListCell">
+                                @(item.ShippingCoupon != null ?
+                            (item.ShippingCoupon.ShippingExpense == 0 ?
+                            $"{Convert.ToInt64(@item.ShippingCoupon.FromInvoiceExpense):n0} {item.CurrencySymbol}" :"") :
+                            "")
+                            </td>
+
+                            <td>
+
+                                <a asp-action="AddEdit" asp-controller="Shipping" asp-route-id="@item.Id" class="btn btn-sm btn-warning bg-gradient">
+                                        <i  class="fa fa-edit"></i>@UtilityLanguage.GetString("btn_Edit")
+                                    </a>
+                               @if (!item.IsDeleted)
+                                {
+                                    <button onclick="EntityDelete('@item.Id')" class="btn btn-sm btn-danger bg-gradient">
+                                        <i class="fa fa-trash"></i>@UtilityLanguage.GetString("btn_Delete")
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button id="restoreRecord" onclick="EntityRestore('@item.Id')" class="btn btn-sm btn-secondary bg-gradient">
+                                        <i class="fa fa-refresh"></i>
+                                        @UtilityLanguage.GetString("btn_Restore")
+                                    </button>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="ListCell">
+                            <h6>@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</h6>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        @await Component.InvokeAsync("Arad.Portal.Areas.Shared.ViewComponents.Pagination", new PageViewModel
+        {
+            CurrentPage = Model.CurrentPage,
+            ItemsCount = Model.ItemsCount,
+            PageSize = Model.PageSize,
+            Navigation = Url.Action("List", "Shipping"),
+            QueryParams = Model.QueryString
+        })
+    </div>
+
+</div>
+
+
+@section Scripts{
+   
+<script>
+        
+        function EntityDelete(id) {
+            
+             entityId = id;
+			typeOfRequest = 'Get';
+			confirmUrl = '@Url.Action("Delete", "Shipping")' + "/" + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Delete")';
+			document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_DeletionSureness")';
+			$('#confirmModal').modal('show');
+        }
+          function EntityRestore(id) {
+            
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("Restore", "Shipping")' + '/' + id,
+                document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Restore")';
+            document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_RestorationSureness")';
+            $('#confirmModal').modal('show');
+        }
+</script>
+}
+

@@ -1,0 +1,21 @@
+﻿namespace Arad.Portal.DataLayer.Models.Shared.DesignStructure;
+
+public class ColContent
+{
+    public string Section { get; set; }
+
+    public int? ColNumber { get; set; }
+
+    //public int? RowNumber { get; set; }
+    /// <summary>
+    /// classes are seperated by space as shown in class of each element tag
+    /// </summary>
+    public string ColumnClassNames { get; set; }
+    public string ColumnCssNames { get; set; }
+
+    public string InlineStyles { get; set; }
+
+    public string ColData { get; set; }
+
+    public string RowGuid { get; set; }
+}

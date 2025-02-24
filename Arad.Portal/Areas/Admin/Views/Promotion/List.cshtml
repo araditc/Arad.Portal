@@ -1,0 +1,567 @@
+﻿@using Arad.Portal.DataLayer.Entities.Shop.Promotion;
+@using Arad.Portal.Models.Shared.Promotion
+@model PagedItems<PromotionDto>
+@{
+    int i = ((Model.CurrentPage - 1) * Model.PageSize);
+    bool isSearch = false;
+    System.Collections.Specialized.NameValueCollection queryString = null;
+    string promotionTypeId = "-1";
+    string discountTypeId = "-1";
+    string title = "";
+    string vendor = "";
+    string productId = "-1";
+    string groupId = "-1";
+    string fromDate = "";
+    string toDate = "";
+    string baseAdd = Config["BaseAddress"];
+
+    if (!string.IsNullOrWhiteSpace(Model.QueryString))
+    {
+        queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
+
+        if (!string.IsNullOrWhiteSpace(queryString["promotionTypeId"]))
+        {
+            promotionTypeId = queryString["promotionTypeId"];
+            isSearch = true;
+        }
+        if (!string.IsNullOrWhiteSpace(queryString["discountTypeId"]))
+        {
+            discountTypeId = queryString["discountTypeId"];
+            isSearch = true;
+        }
+        if (!string.IsNullOrWhiteSpace(queryString["title"]))
+        {
+            title = queryString["title"];
+            isSearch = true;
+        }
+        if (!string.IsNullOrWhiteSpace(queryString["fDate"]))
+        {
+            fromDate = queryString["fDate"];
+            isSearch = true;
+        }
+        if (!string.IsNullOrWhiteSpace(queryString["tDate"]))
+        {
+            toDate = queryString["tDate"];
+            isSearch = true;
+        }
+        if (!string.IsNullOrWhiteSpace(queryString["groupId"]))
+        {
+            groupId = queryString["groupId"];
+            isSearch = true;
+        }
+        if (!string.IsNullOrWhiteSpace(queryString["productId"]))
+        {
+            productId = queryString["productId"];
+            isSearch = true;
+        }
+        if (!string.IsNullOrWhiteSpace(queryString["vendor"]))
+        {
+            vendor = queryString["vendor"];
+            isSearch = true;
+        }
+
+        queryString.Remove("page");
+    }
+    string error = UtilityLanguage.GetString("AlertAndMessage_Error");
+    string searchCollapseClass = isSearch ? "collapse show" : "collapse";
+}
+@section Styles
+{
+
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href="@Url.Content($"~/lib/datePicker/kamadatepicker.css")" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="@Url.Content($"~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
+    }
+
+}
+<div class="card card-dark">
+    <a data-bs-toggle="collapse" role="button" href="#searchCollapse"
+       aria-expanded="@(!isSearch ? "false" : "true" )" class="@(!isSearch ? " collapsed" : null)">
+
+        <div class="card-header">
+            <h5 class="card-title">
+                <i class="fas fa-search">
+                    <span>@UtilityLanguage.GetString("btn_Search")</span>
+                </i>
+            </h5>
+        </div>
+    </a>
+
+    <div id="searchCollapse" class="@searchCollapseClass">
+        <div class="card-body">
+
+            <div class="row" id="firstRow">
+
+                <div class="form-group col-12 col-md-3">
+                    <label class="form-label" for="promotionTypeId">@UtilityLanguage.GetString("Classification")</label><br />
+                    <select class="form-control selectpicker" id="promotionTypeId" data-live-search="true"
+                            asp-items="@(new SelectList(ViewBag.PromotionTypes,"Value","Text", promotionTypeId))">
+                    </select>
+                </div>
+                @if (ViewBag.IsSysAcc)
+                {
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label">@UtilityLanguage.GetString("AssociatedDomain")</label>
+                        <select class="form-control selectpicker" data-live-search="true" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text"))">
+                        </select>
+                    </div>
+                    @*<div class="form-group col-md-3" id="vendorSection">
+                <label class="form-label" for="productVendor">@UtilityLanguage.GetString("ProductVendor")</label><br />
+                <select class="form-control selectpicker" id="productVendor" data-live-search="true"
+                asp-items="@(new SelectList(ViewBag.Vendors, "Value", "Text"))">
+                </select>
+                </div>*@
+                }
+                @*<div class="form-group col-md-3" id="groupSection">
+                <label class="form-label">@UtilityLanguage.GetString("tbl_ProductGroup")</label>
+                <select class="form-control selectpicker" id="productGroupId" data-live-search="true"
+                asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                </select>
+                </div>*@
+
+
+                @*<div class="form-group col-md-3" id="productSection">
+                <label class="form-label" for="productId">@UtilityLanguage.GetString("Product")</label><br />
+                <select class="form-control selectpicker" id="productId" data-live-search="true" >
+                </select>
+                </div>*@
+            </div>
+            <div class="row">
+                <div class="form-group col-12 col-md-3">
+                    <label class="form-label">@UtilityLanguage.GetString("Title")</label>
+                    <input type="text" class="form-control" id="title" placeholder=" ">
+                </div>
+                <div class="form-group col-12 col-md-3">
+                    <label class="form-label" for="discountTypeId">@UtilityLanguage.GetString("Type")</label><br />
+                    <select class="form-control selectpicker" id="discountTypeId" data-live-search="true"
+                            asp-items="@(new SelectList(ViewBag.DiscountTypes,"Value","Text", discountTypeId))">
+                    </select>
+                    <span data-val-result="discountTypeId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-12 col-md-3">
+                    <label class="form-label">@UtilityLanguage.GetString("FromDate")</label>
+
+                    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                    {
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                            <input autocomplete="off" id="dtpFromDate" type="text" class="form-control" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control datepicker" id="dtpFromDate">
+                            <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                    }
+
+                </div>
+                <div class="form-group col-12 col-md-3">
+                    <label class="form-label">@UtilityLanguage.GetString("ToDate")</label>
+
+                    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                    {
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                            <input autocomplete="off" id="dtpToDate" type="text" class="form-control" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control datepicker" id="dtpToDate">
+                            <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="card-footer">
+            <button id="btnSearch" class="btn btn-primary bg-gradient float-end" type="submit">
+                <i style="position: relative; left: 5px; top: 1px;" class="fa fa-search"></i>
+                @UtilityLanguage.GetString("btn_Search")
+            </button>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <h5 class="card-title">@UtilityLanguage.GetString("Menu_Promotion")</h5>
+            </div>
+            <div class="col-12 col-md-3 offset-md-6">
+                <div class="card-tools float-end">
+                    <a asp-action="UserCouponsList" asp-controller="Promotion" class="btn btn-primary bg-gradient btn-sm">
+                        <i class="fa fa-plus pt-1"></i>@UtilityLanguage.GetString("AssignPromotionToUser")
+                    </a>
+                    <a asp-action="AddEdit" asp-controller="Promotion" class="btn btn-success bg-gradient btn-sm">
+                        <i class="fa fa-plus pt-1"></i>@UtilityLanguage.GetString("btn_Add")
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body table-responsive" id="PromotionListCard">
+        <table class="table table-responsive table-bordered table-striped align-middle">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>@UtilityLanguage.GetString("tbl_RowName")</th>
+                    <th>@UtilityLanguage.GetString("Title")</th>
+                    <th>@UtilityLanguage.GetString("Currency")</th>
+                    <th>@UtilityLanguage.GetString("FromDate")</th>
+                    <th>@UtilityLanguage.GetString("ToDate")</th>
+                    <th>@UtilityLanguage.GetString("Classification")</th>
+                    <th>@UtilityLanguage.GetString("Type")</th>
+                    <th>@UtilityLanguage.GetString("Promotion_AsUserCoupon")</th>
+                    <th>@UtilityLanguage.GetString("Value")</th>
+                    <th>@UtilityLanguage.GetString("AffectedProductName")</th>
+                    <th>@UtilityLanguage.GetString("AffectedProductGroupName")</th>
+                    <th>@UtilityLanguage.GetString("PromotedProductName")</th>
+                    <th>@UtilityLanguage.GetString("BoughtCount")</th>
+                    <th>@UtilityLanguage.GetString("PromotedCountofUnit")</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Items.Any())
+                {
+
+                    @foreach (PromotionDto item in Model.Items)
+                    {
+                        <tr>
+                            <td class="ListCell">@(++i)</td>
+                            <td class="ListCell">@item.Title</td>
+                            <td class="ListCell">@item.CurrencyName</td>
+                            <td class="ListCell ltr">@item.SDate.ToString().Split(" ")[0]</td>
+                            <td class="ListCell ltr">@(@item.EDate != null ? item.EDate.Value.ToString().Split(" ")[0] : "")</td>
+                            <td class="ListCell">@item.PromotionType</td>
+                            <td class="ListCell">@item.DiscountType</td>
+                            <td class="ListCell">@(item.AsUserCoupon ? UtilityLanguage.GetString("Yes") : UtilityLanguage.GetString("No"))</td>
+                            <td class="ListCell">@item.Value</td>
+                            <td class="ListCell">@item.ProductNamesConcat</td>
+                            <td class="ListCell">@(@item.Infoes.Any() && item.PromotionType is PromotionType.Group or PromotionType.Product ? @item.Infoes[0].AffectedProductGroupName : "")</td>
+                            <td class="ListCell">@item.PromotedProductName</td>
+                            <td class="ListCell">@item.BoughtCount</td>
+                            <td class="ListCell">@item.PromotedCountofUnit</td>
+                            <td>
+
+                                <a asp-action="AddEdit" asp-controller="Promotion" asp-route-id="@item.Id" class="btn btn-sm btn-warning bg-gradient">
+                                    <i class="fa fa-edit"></i>@UtilityLanguage.GetString("btn_Edit")
+                                </a>
+                                @if (!item.IsDeleted)
+                                {
+                                    <button onclick="EntityDelete('@item.Id')" class="btn btn-sm btn-danger bg-gradient">
+                                        <i class="fa fa-trash"></i>@UtilityLanguage.GetString("btn_Delete")
+                                    </button>
+                                }
+                                @if (item.IsDeleted)
+                                {
+                                    <button id="restoreRecord" onclick="EntityRestore('@item.Id')" class="btn btn-sm btn-secondary bg-gradient">
+                                        <i class="fa fa-refresh"></i>
+                                        @UtilityLanguage.GetString("btn_Restore")
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="14" class="ListCell">
+                            <h6>@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</h6>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        @await Component.InvokeAsync("Arad.Portal.Areas.Shared.ViewComponents.Pagination", new PageViewModel
+   {
+       CurrentPage = Model.CurrentPage,
+       ItemsCount = Model.ItemsCount,
+       PageSize = Model.PageSize,
+       Navigation = Url.Action("List", "Promotion"),
+       QueryParams = Model.QueryString
+   })
+    </div>
+
+</div>
+
+@section Scripts
+{
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <script src="@Url.Content($"~/lib/datePicker/kamadatepicker.min.js")"></script>
+    }
+    else
+    {
+        <script src="@Url.Content($"~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#title").val('@title');
+            $("#dtpFromDate").val('@fromDate');
+            $("#dtpToDate").val('@toDate');
+            if ('@vendor' != "" && $("#productVendor").val() != undefined) {
+                $("#productVendor").val('@vendor');
+                $("#productVendor").selectpicker("refresh");
+            }
+            if ('@groupId' != "" && $("#productGroupId").val() != undefined) {
+                $("#productGroupId").val('@groupId');
+                $("#productGroupId").selectpicker("refresh");
+            }
+            if ('@productId' != "" && $("#productId").val() != undefined) {
+                $("#productId").val('@groupId');
+                $("#productId").selectpicker("refresh");
+            }
+            //datetimepicker
+            if ("@CultureInfo.CurrentCulture.Name" == "fa-IR") {
+                kamaDatepicker('dtpFromDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+                kamaDatepicker('dtpTDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+            }
+            else {
+                $('.datepicker').datepicker();
+            }
+
+            $("#promotionTypeId").change(function () {
+                
+                if ($("#promotionTypeId").val() != "-1") {
+                    if ($("#promotionTypeId").val() == "1" || $("#promotionTypeId").val() == "2") {
+                        $("#firstRow").append(generateVendorSection());
+                        $("#productVendor").selectpicker();
+                    } else {
+                        $("#vendorSection").remove();
+                    }
+                } else {
+                    $("#vendorSection").remove();
+                }
+                if ($("#promotionTypeId").val() == "1" && $("#productVendor").length == 0) {
+                    $.ajax({
+                        url: '@Url.Action("GetFilteredProductGroup", "Promotion")' + `?vendorId={-1}`,
+                        type: 'Get',
+                        dataType: 'json',
+                        success: function (result) {
+                            
+                            var options = "<option value='-1'> " + '@UtilityLanguage.GetString("AlertAndMessage_Choose")' + " </option>";
+                            if (result.status === "success") {
+                                
+
+                                if (result.data.length != 0) {
+                                    (result.data).forEach(function (item) {
+                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                        options += op;
+                                    });
+                                }
+                                var groupSelect = "<div class='form-group col-md-3' id='groupSection'><label class='form-label'>" + '@UtilityLanguage.GetString("tbl_ProductGroup")' + "</label>" +
+                                    "<select class='form-control selectpicker' id='productGroupId' data-live-search='true' >" + options + "</select>";
+                                $("#firstRow").append(groupSelect);
+                                $("#productGroupId").selectpicker();
+                            } else {
+                                showError(result.message);
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        }
+                    });
+                }
+            });
+
+            $("#btnSearch").click(function () {
+                
+                var queryString = "";
+                if ($("#promotionTypeId").val() != "-1") {
+                    queryString += "?promotionTypeId=" + $("#promotionTypeId").val();
+                }
+                if ($("#promotionTypeId").val() == "1" && $("#productGroupId").val() != "") {
+                    if (queryString != "") {
+                        queryString += "&groupId=" + $("#productGroupId").val();
+                    } else {
+                        queryString += "?groupId=" + $("#productGroupId").val();
+                    }
+                }
+                if ($("#productId").val() != undefined && $("#productId").val() != "-1") {
+                    if (queryString != "") {
+                        queryString += "&productId=" + $("#productId").val();
+                    } else {
+                        queryString += "?productId=" + $("#productId").val();
+                    }
+                }
+                if ($("#discountTypeId").val() != "-1") {
+                    if (queryString != "") {
+                        queryString += "&discountTypeId=" + $("#discountTypeId").val();
+                    }
+                    else {
+                        queryString += "?discountTypeId=" + $("#discountTypeId").val();
+                    }
+                }
+                if ($("#title").val() != "") {
+                    if (queryString != "") {
+                        queryString += "&title=" + $("#title").val();
+                    }
+                    else {
+                        queryString += "?title=" + $("#title").val();
+                    }
+                }
+                if ($("#dtpFromDate").val() != "") {
+                    if (queryString != "") {
+                        queryString += "&fDate=" + $("#dtpFromDate").val();
+                    }
+                    else {
+                        queryString += "?fDate=" + $("#dtpFromDate").val();
+                    }
+                }
+                if ($("#dtpToDate").val() != "") {
+                    if (queryString != "") {
+                        queryString += "&tDate=" + $("#dtpToDate").val();
+                    }
+                    else {
+                        queryString += "?tDate=" + $("#dtpToDate").val();
+                    }
+                }
+                window.location.href = '@Url.Action("List", "Promotion")' + queryString;
+            });
+
+            $(document).on('change', '#productVendor', function () {
+                if ($("#productVendor").val() != "-1") {
+                    var vendorId = $("#productVendor").val();
+                    $.ajax({
+                        url: '@Url.Action("GetFilteredProductGroup", "Promotion")' + `?vendorId=${vendorId}`,
+                        type: 'Get',
+                        dataType: 'json',
+                        success: function (result) {
+                            
+                            var options = "<option value='-1'> " + '@UtilityLanguage.GetString("AlertAndMessage_Choose")' + " </option>";
+                            if (result.status === "success") {
+                                
+
+                                if (result.data.length != 0) {
+                                    (result.data).forEach(function (item) {
+                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                        options += op;
+                                    });
+                                }
+                                var groupSelect = "<div class='form-group col-md-3' id='groupSection'><label class='form-label'>" + '@UtilityLanguage.GetString("tbl_ProductGroup")' + "</label>" +
+                                    "<select class='form-control selectpicker' id='productGroupId' data-live-search='true' >" + options + "</select></div>";
+                                $("#firstRow").append(groupSelect);
+                                $("#productGroupId").selectpicker();
+                            } else {
+                                showError(result.message);
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        }
+                    });
+                } else {
+                    $("#productGroupId").remove();
+                }
+            });
+
+
+            $(document).on("change", "#productGroupId", function () {
+                if ($("#productGroupId").val() != "-1" && $("#promotionTypeId").val() == "2") {
+                    var productGroupId = $("#productGroupId").val();
+                    var vendorId = $("#productVendor").val();
+                    $.ajax({
+                        url: '@Url.Action("GetFilteredProduct", "Promotion")' + `?productGroupId=${productGroupId}&vendorId=${vendorId}`,
+                        type: 'Get',
+                        dataType: 'json',
+                        success: function (result) {
+                            
+                            var options = "<option value='-1'> " + '@UtilityLanguage.GetString("AlertAndMessage_Choose")' + " </option>";
+                            if (result.status === "success") {
+                                
+
+                                if (result.data.length != 0) {
+                                    (result.data).forEach(function (item) {
+                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                        options += op;
+                                    });
+                                }
+                                var productSection = "<div class='form-group col-md-3' id='productSection'><label class='form-label' for='productId'>" + '@UtilityLanguage.GetString("Product")' + "</label><br />" +
+                                    "<select class='form-control selectpicker' id='productId' data-live-search='true' >" + options + "</select></div>";
+
+                                $("#firstRow").append(productSection);
+                                $("#productId").selectpicker();
+                            } else {
+                                showError(result.message);
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        }
+                    });
+
+                }
+                else {
+                    $("#productSection").remove();
+                }
+            });
+
+
+        });
+        function generateVendorSection() {
+            
+            var vendorSelect = "";
+            if ('@ViewBag.IsSysAcc' == "True") {
+                var list = @Json.Serialize(ViewBag.Vendors) ;
+                vendorSelect = "<div class='form-group col-md-3' id='vendorSection'><label class='form-label' for='productVendor'>"
+                    + '@UtilityLanguage.GetString("ProductVendor")' + "</label><br /><select class='form-control selectpicker' id='productVendor' data-live-search='true' >";
+                var options = "<option value='-1'>" + '@UtilityLanguage.GetString("AlertAndMessage_Choose")' + "</option>";
+                (list).forEach(function (item) {
+                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                    options += op;
+                });
+                vendorSelect += options + "</select>";
+            }
+            return vendorSelect;
+        }
+        function EntityDelete(id) {
+            
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("Delete", "Promotion")' + "/" + id,
+                document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Delete")';
+            document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_DeletionSureness")';
+            $('#confirmModal').modal('show');
+        }
+
+        function EntityRestore(id) {
+            
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("Restore", "Promotion")' + '/' + id,
+                document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Restore")';
+            document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_RestorationSureness")';
+            $('#confirmModal').modal('show');
+        }
+    </script>
+}
+

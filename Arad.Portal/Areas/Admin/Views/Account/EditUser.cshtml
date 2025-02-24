@@ -1,0 +1,206 @@
+﻿@using Arad.Portal.Models.Shared.User
+@inject IConfiguration Config
+@model UserEdit
+@{
+    string alert = UtilityLanguage.GetString("AlertAndMessage_GotIt");
+    string error = UtilityLanguage.GetString("AlertAndMessage_Error");
+    string baseAdd = Config["BaseAddress"];
+}
+@section Styles{
+    <link href="@Url.Content($"~/lib/intl-tel-input/css/intlTelInput.css")" rel="stylesheet" />
+    <style>
+        .iti.iti--allow-dropdown.iti--separate-dial-code
+        {
+            width : 100% !important;
+        }
+    </style>
+
+}
+
+
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <div class="card" id="editUserCard">
+            <div class="card-header">
+                <h5 class="card-title">@UtilityLanguage.GetString("User_Edit")</h5>
+            </div>
+            <form id="editUserFrm" asp-action="Edit" asp-controller="Account" method="post">
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+                    <div class="row">
+                        <div class="form-group col-12 col-md-3 p-2">
+                            <input asp-for="Id" type="hidden" class="form-control" />
+                            <label asp-for="PhoneNumber" class="form-label"></label><br/>
+                            <input asp-for="PhoneNumber" type="tel" class="form-control w-100"  />
+                            <input id="hidePhone" type="hidden" value="" name="FullMobile" />
+                            <span data-val-result="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-3 p-2">
+                            <label asp-for="FirstName" class="form-label"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span data-val-result="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-3 p-2">
+                            <label asp-for="LastName" class="form-label"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span data-val-result="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-md-3 p-2">
+                            <label asp-for="UserRoleId" class="form-label"></label>
+                            <br/>
+                            <select class="form-select" asp-for="UserRoleId" asp-items="@(new SelectList(ViewBag.Roles,"Id","Name"))" data-live-search="true">
+                            </select>
+                            <span data-val-result="UserRoleId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-3 p-2">
+                            <label asp-for="DefaultLanguageId" class="form-label">@UtilityLanguage.GetString("DefaultLanguage")</label>
+                                <br />
+                            <select class="form-select  selectpicker" asp-for="DefaultLanguageId" data-live-search="true" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                            </select>
+                            <span data-val-result="DefaultLanguageId" class="text-danger"></span>
+                        </div>
+                            <div class="form-group col-12 col-md-3 p-2">
+                                <label asp-for="Email" class="form-label">@UtilityLanguage.GetString("EnumDesc_Email")</label>
+                                <input asp-for="Email" class="form-control" dir="ltr"/>
+                                <span data-val-result="Email" class="text-danger"></span>
+                            </div>
+                            
+                        <div class="form-group col-12 col-md-4 pt-4 pb-2">
+                            <div class="form-check m-auto d-inline-block pt-3">
+                                <input class="form-check-input" value="@Model.IsVendor" type="checkbox" asp-for="IsVendor" />
+                                <label class="form-check-label" asp-for="IsVendor">
+                                    @UtilityLanguage.GetString("IsVendor")
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-12 col-md-4 pt-4 pb-2">
+                            <div class="form-check m-auto d-inline-block pt-3">
+                                <input class="form-check-input" value="@Model.IsSiteUser" type="checkbox" asp-for="IsSiteUser" />
+                                <label class="form-check-label" asp-for="IsSiteUser">
+                                    @UtilityLanguage.GetString("User_IsSiteUser")
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-4 offset-md-8 col-12">
+                            <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@UtilityLanguage.GetString("btn_Back")</a>
+                            <input type="submit" value="@UtilityLanguage.GetString("btn_Edit")" class="btn btn-warning bg-gradient float-end m-2" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts
+{
+    <script src="@Url.Content($"~/lib/twbs-pagination/jquery.twbsPagination.js")"></script>
+    <script src="@Url.Content($"~/lib/intl-tel-input/js/intlTelInput-jquery.min.js")"></script>
+    <script src="@Url.Content($"~/lib/intl-tel-input/js/intlTelInput.js")"></script>
+    <script src="@Url.Content($"~/lib/MD.BootstrapPersianDateTimePicker/dist/jquery.md.bootstrap.datetimepicker.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+    var input = document.querySelector("#PhoneNumber");
+
+    var iti = window.intlTelInput(input, {
+        initialCountry: "IR",
+        placeholderNumberType: "MOBILE",
+        separateDialCode: true,
+        utilsScript: "../../lib/intl-tel-input/js/utils.js",
+        nationalMode: true
+    });
+
+    $("#DefaultLanguageId").val('@Model.DefaultLanguageId');
+    $("#DefaultLanguageId").selectpicker('refresh');
+
+    $("#UserRoleId").val('@Model.UserRoleId');
+    $("#UserRoleId").selectpicker('refresh');
+
+    $("#editUserFrm").submit(function (e) {
+        e.preventDefault();
+
+
+
+        // Get the full phone number with country code
+        var fullMobileValue = iti.getNumber();
+        if (fullMobileValue) {
+            form.set("FullMobile", fullMobileValue);
+        }
+
+        if (!fullMobileValue || fullMobileValue === "undefined" || fullMobileValue === null) {
+            console.error("Unable to get the phone number, fallback logic needed");
+            fullMobileValue = input.value;  // Use the raw phone number input as fallback
+        }
+
+        // Check if it starts with the country code, if not prepend it
+        var countryCode = iti.getSelectedCountryData().dialCode;
+        if (!fullMobileValue.startsWith('+' + countryCode)) {
+            fullMobileValue = '+' + countryCode + fullMobileValue.replace(/^\+/, '');
+        }
+
+        // Set the full mobile number in the hidden input field
+        $("#hidePhone").val(fullMobileValue);
+
+                var frm = document.getElementById('editUserFrm');
+        var form = new FormData(frm);
+
+        $.ajax({
+            url: $(this).attr('action'),
+            data: form,
+            type: 'Post',
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                // Optional: Add loading spinner or indicator
+            },
+            success: function (result) {
+                var spanErrorList = $('#editUserCard span[data-val-result]');
+                spanErrorList.html("");
+                spanErrorList.parent().removeClass("has-error");
+
+                if (result.status == "success") {
+                    document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + result.message;
+                            $('#mainToastBody').removeClass("text-bg-danger").addClass("text-bg-success");
+                    var toastDiv = $("#mainToast");
+                    $("#toastPanel").show();
+                    var toast = new bootstrap.Toast(toastDiv);
+                    toast.show();
+                    setTimeout(function () {
+                        $("#toastPanel").hide();
+                        window.location.href = '@Url.Action("List")';
+                    }, 3000);
+                } else if (result.status == "error") {
+                    if (result.modelStateErrors) {
+                        result.modelStateErrors.forEach(function (value) {
+                            $("#editUserCard").find('[data-val-result=' + value.key + ']')
+                                .html(value.errorMessage)
+                                .parent().addClass("has-error");
+                        });
+                    } else {
+                        showError('@alert');
+                    }
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert("@error");
+                alert(xhr.status);
+                alert(thrownError);
+            },
+            complete: function () {
+                // Optional: Remove loading spinner or indicator
+            }
+        });
+    });
+});
+    </script>
+}

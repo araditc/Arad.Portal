@@ -1,0 +1,260 @@
+{
+    "LanguageId": "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
+    "LanguageName": null,
+    "HeaderPart": {
+        "BGType": null,
+        "BgImage": null,
+        "CodeColor": null,
+        "PriorFixedContent": null,
+        "CustomizedContent": [
+            {
+                "RowNumber": 1000,
+                "RowGuid": "8f2a7dc2-27ca-4904-b884-2225ef0ffb03",
+                "BGType": null,
+                "BgImage": null,
+                "BgCodeColor": null,
+                "ExtraClassNames": "py-2 border-top border-bottom border-1",
+                "InlineStyles": null,
+                "Order": null,
+                "EnumColsId": "1",
+                "ColsContent": [
+                    {
+                        "Section": "headerSection",
+                        "ColNumber": 1,
+                        "ColumnClassNames": "col-12 col-md-6 d-flex justify-content-center",
+                        "InlineStyles": null,
+                        "ColData": "<div target=\"editor\"><div class=\"float-end fs-6\"><span><i class=\"fas fa-envelope\"></i> ایمیل : info@arad-itc.org</span><span class=\"ms-4\"><i class=\"fas fa-clock\"></i> شنبه تــــا چهارشنبه </span></div></div>",
+                        "RowGuid": "8f2a7dc2-27ca-4904-b884-2225ef0ffb03"
+                    },
+                    {
+                        "Section": "headerSection",
+                        "ColNumber": 2,
+                        "ColumnClassNames": "col-12 col-md-6 d-flex justify-content-center",
+                        "InlineStyles": null,
+                        "ColData": "<div target=\"module\">{\"ParametersValue\":{\"DomainId\":\"1e336912-00e4-4a0a-bee6-20ce8ae49855\",\"IsShop\":false},\"ModuleId\":\"j6554ffc-1653-41ba-a281-ee57fa7ffc09\",\"ModuleName\":\"LoginAndProfile\"}</div>",
+                        "RowGuid": "8f2a7dc2-27ca-4904-b884-2225ef0ffb03"
+                    }
+                ]
+            },
+            {
+                "RowNumber": 1001,
+                "RowGuid": "5f5d1713-2155-4017-def9-2ecfb03a6481",
+                "BGType": null,
+                "BgImage": null,
+                "BgCodeColor": null,
+                "ExtraClassNames": "",
+                "InlineStyles": null,
+                "Order": null,
+                "EnumColsId": "2",
+                "ColsContent": [
+                    {
+                        "Section": "headerSection",
+                        "ColNumber": 1,
+                        "ColumnClassNames": "col-2 border-end border-1",
+                        "InlineStyles": null,
+                        "ColData": "<div target=\"editor\"><div class=\"float-end\">\n<ul class=\"socialMediaLinks clearfix list-group list-group-horizontal border-0\">\n\t<li class=\"list-group-item border-0\"><a class=\"gitLink fs-3\" href=\"https://github.com/araditc\" target=\"_blank\"><i class=\"fab fa-github\"></i></a></li>\n\t<li class=\"list-group-item border-0\"><a class=\"telegramLink fs-3\" href=\"https://t.me/araditc\" target=\"_blank\"><i class=\"fab fa-telegram\"></i></a></li>\n\t<li class=\"list-group-item border-0\"><a class=\"linkedInLink fs-3\" href=\"https://www.linkedin.com/company/araditc\" target=\"_blank\"><span class=\"fab fa-linkedin\"></span></a></li>\n</ul>\n<style type=\"text/css\">.gitLink {\n       /* background: #2D53A2;*/\n    }\n    .telegramLink {\n        /*background: #13A8EF;*/\n    }\n    .linkedInLink {\n        /*background: #0278B6;*/\n    }\n</style>\n</div></div>",
+                        "RowGuid": "5f5d1713-2155-4017-def9-2ecfb03a6481"
+                    },
+                    {
+                        "Section": "headerSection",
+                        "ColNumber": 2,
+                        "ColumnClassNames": "col-8",
+                        "InlineStyles": null,
+                        "ColData": "<div target=\"module\">{\"ParametersValue\":{\"DomainId\":\"1e336912-00e4-4a0a-bee6-20ce8ae49855\",\"languageId\":\"0f0815fb-5fca-470c-bbfd-4d8c162de05a\"},\"ModuleId\":\"f8865ffc-1653-41ba-a281-ee57fa7ffc09\",\"ModuleName\":\"HorizantalStoreMenu\"}</div>",
+                        "RowGuid": "5f5d1713-2155-4017-def9-2ecfb03a6481"
+                    },
+                    {
+                        "Section": "headerSection",
+                        "ColNumber": 3,
+                        "ColumnClassNames": "col-2",
+                        "InlineStyles": null,
+                        "ColData": "<div target=\"editor\"><div class=\"m-1 float-start\"><img alt=\"\" src=\"/ckEditorDomainImages/840e902e-09c8-41cf-93cc-a10e2f2d5829.png\" style=\"width: 60px; height: 60px;\"></div></div>",
+                        "RowGuid": "5f5d1713-2155-4017-def9-2ecfb03a6481"
+                    }
+                ]
+            }
+        ],
+        "LatterFixedContent": null
+    },
+    "MainPageContainerPart": {
+        "RowContents": [
+            {
+                "RowNumber": 2000,
+                "RowGuid": "892d64d9-2ac8-4f66-315a-a15fa356b210",
+                "BGType": null,
+                "BgImage": null,
+                "BgCodeColor": null,
+                "ExtraClassNames": "",
+                "InlineStyles": null,
+                "Order": null,
+                "EnumColsId": "1",
+                "ColsContent": [
+                    {
+                        "Section": "containerSection",
+                        "ColNumber": 1,
+                        "ColumnClassNames": "col-12",
+                        "InlineStyles": null,
+                        "ColData": "<div target=\"module\">{\"ParametersValue\":{\"SliderId\":\"4964cd6e-1bfc-4ab1-b466-9c3da4977d68\"},\"ModuleId\":\"f8854ffc-1653-41ba-a281-ee57fa7ffc09\",\"ModuleName\":\"ImageTextSlider\"}</div>",
+                        "RowGuid": "892d64d9-2ac8-4f66-315a-a15fa356b210"
+                    }
+                ]
+            },
+            {
+                "RowNumber": 2001,
+                "RowGuid": "cb3e0432-97a3-4bda-a0c4-2e9cace6fd25",
+                "BGType": null,
+                "BgImage": null,
+                "BgCodeColor": null,
+                "ExtraClassNames": "",
+                "InlineStyles": null,
+                "Order": null,
+                "EnumColsId": "1",
+                "ColsContent": [
+                    {
+                        "Section": "containerSection",
+                        "ColNumber": 1,
+                        "ColumnClassNames": "col-12",
+                        "InlineStyles": null,
+                        "ColData": "<div target=\"editor\"><div class=\"col-12 col-md-10 m-auto\">\n<div class=\"row my-5\">\n<div class=\"col-12 col-md-3\">\n<div class=\"tag tag1\">\n<div class=\"iconBox\"><i class=\"fa fa-globe\"></i></div>\n\n<h6 class=\"fw-bold my-4\">پلتفرم اینترنت اشیاء</h6>\n\n<p>پلتفرم ایـــــــنترنت اشیا آراد امکان اتصال انواع دستگاه ها با کاربری های مختلف اینترنت اشیا با گزینه های ارتباطی منعطف و همچنین امنیت بالا را فراهم می کند. قابلیت های مدیریت و تحلیل داده نیز از دیگر ویژگی های این پلتفرم می باشد.</p>\n<a class=\"text-decoration-none\" href=\"\">بیشتر بخوانید</a></div>\n</div>\n\n<div class=\"col-12 col-md-3\">\n<div class=\"tag tag2\">\n<div class=\"iconBox\"><i class=\"fas fa-envelope\"></i></div>\n\n<h6 class=\"fw-bold my-4\">درگاه پیام کوتاه</h6>\n\n<p>سیستم‌های ارتباطی شرکت آراد با در اختیار داشتن نیروی انسانی ورزیده و متعهد و همچنین برخورداری از لینک ارتباطی مستقیم به مرکز پیام کوتاه اپراتورهای تلفن همراه کشور، خدمات و راه‌حل‌های پیام‌دهی متنوعی را در اختیار خیل گسترده مشتریان خود قرار می دهد</p>\n<a class=\"text-decoration-none\" href=\"\">بیشتر بخوانید</a></div>\n<style type=\"text/css\">.tag .iconBox i.fas {\n                    vertical-align: middle;\n                    position: relative;\n                    font-size: 48px;\n                    color: #FF8726;\n                    z-index: 1;\n                    position: relative;\n                    top: auto;\n                    margin: auto;\n                    line-height: 124px;\n                }\n</style>\n</div>\n\n<div class=\"col-12 col-md-3\">\n<div class=\"tag tag3\">\n<div class=\"iconBox\"><i class=\"fa fa-credit-card\"></i></div>\n\n<h6 class=\"fw-bold my-4\">پرداخت یاری</h6>\n\n<p>شرکت آراد با مجوز پرداخت یاری از بانک مرکزی، راهکارهای هوشمند و یکپارچه پرداخت الکترونیک را به تمامی کسب و کارها ارائه می نماید.<br>\nهم اکنون ما پذیرای میلیونها تراکنش در شبکه بانکی کشور هستیم</p>\n<a class=\"text-decoration-none\" href=\"\">بیشتر بخوانید</a></div>\n</div>\n\n<div class=\"col-12 col-md-3\">\n<div class=\"tag tag4\">\n<div class=\"iconBox\"><i aria-hidden=\"true\" class=\"fa fa-map-marker\"></i></div>\n\n<h5 class=\"fw-bold my-4\">لجستیک هوشمند</h5>\n\n<p>امروزه اطلاعات و سيستم‌هاي اطلاع‌رساني بعنوان ابزارهايي قوي در مديريت صنعت حمل و نقل، مورد استفاده فراوان قرار مي‌گيرند.ما به كمك پلتفرمهای ایجاد شده در شرکت، امكان نظارت از راه دور بر ناوگان را براي مديران اين صنعت فراهم می کند.</p>\n<a class=\"text-decoration-none\" href=\"\">بیشتر بخوانید</a></div>\n</div>\n</div>\n</div>\n<style type=\"text/css\">.tag {\n        text-align: center;\n        position: relative;\n        cursor: pointer;\n    }\n\n        .tag h5 {\n            color: #333;\n        }\n\n        .tag a {\n            color: #FE8625;\n        }\n\n        .tag .iconBox i.fa {\n            vertical-align: middle;\n            position: relative;\n            font-size: 48px;\n            color: #FF8726;\n            z-index: 1;\n            position: relative;\n            top: auto;\n            margin: auto;\n            line-height: 124px;\n        }\n\n    .iconBox {\n        border-color: #ff8726;\n        display: inline-block;\n        border-top: 2px solid #ff8726;\n        width: 80px;\n        height: 127px;\n        line-height: 123px;\n        border-bottom: 2px solid #ff8726;\n        -ms-transform: rotate(0deg);\n        -moz-transform: rotate(0deg);\n        -webkit-transform: rotate(0deg);\n        -o-transform: rotate(0deg);\n        background: none;\n        border-radius: 12px;\n        -moz-border-radius: 12px;\n        -webkit-border-radius: 12px;\n    }\n\n    .tag .iconBox:before {\n        width: 80px;\n        height: 127px;\n        top: -2px;\n        left: 0px;\n        content: \"\";\n        border-radius: 12px;\n        position: absolute;\n        border-top: 2px solid #ff8726;\n        border-bottom: 2px solid #ff8726;\n        transform: rotate(120deg);\n        -ms-transform: rotate(120deg);\n        -moz-transform: rotate(120deg);\n        -webkit-transform: rotate(120deg);\n        -o-transform: rotate(120deg);\n    }\n\n    .tag .iconBox:after {\n        width: 80px;\n        height: 127px;\n        top: -2px;\n        left: 0px;\n        content: \"\";\n        border-radius: 12px;\n        position: absolute;\n        border-top: 2px solid #ff8726;\n        border-bottom: 2px solid #ff8726;\n        transform: rotate(-120deg);\n        -ms-transform: rotate(-120deg);\n        -moz-transform: rotate(-120deg);\n        -webkit-transform: rotate(-120deg);\n        -o-transform: rotate(-120deg);\n    }\n\n    .iconBox:hover {\n        background-color: #ff8726;\n    }\n\n        .iconBox:hover i.fa {\n            color: #fff;\n        }\n\n\n        .iconBox:hover::before {\n            background-color: #ff8726;\n        }\n\n        .iconBox:hover::after {\n            background-color: #ff8726;\n        }\n</style></div>",
+                        "RowGuid": "cb3e0432-97a3-4bda-a0c4-2e9cace6fd25"
+                    }
+                ]
+            },
+            {
+                "RowNumber": 2002,
+                "RowGuid": "879f83af-4697-4cb2-7fbe-81f5fd9a5422",
+                "BGType": null,
+                "BgImage": null,
+                "BgCodeColor": null,
+                "ExtraClassNames": "gx-10",
+                "InlineStyles": null,
+                "Order": null,
+                "EnumColsId": "1",
+                "ColsContent": [
+                    {
+                        "Section": "containerSection",
+                        "ColNumber": 1,
+                        "ColumnClassNames": "col-12",
+                        "InlineStyles": null,
+                        "ColData": "<div target=\"module\">{\"ParametersValue\":{\"ProductOrContentType\":\"Newest\",\"ContentTemplateDesign\":\"SliderWithSubtitle\",\"Count\":3,\"LoadAnimation\":\"14\",\"LoadAnimationType\":\"0\",\"SelectionType\":\"2\",\"CatId\":\"a5e7b99e-de0e-49c0-ba8e-ddab17c63a62\",\"SelectedIds\":[]},\"ModuleId\":\"f8865ffc-1563-41ba-a281-ee57fa7ffc09\",\"ModuleName\":\"ContentList\"}</div>",
+                        "RowGuid": "879f83af-4697-4cb2-7fbe-81f5fd9a5422"
+                    }
+                ]
+            },
+            {
+                "RowNumber": 2003,
+                "RowGuid": "5a31a74f-ad9d-4e18-ebde-fa2b478280d1",
+                "BGType": null,
+                "BgImage": null,
+                "BgCodeColor": null,
+                "ExtraClassNames": "py-5",
+                "InlineStyles": null,
+                "Order": null,
+                "EnumColsId": "1",
+                "ColsContent": [
+                    {
+                        "Section": "containerSection",
+                        "ColNumber": 1,
+                        "ColumnClassNames": "col-12",
+                        "InlineStyles": null,
+                        "ColData": "<div target=\"editor\"><div class=\"col-12\">\n<ul class=\"arad-Products list-group border-0\">\n\t<li><a href=\"/blog/لجستیک-هوشمند-آراد\"><img alt=\"\" class=\"img-fluid\" data-bs-placement=\"top\" data-bs-toggle=\"tooltip\" src=\"/ckEditorDomainImages/bdbe0eda-58f7-4f0a-83bd-f4a5e691085f.png\" title=\"لجستیک هوشمند\"></a> <a href=\"\"><img alt=\"\" class=\"img-fluid\" data-bs-placement=\"top\" data-bs-toggle=\"tooltip\" src=\"/ckEditorDomainImages/3c402921-0410-466e-ba1c-607ed15883e2.png\" title=\"دیتا سنتر\"></a> <a href=\"\"><img alt=\"\" class=\"img-fluid\" data-bs-placement=\"top\" data-bs-toggle=\"tooltip\" src=\"/ckEditorDomainImages/730ca397-db0b-46b4-9d3d-8a8298000d27.png\" title=\"سرویس های هاستینگ\"></a> <a href=\"\"><img alt=\"\" class=\"img-fluid\" data-bs-placement=\"top\" data-bs-toggle=\"tooltip\" src=\"/ckEditorDomainImages/58fd0d37-f601-4524-849e-c69ec1e8a67f.png\" title=\"اپراتورهای مجازی تلفن همراه\"></a></li>\n\t<li><a href=\"\"><img alt=\"\" class=\"img-fluid\" data-bs-placement=\"top\" data-bs-toggle=\"tooltip\" src=\"/ckEditorDomainImages/2c95fec1-304f-488d-bf7e-10d465075f60.png\" title=\"درگاه پرداخت\"></a> <a href=\"\"><img alt=\"\" class=\"img-fluid\" data-bs-placement=\"top\" data-bs-toggle=\"tooltip\" src=\"/ckEditorDomainImages/8903bdbb-f8c1-43f4-94d5-dbea549ddd00.png\" title=\"شبکه اجتماعی Artalk\"></a> <a href=\"\"><img alt=\"\" class=\"img-fluid\" data-bs-placement=\"top\" data-bs-toggle=\"tooltip\" src=\"/ckEditorDomainImages/f8af1790-b4dd-4a3e-92d2-d7cf462d45c6.png\" title=\"کیف پول موبایلی\"></a> <a href=\"\"><img alt=\"\" class=\"img-fluid\" data-bs-placement=\"top\" data-bs-toggle=\"tooltip\" src=\"/ckEditorDomainImages/866d7b43-aea0-4e7d-a4b1-98a0c0786d67.png\" title=\"سرویس های ماشین به ماشین\"></a> <a href=\"\"><img alt=\"\" class=\"img-fluid\" data-bs-placement=\"top\" data-bs-toggle=\"tooltip\" src=\"/ckEditorDomainImages/c702a3ff-0a7e-4644-b901-e89139f54a16.png\" title=\"اینترنت اشیا\"></a></li>\n\t<li><a href=\"\"><img alt=\"\" class=\"img-fluid\" data-bs-placement=\"top\" data-bs-toggle=\"tooltip\" src=\"/ckEditorDomainImages/cabb954a-4d2f-483d-ba4d-31dacbc2f4ba.png\" title=\"سامانه های پیام دهی\"></a> <a href=\"\"><img alt=\"\" class=\"img-fluid\" data-bs-placement=\"top\" data-bs-toggle=\"tooltip\" src=\"/ckEditorDomainImages/0e33ed22-8d05-400f-8a33-872ef15f8b7d.png\" title=\"پلتفرم مدیریت فرآیندها و گردش کار\"></a> <a href=\"\"><img alt=\"\" class=\"img-fluid\" data-bs-placement=\"top\" data-bs-toggle=\"tooltip\" src=\"/ckEditorDomainImages/e1c8f8de-3fd9-4259-9f1e-8e428682506b.png\" title=\"باشگاه مشتریان\"></a> <a href=\"\"><img alt=\"\" class=\"img-fluid\" data-bs-placement=\"top\" data-bs-toggle=\"tooltip\" src=\"/ckEditorDomainImages/9814f4e4-b8a1-4350-a6c1-c6a8d7f08e9d.png\" title=\"پورتال های سازمانی\"></a></li>\n</ul>\n</div>\n<style type=\"text/css\">.arad-Products li:first-child {\n        margin: 0;\n    }\n\n    .arad-Products {\n        list-style-type: none;\n    }\n\n        .arad-Products li {\n            text-align: center;\n            margin: -24px 0 0 0;\n        }\n\n            .arad-Products li a {\n                margin: 0 5px;\n            }\n\n        .arad-Products a, .arad-Products a:link, .arad-Products a:active, .arad-Products a:visited {\n            color: #FE8625;\n        }\n\n        .arad-Products img {\n            object-fit: contain;\n        }\n</style></div>",
+                        "RowGuid": "5a31a74f-ad9d-4e18-ebde-fa2b478280d1"
+                    }
+                ]
+            },
+            {
+                "RowNumber": 2004,
+                "RowGuid": "eecda476-2f86-462c-b64b-8fc403668e34",
+                "BGType": null,
+                "BgImage": null,
+                "BgCodeColor": null,
+                "ExtraClassNames": "py-5",
+                "InlineStyles": null,
+                "Order": null,
+                "EnumColsId": "1",
+                "ColsContent": [
+                    {
+                        "Section": "containerSection",
+                        "ColNumber": 1,
+                        "ColumnClassNames": "col-12",
+                        "InlineStyles": null,
+                        "ColData": "<div target=\"editor\"><div class=\"row grayNotes\">\n<div class=\"col-10 m-auto py-5\">\n<div class=\"row\">\n<div class=\"col-4 delay1\" data-animation=\"animated zoomIn\">\n<div class=\"row m-3\">\n<div class=\"col-2 fs-1 text-center pt-2 grayItems\"><i class=\"fa fa-star\"></i></div>\n\n<div class=\"col-10\">\n<h6>کیفیت بالا</h6>\n\n<p>ما محصولات و خدمات مدرن و با کیفیت بالایی ارائه می کنیم که باعث ارزش آفرینی برای مشتریان ما می گردد.</p>\n</div>\n</div>\n</div>\n\n<div class=\"col-4 delay2\" data-animation=\"animated zoomIn\">\n<div class=\"row m-3\">\n<div class=\"col-2 fs-1 text-center pt-2 grayItems\"><i class=\"fa fa-users\"></i></div>\n\n<div class=\"col-10\">\n<h6>کار تیمی</h6>\n\n<p>ما اعتقاد به انجام کار تیمی به منظور برآورده نمودن نیازهای مشتریان و کمک به رشد و ارتقای شرکت داریم.</p>\n</div>\n</div>\n</div>\n\n<div class=\"col-4 delay3\" data-animation=\"animated zoomIn\">\n<div class=\"row m-3\">\n<div class=\"col-2 fs-1 text-center pt-2 grayItems\"><i class=\"fa fa-balance-scale\"></i></div>\n\n<div class=\"col-10\">\n<h6>پایبند به تعهدات</h6>\n\n<p>ما به منظور حفظ منافع ذینفعان و افزایش اعتماد مشتریان مسئولیتها و تعهدات خودمان را به بهترین شکل ممکن به انجام میرسانیم.</p>\n</div>\n</div>\n</div>\n\n<div class=\"col-4 delay4\" data-animation=\"animated zoomIn\">\n<div class=\"row m-3\">\n<div class=\"col-2 fs-1 text-center pt-2 grayItems\"><i class=\"fa fa-cogs\"></i></div>\n\n<div class=\"col-10\">\n<h6>نیروهای کارآمد</h6>\n\n<p>ما نیروی انسانی شاغل در شرکت را مهمترین دارایی شرکت میدانیم و زمینه های جذب نیروهای کارآمد و رشد آنها را فراهم می کنیم.</p>\n</div>\n</div>\n</div>\n\n<div class=\"col-4 delay5\" data-animation=\"animated zoomIn\">\n<div class=\"row m-3\">\n<div class=\"col-2 fs-1 text-center pt-2 grayItems\"><i class=\"fa fa-fire\"></i></div>\n\n<div class=\"col-10\">\n<h6>دانایی محور رشد</h6>\n\n<p>ما شهروندانی با اخلاق و مسئولیت پذیر در جامعه هستیم و دانایی و توانایی را محور رشد و توسعه شرکت نموده ایم.</p>\n</div>\n</div>\n</div>\n\n<div class=\"col-4 delay6\" data-animation=\"animated zoomIn\">\n<div class=\"row m-3\">\n<div class=\"col-2 fs-1 text-center pt-2 grayItems\"><i class=\"fa fa-certificate\"></i></div>\n\n<div class=\"col-10\">\n<h6>پایبند به اصول اخلاقی</h6>\n\n<p>ما در ارائه خدمات و محصولات خود به اصول اخلاقی و حرفه ای پایبند هستیم.</p>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<style type=\"text/css\">.grayNotes {\n        background-color: #f5f5f5;\n    }\n    delay1{\n        animation-delay :1s;\n    }\n    delay2 {\n        animation-delay: 2s;\n    }\n    delay3 {\n        animation-delay: 3s;\n    }\n    delay4 {\n        animation-delay: 4s;\n    }\n    delay5 {\n        animation-delay: 5s;\n    }\n    delay6 {\n        animation-delay: 6s;\n    }\n\n    .grayNotes i.fa {\n        left: auto;\n        right: 0;\n    }\n    .grayItems {\n        background-color: #ff8726;\n        color: white;\n    }\n</style></div>",
+                        "RowGuid": "eecda476-2f86-462c-b64b-8fc403668e34"
+                    }
+                ]
+            },
+            {
+                "RowNumber": 2005,
+                "RowGuid": "24bcefd3-191d-4f37-5274-beec1714ecc9",
+                "BGType": null,
+                "BgImage": null,
+                "BgCodeColor": null,
+                "ExtraClassNames": "",
+                "InlineStyles": null,
+                "Order": null,
+                "EnumColsId": "1",
+                "ColsContent": [
+                    {
+                        "Section": "containerSection",
+                        "ColNumber": 1,
+                        "ColumnClassNames": "col-12 py-5",
+                        "InlineStyles": null,
+                        "ColData": "<div target=\"editor\"><div class=\"aradInGlance fs-4\">\n<div class=\"col-10 m-auto\">\n<div class=\"row\">\n<div class=\"container\">\n<div class=\"row\">\n<div class=\"col-6 col-lg-3 delay1\" data-animation=\"animated zoomIn\">\n<div class=\"glanceItems fs-4\">2000+\n<p>مشتریان</p>\n</div>\n</div>\n\n<div class=\"col-6 col-lg-3 delay2\" data-animation=\"animated zoomIn\">\n<div class=\"glanceItems fs-4\">50,000,000+\n<p>تراکنش های روزانه</p>\n</div>\n</div>\n\n<div class=\"col-6 col-lg-3 delay3\" data-animation=\"animated zoomIn\">\n<div class=\"glanceItems fs-4\">15+\n<p>سال تجربه</p>\n</div>\n</div>\n\n<div class=\"col-6 col-lg-3 delay4\" data-animation=\"animated zoomIn\">\n<div class=\"glanceItems fs-4\">30+\n<p>کارشناس فعال</p>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<style type=\"text/css\">.glanceItems {\n        color: white;\n        background-image: url(/ckEditorDomainImages/93dfdcee-4b57-420b-bc46-19b63a573198.png);\n        background-repeat: no-repeat;\n        background-position: center center;\n        text-align: center;\n        min-width: 246px;\n        min-height: 278px;\n        padding: 100px 0;\n    }\n</style></div>",
+                        "RowGuid": "24bcefd3-191d-4f37-5274-beec1714ecc9"
+                    }
+                ]
+            },
+            {
+                "RowNumber": 2006,
+                "RowGuid": "a33cdeb9-bd66-45d6-97ab-5911d86a7ea2",
+                "BGType": null,
+                "BgImage": null,
+                "BgCodeColor": null,
+                "ExtraClassNames": "py-5",
+                "InlineStyles": null,
+                "Order": null,
+                "EnumColsId": "1",
+                "ColsContent": [
+                    {
+                        "Section": "containerSection",
+                        "ColNumber": 1,
+                        "ColumnClassNames": "col-12",
+                        "InlineStyles": null,
+                        "ColData": "<div target=\"editor\"><div class=\"container aboutAradRow\">\n<div class=\"row\">\n<div class=\"col-6\">\n<h4>درباره ما</h4>\n\n<div class=\"list-group panel-group home07-accordion mb-0\">\n<div class=\"list-group-item panel panel-def\">\n<div class=\"aradheadeing\">\n<h4 class=\"my-0\"><a aria-controls=\"collapse1_1\" aria-expanded=\"false\" class=\"collapsed d-flex flex-row align-items-end\" data-bs-toggle=\"collapse\" href=\"#collapse1_1\" role=\"button\"><span class=\"accordionIcon mx-2\"></span><span>ما که هستیم؟</span></a></h4>\n</div>\n\n<div class=\"collapse\" id=\"collapse1_1\">\n<div class=\"border-0\">\n<p>آراد، مجموعه ای متشکل از جوانان باهوش و پرتلاش ایرانی است که می خواهند نوآور باشند و باور دارند که با کار گروهی، تعهد، خلاقیت و تلاش در جهت کسب دانش روز، می توانند محصولی ارائه کنند که لذت استفاده آن را به کاربران بچشانند.</p>\n</div>\n</div>\n</div>\n\n<div class=\"list-group-item panel panel-def\">\n<div class=\"aradheadeing\">\n<h4 class=\"my-0\"><a aria-controls=\"collapse1_2\" aria-expanded=\"false\" class=\"collapsed d-flex flex-row align-items-end\" data-bs-toggle=\"collapse\" href=\"#collapse1_2\" role=\"button\"><span class=\"accordionIcon mx-2\"></span>چه کار می کنیم؟ </a></h4>\n</div>\n\n<div class=\"collapse\" id=\"collapse1_2\">\n<div class=\"border-0\">\n<p>در آراد تمرکز ما بر روی طراحی و توسعه سیستم های ارتباطی و سرویسهای پرداخت است. یکی از اهداف ما ارائه سرویسهای تولید شده به صورت متن باز است تا بتوانیم دانش خود را به اشتراک بگذاریم.</p>\n</div>\n</div>\n</div>\n\n<div class=\"list-group-item panel panel-def\">\n<div class=\"aradheadeing\">\n<h4 class=\"my-0\"><a aria-controls=\"collapse1_3\" aria-expanded=\"false\" class=\"collapsed d-flex flex-row align-items-end\" data-bs-toggle=\"collapse\" href=\"#collapse1_3\" role=\"button\"><span class=\"accordionIcon mx-2\"></span>چگونه کار می کنیم؟ </a></h4>\n</div>\n\n<div class=\"collapse\" id=\"collapse1_3\">\n<div class=\"border-0\">\n<p>ما هر محصولی که می‌سازیم، سرشار از نوآوری است؛ از روی دست محصول دیگران کپی کردن؛ اگرچه سخت است اما هنر نیست! تلاش می کنیم تا تمام محصولات تولید شده از بهترین استانداردها در حوزه خود برخوردا باشد.</p>\n</div>\n</div>\n</div>\n\n<div class=\"list-group-item panel panel-deft\">\n<div class=\"aradheadeing\">\n<h4 class=\"my-0\"><a aria-controls=\"collapse1_4\" aria-expanded=\"false\" class=\"collapsed d-flex flex-row align-items-end\" data-bs-toggle=\"collapse\" href=\"#collapse1_4\" role=\"button\"><span class=\"accordionIcon mx-2\"></span>چرا ما بهترین انتخاب شما هستیم؟ </a></h4>\n</div>\n\n<div class=\"collapse\" id=\"collapse1_4\">\n<div class=\"border-0\">\n<p>ما با داشتن تخصص و منابع مورد نیاز برای طراحی، توسعه و مدیریت پلتفرم های بسیار امن که به آن نیاز دارید، زمان و اعتماد به نفس را برای تمرکز بر روی فعالیت کسب و کارتان به شما هدیه می دهیم.</p>\n</div>\n</div>\n</div>\n</div>\n</div>\n\n<div class=\"col-6\">\n<h4>توانمندیهای ما</h4>\n\n<p>ما درک می کنیم که همکاران ارزشمند بر موفقیت کسب و کار ما تأثیر می گذارند از این رو افرادی که هوشمند، قابل اعتماد، متعهد و با تجربه هستند و برای مشتریان و آراد ارزش آفرینی داشته باشند را استخدام می کنیم.</p>\n&nbsp;\n\n<div class=\"list-group border-0\">\n<div class=\"list-group-item border-0\">\n<p>کار تیمی</p>\n\n<div class=\"progress\">\n<div aria-valuemax=\"100\" aria-valuemin=\"0\" aria-valuenow=\"100\" class=\"progress-bar\" role=\"progressbar\" style=\"width: 100%; background-color: #87C94E;\">&nbsp;</div>\n</div>\n</div>\n\n<div class=\"list-group-item border-0\">\n<p>نوآوری</p>\n\n<div class=\"progress\">\n<div aria-valuemax=\"100\" aria-valuemin=\"0\" aria-valuenow=\"100\" class=\"progress-bar\" role=\"progressbar\" style=\"width: 100%; background-color: #E5B700;\">&nbsp;</div>\n</div>\n</div>\n\n<div class=\"list-group-item border-0\">\n<p>ریسک پذیری</p>\n\n<div class=\"progress\">\n<div aria-valuemax=\"100\" aria-valuemin=\"0\" aria-valuenow=\"100\" class=\"progress-bar\" role=\"progressbar\" style=\"width: 100%; background-color: #69CFB5;\">&nbsp;</div>\n</div>\n</div>\n\n<div class=\"list-group-item border-0\">\n<p>دانایی محور</p>\n\n<div class=\"progress\">\n<div aria-valuemax=\"100\" aria-valuemin=\"0\" aria-valuenow=\"100\" class=\"progress-bar\" role=\"progressbar\" style=\"width: 100%; background-color: #FF8726;\">&nbsp;</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<style type=\"text/css\">.aboutAradRow a {\n        text-decoration: none;\n        color: #333;\n        display: block;\n        padding: 16px 0px 16px 20px;\n        position: relative;\n        font-size: 15px;\n        font-weight: normal;\n        background-color:  #fff;\n        transition: color ease-in 200ms, background-color ease-in 200ms;\n        -moz-transition: color ease-in 200ms, background-color ease-in 200ms;\n        -webkit-transition: color ease-in 200ms, background-color ease-in 200ms;\n        -o-transition: color ease-in 200ms, background-color ease-in 200ms;\n        -ms-transition: color ease-in 200ms, background-color ease-in 200ms;\n    }\n        .aboutAradRow a:hover, .aboutAradRow a:visited {\n            color: #fff;\n            background-color: #FF8726;\n        }\n     \n        .aboutAradRow .panel-group .panel {\n            margin-bottom: 0;\n            border-radius: 4px;\n        }\n\n    .aboutAradRow .panel-def {\n        border-radius: 0px;\n        -moz-border-radius: 0px;\n        -webkit-border-radius: 0px;\n        box-shadow: none;\n        -moz-box-shadow: none;\n        -webkit-box-shadow: none;\n    }\n\n    .aboutAradRow .panel {\n        background-color: #fff;\n        border: 1px solid #dcdcdc;\n    }\n\n    .aradheadeing {\n        background-color: #ff8726;\n    }\n\n    .aboutAradRow .accordionIcon {\n        color: #888888;\n        border: 1px solid #888;\n        width: 20px;\n        height: 20px;\n        line-height: 20px;\n        margin: -10px 0 0 0;\n        text-align: center;\n        color: #fff;\n        border-radius: 50%;\n        -moz-border-radius: 50%;\n        -webkit-border-radius: 50%;\n        border: 1px solid #fff;\n        transition: background-color ease-in 200ms;\n        -moz-transition: background-color ease-in 200ms;\n        -webkit-transition: background-color ease-in 200ms;\n        -o-transition: background-color ease-in 200ms;\n        -ms-transition: background-color ease-in 200ms;\n        font-family: 'Font Awesome 5 Free';\n        font-weight: 900;\n    }\n    .aboutAradRow a.collapsed .accordionIcon:before {\n        content: \"\\f067\";\n        color: #333;\n    }\n    .aboutAradRow a:not(.collapsed) .accordionIcon:before {\n        content: \"\\f068\";\n        color: #333;\n    }\n    .aboutAradRow a:not(.collapsed) .accordionIcon:hover::before {\n        color: white;\n    }\n</style>\n</div></div>",
+                        "RowGuid": "a33cdeb9-bd66-45d6-97ab-5911d86a7ea2"
+                    }
+                ]
+            }
+        ]
+    },
+    "FooterPart": {
+        "BGType": null,
+        "BgImage": null,
+        "CodeColor": null,
+        "PriorFixedContent": null,
+        "CustomizedContent": [
+            {
+                "RowNumber": 3000,
+                "RowGuid": "f70bc492-cade-413a-ab6c-3aad7c9d1ce5",
+                "BGType": null,
+                "BgImage": null,
+                "BgCodeColor": null,
+                "ExtraClassNames": "",
+                "InlineStyles": null,
+                "Order": null,
+                "EnumColsId": "1",
+                "ColsContent": [
+                    {
+                        "Section": "footerSection",
+                        "ColNumber": 1,
+                        "ColumnClassNames": "col-12",
+                        "InlineStyles": null,
+                        "ColData": "<div target=\"editor\"><div class=\"col-10 m-auto aradFooterPart fs-6 pt-3\">\n<div class=\"row\">\n<div class=\"col-6 col-md-3\">\n<div>\n<div class=\"mb-3\"><span class=\"fw-bolder lh-lg py-2 border-bottom border-2 mb-2\">مجوزها</span></div>\n\n<div>\n<ul class=\"list-group border-0\">\n\t<li class=\"list-group-item border-0\">\n\t<div class=\"img\"><img https:=\"\" id=\"jxlzwlaojzpergvjjxlzwlao\" logo.samandehi.ir=\"\" onclick=\"window.open(\" style=\"cursor:pointer\" verify.aspx=\"\"></div>\n\t</li>\n\t<li class=\"list-group-item border-0\">\n\t<div class=\"img\"><a onclick=\"window.open('https://shaparak.ir/tips/%D8%B4%D8%B1%DA%A9%D8%AA-%D9%87%D8%A7%DB%8C-%D9%BE%D8%B1%D8%AF%D8%A7%D8%AE%D8%AA-%DB%8C%D8%A7%D8%B1', 'Popup','toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30')\" rel=\"noreferrer\"> <img alt=\"شبکه الکترونیکی پرداخت کارتی\" src=\"/portals/0/./images/shaparak.png\" title=\"شبکه الکترونیکی پرداخت کارتی\"> </a></div>\n\t</li>\n\t<li class=\"list-group-item border-0\">\n\t<div class=\"img\"><a href=\"https://esfahan.irannsr.org/services/trade_unit/58770-%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D8%AD%D9%82%D9%88%D9%82%DB%8C-%D8%A2%D8%B1%D8%A7%D8%AF-%D8%B1%D8%A7%DB%8C%D8%A7%D9%86%D9%87-%D9%84%DB%8C%D8%A7%D9%86.html?t=%D8%B4%D8%B1%DA%A9%D8%AA-%D9%87%D8%A7%DB%8C-%D8%B9%D8%B6%D9%88\" target=\"_blank\"><img alt=\"لوگو نظام صنفی\" src=\"/portals/0/./images/nezam.png\"> </a></div>\n\t</li>\n</ul>\n</div>\n</div>\n</div>\n\n<div class=\"col-6 col-md-3\">\n<div>\n<div class=\"mb-3\"><span class=\"fw-bolder lh-lg py-2 border-bottom border-2 mb-2\">شبکه های اجتماعی</span></div>\n\n<div>\n<ul class=\"list-group border-0\">\n\t<li class=\"list-group-item border-0\"><a href=\"https://github.com/araditc\"><i class=\"fab fa-github me-2\"></i>گیت هاب</a></li>\n\t<li class=\"list-group-item border-0\"><a href=\"https://www.linkedin.com/company/araditc\"><i class=\"fab fa-linkedin me-2\"></i>لینکدین</a></li>\n\t<li class=\"list-group-item border-0\"><a href=\"https://www.instagram.com/arad.itc/\"><i class=\"fab fa-instagram me-2\"></i>اینستاگرام</a></li>\n\t<li class=\"list-group-item border-0\"><a href=\"https://t.me/araditc\"><i class=\"fab fa-telegram me-2\"></i>تلگرام</a></li>\n</ul>\n</div>\n</div>\n</div>\n\n<div class=\"col-6 col-md-3\">\n<div>\n<div class=\"mb-3\"><span class=\"fw-bolder lh-lg py-2 border-bottom border-2 mb-2\">پیوندها</span></div>\n\n<div>\n<div>\n<ul class=\"list-group border-0\" style=\"list-style: none;\">\n\t<li class=\"list-group-item border-0\"><i class=\"fa fa-bars me-2\"></i><a href=\"./ارتباط-با-ما/تماس-با-ما\">تماس با ما</a></li>\n\t<li class=\"list-group-item border-0\"><i class=\"fa fa-bars me-2\"></i><a href=\"./مقالات\">مقالات</a></li>\n\t<li class=\"list-group-item border-0\"><i class=\"fa fa-bars me-2\"></i><a href=\"https://cp.arad-itc.com/\">پشتیبانی</a></li>\n\t<li class=\"list-group-item border-0\"><i class=\"fa fa-bars me-2\"></i><a href=\"./سرویس-ها/مشاوره-کسب-و-کار\">مشاوره کسب و کار</a></li>\n</ul>\n</div>\n</div>\n</div>\n</div>\n\n<div class=\"col-6 col-md-3\">\n<div>\n<div class=\"mb-3\"><span class=\"fw-bolder lh-lg py-2 border-bottom border-2 mb-2\">اطلاعات تماس</span></div>\n\n<div>\n<ul class=\"list-group border-0\">\n\t<li class=\"list-group-item border-0\">آدرس : اصفهان خیابان محتشم کاشانی نبش 26 پلاک 94</li>\n\t<li class=\"list-group-item border-0\">تلفن : (+98)-3191083100</li>\n\t<li class=\"list-group-item border-0\">ایمیل : info@arad-itc.org</li>\n\t<li class=\"list-group-item border-0\">Skype : araditc</li>\n\t<li class=\"list-group-item border-0\">وب سایت : www.arad-itc.com</li>\n</ul>\n</div>\n</div>\n</div>\n</div>\n\n<div class=\"row py-3\" style=\"border-top: 1px solid white;\">\n<div class=\"d-flex\"><span>تمام حقوق این وب سایت محفوظ است 1401</span> <span class=\"mx-2\">|</span> <a class=\"mx-2\" href=\"\" rel=\"nofollow\">حریم خصوصی</a> <span class=\"mx-2\">|</span> <a class=\"mx-2\" href=\"\" rel=\"nofollow\">شرایط استفاده</a></div>\n</div>\n</div>\n<style type=\"text/css\">.aradFooterPart a{\n        text-decoration : none;\n        color : #aaa;\n    }\n\n    .aradFooterPart span {\n        color: #aaa;\n    }\n    .aradFooterPart .list-group-item{\n        background-color: transparent;\n        color : #aaa;\n    }\n\n    .aradFooterPart a:hover {\n        color: #ff8726;\n    }\n\n    .aradFooterPart span:hover {\n        color: #ff8726;\n    }\n    .aradFooterPart i:hover {\n        color: #ff8726;\n    }\n .aradFooterPart li:hover {\n        color: #ff8726;\n    }\n</style></div>",
+                        "RowGuid": "f70bc492-cade-413a-ab6c-3aad7c9d1ce5"
+                    }
+                ]
+            }
+        ],
+        "LatterFixedContent": null
+    }
+}

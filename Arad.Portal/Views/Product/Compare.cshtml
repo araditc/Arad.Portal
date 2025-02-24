@@ -1,0 +1,195 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared
+@using Arad.Portal.Models.Shared.Product
+@model CompareModel
+@{
+
+
+}
+<style>
+    .proLink {
+        color: black;
+        text-decoration: none;
+    }
+</style>
+<div class="container">
+
+    <div class="modal" id="productSearchModal" tabindex="-1" aria-labelledby="productSearchModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">@UtilityLanguage.GetString("Title_Search")</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12 col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtSearch" placeholder="@UtilityLanguage.GetString("btn_Search")" value="@(@ViewBag.Tag != null ? @ViewBag.Tag : "" )" />
+                            <button type="button" class="input-group-text" id="btnSearch">
+                                <i class="fas fa-search p-1 m-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row" id="productResult">
+                        @{
+                            foreach (ProductCompare pro in Model.SuggestionProducts)
+                            {
+                                <div class="col-12 col-md-3">
+                                    <div class="card" onclick="addProduct(@pro.ProductId)">
+                                        <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
+                                            <img src="data:image/jpeg;base64,@pro.ProductImageUrl" style="width:150px;" class="card-img-top" alt="...">
+                                        </a>
+                                        <div class="card-body">
+                                            <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
+                                                <p class="card-text text-center">@pro.ProductName</p>
+                                            </a>
+                                            <p class="card-title fs-6">
+                                                @($"{Convert.ToInt64(pro.CurrentPrice):n0} {ViewBag.CurrencySymbol}")
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (ProductCompare pro in Model.ProductComapreList)
+        {
+            <div class="col-12 col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <button type="button" class="btn-close float-end" aria-label="Close" onclick="DelPro(@(pro.ProductCode))"></button>
+                    </div>
+                    <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
+                        <img src="data:image/jpeg;base64,@pro.ProductImageUrl" style="width:150px;" class="card-img-top" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
+                            <p class="card-text text-center">@pro.ProductName</p>
+                        </a>
+                        <p class="card-title fs-6">
+                            @($"{Convert.ToInt64(pro.CurrentPrice):n0} {ViewBag.CurrencySymbol}")
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        }
+        @if (Model.ProductComapreList.Count < 4)
+        {
+            <div class="col-md-3 align-middle">
+                <input type="button" value="@UtilityLanguage.GetString("btn_AddToCompareList")" data-bs-toggle="modal"
+                       data-bs-target="#productSearchModal" id="btnAddToCampareList" class="btn btn-outline-secondary" />
+            </div>
+        }
+    </div>
+
+    <div class="row">
+        @if (Model.ProductComapreList.Count != 0 && Model.UnionSpecifications.Count != 0)
+        {
+            <table class="table table-hover my-3 border border-1 rounded">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        @{
+                            foreach (ProductCompare pro in Model.ProductComapreList)
+                            {
+                                <th scope="col">@pro.ProductName</th>
+                            }
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (SelectListModel spec in Model.UnionSpecifications)
+                        {
+                            <tr>
+                                <th scope="row">@spec.Text</th>
+                                @foreach (ProductCompare pro in Model.ProductComapreList)
+                                {
+                                    <td>@(pro.Specifications.Any(v => v.SpecificationId.ToString() == spec.Value) ? pro.Specifications.FirstOrDefault(v => v.SpecificationId.ToString() == spec.Value).Values : "-")</td>
+                                }
+                            </tr>
+
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+        else if (Model.ProductComapreList.Count == 0)
+        {
+            <div class="col-12"><p>@UtilityLanguage.GetString("AlertAndMessage_NoProductWereAddedToCompare")</p></div>
+
+        }
+        else if (Model.UnionSpecifications.Count == 0)
+        {
+            <div class="col-12"><p>@UtilityLanguage.GetString("AlertAndMessage_NoSpecificationsToCompare")</p></div>
+        }
+
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        var currentCount = '@Model.ProductComapreList.Count';
+
+        $("#btnSearch").click(function () {
+
+            var filter = $("#txtSearch").val();
+            $.ajax({
+                url: '@Url.Action("Search", "Product")' + "?filter=" + filter,
+                contentType: 'application/json',
+                type: 'Get',
+                dataType: 'json',
+                beforeSend: function () { },
+                success: function (result) {
+                    
+                    if (result.status == "success") {
+                        $("#productResult").html("");
+                        for (var i = 0; i < result.data.length; i++) {
+
+                            var pro = result.data[i];
+
+                            var html = `<div class="col-12"><div class="card">
+                                <div class="card-body row">
+                                <div class='col-4'>
+                                                <a href="/product/${pro.productCode}" class="proLink" role="button">
+                                                     <img src="/GetScaledImageOnWidth?path=${pro.productImageUrl}&width=75" class="card-img-top" alt="...">
+                                                </a>
+                                                </div>
+                                                <div class='col-8'>
+                                                    <a href="/product/${pro.productCode}" class="proLink" role="button">
+                                                        <p class="card-text text-center">${pro.productName}</p>
+                                                    </a>
+                                                    </div>
+                                                    <div class='d-flex justify-content-center'>
+                                                    <p class="card-title fs-6">
+                                                        ${pro.formattedPrice} ${'@ViewBag.CurrencySymbol'}
+                                                    </p>
+                                                    </div>
+                                                </div></div></div>`;
+                            $("#productResult").append(html);
+                        }
+                    }
+                    else {
+                        showError(result.msg);
+                        $("#productResult").html("");
+                    }
+                }
+            })
+        });
+    });
+    function addProduct(code) {
+        window.location.href = '@Url.Action("AddToComparePage", "Product")' + "?code=" + code;
+    }
+
+    function DelPro(code) {
+        window.location.href = '@Url.Action("DeleteProductFromCompareList", "Product")' + "?code=" + code;
+    }
+</script>

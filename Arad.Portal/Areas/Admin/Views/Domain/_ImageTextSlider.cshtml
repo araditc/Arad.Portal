@@ -1,0 +1,36 @@
+﻿@using Arad.Portal.Models.Shared.DesignStructure
+@model ModuleWithParametersValue;
+
+@{
+    string sel = "";
+    int selectedType = -1;
+    if (string.IsNullOrWhiteSpace(Model.ModuleId))
+    {
+        sel = Model.ParametersValue.SliderId;
+        selectedType = (int)Model.ParametersValue.SliderType;
+    }
+}
+
+<div class="row myrow mx-2">
+    <div class="col-12">
+        <label class="form-label">@UtilityLanguage.GetString("design_Slider")</label><br />
+        <select class="form-control selectpicker par sliderlist"
+                cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" sel="@sel"
+                data-live-search="true" parid="sliderList"
+                asp-items="@(new SelectList(ViewBag.SliderList, "Value", "Text"))">
+        </select>
+    </div>
+    <div class="col-12">
+        <label class="form-label">@UtilityLanguage.GetString("design_SliderType")</label><br />
+        <select class="form-control selectpicker par slidertype" parid="sliderType" sel="@selectedType"
+                asp-items="@(new SelectList(ViewBag.SliderType, "Value", "Text"))">
+        </select>
+    </div>
+    <div class="col-12 text-center">
+        <button btnid="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1"
+                cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+                onclick="addModulesWithParams(this);" type="button">
+            @UtilityLanguage.GetString("btn_Add")
+        </button>
+    </div>
+</div>

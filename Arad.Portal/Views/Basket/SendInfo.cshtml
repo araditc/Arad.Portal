@@ -1,0 +1,211 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.User
+@using Arad.Portal.Models.UI
+@model SendInfoPage
+@{
+   
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+
+    <link href="@Url.Content("~/lib/OwlCarousel/css/owl.carousel.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/lib/OwlCarousel/css/owl.theme.default.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/send-info.css")" rel="stylesheet" />
+}
+
+<div class="container-fluid container-body basket-shop">
+    <section class="section-full">
+
+        <div class="head head-address col-xs-12">
+            <h5>
+                <i class="fa fa-truck"></i>
+                <span class="pull-right pt-2">@UtilityLanguage.GetString("SendInfoes")</span>
+
+            </h5>
+        
+        </div>
+        <div class="row">
+            <div class="addresses-wrap col-md-12 col-lg-8">
+                <div class="errors text-right" style="font-size: 14px;">
+
+                </div>
+              @*  <div class="text-left">
+                    <a asp-action="Address" asp-controller="Account" asp-area="" class="btn btn-add-address">@UtilityLanguage.GetString("AddNewAddress")</a>
+                </div>*@
+                <div class="owl-carousel owl-theme addresses-slider">
+                    @{
+                        if (Model.Addresses.Count != 0)
+                        {
+                            int i = 0;
+                                            @foreach (Address item in Model.Addresses)
+                             {
+                                 ++i;
+                                            <div class="card-view-wrap">
+                                              
+                                                <div class="card-view-address" for="@item.Id">
+                                                    <div class="name">
+                                                        <span></span>
+
+                                                        <div class="action-wrap">
+                                                            <a asp-action="DeleteAddress" asp-controller="Basket" asp-area="" asp-route-addressId="@item.Id" class="delete"><i class="fa fa-times"></i></a>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="address-details row">
+                                                        <div class="col-xs-12 col-md-3 rtl location">
+                                                            <p><span>@UtilityLanguage.GetString("Profile_Province"):&nbsp</span><span>@item.ProvinceName</span></p>
+                                                            <p><span>@UtilityLanguage.GetString("Profile_City"):&nbsp</span><span>@item.CityName</span></p>
+                                                            <p><span>@UtilityLanguage.GetString("Profile_Address1"):&nbsp</span><span>@item.Address1</span></p>
+                                                            <p><span>@UtilityLanguage.GetString("Profile_Address2"):&nbsp</span><span>@item.Address2</span></p>
+                                                        </div>
+                                                       
+                                                        <div class="select-wrap col-xs-12 text-center">
+                                                            <p class="title-select">
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input id="@item.Id" type="radio" name="address" class="custom-control-input form-rsdio selectAddress">
+                                                                    <label class="form-label" for="@item.Id"></label>
+                                                                </div>
+
+                                                                <span>@UtilityLanguage.GetString("Shopping_Senttothisaddress")</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                             }
+                        }
+                        else
+                        {
+                                            <div class="card-view-wrap-empty">
+                                                <div class=""> <i class="fa fa-exclamation-triangle"></i> @UtilityLanguage.GetString("AlertAndMessage_AddressInsert")</div>
+                                                <a asp-action="Address" asp-controller="Account" asp-area="Shared" class="btn btn-add-address">@UtilityLanguage.GetString("btn_AddNewAddress")</a>
+                                            </div>
+                        }
+                    }
+
+
+                </div>
+               
+            </div>
+            <div class="col-md-12 col-lg-4 sum-factor">
+                <div class="sum-box">
+                    <div class="price-basket-shop">
+                        <div class="col-xs-12 price-all pay">
+                            <i>@UtilityLanguage.GetString("FinalPriceForPayment"):</i>
+                            <span class="price">
+                                <span id="totalCost" data-pay='@Model.TotalCost'>@($"{Convert.ToInt64(Model.TotalCost):n0}")</span>
+                                <span>ریال</span>
+                            </span>
+                        </div>
+                        
+                        <div class="col-xs-12 continue-buy-btn-wrap ">
+                            <button id="OnlinePay" class="btn btn-success w-100" href="">@UtilityLanguage.GetString("Shopping_OnlinePayment")</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts
+{
+    
+     <script src="@Url.Content("~/lib/OwlCarousel/js/owl.carousel.js")"></script>
+    <script src="@Url.Content("~/js/slider.js")"></script>
+
+    <script>
+
+        var token;
+        var address = "";
+$(document).ready(function() { 
+     //$(".selectAddress").click(function () {
+     //       
+     //       var parent = $(this).closest(".card-view-wrap");
+     //       var label = $(parent).find(">:first-child");
+
+     //       if ($(this).is(':checked')) {
+     //           $(".selectAddress").prop("checked", false);
+     //           $("label.select").removeClass("select");
+
+     //           $(label).addClass("select");
+     //           $(this).prop("checked", true);
+     //           address = $(this).attr("id");
+
+     //       } else {
+     //           $(label).removeClass("select");
+     //           $(this).prop("checked", false);
+     //           address = "";
+     //       }
+     //   });
+
+    $("#OnlinePay").click(function(e) {
+        
+                e.preventDefault();
+                //var giftText = "";
+                var address = $('input[name="address"]:checked').attr("id");
+                if($('input[name="address"]:checked').length == 0)
+                {
+                     document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@UtilityLanguage.GetString("AlertAndMessage_LoginFirst")'}`;
+                    $('#mainToastBody').removeClass("text-bg-success");
+                    $('#mainToastBody').addClass("text-bg-danger");
+                        var toastDiv = $("#mainToast");
+                        $("#toastPanel").show();
+                        var toast = new bootstrap.Toast(toastDiv);
+                      toast.show();
+
+                      setTimeout(function(){
+                           $("#toastPanel").hide();
+                      }, 2500);
+                      return ;
+                }
+
+                 var obj = {};
+                obj.UserCartId = '@Model.UserCartId';
+                obj.Address = address;
+                obj.PspType = "Saman";
+                $.ajax({
+                    url: "@Url.Action("InitializePay","Payment")",
+                    data: JSON.stringify(obj),
+                    type: 'POST',
+                    dataType : 'json',
+                    contentType: "application/json; charset=utf-8",
+                    
+                    success: function(data) {
+                        
+                        if (data.status === "success") {
+                            
+                            window.location.href = data.redirecturl ;
+
+                        } else if (data.status === "error") {
+
+                            window.location.href = data.redirecturl;
+                        }
+                    }
+                });
+    });
+})
+       
+
+       
+        function ConfirmPay() {
+            $.ajax({
+                url: "@Url.Action("Ipg","Basket",new {area = ""})",
+                type: 'Get',
+                success: function(url) {
+                    @*var url = '@Url.Action("GetToken","Parsian",new {area = "Shop"})' + '?token=' + token;*@
+                    window.location.href = url + '?token=' + token;
+                }
+            });
+            
+        }
+
+        function formatNumber(num) {
+        
+            var cc = num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+            return cc;
+        }
+
+    </script>
+}

@@ -1,0 +1,451 @@
+﻿@using Arad.Portal.DataLayer.Entities.General.SliderModule
+@model List<Arad.Portal.DataLayer.Entities.General.SliderModule.Slider>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div id="add" class="collapse">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+            @UtilityLanguage.GetString("design_AddNewSlider")
+        </div>
+        <div class="card-body">
+            <form id="addSlider" class="sm" asp-action="AddSlider" asp-controller="Slider" method="post" autocomplete="off" asp-antiforgery="true">
+                @if (@ViewBag.IsSysAcc)
+                {
+                    <div class="row">
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label">@UtilityLanguage.GetString("AssociatedDomain")</label>
+                            <select class="form-control selectpicker" data-live-search="true"
+                                    id="AssociatedDomainId" name="AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text", "@ViewBag.DomainId"))">
+                            </select>
+                            <span data-val-result="AssociatedDomainId" class="text-danger"></span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" id="AssociatedDomainId" value="@ViewBag.DomainId" />
+                }
+                <div class="row text-right ">
+                    <div class=" col-md-12">
+                        <div class="row">
+                            <input type="hidden" class="form-control" id="Id" name="Id" placeholder=" ">
+                            <div class="form-group col-md-4 col-lg-3">
+                                <label for="Title">@UtilityLanguage.GetString("Title")</label>
+                                <input type="text" class="form-control" id="Title" name="Title" placeholder=" ">
+                                <span class="field-validation-error" data-val-result="Title"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-10 col-2">
+                        <button type="submit" class="btn btn-success btn-sm float-end">
+                            <i class="fa fa-check" aria-hidden="true"></i>&nbsp @UtilityLanguage.GetString("btn_Approved")
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-3">
+                <h5 class="card-title">@UtilityLanguage.GetString("design_Sliders")</h5>
+            </div>
+            <div class="col-md-3 offset-md-6">
+                <div class="card-tools float-end">
+
+                    <a class="btn btn-success bg-gradient btn-sm" data-bs-toggle="collapse" href="#add" role="button" aria-expanded="false" aria-controls="add">
+                        <i class="fa fa-plus pt-1"></i>@UtilityLanguage.GetString("btn_Add")
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body" id="SliderListCard">
+        <table class="table table-bordered  table-responsive table-striped align-middle">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>@UtilityLanguage.GetString("tbl_RowName")</th>
+                    <th>@UtilityLanguage.GetString("Title")</th>
+                    <th>@UtilityLanguage.GetString("ActivationState")</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count != 0)
+                {
+                    int i = 0;
+                    @foreach (Slider item in Model)
+                    {
+                        <tr>
+                            <td class="ListCell">@(++i)</td>
+                            <td class="ListCell">@item.Title</td>
+                            <td class="ListCell" id="@("activation" + item.Id)">
+                                @{
+                                    if (item.IsActive)
+                                    {
+                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success bg-gradient">@UtilityLanguage.GetString("Active")</button>
+                                    }
+                                    else
+                                    {
+                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger bg-gradient">@UtilityLanguage.GetString("InActive")</button>
+                                    }
+                                }
+                            </td>
+                            <td class="ListCell">
+                                <a asp-action="Slides" asp-controller="Slider" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">
+                                    @UtilityLanguage.GetString("design_Slides")
+                                </a>
+
+                                <a id="editRecord" data-id="@item.Id" data-domainId="@item.AssociatedDomainId" href="#" class="btn btn-outline-secondary btn-sm">
+                                    @UtilityLanguage.GetString("btn_Detail")
+                                </a>
+
+                                @if (!item.IsDeleted)
+                                {
+                                    <button onclick="EntityDelete('@item.Id')" class="btn btn-sm btn-danger bg-gradient">
+                                        <i class="fa fa-trash"></i>@UtilityLanguage.GetString("btn_Delete")
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button id="restoreRecord" onclick="EntityRestore('@item.Id')" class="btn btn-sm btn-secondary bg-gradient">
+                                        <i class="fa fa-refresh"></i>
+                                        @UtilityLanguage.GetString("btn_Restore")
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="ListCell">
+                            <h6>@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</h6>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        var sliderId = "";
+        $(document).ready(function () {
+
+            $("#addSlider").submit(function (e) {
+                e.preventDefault();
+
+                var $inputs = $('#addSlider :input');
+                var values = {};
+                $inputs.each(function () {
+                    values[this.name] = $(this).val();
+                });
+
+                values["AssociatedDomainId"] = $("#AssociatedDomainId").val();
+
+                if (sliderId == "") {
+                    
+                    $.ajax({
+                        url: "@Url.Action("AddSlider", "Slider")",
+                        type: 'Post',
+                        data: values,
+                        beforeSend: function () {
+                        },
+                        success: function (result) {
+                            
+                            var spanErrorList = $('#addSlider span[data-val-result]');
+                            spanErrorList.html("");
+                            spanErrorList.parent().removeClass("has-error");
+
+                            if (result.status === "success") {
+
+                                document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + result.message;
+                                $('#mainToastBody').removeClass("text-bg-danger");
+                                $('#mainToastBody').addClass("text-bg-success");
+                                $("#toastPanel").show();
+                                var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                bsAlert.show();
+                                setTimeout(function () {
+                                    $("#toastPanel").hide();
+                                    window.location.reload()
+                                },
+                                    1500);
+
+
+                            } else if (result.status === "error") {
+                                if (spanErrorList.length > 1) {
+                                    spanErrorList.each(function () {
+                                        $(this).html("");
+                                        $(this).parent().removeClass("has-error");
+                                    });
+                                }
+
+                                if (result.modelStateErrors !== null) {
+                                    console.log(result);
+                                    result.modelStateErrors.forEach(function (value, index) {
+                                        $("#addRole").find('[data-val-result=' + value.key + ']')
+                                            .html(value.errorMessage);
+                                        $("#addRole").find('[data-val-result=' + value.key + ']').parent()
+                                            .addClass("has-error");
+                                    });
+                                } else {
+
+                                    showError(result.message);
+                                }
+                            }
+
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+
+                        },
+                        complete: function () {
+                            $("#loading").css("display", "none");
+                        }
+                    });
+                } else {
+                    
+                    values["Id"] = sliderId;
+                    sliderId = "";
+                    $.ajax({
+                        url: "@Url.Action("EditSlider", "Slider")",
+                        type: 'Post',
+                        data: values,
+                        beforeSend: function () {
+
+                        },
+                        success: function (result) {
+                            
+                            var spanErrorList = $('#addSlider span[data-val-result]');
+                            spanErrorList.html("");
+                            spanErrorList.parent().removeClass("has-error");
+
+                            if (result.status === "success") {
+
+
+                                document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + result.message;
+                                $('#mainToastBody').removeClass("text-bg-danger");
+                                $('#mainToastBody').addClass("text-bg-success");
+                                $("#toastPanel").show();
+                                var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                bsAlert.show();
+                                setTimeout(function () {
+                                    $("#toastPanel").hide();
+                                    clearForm("#addSlider");
+                                    location.reload();
+                                },
+                                    1500);
+
+
+                            } else if (result.status === "error") {
+                                if (spanErrorList.length > 1) {
+                                    spanErrorList.each(function () {
+                                        $(this).html("");
+                                        $(this).parent().removeClass("has-error");
+                                    });
+                                }
+
+                                if (result.modelStateErrors !== null) {
+                                    console.log(result);
+                                    result.modelStateErrors.forEach(function (value, index) {
+                                        $("#addRole").find('[data-val-result=' + value.key + ']')
+                                            .html(value.errorMessage);
+                                        $("#addRole").find('[data-val-result=' + value.key + ']').parent()
+                                            .addClass("has-error");
+                                    });
+                                } else {
+                                    showError(result.message)
+                                }
+
+                                $("#loading").css("display", "none");
+                            }
+
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+
+                        },
+                        complete: function () {
+                            $("#loading").css("display", "none");
+                        }
+                    });
+                }
+            });
+
+            $(document).on("click",
+                "#editRecord",
+                function (e) {
+                    e.preventDefault();
+                    sliderId = $(this).data("id");
+                    $.ajax({
+                        url: "@Url.Action("GetSlider", "Slider")" + "?sliderId=" + sliderId,
+                        type: 'Get',
+                        //data: data,
+                        beforeSend: function () {
+                        },
+                        success: function (result) {
+
+                            if (result.status === "success") {
+                                var slide = result.data;
+                                
+                                $("#addSlider #Title").val(slide.title);
+                                $("#addSlider #Id").val(slide.id);
+                                $("#addSlider #AssociatedDomainId").val(slide.associatedDomainId);
+                                $("#addSlider #AssociatedDomainId").selectpicker("refresh");
+                                $('#add').collapse('show');
+
+                            } else {
+                                showError(result.message)
+                            }
+
+                            $("#loading").css("display", "none");
+                        },
+                        //error: function(xhr, ajaxOptions, thrownError) {
+                        //    $("#loading").css("display", "none");
+                        //},
+                        complete: function () {
+
+                        }
+                    });
+
+
+                });
+
+            $(document).on("click", "#deleteRecord", function (e) {
+                
+                e.preventDefault();
+                var id = $(this).data("id");
+
+                $("#delete").data("id", id);
+                $("#removeModal").modal("show");
+
+            });
+
+            $(document).on("click", "#delete", function (e) {
+                
+                e.preventDefault();
+                var id = $(this).data("id");
+                var data = { Id: id };
+
+                $.ajax({
+                    url: "@Url.Action("DeleteSlider", "Slider")",
+                    type: 'Get',
+                    data: data,
+                    beforeSend: function () {
+                        $("#loading").css("display", "block");
+                    },
+                    success: function (result) {
+
+                        if (result.status === "success") {
+
+
+                            $("#removeModal").modal("hide");
+                            location.reload();
+
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + result.message;
+                            $('#mainToastBody').removeClass("text-bg-danger");
+                            $('#mainToastBody').addClass("text-bg-success");
+                            $("#toastPanel").show();
+                            var bsAlert = new bootstrap.Toast($("#mainToast"));
+                            bsAlert.show();
+
+                            setTimeout(function () {
+                                $("#toastPanel").hide();
+                            }, 2500);
+
+                        } else {
+
+                            showError(result.message);
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+
+                    },
+                    complete: function () {
+                        $("#loading").css("display", "none");
+                    }
+                });
+            });
+
+        });
+
+
+        function clearForm(form) {
+            $(form).find(':input').each(function () {
+                switch (this.type) {
+                    case 'password':
+                    case 'text':
+                    case 'textarea':
+                    case 'hidden':
+                        $(this).val('');
+                        break;
+                    case 'checkbox':
+                    case 'radio':
+                        this.checked = false;
+                }
+            });
+        }
+
+        function EntityRestore(id) {
+            
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("Restore", "Slider")' + '/' + id,
+                document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Restore")';
+            document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_RestorationSureness")';
+            $('#confirmModal').modal('show');
+        }
+
+        function changeActivation(id) {
+            $.ajax({
+                type: 'Get',
+                url: '@Url.Action("ChangeBeActiveSlider", "Slider")' + '?id=' + id,
+                success: function (resultData) {
+                    if (resultData.status === "success") {
+                        
+                        var html = '';
+                        if (resultData.result == "True") {
+                            html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-success bg-gradient"> ' + '@UtilityLanguage.GetString("Active")' + ' </button>';
+                        } else {
+                            html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-danger bg-gradient"> ' + '@UtilityLanguage.GetString("InActive")' + ' </button>';
+                        }
+                        $('#activation' + id).html(html);
+                        window.location.reload();
+                    }
+
+                    if (resultData.status === "error") {
+
+                        showError(resultData.message);
+                    }
+                }
+            });
+        }
+
+
+        function EntityDelete(id) {
+            
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("DeleteSlider", "Slider")' + "/" + id,
+                document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Delete")';
+            document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_DeletionSureness")';
+            $('#confirmModal').modal('show');
+        }
+    </script>
+}

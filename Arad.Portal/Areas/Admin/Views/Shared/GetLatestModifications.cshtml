@@ -1,0 +1,32 @@
+﻿@using Arad.Portal.DataLayer.Entities.Abstractions
+@using Arad.Portal.DataLayer.Entities.General.Modification
+
+@model List<Arad.Portal.DataLayer.Entities.General.Modification.Modification>
+@{
+    Layout = null;
+    int i = 0;
+}
+<table class="table table-bordered" style="font-size: 15px;max-width: 800px">
+    <thead >
+        <tr style="text-align: center">
+            <th>@UtilityLanguage.GetString("tbl_RowName")</th>
+            <th>@UtilityLanguage.GetString("CreationDate")</th>
+            <th>@UtilityLanguage.GetString("Role_CreatorUserName")</th>
+            <th>@UtilityLanguage.GetString("ModificationReason")</th>
+        </tr>
+    </thead>
+    <tbody>
+    @{
+        foreach (Modification item in Model)
+        {
+            i++;
+            <tr style="text-align: center">
+                <td>@i</td>
+                <td>@item.ModifyDateTime.ToPersianLetDateTime()</td>
+                <td>@item.UserName</td>
+                <td>@item.Reasons.First()</td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>

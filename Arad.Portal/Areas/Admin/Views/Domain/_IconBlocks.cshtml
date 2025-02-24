@@ -1,0 +1,76 @@
+﻿@using Arad.Portal.GeneralLibrary.Utilities
+<style>
+    .square {
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .circle {
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+    }
+
+    .feature-item {
+        width: 200px;
+        margin: 10px;
+        text-align: center;
+        position: relative;
+    }
+</style>
+
+<div id="feature-form">
+    <h3>@UtilityLanguage.GetString("CreateFeature")</h3>
+    <div class="form-group">
+        <label for="iconBlocksTitle">@UtilityLanguage.GetString("Title")</label>
+        <input type="text" class="form-control" id="iconBlocksTitle">
+    </div>
+    <div class="form-group">
+        <label for="description">@UtilityLanguage.GetString("Description")</label>
+        <textarea class="form-control" id="description"></textarea>
+    </div>
+    <div class="form-group">
+        <label class="form-label">@UtilityLanguage.GetString("SelectIcon")</label>
+        <div class="input-group">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i id="selectedIcon" class="fa fa-user"></i>
+            </button>
+            <div class="dropdown-menu p-2 icon-picker" style="max-height: 400px; overflow-y: auto; width: 100%;">
+                <div class="mb-2">
+                    <input type="text" id="searchIcons" class="form-control" placeholder="@UtilityLanguage.GetString("SearchIcon")">
+                </div>
+                <ul class="list-unstyled" id="iconList"></ul>
+            </div>
+            <input type="text" value="fa fa-user" class="form-control" id="iconPickerInput">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="iconBlocksColor">@UtilityLanguage.GetString("Color")</label>
+        <input type="color" class="form-control" id="iconBlocksColor" value="#FF8C00">
+    </div>
+    <div class="form-group">
+        <label for="shape">@UtilityLanguage.GetString("Shape")</label>
+        <select class="form-control" id="shape">
+            <option value="square">@UtilityLanguage.GetString("Square")</option>
+            <option value="circle">@UtilityLanguage.GetString("Circle")</option>
+        </select>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="addFeature()">@UtilityLanguage.GetString("AddFeature")</button>
+
+    <div id="feature-preview" class="row"></div>
+
+    <div class="col-12 text-center">
+        <button id="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1"
+                cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+                onclick="addModulesWithParams(this);" type="button">
+            @UtilityLanguage.GetString("btn_Add")
+        </button>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@using Arad.Portal.Models.Shared.SlideModule
+
+@model PagedItems<LayersListGridView>
+@{
+    Layout = null;
+}
+
+
+@*<div id="page-data" data-current="@Model.CurrentPage" data-total="@Model.ItemsCount" data-size="@Model.PageSize">*@
+@{
+    if (Model.Items.Count != 0)
+    {
+        int i = (Model.CurrentPage - 1) * Model.PageSize;
+
+        @foreach (LayersListGridView item in Model.Items)
+        {
+            <tr class="page-data" data-current="@Model.CurrentPage" data-total="@Model.ItemsCount" data-size="@Model.PageSize">
+                <td class="ListCell">@(++i)</td>
+                <td class="ListCell"> @item.Type</td>
+                <td class="ListCell">@item.Content</td>
+                <td class="ListCell">@(item.Link == null ? "---" : item.Link)</td>
+                <td class="ListCell">@(item.Position.Top == null ? "---" : item.Position.Top)</td>
+                <td class="ListCell">@(item.Position.Right == null ? "---" : item.Position.Right)</td>
+                <td class="ListCell">@(item.Position.Bottom == null ? "---" : item.Position.Bottom)</td>
+                <td class="ListCell">@(item.Position.Left == null ? "---" : item.Position.Left)</td>
+                <td class="ListCell">
+                    <a id="editRecord" asp-action="EditLayer" asp-controller="Slider" asp-route-sliderId="@ViewBag.SliderId" asp-route-slideId="@ViewBag.SlideId" asp-route-layerId="@item.Id" class="btn btn-outline-primary btn-xs">
+                        @UtilityLanguage.GetString("btn_Detail")
+                    </a>
+
+
+                    <button class="deleteRecord btn btn-outline-danger btn-xs"  data-id="@item.Id" onclick="LayerDelete('@item.Id')"  type="button" >
+                        @UtilityLanguage.GetString("btn_Delete")
+                    </button>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+        <td class="ListCell" colspan="9">
+            <h6>@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow").</h6>
+        </td>
+        </tr>
+    }
+}
+@*</div>*@

@@ -1,0 +1,79 @@
+﻿@using Arad.Portal.Models.Shared.DesignStructure
+@model ModuleWithParametersValue;
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Icon Selector</title>
+    <style>
+        .icon-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            margin-bottom: 5px;
+        }
+
+            .icon-option:hover {
+                background-color: #f0f0f0;
+            }
+
+        .icon-preview {
+            margin-right: 10px;
+            font-size: 24px;
+        }
+
+        .icon-url {
+            flex-grow: 1;
+            margin-left: 20px;
+            width: 200px; /* Smaller width */
+            padding: 3px; /* Reduce padding */
+            font-size: 12px; /* Smaller font size */
+        }
+    </style>
+</head>
+
+<div class="row mx-2">
+
+    <div id="iconSelectorContainer">
+        <label for="iconSelector">@UtilityLanguage.GetString("FillAppUrl")</label>
+        <div id="iconSelector">
+            <div class="icon-option" data-icon="fa-brands fa-telegram">
+                <i class="fa-brands fa-telegram" style="color: #74C0FC;"></i>
+                <input class="icon-url" />
+            </div>
+            <div class="icon-option" data-icon="fa-brands fa-github">
+                <i class="fa-brands fa-github" style="color: #B197FC;"></i>
+                <input class="icon-url" />
+            </div>
+            <div class="icon-option" data-icon="fa-brands fa-linkedin">
+                <i class="fa-brands fa-linkedin" style="color: #0091ff;"></i>
+                <input class="icon-url" />
+            </div>
+            <div class="icon-option" data-icon="fa-brands fa-instagram">
+                <i class="fa-brands fa-instagram" style="color: #ff0000;"></i>
+                <input class="icon-url" />
+            </div>
+            <div class="icon-option" data-icon="fa-brands fa-whatsapp">
+                <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i>
+                <input class="icon-url" />
+            </div>
+            <div class="icon-option" data-icon="fa fa-envelope">
+                <i class="fa fa-envelope" style="color: #0091ff;"></i>
+                <input class="icon-url" />
+            </div>
+        </div>
+    </div>
+
+    <div id="result"></div>
+
+    <div class="col-12 text-center">
+        <button id="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1"
+                cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+                onclick="addModulesWithParams(this);" type="button">
+            @UtilityLanguage.GetString("btn_Add")
+        </button>
+    </div>
+</div>

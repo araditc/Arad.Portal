@@ -1,0 +1,72 @@
+﻿@using Arad.Portal.Models.Shared.Content
+@model List<Arad.Portal.Models.Shared.Content.ContentGlance>
+
+<style>
+    .content-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding-top: 10px;
+    }
+
+    .content-item {
+        padding: 10px;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        background-color: #fff;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .content-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+    .content-title {
+        font-weight: bold;
+        font-size: 0.9rem;
+        color: #333;
+    }
+
+    .content-description {
+        font-size: 0.75rem;
+        color: #666;
+        line-height: 1.4;
+    }
+
+    .read-more-link {
+        color: #f57c00;
+        text-decoration: none;
+        font-size: 0.75rem;
+        font-weight: bold;
+    }
+
+        .read-more-link:hover {
+            text-decoration: underline;
+        }
+
+    .customimg {
+        width: 150px;
+        height: auto;
+    }
+</style>
+
+<div class="content-container row text-center">
+    @foreach (ContentGlance content in Model)
+    {
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="content-item">
+             
+                <div class="mb-3">
+                    <img class="customimg" src="data:image/png;base64,@content.DesiredImageUrl" alt="@content.ImageTitle" />
+                </div>
+
+                <h6 class="content-title mb-3">@content.Title</h6>
+
+                <p class="content-description mb-4">@content.Description</p>
+
+                <a href="@content.UrlFriend" class="read-more-link">بیشتر بخوانید</a>
+            </div>
+        </div>
+    }
+</div>

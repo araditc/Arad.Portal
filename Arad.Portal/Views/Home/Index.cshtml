@@ -1,0 +1,323 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.DesignStructure
+@using Arad.Portal.Models.Shared.DesignStructure
+@using HtmlAgilityPack
+@using Newtonsoft.Json
+@using Serilog
+@model Arad.Portal.DataLayer.Models.Shared.DesignStructure.PageDesignContent
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<style>
+   html, body {
+    overflow: visible !important;
+}
+        #scrollToTop:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div>
+    @if (ViewBag.IsAnchor)
+    {
+        <button id="scrollToTop" style="display: none;">&#8679;</button>
+    }
+    @if (Model.MainPageContainerPart.RowContents.Count() > 0)
+    {
+        <div style="background-color:@Model.MainPageContainerPart.CodeColor;background-image:@Model.MainPageContainerPart.BgImage">
+            @foreach (RowContent row in Model.MainPageContainerPart.RowContents.OrderBy(c => c.RowNumber))
+            {
+                <div class="row  @row.ExtraClassNames" style="@(row.BGType != null ? (int)row.BGType.Value == 1 ? $"background-color:{row.BgCodeColor};" : $"background-image:url({row.BgImage.Base64ImageContent});" : "")">
+                    @foreach (ColContent column in row.ColsContent.OrderBy(c => c.ColNumber))
+                    {
+                        <div class="@column.ColumnClassNames">
+                            @{
+                                HtmlDocument htmlDoc = new();
+                                htmlDoc.LoadHtml(column.ColData);
+                            }
+
+                            @{
+                                HtmlNode div = htmlDoc.DocumentNode.Element("div");
+
+                                if (div != null && div.Attributes["target"].Value == "module")
+                                {
+                                    ModuleWithParametersValue? module = null;
+
+                                    try
+                                    {
+                                        module = JsonConvert.DeserializeObject<ModuleWithParametersValue>(
+                                        column.ColData.Replace("<div target=\"module\">", "").Replace("</div>", ""));
+                                    }
+                                    catch (Exception)
+                                    {
+                                        Log.Fatal($"Error deserializing module div to ModuleWithParametersValue: {column.ColData}");
+                                    }
+
+                                    if (module != null)
+                                    {
+                                        switch (module.ModuleName)
+                                        {
+                                            case "ProductList":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("SpecialProduct", new { productType = module.ParametersValue.ProductOrContentType, selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count, loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType })
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("Error loading product module");
+                                                }
+
+                                                break;
+
+                                            case "ContentList":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("Error loading content module");
+                                                }
+
+                                                break;
+
+                                            case "HorizantalStoreMenu":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("StoreMenu")
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("Error loading menu module");
+                                                }
+
+                                                break;
+
+                                            case "ImageTextSlider":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("Slider", new { sliderId = module.ParametersValue.SliderId, sliderType = module.ParametersValue.SliderType })
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    Log.Fatal($"Error loading image slide module: {ex}");
+                                                }
+
+                                                break;
+
+                                            case "LoginAndProfile":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("LoginProfile1", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop })
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("Error loading login and profile");
+                                                }
+
+                                                break;
+
+                                            case "MultiLingualFlags":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("MultiLingual")
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("Error loading multilingual flags");
+                                                }
+
+                                                break;
+
+                                            case "GeneralSearch":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("GeneralSearch")
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("Error loading general search view component");
+                                                }
+
+                                                break;
+
+                                            case "SocialMedia":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("SocialMedia", module.ParametersValue)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("Error loading SocialMedia view component");
+                                                }
+
+                                                break;
+
+                                            case "FAQ":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("FAQ", module.ParametersValue.FAQViewModel.FAQItems)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("Error loading FAQ view component");
+                                                }
+
+                                                break;
+
+                                            case "ProgressBars":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("ProgressBars", module.ParametersValue.ProgressBarViewModel.ProgressBars)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("Error loading ProgressBars view component");
+                                                }
+
+                                                break;
+
+                                            case "IconBlocks":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("IconBlocks", module.ParametersValue.IconBlocks)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("Error loading IconBlocks view component");
+                                                }
+
+                                                break;
+
+                                            case "PictureWithLabel":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("PictureWithLabel", module.ParametersValue.PictureWithLabels)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("Error loading PictureWithLabel view component");
+                                                }
+
+                                                break;
+
+                                            case "Counter":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("Counter", module.ParametersValue.Counters)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("Error loading Counter view component");
+                                                }
+
+                                                break;
+
+                                            case "ContactUs":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("ContactUs", module.ParametersValue.ContactUsList)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("Error loading ContactUs view component");
+                                                }
+
+                                                break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (div != null && div.Attributes["target"].Value == "editor")
+                                    {
+                                        try
+                                        {
+                                            int index = column.ColData.LastIndexOf("</div>");
+                                            string data = column.ColData[..index];
+                                            string htmlRaw = data.Replace("<div target=\"editor\">", "");
+                                            @Html.Raw(htmlRaw)
+                                        }
+                                        catch (Exception)
+                                        {
+                                            Log.Fatal("Error loading editor module");
+                                        }
+                                    }
+                                }
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
+
+</div>
+
+<script>
+            $(document).ready(function () {
+         //         let scrollToTopBtn = document.getElementById("scrollToTop");
+    // if(scrollToTopBtn != null)
+    // {
+    // window.onscroll = function () {
+    //     if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+    //         scrollToTopBtn.style.display = "block";
+    //     } else {
+    //         scrollToTopBtn.style.display = "none";
+    //     }
+    // };
+
+    // scrollToTopBtn.onclick = function () {
+    //     window.scrollTo({ top: 0, behavior: 'smooth' });
+    // };
+    //     }
+            $(".menu-area").mouseover(function () {
+                        var windowSize = $(window).width();
+                        if (windowSize > 975) {
+                            $(this).addClass("show");
+                            $(this).find(".dropdown-toggle").addClass("text-primary");
+                            $(this).find(".mega-area").addClass("show");
+                        }
+                    });
+
+                    $(".menu-area").mouseleave(function () {
+                        
+                        var windowSize = $(window).width();
+                        if (windowSize > 975) {
+                            $(this).removeClass("show");
+                            $(this).find(".dropdown-toggle").removeClass("text-primary");
+                            $(this).find(".mega-area").removeClass("show");
+                        }
+                    });
+
+                        function changeScreen() {
+                    var windowSize = $(window).width();
+                    console.log(windowSize);
+                    if (windowSize <= 974) {
+                        $(".nascr").removeClass("d-none").addClass("d-block");
+                        $(".wiscr").removeClass("d-block").addClass("d-none");
+                        if ($("#navbar") != undefined) {
+                            if ($("#navbar").hasClass("sticky")) {
+                                $("#navbar").removeClass("sticky");
+                            }
+                        }
+                        if ($("h6.sliderTitle") != undefined) {
+
+                            //  $("div.sliderSubtitle").removeClass("fs-5");
+                        }
+                    }
+                    else {
+                        $(".nascr").removeClass("d-block").addClass("d-none");
+                        $(".wiscr").removeClass("d-none").addClass("d-block");
+
+                        if ($("h6.sliderTitle") != undefined) {
+
+
+                            //$("div.sliderSubtitle").removeClass("fs-5");
+
+                        }
+                    }
+                }
+            });
+</script>

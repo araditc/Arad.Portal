@@ -1,0 +1,232 @@
+﻿@model string;
+@{
+    ViewData["Title"] = "Index";
+    string baseAdd = Config["BaseAddress"];
+}
+
+@section Styles{
+<link href="@Url.Content($"~/css/form.css")" rel="stylesheet" />
+<link href="@Url.Content($"~/css/data-grid.css")" rel="stylesheet" />
+<link href="@Url.Content($"~/css/slider.css")" rel="stylesheet" />
+}
+
+<div class="row text-start">
+    <h5>@($"{UtilityLanguage.GetString("design_Layers")} {Model}")</h5>
+    <div class="offset-10 col-2">
+        <a class="btn btn-sm btn-success float-end" asp-action="AddLayer" asp-controller="Slider" asp-route-sliderId="@ViewBag.SliderId" asp-route-slideId="@ViewBag.SlideId">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </a>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-12">
+        <table class="table table-responsive table-bordered table-striped align-middle">
+            <thead>
+                <tr>
+                    <th class="text-center">@UtilityLanguage.GetString("tbl_RowName")</th>
+                    <th class="text-center">@UtilityLanguage.GetString("AlertAndMessage_Type")</th>
+                    <th class="text-center">@UtilityLanguage.GetString("Content")</th>
+                    <th class="text-center">Link</th>
+                    <th class="text-center">Position-Top</th>
+                    <th class="text-center">Position-Right</th>
+                    <th class="text-center">Position-Bottom</th>
+                    <th class="text-center">Position-Left</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="table"></tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+<script src="@Url.Content($"~/lib/cropperjs/cropper.min.js")"></script>
+<script src="@Url.Content($"~/lib/twbs-pagination/jquery.twbsPagination.js")"></script>
+
+    @if (ViewBag.Success != null)
+    {
+<script type="text/javascript">
+
+    document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+'@ViewBag.Success';
+    document.getElementById('mainToastBody').classList.add('alert-success');
+     $("#toastPanel").show();
+    var bsAlert = new bootstrap.Toast($("#mainToast"));
+    bsAlert.show();
+    setTimeout(function(){
+          $("#toastPanel").hide();
+    }, 2500);
+
+</script>
+    }
+
+<script>
+    var pageSize = 10;
+    var $pagination = $('#pagination');
+    var defaultOpts = {
+         first: "@UtilityLanguage.GetString("tbl_First")",
+        prev: "@UtilityLanguage.GetString("tbl_PreviousPage")",
+        next: "@UtilityLanguage.GetString("tbl_NextPage")",
+        last: "@UtilityLanguage.GetString("tbl_Last")"
+    };
+
+    var aspectCropper = 0;
+
+    function CropperShow(img) {
+        readURL(img, aspectCropper);
+    }
+
+    $('#uploadModal').on('hidden.bs.modal',
+        function () {
+            cropper.destroy();
+            document.getElementById("Image").value = "";
+            $("#cropped_result").remove();
+        });
+
+    $(document).on("click",
+        "#picRecord",
+        function (e) {
+            e.preventDefault();
+            $("#uploadModal").modal("show");
+        });
+
+    $(document).on("click",
+        "#send_pic",
+        function () {
+            var url = $("#pic").attr("src");
+            var pic = '';
+            picSrc = url;
+
+            $(".ImageWrapper img").attr("src", picSrc);
+
+            $('#uploadModal').modal("hide");
+        });
+
+
+    $(document).ready(function() {
+
+        list();
+    });
+
+    function list() {
+        $("#table").html("");
+        var data = {
+            pageSize: pageSize,
+            currentPage: $pagination.twbsPagination('getCurrentPage'),
+            sliderId: "@(ViewBag.SliderId)",
+            slideId: "@(ViewBag.SlideId)"
+        };
+
+        $.ajax({
+            url: "@Url.Action("ListLayers")",
+            type: 'Post',
+            data: data,
+            beforeSend: function() {
+                //$("#loading-data").css("display", "block");
+            },
+            success: function(result) {
+
+                $("#table").html(result);
+
+                var totalPages = $("#page-data").data("total");
+                var currentPage = $pagination.twbsPagination('getCurrentPage');
+
+                $pagination.twbsPagination('destroy');
+
+                if (totalPages > 0) {
+                    $pagination.twbsPagination($.extend({},
+                        defaultOpts,
+                        {
+                            startPage: currentPage,
+                            totalPages: totalPages
+                        }));
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+            },
+            complete: function() {
+                $("#loading-data").css("display", "none");
+                //$("#loading").css("display", "none");
+            }
+        });
+
+        $(document).on("click", "#deleteRecord", function(e) {
+                    e.preventDefault();
+                    var id = $(this).data("id");
+
+                    $("#delete").data("id", id);
+                    $("#removeModal").modal("show");
+
+                });
+
+            $(document).on("click", "#delete", function(e) {
+                    e.preventDefault();
+                    var id = $(this).data("id");
+                    var data = { Id: id };
+
+                    $.ajax({
+                        url: "@Url.Action("DeleteLayer")",
+                        type: 'Get',
+                        data: data,
+                        beforeSend: function() {
+                            //$("#loading").css("display", "block");
+                        },
+                        success: function(result) {
+
+                            if (result.status === "success") {
+                                //var $inputs = $('#filter :input');
+
+                                //var values1 = {};
+
+                                //$inputs.each(function () {
+                                //    values1[this.name] = $(this).val();
+                                //});
+                                //values1['PageSize'] = pageSize;
+                                //values1['CurrentPage'] = $pagination.twbsPagination('getCurrentPage');
+
+                                //list(values1);
+
+                                $("#removeModal").modal("hide");
+                                location.reload();
+                                
+                                document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                            $('#mainToastBody').removeClass("text-bg-danger");
+                            $('#mainToastBody').addClass("text-bg-success");
+                                 $("#toastPanel").show();
+                                var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                bsAlert.show();
+                                setTimeout(function()
+                                {
+                                     $("#toastPanel").hide();
+                                       location.reload();
+                                },
+                                1500);
+
+                            } else {
+
+                                showError(result.message);
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+
+                        },
+                        complete: function() {
+                            //$("#loading").css("display", "none");
+                        }
+                    });
+                });
+    }
+
+    function LayerDelete(id)
+    {
+        
+          entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("DeleteLayer", "Slider")' + "/" + id,
+            document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Delete")';
+            document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_DeletionSureness")';
+            $('#confirmModal').modal('show');
+           
+    }
+</script>
+}

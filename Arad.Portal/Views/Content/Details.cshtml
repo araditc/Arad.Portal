@@ -1,0 +1,199 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared
+@using Arad.Portal.Models.Shared.Content
+@model ContentDto
+@{
+    Layout = "_Layout";
+    List<ContentGlance> sidebarContents = (List<ContentGlance>)ViewBag.Sidbars;
+    int initial = Model.HalfLikeRate ? Model.LikeRate + 2 : Model.LikeRate + 1;
+}
+
+@section Styles
+{
+    <link href="@Url.Content("~/lib/slick-carousel/slick.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/ImageSlider/jquery.fancybox.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/ImageSlider/ImageSlider.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/order.css")" />
+
+    <style>
+        html, body {
+            overflow: visible !important;
+        }
+        /* Full-width image */
+        .random-image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Remove underline from the "Home" link */
+        .breadcrumb-item a.no-underline {
+            text-decoration: none;
+        }
+
+        /* Optional: Remove underline from all breadcrumb links */
+        /* .breadcrumb-item a {
+                text-decoration: none;
+            } */
+
+        /* Centered text content */
+        .mainContent {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Sidebar content in a single row */
+        .sidebarContentRow {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .sidebarContent {
+            flex: 1;
+            max-width: 400px;
+        }
+
+            .sidebarContent img {
+                width: 100%;
+                height: auto;
+                border-radius: 10px;
+            }
+
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 10px;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .myfont{
+            font-family: @ViewBag.FontFamily;
+        }
+    </style>
+}
+
+@section Scripts
+{
+    <script src="@Url.Content("~/lib/slick-carousel/slick.min.js")"></script>
+    <script src="@Url.Content("~/ImageSlider/jquery.fancybox.min.js")"></script>
+    <script src="@Url.Content("~/ImageSlider/ImageSlider-ltr.js")"></script>
+}
+
+<div class="container-fluid" style="background-color: #FFFFFF">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="~/Home/Index" class="no-underline">Home</a></li>
+            <li class="breadcrumb-item"><a href="~/@ViewBag.Category" class="no-underline">@ViewBag.Category</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewBag.Slug</li>
+        </ol>
+    </nav>
+    <!-- Full-Width Image -->
+    <br />
+    <div class="row">
+        @if (Model.IsSliderShowing && Model.Images.Any())
+        {
+            <div class="col-12 random-image-container text-center">
+                <img src="@(!string.IsNullOrEmpty(Model.Images.First().Content) ? $"data:image/png;base64,{Model.Images.First().Content}" : Url.Content("~/imgs/NoImage21.jpg"))" alt="Blog Image">
+            </div>
+        }
+    </div>
+    <br />
+    <!-- Centered Main Content -->
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-10 col-12 px-3 px-md-5">
+                <div class="card">
+                    <div class="card-body">
+                        @Html.Raw(Model.Contents)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Content in a Single Row -->
+    @if (Model.IsSidebarContentsShowing && sidebarContents.Any())
+    {
+        <div class="row myfont">
+            @foreach (var content in sidebarContents.OrderBy(x => Guid.NewGuid()).Take((int)Model.SidebarContentCount))
+            {
+                <div class="col-12 col-md-6 col-lg-4 p-2">
+                    <a href="@(!string.IsNullOrWhiteSpace(content.UrlFriend) ? content.UrlFriend : $"/blog/{content.ContentCode}")"
+                       class="d-flex flex-column align-items-center text-decoration-none border rounded shadow-sm p-3 h-100">
+
+                        <img src="@(!string.IsNullOrWhiteSpace(content.DesiredImageUrl)
+                                        ? $"data:image/png;base64,{content.DesiredImageUrl}"
+                                        : Url.Content("~/imgs/NoImage21.jpg"))"
+                             class="img-fluid w-100" style="height: auto; border-radius: 5px;">
+
+                        <div class="mt-3 w-100 text-center">
+                            <h5 class="fw-bold text-dark mb-1 text-truncate">@content.Title</h5>
+                            <p class="text-muted mb-0 text-truncate">@content.Description</p>
+                        </div>
+
+                    </a>
+                </div>
+            }
+        </div>
+    }
+
+    <!-- Comment Section -->
+    @if (Model.IsCommentBoxShowing)
+    {
+        <div class="row mt-4">
+            <form class="w-100">
+                <textarea class="form-control w-100 bg-light" id="commentPart" rows="3" placeholder="@UtilityLanguage.GetString("AlertAndMessage_WriteComment")"></textarea>
+                <button type="button" class="btn btn-info bg-gradient mt-2 w-100 w-md-auto float-md-end" id="btnAddComment">
+                    @UtilityLanguage.GetString("btn_Insert")
+                </button>
+            </form>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="mb-5">
+                    @foreach (CommentVm item in Model.Comments)
+                    {
+                        @await Component.InvokeAsync("CommentSection", item)
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script src="@Url.Content("~/js/CommentSection/cmt.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnAddComment").click(function () {
+            if ('@User.Identity.IsAuthenticated' == 'True') {
+                if ($("#commentPart").val() != "") {
+                    var obj = {};
+                    obj.ReferenceId = `c*${'@Model.Id'}`;
+                    obj.Content = $("#commentPart").val();
+                    obj.ParentId = null;
+                    $.ajax({
+                        url: '@Url.Action("SubmitComment", "Comment")',
+                        contentType: 'application/json',
+                        data: JSON.stringify(obj),
+                        type: 'Post',
+                        dataType: 'json',
+                        success: function (result) {
+                            if (result.status === "Success") {
+                                $("#commentPart").val("@UtilityLanguage.GetString("AlertAndMessage_SubmitComment")");
+                                location.reload();
+                            } else {
+                                showError(result.message);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+</script>

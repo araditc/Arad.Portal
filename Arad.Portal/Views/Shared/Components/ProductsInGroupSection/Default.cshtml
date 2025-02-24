@@ -1,0 +1,61 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.Product
+@using Arad.Portal.Models.UI
+@model CommonViewModel
+
+    <div class="row">
+        @foreach (ProductOutputDto item in Model.ProductList)
+        {
+            <div class="col-6 col-md-3">
+                <div class="bbb_deals w-100 mt-0">
+                    @*<div class="bbb_deals_title">Today's Combo Offer</div>*@
+                    <div class="w-100">
+                        <div class="w-100">
+                            <div class="text-center">
+                                <img class="proImg rounded m-2 mt-4 img-fluid" src="@Url.Content($"~/GetscaledimageOnWidth?path={(item.Images.Any(i=>i.IsMain) ? item.Images.FirstOrDefault(i=>i.IsMain).Url : "/img/NoImage.Png")}&width={500}")"  
+                                     alt="@(item.Images.Where(i=>i.IsMain).Any() ? item.Images.FirstOrDefault(i=>i.IsMain).Title : "ProductImage")" />
+                            </div>
+                            <div class="bbb_deals_content">
+                                <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
+                                    
+                                    <div class="bbb_deals_item_price_a m-auto">
+                                     @if(item.OldPrice != 0 && item.OldPrice != item.PriceValWithPromotion)
+                                        {
+                                            <del>@item.OldPrice</del>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="bbb_deals_info_line d-flex flex-row justify-content-center">
+                                    <a class="text-decoration-none text-dark" href="/product/@item.ProductCode">
+                                        @(item.MultiLingualProperties.Any(p => p.LanguageId == ViewBag.CurLangId) ?
+                                        item.MultiLingualProperties.FirstOrDefault(p => p.LanguageId == ViewBag.CurLangId).Name : item.MultiLingualProperties.FirstOrDefault().Name )
+                                    </a>
+                                    <div class="bbb_deals_item_price m-auto">@($"{@item.PriceValWithPromotion} {ViewBag.CurrencySymbol}")</div>
+                                </div>
+                                <div class="available">
+                                    <div class="available_line d-flex flex-row justify-content-center">
+                                        <div class="available_title pe-3 me-3"> @UtilityLanguage.GetString("Available") <span>@(item.Inventory != null ? item.Inventory.Sum(d=>d.Count) : 0)</span></div>
+                                        <div class="sold_stars m-auto">
+                                            @for (int i = 1; i <= item.LikeRate; i++)
+                                            {
+                                               <i class="fas fa-star"></i>
+                                            }
+                                            @if (item.HalfLikeRate)
+                                            {
+                                              <i class="fas fa-star-half-alt"></i>
+                                            }
+                                            @for (int i = (item.HalfLikeRate ? item.LikeRate + 2 : item.LikeRate + 1); i <= item.DisikeRate; i++)
+                                            {
+                                                <i class="far fa-star"></i>
+                                               
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="available_bar"><span style="width:17%"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>

@@ -1,0 +1,765 @@
+﻿     @using Arad.Portal.Models.Shared.ContentCategory
+@using Newtonsoft.Json
+@model ContentCategoryDto
+@{
+    UtilityLanguage.GetString("AlertAndMessage_GotIt");
+    string error = UtilityLanguage.GetString("AlertAndMessage_Error");
+    int index = 0;
+}
+@section Styles {
+    <link href="@Url.Content("~/lib/cropperjs/cropper.css")" rel="stylesheet" />
+    <style>
+        .removeImage {
+            display: inline-block;
+            position: absolute;
+            top: -7px;
+            right: -5px;
+            width: 20px;
+            height: 21px;
+            background: #dc3545;
+            text-align: center;
+            border-radius: 50%;
+            color: white !important;
+            cursor: pointer;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .cropper-container {
+            width: 100%
+        }
+
+        .removeImage {
+            display: inline-block;
+            position: absolute;
+            top: -7px;
+            right: -5px;
+            width: 20px;
+            height: 21px;
+            background: #dc3545;
+            text-align: center;
+            border-radius: 50%;
+            color: white !important;
+            cursor: pointer;
+        }
+
+        .text-danger {
+            font-size: 12px;
+        }
+
+    </style>
+}
+
+<h4>  @UtilityLanguage.GetString("Menu_ContentCategory") </h4>
+<hr />
+<div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content col-12">
+            <div class="modal-header">
+                <div class="col-1">
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                    </button>
+                </div>
+                <div class="col-11" style="text-align: center">
+                    <h5 class="modal-title align-content-center" id="ModalLongTitle">@UtilityLanguage.GetString("CropImage")</h5>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="upload-modal-body">
+                    <div id="rowContainer" class="row justify-content-center align-items-center">
+                        <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
+                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg" alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                        </div>
+                        @*<div id="container" class="col-10 col-6">
+                        <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
+                        alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                        </div>*@
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center align-items-center">
+                <div>
+                    <button class="btn btn-success bg-gradient" id="send_pic" type="button">
+                        <i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@UtilityLanguage.GetString("btn_Approved")
+                    </button>
+                    <button class="btn btn-primary bg-gradient" id="crop_button">
+                        <i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@UtilityLanguage.GetString("btn_Crop")
+                    </button>
+                    <button class="btn btn-primary bg-gradient" onclick="rotatePic()">
+                        <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @UtilityLanguage.GetString("btn_Rotate")
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">@UtilityLanguage.GetString("tbl_ContentImages")</div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-10 col-md-4 border pt-3">
+                        <label class="form-label custom-file-label float-start pt-2" for="image">@UtilityLanguage.GetString("btn_UploadImage")</label>
+                        <input accept="image/x-png,image/jpeg" type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)" />
+                    </div>
+                    <div class="col-2 col-md-2 mb-1">
+                        <label class="form-label">@UtilityLanguage.GetString("tbl_AspectRatioImage")</label>
+                        <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true" asp-items="@(new SelectList(ViewBag.ImageRatio, "Value", "Text"))"></select>
+                    </div>
+                </div>
+                <div class="row" id="proGallery" style="padding:1%;">
+                    <div class="col-12">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>@UtilityLanguage.GetString("Image")</th>
+                                    <th class="d-none"></th>
+                                    <th>@UtilityLanguage.GetString("tbl_AspectRatioImage")</th>
+                                    <th class="d-none"></th>
+                                    <th>@UtilityLanguage.GetString("Title")</th>
+                                    <th>@UtilityLanguage.GetString("Description")</th>
+                                    <th>@UtilityLanguage.GetString("MainPhoto")</th>
+                                    <th>@UtilityLanguage.GetString("ImageTemplateType")</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="imageList">
+                                @{
+                                    foreach (Image pic in Model.ContentPhotosSlider)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <img src="data:image/png;base64,@pic.Content" style="width: 120px;" alt="Image Preview" />
+                                            </td>
+                                            <td class="d-none">@pic.Counter</td>
+                                            <td class="txtImageRatio">@pic.ImageRatio.GetDescription()</td>
+                                            <td class="d-none txtImageRatioId">@((int)pic.ImageRatio)</td>
+                                            <td>
+                                                <input type="text" class="form-control txtTitle" value="@pic.Title" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control txtDesc" value="@pic.Description" />
+                                            </td>
+                                            <td>
+                                                <div class="form-check d-flex justify-content-center p-0">
+                                                    <input class="form-check-input rdbIsMain" type="radio" checked="@pic.IsMain" name="isMainImage_@pic.ImageId" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check d-flex justify-content-center p-0">
+                                                    <select id="@($"select_{index}")" class="form-control selectpicker txtImageTemplate" data-live-search="true" asp-for="@pic.ImageTemplateTypes" multiple asp-items="@(new SelectList(ViewBag.ImageTemplate, "Value", "Text", pic.ImageTemplateTypes))">
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td class="d-none">@pic.ImageId</td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-danger bg-gradient" imgId="img_@pic.Counter" onclick="deleteFromImageList(this);">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card" id="addContentCategoryCardTitle">
+            <div class="card-header">
+                <h5 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.Id) ? UtilityLanguage.GetString("EditContentCategory_Title") : UtilityLanguage.GetString("AddContentCategory_Title"))</h5>
+            </div>
+
+            <div class="card-body" id="addContentCategoryCardBody">
+                <input type="hidden" value="@Model.Id" asp-for="Id" />
+
+                @if (ViewBag.IsSysAcc)
+                {
+                    <div class="row">
+                        <div class="form-group col-12 col-md-3">
+                            <label asp-for="AssociatedDomainId" class="form-label">@UtilityLanguage.GetString("AssociatedDomain")</label>
+                            <select class="form-control selectpicker" data-live-search="true"
+                                    asp-for="@Model.AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text", Model.AssociatedDomainId))">
+                            </select>
+                            <span data-val-result="AssociatedDomainId" class="text-danger"></span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" value="@Model.AssociatedDomainId" asp-for="AssociatedDomainId" />
+                }
+
+                <div class="row">
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label" asp-for="@Model.ParentCategoryId">@UtilityLanguage.GetString("ParentGroup")</label>
+                        <select class="form-control selectpicker" asp-for="@Model.ParentCategoryId" asp-items="@(new SelectList(ViewBag.CategoryList,"Value","Text"))" data-live-search="true">
+                        </select>
+                        <span data-val-result="ParentId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label" asp-for="CategoryType">@UtilityLanguage.GetString("Enum_ContentCategoryType")</label>
+                        <select class="form-control selectpicker" asp-for="CategoryType" id="CategoryType" data-live-search="true"
+                                asp-items="@(new SelectList(ViewBag.CategoryTypes, "Value", "Text", (int)Model.CategoryType))">
+                        </select>
+                        <span data-val-result="CategoryType" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label" asp-for="CategoryCode">@UtilityLanguage.GetString("tbl_ContentCategoryCode")</label>
+                        <input type="text" class="form-control" asp-for="@Model.CategoryCode" value="@Model.CategoryCode" disabled />
+                        <span data-val-result="CategoryCode" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label" for="languageId">@UtilityLanguage.GetString("LanguageName")</label><br />
+                        <select class="form-control selectpicker" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" data-live-search="true">
+                        </select>
+                        <span data-val-result="languageId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label" for="categoryName">@UtilityLanguage.GetString("tbl_CategoryName")</label><br />
+                        <input type="text" class="form-control" id="categoryName" placeholder=" ">
+                        <span data-val-result="categoryName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-11 col-md-3">
+                        <label class="form-label" for="urlFriend">@UtilityLanguage.GetString("UrlFriend")</label><br />
+                        <input type="text" class="form-control" id="urlFriend" placeholder=" ">
+                        <span data-val-result="urlFriend" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-1" style="text-align:center;margin:auto;">
+                        <span data-val-result="MultiLingualProperties" class="text-danger"></span>
+                        <div style="margin:auto;display:inline-block;">
+                            <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addToTable();">
+                                <i class="fa fa-plus pt-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group col-12 col-md-5"></div>
+
+                </div>
+
+                <div class="row" style="margin-top:1%;">
+                    <div class="card-body table-bordered  table-responsive p-0">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr style="text-align:center;">
+                                    <th>@UtilityLanguage.GetString("tbl_CategoryName")</th>
+                                    <th>@UtilityLanguage.GetString("LanguageName")</th>
+                                    <th style="display:none"></th>
+                                    <th>@UtilityLanguage.GetString("UrlFriend")</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="multiLingualList">
+                                @foreach (MultiLingualProperty item in Model.CategoryNames)
+                                {
+                                    <tr style="text-align:center;">
+                                        <td>@item.Name</td>
+                                        <td>@item.LanguageName</td>
+                                        <td style="display:none;">@item.LanguageId</td>
+                                        <td dir="ltr">@(!string.IsNullOrWhiteSpace(item.UrlFriend) ? item.UrlFriend.Replace("/category/", "") : item.UrlFriend)</td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-danger bg-gradient" onclick="deleteFromTable(this);">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12 col-md-4 offset-md-8 col-12">
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@UtilityLanguage.GetString("btn_Back")</a>
+                        <input type="button" id="btnAddContentCategory" value="@UtilityLanguage.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="@Url.Content("~/lib/cropperjs/cropper.js")"></script>
+    <script>
+         var fileName;
+         var fileContent;
+         var cropper;
+         var currentFileSize;
+         var currentFileName;
+         var images = [];
+         var lan = "";
+         var counter = 1000;
+
+        function getURL(input) {
+             
+             $("#cropped_result").remove();
+             if (input.files && input.files[0]) {
+                 var file = input.files[0];
+                 currentFileName = file.name;
+                 currentFileSize = file.size;
+
+                 if (currentFileSize <= @ViewBag.PicSize) {
+                     var reader = new FileReader();
+                     try {
+                         reader.readAsDataURL(file);
+                     } catch (e) {
+
+                     }
+                     reader.onload = function (e) {
+                         
+                         var content = e.target.result;
+                         //if file format is incorrect, then the 'content' won't have any src
+                         if (content !== "data:") {
+                             var reducedContent = content.slice(5);
+
+                             if (reducedContent.startsWith("image")) {
+                                 $('#croppedImg').attr('src', content);
+                                 $("#uploadModal").modal("show");
+                             }
+                             else {
+                                 showError('@UtilityLanguage.GetString("AlertAndMessage_InvalidFormat")');
+                                 document.getElementById("image").value = "";
+                                 $("#cropped_result").remove();
+                             }
+                         } else {
+
+                             showError('@UtilityLanguage.GetString("AlertAndMessage_InvalidFormat")');
+                             document.getElementById("image").value = "";
+                             $("#cropped_result").remove();
+                         }
+                     };
+                 }
+                 else {
+                     showError("AlertAndMessage_InvalidFileSize");
+                     document.getElementById("image").value = "";
+                     $("#cropped_result").remove();
+                 }
+             }
+         }
+
+         $(document).ready(function () {
+
+             $("#send_pic").click(function () {
+                 
+                 $("#uploadModal").modal("hide");
+
+                  var url = $("#galleryPic").attr("src");
+                  if (!url) {
+                      url = $('#croppedImg').attr('src');
+                  }
+
+                  var model = {};
+                  model.Counter = counter;
+
+                  var width = "";
+                  var height = "";
+                  var ratio = "";
+
+                  switch ($("#imgAspectRatio").val()) {
+                      case "1":
+                          ratio = "1*1";
+                          width = 120;
+                          height = 120;
+                          break;
+                      case "2":
+                          ratio = "2*1";
+                          width = 120;
+                          height = 60;
+                          break;
+                      case "4":
+                          ratio = "4*1";
+                          width = 120;
+                          height = 30;
+                          break;
+                      case "5":
+                          ratio = "5*1";
+                          width = 120;
+                          height = 24;
+                          break;
+                      case "6":
+                        ratio = "6*1";
+                        width = 120;
+                        height = 20;
+                        break;
+                     case "7":
+                        ratio = "7*1";
+                        width = 120;
+                        height = 17;
+                        break;
+                  }
+
+                 var model = {
+                     Counter: counter,
+                     Content: url,
+                     FileName: currentFileName
+                 };
+
+                 images.push(model);
+
+                   // Deserialize the JSON from the server-side ViewBag.ImageTemplate
+                  var jsonString = GetDecoded('@(JsonConvert.SerializeObject(ViewBag.ImageTemplate))');
+                  var imageTemplates = JSON.parse(jsonString);
+
+                  // Build the <select> options dynamically
+                  var options = '';
+                  imageTemplates.forEach(function (template) {
+                      options += "<option value='" + template.Value + "'>" + template.Text + "</option>";
+                  });
+
+                  // Use Razor syntax to inject the server-side index value
+                  var currentIndex = @index; // This will embed the current value of 'index' into JavaScript
+
+
+                  var tr = "<tr>" +
+                      "<td><img imgId='img_" + counter + "' src='" + model.Content + "' width='" + width + "' height='" + height + "'/></td>" +
+                      "<td class='d-none'>" + model.Counter + "</td>" +
+                      "<td class='txtImageRatio'>" + ratio + "</td>" +
+                      "<td class='d-none txtImageRatioId'>" + $("#imgAspectRatio").val() + "</td>" +
+                      "<td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeholder='" + '@UtilityLanguage.GetString("Title")' + "'/></td>" +
+                      "<td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeholder='" + '@UtilityLanguage.GetString("Description")' + "'/></td>" +
+                      "<td style='vertical-align:middle;'>" +
+                      "<div class='form-check d-flex justify-content-center p-0'>" +
+                      "<input type='radio' name='isMainImage_" + counter + "' class='form-check-input rdbIsMain'>" +
+                      "</div>" +
+                      "</td>" +
+                      "<td>" +
+                      "<div class='form-check d-flex justify-content-center p-0'>" +
+                      "<select id='select_" + currentIndex + "' class='form-control selectpicker txtImageTemplate' multiple data-live-search='true'>" +
+                      options +
+                      "</select>" +
+                      "</div>" +
+                      "</td>" +
+                      "<td class='d-none'>" + model.ImageId + "</td>" +
+                      "<td style='vertical-align:middle;'>" +
+                      "<button type='button' class='btn btn-sm btn-danger bg-gradient' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'>" +
+                      "<i class='fa fa-trash'></i>" +
+                      "</button>" +
+                      "</td>" +
+                      "</tr>";
+
+                  // Append the row to the table
+                  $('#imageList').append(tr);
+                  // Re-initialize the selectpicker to ensure the dropdown works
+                  $('.selectpicker').selectpicker('refresh');
+
+                  counter += 1;
+             });
+
+             $("#uploadModal").on("shown.bs.modal", function () {
+                 
+                 var image = document.getElementById('croppedImg');
+                 $("#send_pic").attr("disabled", true);
+
+                 if (currentFileName.slice(-3).toLowerCase() === "png") {
+                     // Enable the button if the image content type is PNG
+                     $("#send_pic").attr("disabled", false);
+
+                 }
+
+                 var ratio = $("#imgAspectRatio").val();
+                 if (cropper !== null && cropper !== undefined) {
+                     cropper.destroy();
+                 }
+                 cropper = new Cropper(image,
+                     {
+                         background: true,
+                         aspectRatio: ratio,
+                         viewMode: 1,
+                         responsive: true,
+                         rotatable: true
+
+                     });
+             });
+
+             $('#uploadModal').on('hidden.bs.modal', function () {
+
+                     cropper.destroy();
+                     document.getElementById("image").value = "";
+                     $("#cropped_result").remove();
+             });
+
+             $("#languageId").val('@ViewBag.LangId').selectpicker();
+
+             if ("@Model.Id" != "" && "@Model.ParentCategoryId" != "") {
+                 $("#ParentCategoryId").val("@Model.ParentCategoryId").selectpicker("refresh");
+
+                 if ('@Model.ContentPhotosSlider.Any()' == 'True') {
+                     var serverImages = @Json.Serialize(Model.ContentPhotosSlider);
+                      
+                    for (var i = 0; i < serverImages.length; i++) {
+                        var model = {};
+                        model.Counter = serverImages[i].counter;
+                        model.ImageId = serverImages[i].imageId;
+                        model.Title = serverImages[i].title;
+                        model.Description = serverImages[i].description;
+                        model.Content = serverImages[i].content;
+                        model.IsMain = serverImages[i].isMain;
+                        model.ImageTemplateTypes = serverImages[i].imageTemplateTypes;
+                        model.Url = serverImages[i].url;
+
+                        images.push(model);
+                    }
+                 }
+             }
+
+             $("#AssociatedDomainId").change(function () {
+                 var domainId = $(this).val();
+                 var langId = $("#languageId").val();
+
+                 $.ajax({
+                     url: `@Url.Action("GetContentCategoryList", "ContentCategory")?lid=${langId}&did=${domainId}`,
+                     type: 'GET',
+                     dataType: 'json',
+                     success: function (result) {
+                         if (result.status === "success" && result.data.length) {
+                             var options = result.data.map(item => `<option value='${item.value}'>${item.text}</option>`).join('');
+                             $("#ParentCategoryId").html(options).selectpicker("refresh");
+                         } else {
+                             showError(result.message);
+                         }
+                     }
+                 });
+             });
+
+             $("#btnAddContentCategory").click(function () {
+                 var flag = false;
+
+                 if ($("#multiLingualList tr").length == 0) {
+                     $("span[data-val-result='MultiLingualProperties']").html('@UtilityLanguage.GetString("AlertAndMessage_FillMultiLingualProperty")');
+                     flag = true;
+                 }
+
+                 if ($("#AssociatedDomainId").val() === "") {
+                     $("span[data-val-result='AssociatedDomainId']").html('@UtilityLanguage.GetString("AlertAndMessage_FillEssentialFields")');
+                     flag = true;
+                 }
+
+                 if ($("#categoryTypeId").val() === "-1") {
+                     $("span[data-val-result='categoryTypeId']").html('@UtilityLanguage.GetString("AlertAndMessage_FillEssentialFields")');
+                     flag = true;
+                 }
+
+                 if (!flag) {
+                     var dto = FillDataToSend();
+                     $.ajax({
+                         url: "@Model.Id" != "" ? '@Url.Action("Edit", "ContentCategory")' : '@Url.Action("Add", "ContentCategory")',
+                         contentType: 'application/json',
+                         data: JSON.stringify(dto),
+                         type: 'POST',
+                         success: function (result) {
+                             if (result.status === "Success") {
+                                 document.getElementById('mainToastBody').innerHTML = `<i class="far fa-check-circle"></i> ${result.message}`;
+                                     $('#mainToastBody').removeClass("text-bg-danger").addClass("text-bg-success");
+                                 var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                 $("#toastPanel").show();
+                                 bsAlert.show();
+                                 setTimeout(function () {
+                                     $("#toastPanel").hide();
+                                     window.location.href = '@Url.Action("List")';
+                                 }, 3000);
+                             } else if (result.status === "ModelError") {
+                                 showModelErrors(result.modelStateErrors);
+                             } else if (result.status === "Error") {
+                                 showError(result.message);
+                             }
+                         }
+                     });
+                 }
+             });
+         });
+
+         $(document).on("click", "#crop_button",
+                     function () {
+                         
+                         var imgUrl = cropper.getCroppedCanvas({
+                             imageSmoothingEnabled: true,
+                             imageSmoothingQuality: 'high'
+                         }).toDataURL('image/jpeg', 1);
+                         var img = document.createElement("img");
+                         img.setAttribute("id", "galleryPic");
+                         img.setAttribute("class", "img-fluid");
+                         var height = $("#container").attr("width");
+                         var croppedContainer = document.createElement("div");
+                         croppedContainer.setAttribute("id", "cropped_result");
+                         croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
+                         $("#uploadModal #rowContainer").append(croppedContainer);
+                         img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
+                         img.src = imgUrl;
+                         document.getElementById("cropped_result").innerHTML = "";
+                         document.getElementById("cropped_result").appendChild(img);
+                         $("#send_pic").attr("disabled", false);
+                     });
+
+         function deleteFromImageList(sender) {
+                     
+         var id = $(sender).attr("imgId").replace("img_", "");
+         if (id) {
+            var item = images.find(_ => _.Counter === parseInt(id));
+            if(item == undefined)
+                var item = images.find(_ => _.Counter === id);
+            }
+         if (item) {
+                  images.splice(images.indexOf(item), 1);
+                  $(sender).closest("tr").remove();
+              }
+         }
+
+
+         function rotatePic() {
+             cropper.rotate(90);
+         }
+
+         function FillDataToSend() {
+             
+             var obj = {
+                 CategoryNames: [],
+                 ContentPhotosSlider: [],
+                 AssociatedDomainId: $("#AssociatedDomainId").val(),
+                 Id: $("#Id").val(),
+                 ParentCategoryId: $("#ParentCategoryId").val(),
+                 CategoryType: parseInt($("#CategoryType").val()),
+                 IconUrl: $("#IconUrl").val()
+             };
+
+             $("#multiLingualList tr").each(function () {
+                 
+                     var innerModel = {};
+                     innerModel.Name = $(this).find("td:eq(0)").text();
+                     innerModel.LanguageName = $(this).find("td:eq(1)").text();
+                     innerModel.LanguageId = $(this).find("td:eq(2)").text();
+                     innerModel.urlFriend = $(this).find("td:eq(3)").text();
+
+                     obj.CategoryNames.push(innerModel);
+
+             });
+
+              $("#imageList tr").each(function () {
+                  
+                  var row = $(this);
+                  var id = $(this).find("td:eq(1)").text();
+                  var item = images.find(_ => _.Counter == id);
+                  index = images.indexOf(item);
+                  item.IsMain = row.find("td:eq(6) .rdbIsMain").is(":checked");
+                  item.Title = row.find(".txtTitle").val();
+                  // Get and trim Description
+                  item.Description = row.find(".txtDesc").val();
+                  var selectedValues = row.find(".txtImageTemplate option:selected").map(function () {
+                      return parseInt($(this).val());
+                  }).get();
+
+                  // Assuming item.ImageTemplateTypes is an array or can handle multiple values
+                  item.ImageTemplateTypes = selectedValues;
+
+                  item.ImageRatio = parseInt($(this).find("td:eq(2)").text());
+                  item.ImageRatioId = parseInt($(this).find("td:eq(3)").text());
+                  item.Counter = item.Counter.toString();
+                  item.ImageId = $(this).find("td:eq(8)").text();
+                  //images[index] = item;
+                   obj.ContentPhotosSlider.push(images[index]);
+              });
+             return obj;
+         }
+
+               function deleteFromTable(sender) {
+                     
+                     var tr = $(sender).parent().parent();
+                     $(tr).remove();
+                 }
+
+
+         function showError(message) {
+             $('#mainToastBody').html(`<i class="far fa-times-circle"></i> ${message}`);
+                 $('#mainToastBody').removeClass("text-bg-success").addClass("text-bg-danger");
+             var bsAlert = new bootstrap.Toast($("#mainToast"));
+             $("#toastPanel").show();
+             bsAlert.show();
+         }
+
+          function addToTable() {
+              
+         var flag = false;
+         $("span[data-val-result='categoryName']").html("");
+         $("span[data-val-result='languageId']").html("");
+         $("span[data-val-result='urlFriend']").html("");
+
+         var selectedLang = $('#languageId').val();
+         if (isUnique(selectedLang, 'multiLingualList', 2, 'در حال حاضر برای این زبان یک سطر وجود دارد.')) {
+             if ($("#categoryName").val() == "") {
+                 $("span[data-val-result='categoryName']").html('پر کردن این فیلد ضروریست.');
+                 flag = true;
+             }
+             if ($("#languageId").val() == "-1") {
+                 $("span[data-val-result='languageId']").html('پر کردن این فیلد ضروریست.');
+                 flag = true;
+             }
+             var arr = $("#urlFriend").val().split(" ");
+             var urlFriend = arr.join("-");
+
+             var catId = $("#Id").val() ? $("#Id").val() : ""; // Ensure catId is not null or undefined
+
+             if (!flag) {
+                 $.ajax({
+                     url: `/fa-ir/Admin/ContentCategory/CheckUrlFriendUniqueness?id=${encodeURIComponent(catId)}&url=${encodeURIComponent(urlFriend)}`,
+                     type: 'GET',
+                     dataType: 'json',
+                     success: function (result) {
+                         // Fixing case sensitivity issue in response handling
+                         if (result.status === "Success") {
+                             
+                             var urlFriend = "";
+                             if ($("#urlFriend").val() != "") {
+                                 urlFriend = "/" + arr.join("-");
+                             }
+                             var tr = "<tr style='text-align:center;'><td>" + $("#categoryName").val() +
+                                 "</td><td>" + $('#languageId option:selected').text() +
+                                 "</td><td style='display:none;'>" + $("#languageId").val() +
+                                 "</td><td dir='ltr'>" + urlFriend + "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromTable(this);'>" +
+                                 "<i class='fa fa-trash' ></i></button></td></tr>";
+
+                             $("#multiLingualList").append(tr);
+                             $("#categoryName").val("");
+                             $("#urlFriend").val("");
+                             $("#languageId").val("0f0815fb-5fca-470c-bbfd-4d8c162de05a");
+                             $("#languageId").selectpicker("");
+                         } else {
+                             
+                             $("span[data-val-result='urlFriend']").html('urlFriend تکراری است.');
+                         }
+                     },
+                     error: function (xhr, ajaxOptions, thrownError) {
+                         console.error("Error in AJAX request:", xhr, thrownError); // Improve error handling
+                         return false;
+                     }
+                 });
+             }
+         }
+             }
+
+    </script>
+
+}

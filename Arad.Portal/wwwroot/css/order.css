@@ -1,0 +1,15 @@
+﻿[dir="rtl"] .sidebarContent {
+    order: 2; /* Sidebar on the right */
+}
+
+[dir="rtl"] .mainContent {
+    order: 1; /* Main content on the left */
+}
+
+[dir="ltr"] .sidebarContent {
+    order: 1; /* Sidebar on the left */
+}
+
+[dir="ltr"] .mainContent {
+    order: 2; /* Main content on the right */
+}

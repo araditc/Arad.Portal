@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+@using Arad.Portal.DataLayer.Repositories.Interfaces.General.BasicData;
+@using System.Globalization;
+@using Arad.Portal.DataLayer.Entities.General.BasicData
+@using Arad.Portal.DataLayer.Entities.General.Domain
+@using Arad.Portal.DataLayer.Repositories.Interfaces.General.Domain
+@using Microsoft.AspNetCore.Http;
+@using Serilog
+@inject IHttpContextAccessor _accessor
+@inject IBasicDataRepository _basicRepo
+@inject IDomainRepository _domainRepo
+
+@{
+    string direction = "";
+    // Domain dbEntity = _domainRepo.FirstOrDefault(d => d.IsDefault);
+    // List<BasicData> supportedCultures = _basicRepo.GetList(c => c.GroupKey == "SupportedCultures" && c.AssociatedDomainId == dbEntity.Id);
+    List<Tuple<string, string, string>> countryCodes = new();
+    List<string> cultureCode =
+    [
+        "fa-IR",
+        "en-US"
+    ];
+
+
+    foreach (string item in cultureCode)
+    {
+        CultureInfo cultureInfo = new CultureInfo(item);
+        RegionInfo regionInfo = new RegionInfo(cultureInfo.LCID);
+        countryCodes.Add(new(item, regionInfo.TwoLetterISORegionName, cultureInfo.DisplayName));
+        Log.Information(item);
+
+    }
+
+    string userName = "";
+    @if (User.Identity.IsAuthenticated)
+    {
+        userName = _accessor.HttpContext?.User.GetUserName();
+    }
+
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        direction = "rtl";
+        ViewBag.dir = "rtl";
+    }
+    else
+    {
+        direction = "ltr";
+        ViewBag.dir = "ltr";
+    }
+
+    string lang = HelpersMethods.GetHtmlLang(CultureInfo.CurrentCulture);
+
+    string baseAdd = Config["BaseAddress"];
+    string jsFileName = CultureInfo.CurrentCulture.Name.Replace('-', '_');
+}
+
+<html dir="@direction" lang="@lang">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width , initial-scale=1" />
+    <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="content-language" content="fa-IR">
+    <meta property="og:locale" content="fa_IR" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Arad Dashboard" />
+    <title>AradPortal-AdminPart</title>
+
+
+    @if (direction == "ltr")
+    {
+        <link href="@Url.Content($"~/lib/bootstrap/css/bootstrap.min.css")" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="@Url.Content($"~/lib/bootstrap/css/bootstrap.rtl.min.css")" rel="stylesheet" />
+    }
+
+    @if (CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir")
+    {
+        <link href="@Url.Content($"~/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
+    }
+
+    <link href="@Url.Content($"~/lib/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/css/site.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/lib/font-awesome/css/all.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/lib/animate.css/animate.compat.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/lib/flag-icons/css/flag-icons.min.css")" rel="stylesheet" />
+    @await RenderSectionAsync("Styles", required: false)
+    <script src="@Url.Content($"~/lib/jquery-new/jquery/jquery.min.js")"></script>
+    <script src="@Url.Content($"~/lib/bootstrap/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content($"~/lib/bootstrap-select/bootstrap-select.min.js")"></script>
+    <script src="@Url.Content($"~/lib/bootstrap-select/js/i18n/defaults-{jsFileName}.js")"></script>
+    <script src="@Url.Content($"~/lib/bootstrap-select/js/i18n/defaults-en_US.js")"></script>
+    <script src="@Url.Content($"~/js/LangUniqueness.js")"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</head>
+<body>
+    <main class="col-12 col-md-9 ms-sm-auto col-xl-10 px-md-4 pt-2 flex-grow-1" id="mainContent">
+        @RenderBody()
+    </main>
+</body>
+</html>

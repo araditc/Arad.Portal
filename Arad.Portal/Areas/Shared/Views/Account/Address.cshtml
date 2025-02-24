@@ -1,0 +1,201 @@
+﻿@{
+    ViewData["Title"] = UtilityLanguage.GetString("User_AddressInfoes");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles
+{
+    <link href="@Url.Content("~/css/edit-address.css")" rel="stylesheet" />
+                 <link href="@Url.Content("~/lib/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+}
+<div class="container-fluid address">
+    <section class="section-full">
+        <div class="head head-address col-xs-12">
+            <h3>
+                <span class=" pt-2">@UtilityLanguage.GetString("User_AddressInfoes")</span>
+            </h3>
+        </div>
+        <div class="row pt-5">
+            <div class="col-12">
+                <form id="address" class="form-address row text-right">
+                    <div class="form-group col-6 col-md-3">
+                        <label class="form-label" for="AddressType">@UtilityLanguage.GetString("Profile_AddressType")</label><br />
+                        <select class="form-control selectpicker" id="AddressTypeId" name="AddressType" data-live-search="true" 
+                                asp-items="@(new SelectList(ViewBag.AddressTypes,"Value","Text"))">
+                        </select>
+                        <span data-val-result="AddressType" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-6 col-md-3">
+                        <label>@UtilityLanguage.GetString("Profile_Country")</label><br />
+                        <div class="form-group textPlaceholder">
+                            <select id="CountryId" name="CountryId" class="form-control selectpicker" asp-items="@(new SelectList(ViewBag.CountryList , "Value", "Text"))"
+                                    tabindex="2" placeholder="@UtilityLanguage.GetString("Profile_Country")">
+                            </select>
+                            <span class="field-validation-error" data-val-result="CountryId"></span>
+                        </div>
+                    </div>
+                    
+                   
+                        <div class="form-group col-6 col-md-3">
+                            <label>@UtilityLanguage.GetString("Profile_State")</label><br />
+                            <select id="ProvinceId" name="ProvinceId" class="form-control selectpicker" 
+                              tabindex="2">
+                            </select>
+                            <span class="field-validation-error" data-val-result="ProvinceId"></span>
+                        </div>
+                   
+
+
+                    <div class="form-group col-6 col-md-3">
+                             <label>@UtilityLanguage.GetString("Profile_City")</label><br />
+                            <select id="CityId" name="CityId" class="form-control selectpicker" data-placeholder="@UtilityLanguage.GetString("Profile_City")" 
+                            tabindex="2" >
+                            </select>
+                            <span class="field-validation-error" data-val-result="CityId"></span>
+                       
+                    </div>
+                   
+                    <div class="form-group col-6 col-md-3" style="margin-top: 10px;">
+                         <label>@UtilityLanguage.GetString("Profile_ZipCode") : </label>
+                        <input id="PostalCode" name="PostalCode" class="form-control" type="text" dir="rtl" maxlength="10" minlenght="10" />
+                        <span class="field-validation-error" data-val-result="PostalCode"></span>
+                        
+                    </div>
+                    <div class="col-12 mt-2">
+                        <label>@UtilityLanguage.GetString("Profile_Address1"): </label><br />
+                        <div class="form-group textPlaceholder rtl">
+                            <input id="Address1" name="Address1" class="form-control" type="text" dir="rtl" placeholder="">
+                            <span style="display: block;" class="field-validation-error" data-val-result="Address1"></span>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-2" >
+                         <label>@UtilityLanguage.GetString("Profile_Address2"):</label><br />
+                        <input id="Address2" name="Address2" class="form-control" type="text" dir="rtl" maxlength="10" minlenght="10" />
+                        <span class="field-validation-error" data-val-result="Address2"></span>
+                      
+                    </div>
+
+                 
+
+                    <div class="col-12 col-md-2 text-center pt-5">
+                        <button id="addressBtn" type="submit" class="btn btn-success btn-block float-end">@UtilityLanguage.GetString("Profile_AddAddress")</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts
+{
+   
+    <script>
+        $(document).ready(function() {
+
+             $(document).on("change", "#CountryId", function (e) {
+                
+                var name = $("#CountryId option:selected").text();
+               
+         
+               $.ajax({
+                type: "Get",
+                url: "@Url.Action("GetStates","Account")"+"?countryName="+ name,
+                success: function (result) {
+                    var data = result.data;
+                    var html = '';
+                    //html += '<option disabled value=null selected>'+'@UtilityLanguage.GetString("AlertAndMessage_Choose")'+'</option>';
+                    if (result.status === "success") {
+                        
+                        data.forEach(function (item) {
+                            html += '<option value="' + item.id + '">' + item.name + '</option>';
+                        });
+                        $("#ProvinceId").html(html);
+                        $("#ProvinceId").selectpicker('refresh');
+                    } else {
+                        showError(result.message);
+                    }
+                },
+                //error: function(xhr, ajaxOptions, thrownError) {
+                //  //  alert(xhr.status);
+                //},
+                complete: function() {
+                
+                }
+            });
+            });
+
+            $(document).on("change", "#ProvinceId", function (e) {
+                
+                var statId = $("#ProvinceId").val();
+
+         
+                $.ajax({
+                    type: "Get",
+                    url: "@Url.Action("GetCities","Account")"+"?stateId="+statId,
+                    success: function(result) {
+                        var data = result.data;
+                        var html = '';
+                        html += '<option disabled value=null selected>'+'@UtilityLanguage.GetString("AlertAndMessage_Choose")'+'</option>';
+                        if (result.status === "success") {
+                            data.forEach(function (item) {
+                                html += '<option value="' + item.id + '">' + item.name + '</option>';
+                            });
+                            $("#CityId").html(html);
+                            $("#CityId").selectpicker('refresh');
+                        } else {
+                            showError(result.message);
+                        }
+                    },
+                    //error: function(xhr, ajaxOptions, thrownError) {
+                    //    alert(xhr.status);
+                    //},
+                    complete: function() {
+                
+                    }
+                });
+            });
+
+            $("#address").submit(function (e) {
+                
+                e.preventDefault();
+            
+                var spanErrorList = $('span[data-val-result]');
+                spanErrorList.html("");
+                spanErrorList.parent().removeClass("has-error");
+
+                $.ajax({
+                    type: "Post",
+                    url: "@Url.Action("AddAddress","Account")",
+                    data: $(this).serialize(),
+                    beforeSend: function() {
+                        //$("#loadingShop").removeClass("hidden");
+                    },
+                    success: function(result) {
+                        if (result.status === "success") {
+                            
+                            console.log(result);
+                            window.location = result.url;
+                        } else 
+                        {
+                            if (result.modelStateErrors.length !== 0) {
+                                result.modelStateErrors.forEach(function(value, index) {
+                                    $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                });
+                                showError(result.message);
+                            }
+                           
+                        }
+                    },
+                    complete: function() {
+                       
+                    }
+                });
+            });
+
+
+        });
+
+    </script>
+}
+

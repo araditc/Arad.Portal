@@ -1,0 +1,101 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.DesignStructure
+@using Arad.Portal.Helpers.UI
+@using Arad.Portal.Models.Shared.DesignStructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json
+@{
+    Layout = null;
+}
+@inject LayoutContentProcess process
+
+<div class="top-nav">
+    <div class="row gx-0 align-items-center">
+        <!-- Logo on the right -->
+        <div class="col-4 col-md-2 col-lg-2 order-2 order-lg-3 text-end">
+            <a class="navbar-brand me-2" href="/">
+                <img src="/logo.png" alt="Logo" class="navbar-logo">
+            </a>
+        </div>
+
+        <!-- Login, Search, and Language on the left -->
+        <div class="col-8 col-md-10 col-lg-10 order-1 order-lg-1">
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Language Selector -->
+                @if (process.LayoutModel.IsMultiLingual)
+                {
+                    <div class="ms-2">
+                        <ul class="langUl list-group list-group-horizontal">
+                            <li class="list-group-item lan border-0 pt-2 px-1">
+                                <a title="@UtilityLanguage.GetString("Persian")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                    <img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
+                                </a>
+                            </li>
+                            <li class="list-group-item lan border-0 pt-2 px-1">
+                                <a title="@UtilityLanguage.GetString("English")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                    <img src="~/imgs/USA.png" onclick="setLang('en-US')" />
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+
+                <!-- Search Placeholder -->
+                <div class="search-bar ms-3">
+                    @foreach (RowContent? rowContent in process.LayoutModel.HeaderPart.CustomizedContent)
+                    {
+                        foreach (ColContent? colContent in rowContent.ColsContent)
+                        {
+                            ModuleWithParametersValue module = JsonConvert
+                                .DeserializeObject<ModuleWithParametersValue>(colContent.ColData.Replace("<div target=\"module\">", "")
+                                                                                        .Replace("</div>", ""));
+
+                            switch (module.ModuleName)
+                            {
+                                case "GeneralSearch":
+                                    @await Component.InvokeAsync("GeneralSearch") ;
+                                    break;
+                            }
+                        }
+                    }
+                </div>
+
+                <!-- Login/Account -->
+                <div class="account-wrapper ms-3">
+                    <ul>
+                        @if (!@User.Identity.IsAuthenticated)
+                        {
+                            <li class="login">
+                                <a asp-controller="Account" asp-action="Login" asp-area="" class="openLoginModal">
+                                    <span class="title">
+                                        <i class="fa fa-user"></i>
+                                        <span>@UtilityLanguage.GetString("User_LoginRegister")</span>
+                                    </span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <div class="dropdown" id="myUserProfile">
+                                <a class="btn dropdown-toggle" role="button" id="drpUserProfile" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="title">
+                                        <i class="fa fa-user"></i>
+                                        <span>@User.Identity.Name</span>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="drpUserProfile">
+                                    <li><a asp-controller="Home" asp-action="Index">@UtilityLanguage.GetString("User_ManagementPanel")</a></li>
+                                    <li><a asp-controller="Account" asp-action="Profile">@UtilityLanguage.GetString("Menu_Profile")</a></li>
+                                    @if (process.LayoutModel.IsShop)
+                                    {
+                                        <li><a asp-controller="Payment" asp-action="ListPayments">@UtilityLanguage.GetString("Menu_MyOrders")</a></li>
+                                    }
+                                    <li><a asp-controller="Account" asp-action="Logout">@UtilityLanguage.GetString("Exit")</a></li>
+                                </ul>
+                            </div>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewData["Title"] = "PaymentError";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+         عملیات پرداخت با خطا مواجه شد.
+    </div>
+    <div class="card-body">
+        <span>درگاه پرداخت :</span><span style="color: blue; font-weight: bold;margin-right: 5px">@ViewBag.Psp</span>
+        <hr/>
+        <span>شرح :</span><span style="color: red;font-weight: bold; margin-right: 5px;">@ViewBag.Message</span>
+    </div>
+</div>
+

@@ -1,0 +1,102 @@
+﻿@using Arad.Portal.DataLayer.Entities.General.SliderModule
+@model Layer
+@{
+    Layer layer = Model;
+}
+<style>
+    a {
+        text-decoration: none; /* Removes underline */
+        outline: none; /* Removes focus outline */
+        border: none; /* Ensures no border */
+    }
+
+        a:active, a:focus-visible, a:hover, a:focus {
+            outline: none;
+            border: none;
+            box-shadow: none; /* Removes any shadow effects */
+        }
+
+    /* Mobile View */
+    @@media (max-width: 768px) {
+        .slide-layer {
+            position: static !important; /* Removes absolute positioning */
+            padding: 0 !important; /* Removes all paddings */
+            margin: 10px 0 !important; /* Optional: Adds some margin for spacing */
+            text-align: center;
+            color: #000000 !important;
+            font-size: 10px !important; /* Enforces font size */
+            width: 100%;
+        }
+
+            .slide-layer * {
+                font-size: 20px !important; /* Ensures nested elements also get the correct font size */
+                color: #000000 !important;
+            }
+    }
+</style>
+<div data-animation="animated @($"{layer.TransActionType}")"
+     class="slide-layer @layer.Attributes.Class"
+     style="z-index: 999;
+           margin: 0px !important;
+           position: absolute;
+           top: @layer.Position.Top;
+           right: @layer.Position.Right;
+           bottom: @layer.Position.Bottom;
+           left: @layer.Position.Left;
+           border-top: @layer.Styles.BorderTop;
+           animation-delay: @layer.Styles.AnimationDelay;
+           border-right: @layer.Styles.BorderRight;
+           border-bottom: @layer.Styles.BorderBottom;
+           border-left: @layer.Styles.BorderLeft;
+           padding-top: @layer.Styles.PaddingTop;
+           padding-right: @layer.Styles.PaddingRight;
+           padding-bottom: @layer.Styles.PaddingBottom;
+           padding-left: @layer.Styles.PaddingLeft;
+           border-radius: @layer.Styles.RoundedCorners;
+           background-color: @layer.Styles.BackgroundColor;
+           @layer.Styles.CustomCss;">
+
+    @if (layer.Type == LayerType.Text)
+    {
+        @if (string.IsNullOrWhiteSpace(layer.Link))
+        {
+            <figcaption id="@layer.Attributes.Id"
+                        title="@layer.Attributes.Title"
+                        alt="@layer.Attributes.Alt"
+                        style="line-height: @layer.Styles.LineHeight;
+                               font-family: @layer.Styles.FontFamily;
+                               font-size: @layer.Styles.FontSize;
+                               color: @layer.Styles.Color;
+                               word-wrap: @layer.Styles.WordWrap;">
+                <p>@Html.Raw(layer.Content)</p>
+            </figcaption>
+        }
+        else
+        {
+            <a id="@layer.Attributes.Id" href="@layer.Link" target="@layer.Target"
+               title="@layer.Attributes.Title"
+               alt="@layer.Attributes.Alt"
+               style="line-height: @layer.Styles.LineHeight;
+                      font-family: @layer.Styles.FontFamily;
+                      font-size: @layer.Styles.FontSize;
+                      color: @layer.Styles.Color;
+                      word-wrap: @layer.Styles.WordWrap;">
+                <p>@Html.Raw(layer.Content)</p>
+            </a>
+        }
+    }
+    else
+    {
+        <a id="@layer.Attributes.Id" href="@layer.Link" target="@layer.Target"
+           class="btn"
+           title="@layer.Attributes.Title"
+           alt="@layer.Attributes.Alt"
+           style="line-height: @layer.Styles.LineHeight;
+                  font-family: @layer.Styles.FontFamily;
+                  font-size: @layer.Styles.FontSize;
+                  color: @layer.Styles.Color;
+                  word-wrap: @layer.Styles.WordWrap;">
+            <p style="text-align:left !important; margin: 0px !important;">@Html.Raw(layer.Content)</p>
+        </a>
+    }
+</div>

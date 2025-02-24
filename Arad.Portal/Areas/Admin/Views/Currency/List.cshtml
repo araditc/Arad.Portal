@@ -1,0 +1,193 @@
+﻿@using Arad.Portal.Models.Shared.Currency
+
+@model PagedItems<CurrencyDto>
+@{
+    int i = ((Model.CurrentPage - 1) * Model.PageSize);
+    bool isSearch = false;
+    string filter = "";
+    System.Collections.Specialized.NameValueCollection queryString = null;
+    if (!string.IsNullOrWhiteSpace(Model.QueryString))
+    {
+        queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
+        isSearch = !string.IsNullOrWhiteSpace(queryString["filter"]);
+        if (isSearch)
+        {
+            filter = queryString["filter"];
+        }
+        queryString.Remove("page");
+    }
+
+    string searchCollapseClass = isSearch ? "collapse show" : "collapse";
+    string baseAdd = Config["BaseAddress"];
+}
+
+
+<div class="card card-dark">
+    <a data-bs-toggle="collapse" role="button" href="#searchCollapse" aria-expanded="@(!isSearch ? "false" : "true" )" class="@(!isSearch ? " collapsed" : null)">
+
+        <div class="card-header">
+            <h5 class="card-title">
+                <i class="fas fa-search">
+                    <span>@UtilityLanguage.GetString("btn_Search")</span>
+                </i>
+            </h5>
+        </div>
+    </a>
+
+    <div id="searchCollapse" class="@searchCollapseClass">
+        <div class="card-body">
+            <div class="row">
+
+                <div class="form-group col-12 col-md-3">
+                    <label class="form-label">@UtilityLanguage.GetString("Menu_CurrencyName")</label>
+                    <input type="text" class="form-control" id="filter" />
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button id="btnSearch" class="btn btn-sm btn-primary bg-gradient float-end" type="button">
+                <i style="position: relative; left: 5px; top: 1px;" class="fa fa-search"></i>
+                @UtilityLanguage.GetString("btn_Search")
+            </button>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <h5 class="card-title">@UtilityLanguage.GetString("Currency")</h5>
+            </div>
+            <div class="col-12 col-md-3 offset-md-6">
+                <div class="card-tools float-end">
+
+                    <a asp-action="AddEdit" asp-controller="Currency" class="btn btn-success btn-sm bg-gradient">
+                        <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @UtilityLanguage.GetString("btn_Add")
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body table-responsive" id="contentCategoryListCard">
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>@UtilityLanguage.GetString("tbl_RowName")</th>
+                    <th>@UtilityLanguage.GetString("Menu_CurrencyName")</th>
+                    <th>@UtilityLanguage.GetString("Menu_CurrencyPrefix")</th>
+                    <th>@UtilityLanguage.GetString("Menu_CurrencySymbol")</th>
+                    <th>@UtilityLanguage.GetString("Menu_CurrencyIsDefault")</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Items.Any())
+                {
+
+                    @foreach (CurrencyDto item in Model.Items)
+                    {
+                        <tr>
+                            <td class="ListCell">@(++i)</td>
+                            <td class="ListCell">@item.CurrencyName</td>
+                            <td class="ListCell">@item.Prefix</td>
+                            <td class="ListCell">@item.Symbol</td>
+                            <td class="ListCell">
+                                <div class="form-check d-flex justify-content-center p-0 m-2">
+                                    <input class="form-check-input" type="checkbox" checked="@item.IsDefault" disabled />
+                                </div>
+                            </td>
+                            <td>
+
+                                <a asp-action="AddEdit" asp-controller="Currency" asp-route-id="@item.Id" class="btn btn-sm btn-warning bg-gradient">
+                                    <i class="fa fa-edit"></i>@UtilityLanguage.GetString("btn_Edit")
+                                </a>
+                                @{
+                                    if (!@item.IsDeleted)
+                                    {
+                                        <button onclick="EntityDelete('@item.Id')" class="btn btn-sm btn-danger bg-gradient">
+                                            <i class="fa fa-trash"></i>@UtilityLanguage.GetString("btn_Delete")
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button id="restoreRecord" data-id="@item.Id" onclick="EntityRestore('@item.Id')" class="btn btn-sm btn-secondary bg-gradient">
+                                            <i class="fa fa-refresh"></i>
+                                            @UtilityLanguage.GetString("btn_Restore")
+                                        </button>
+                                    }
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="ListCell">
+                            <h6>@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</h6>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        @await Component.InvokeAsync("Arad.Portal.Areas.Shared.ViewComponents.Pagination", new PageViewModel
+   {
+       CurrentPage = Model.CurrentPage,
+       ItemsCount = Model.ItemsCount,
+       PageSize = Model.PageSize,
+       Navigation = Url.Action("List", "Currency"),
+       QueryParams = Model.QueryString
+   })
+    </div>
+
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            $("#btnSearch").click(function () {
+                
+                var queryString = "";
+                if ($("#filter").val() != "") {
+                    queryString += "?filter=" + $("#filter").val();
+                }
+                window.location.href = '@Url.Action("List", "Currency")' + queryString;
+            });
+
+        });
+        function EntityDelete(id) {
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("Delete", "Currency")' + "/" + id,
+                document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Delete")';
+            document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_DeletionSureness")';
+            $('#confirmModal').modal('show');
+        }
+
+        function EntityRestore(id) {
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("Restore", "Currency")' + '/' + id,
+                document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Restore")';
+            document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_RestorationSureness")';
+            $('#confirmModal').modal('show');
+        }
+
+        function EntityRestore(id) {
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("Restore", "Currency")' + '/' + id,
+                document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Restore")';
+            document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_RestorationSureness")';
+            $('#confirmModal').modal('show');
+        }
+
+    </script>
+}

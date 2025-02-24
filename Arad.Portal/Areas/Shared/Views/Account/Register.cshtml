@@ -1,0 +1,414 @@
+﻿@inject Arad.Portal.DataLayer.Repositories.Interfaces.General.SystemSetting.ISystemSettingRepository _systemSettingRepository
+@using System.Globalization
+@using Arad.Portal.DataLayer.Entities.General.Language
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Arad.Portal.Models.Shared.User.RegisterDto
+@{
+    Layout = null;
+
+    Arad.Portal.DataLayer.Entities.General.SystemSetting.SystemSetting systemSetting =
+        (await _systemSettingRepository.GetAllAsync()).FirstOrDefault();
+
+    string direction = HelpersMethods.GetDirection(CultureInfo.CurrentCulture);
+    string lang = HelpersMethods.GetHtmlLang(CultureInfo.CurrentCulture);
+}
+<!DOCTYPE html>
+<html dir="@direction" lang="@lang">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible"
+          content="IE=edge">
+
+    <link rel="shortcut icon"
+          href="@Url.Action("GetFavicon", "Home", new { area = "Admin" })"
+          type="image/x-icon" />
+
+    <title>@systemSetting?.SystemTitle - @UtilityLanguage.GetString("Action_Register")</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    @if (direction == "ltr")
+    {
+        <link href="@Url.Content("~/lib/bootstrap5/css/bootstrap.min.css")" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="@Url.Content("~/lib/bootstrap5/css/bootstrap.rtl.min.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
+    }
+    <link href="@Url.Content("~/lib/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/site.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/lib/font-awesome/css/all.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/lib/intl-tel-input/css/intlTelInput.css")" rel="stylesheet" />
+    <style>
+        input::placeholder {
+            text-align: center;
+        }
+
+        input {
+            border-color: #9e9e9e !important;
+        }
+
+        #imgcpatcha::placeholder {
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .iti__selected-flag {
+            direction: ltr;
+        }
+
+        body {
+            align-content: center;
+            background-color: white !important;
+            display: flex;
+            font-family: @(CultureInfo.CurrentCulture.Name == "fa-IR" ? "IRANSansWeb" : null);
+            font-size: 14px;
+            justify-content: center;
+            padding-top: 80px;
+        }
+
+        .loginSignUpSeparator {
+            border-top: 1px solid #cbd2d6;
+            margin: 25px 0 10px;
+            position: relative;
+            text-align: center;
+        }
+
+            .loginSignUpSeparator .textInSeparator {
+                background-color: #fff;
+                color: #6c7378;
+                padding: 0 .5em;
+                position: relative;
+                top: -.7em;
+            }
+    </style>
+</head>
+
+<body style="font-family: IransansWeb">
+
+    <div id="loading" class="text-center">
+        <div class="spinner-border text-danger" style="width: 4rem; height: 4rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <div class="position-fixed left-50 top-0 p-5" id="toastPanel" style="z-index: 11;">
+        <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
+            @* width: calc(100% - 400px);top: 40%; left: 200px;position: absolute;*@
+            <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody">
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12 col-md-4 offset-md-4">
+                <div class="card shadow  mt-5 p-4">
+
+                    <img alt="" src="@Url.Action("GetLogo", "Home", new { area = "Admin" })" style="align-self: center" width="110" />
+
+                    <div class="card-body">
+                        <form id="register" role="form" method="post" asp-action="Register">
+                            <!-- Mobile Username Input -->
+                            <div class="input-group mb-3 step1" style="margin-bottom: 12px !important;">
+                                <input placeholder="@UtilityLanguage.GetString("TextAndPlaceholder_Mobile_UserName")" type="tel" class="form-control" id="CellPhone" style="width: 317px !important" dir="ltr">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-mobile-alt" style="width: 16px;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="text-align: center">
+                                <span data-val-result="CellPhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <!-- Security Code Input -->
+                            <div class="input-group mb-3 step2">
+                                <input type="text" class="form-control" id="SecurityCode" oninput="onChangeSecurityCode()" placeholder="@UtilityLanguage.GetString("TextAndPlaceholder_SecurityCode")" autocomplete="off" asp-for="SecurityCode">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-envelope"></span>
+                                    </div>
+                                    <button type="button" onclick="resendCode()" id="btnResendCode" class="btn btn-primary bg-gradient" style="width: 165px;">
+                                        @UtilityLanguage.GetString("Action_ResendCode")
+                                    </button>
+                                </div>
+                            </div>
+                            <div style="text-align: center">
+                                <span data-val-result="SecurityCode" class="text-danger"></span>
+                            </div>
+
+                            <!-- Captcha Input -->
+                            <div class="input-group mb-3" style="margin-bottom: 12px !important; margin-top: 15px;">
+                                <img alt="Captcha" id="imgcpatcha" src="@Url.Action("CaptchaImage", "Captcha")" style="border: 1px solid #9e9e9e" />
+                                <input asp-for="Captcha" type="text" class="form-control" id="inlineFormInputGroup" placeholder="@UtilityLanguage.GetString("TextAndPlaceholder_Captcha")" style="text-align: center">
+                                <div class="input-group-prepend" style="cursor: pointer;">
+                                    <div class="input-group-text">
+                                        <i onclick="refreshCaptcha()" class="fas fa-sync-alt"></i>
+                                    </div>
+                                </div>
+                                <span id="captValidation" data-val-result="Captcha" class="text-danger"></span>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="row step1">
+                                <button type="button" onclick="receiveCode()" id="btnReceiveCode" class="btn btn-outline-primary text-bold  w-100">
+                                    @UtilityLanguage.GetString("Action_Next")
+                                </button>
+                            </div>
+                            <div class="row step2">
+                                <button type="submit" class="btn btn-outline-primary text-bold  w-100" disabled="disabled" id="btnSubmit">
+                                    @UtilityLanguage.GetString("Action_Register")
+                                </button>
+                            </div>
+                        </form>
+                        <div class="loginSignUpSeparator">
+                            <span class="textInSeparator">@UtilityLanguage.GetString("TextAndPlaceholder_Or")</span>
+                        </div>
+                        <a asp-action="Login" class="btn btn-outline-primary text-bold  w-100">
+                            @UtilityLanguage.GetString("Action_AlreadyUserName")
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap5/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap-select/bootstrap-select.min.js")"></script>
+    <script src="@Url.Content($"~/lib/bootstrap-select/js/i18n/defaults-{(CultureInfo.CurrentCulture.Name.Replace('-', '_'))}.js")"></script>
+    <script src="@Url.Content("~/lib/intl-tel-input/js/intlTelInput.js")"></script>
+    <script src="@Url.Content("~/lib/intl-tel-input/js/utils.js")"></script>
+
+    <script>
+
+        var cell = document.querySelector("#CellPhone");
+        var cellPhoneInit = window.intlTelInput(cell,
+            {
+                initialCountry: "IR",
+                placeholderNumberType: "MOBILE",
+                separateDialCode: true,
+                nationalMode: true,
+                hiddenInput: "FullCellPhoneNumber"
+            });
+
+        function onChangeSecurityCode()
+        {
+            
+            if (document.getElementById("SecurityCode").value.length === 6)
+            {
+                document.getElementById("btnSubmit").disabled = false;
+            }
+        }
+
+        window.addEventListener("beforeunload",
+            function()
+            {
+                $("#loading").addClass('is-active');
+            });
+
+        $(document)
+            .ready(function()
+            {
+                
+                $(".step2").hide();
+            });
+
+        function resendCode()
+        {
+            
+            $(".step2").hide();
+            $(".step1").show();
+            refreshCaptcha();
+        }
+
+        var tmpSetInterval;
+
+        function startTimer()
+        {
+            
+            var timer = 180, minutes, seconds;
+            tmpSetInterval = setInterval(function()
+                {
+                    minutes = parseInt(timer / 60, 10);
+                    seconds = parseInt(timer % 60, 10);
+
+                    minutes = minutes < 10 ? `0${minutes}` : minutes;
+                    seconds = seconds < 10 ? `0${seconds}` : seconds;
+
+                    document.getElementById("btnResendCode").innerHTML = minutes + ":" + seconds;
+                    document.getElementById("btnResendCode").disabled = true;
+
+                    if (--timer < 0)
+                    {
+                        clearInterval(tmpSetInterval);
+                        document.getElementById("btnResendCode").innerHTML = "@UtilityLanguage.GetString("Action_ResendCode")";
+                        document.getElementById("btnResendCode").disabled = false;
+                        timer = 180;
+                    }
+                },
+                1000);
+        }
+
+        function receiveCode()
+        {
+            
+            const cellPhone = cellPhoneInit.getNumber(intlTelInputUtils.numberFormat.E164);
+
+            if (!cellPhone)
+            {
+                document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@UtilityLanguage.GetString("Validation_EnterMobileNumber")'}`;
+                    $('#mainToastBody').removeClass("text-bg-success");
+                    $('#mainToastBody').addClass("text-bg-danger");
+                var toastDiv = $("#mainToast");
+                $("#toastPanel").show();
+                var toast = new bootstrap.Toast(toastDiv);
+                toast.show();
+
+                setTimeout(function(){
+                        $("#toastPanel").hide();
+                }, 3000);
+                return;
+            }
+
+            const captcha = $("#inlineFormInputGroup").val();
+
+            $.ajax({
+                type: 'Get',
+                url: `@Url.Action("CheckCaptcha")?captcha=${captcha}`,
+                success: function(resultData)
+                {
+                    if (resultData.status === "error")
+                    {
+                        
+                        document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@UtilityLanguage.GetString("AlertAndMessage_CaptchaIncorrectOrExpired")'}`;
+                            $('#mainToastBody').removeClass("text-bg-success");
+                            $('#mainToastBody').addClass("text-bg-danger");
+                        var toastDiv = $("#mainToast");
+                        $("#toastPanel").show();
+                        var toast = new bootstrap.Toast(toastDiv);
+                        toast.show();
+
+                        setTimeout(function(){
+                                $("#toastPanel").hide();
+                        }, 3000);
+                        bsAlert.show();
+                    }
+                    else
+                    {
+                        
+                        $.ajax({
+                                type: 'Get',
+                                url: `@Url.Action("AlreadyRegisteredCellPhoneNumber")?cellPhoneNumber=${cellPhone}`,
+                                beforeSend: function()
+                                {
+                                    
+                                    $("#loading").addClass('is-active');
+                                },
+                                success: function(resultData)
+                                {
+                                    
+                                    $("#loading").removeClass('is-active');
+                                    if (resultData.status === "Success") {
+                                        $.ajax({
+                                            type: 'Get',
+                                            url: `@Url.Action("SendSecurityCode")?cellPhoneNumber=${cellPhone}`,
+                                            beforeSend: function() {
+                                                $("#loading").addClass('is-active');
+                                            },
+                                            success: function(resultData) {
+                                                $("#loading").removeClass('is-active');
+                                                if (resultData.status === "Success") {
+                                                    $(".step1").hide();
+                                                    $(".step2").show();
+                                                    refreshCaptcha();
+                                                    startTimer();
+                                                    $("#SecurityCode").val('');
+
+                                                    $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${resultData.message}`);
+                                                    $('#mainToastBody').removeClass('text-bg-danger');
+                                                    $('#mainToastBody').addClass('text-bg-success');
+                                                    $("#toastPanel").show();
+                                                    var toast = new bootstrap.Toast($("#mainToast"));
+                                                    toast.show();
+                                                    setTimeout(function() {
+                                                        $("#toastPanel").hide();
+                                                    }, 2500);
+                                                }
+                                                else
+                                                    if (resultData.status === "Error") {
+                                                        $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${resultData.message}`);
+                                                        $('#mainToastBody').removeClass('text-bg-success');
+                                                        $('#mainToastBody').addClass('text-bg-danger');
+                                                        $("#toastPanel").show();
+                                                        var toast = new bootstrap.Toast($("#mainToast"));
+                                                        toast.show();
+                                                        setTimeout(function() {
+                                                            $("#toastPanel").hide();
+                                                        }, 2500);
+                                                    }
+                                            }
+                                        });
+                                    }
+                                    else
+                                    if (resultData.status === "Error")
+                                    {
+                                        $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${resultData.message}`);
+                                            $('#mainToastBody').removeClass('text-bg-success');
+                                            $('#mainToastBody').addClass('text-bg-danger');
+                                        $("#toastPanel").show();
+                                        var toast = new bootstrap.Toast($("#mainToast"));
+                                        toast.show();
+                                        setTimeout(function() {
+                                            $("#toastPanel").hide();
+                                        }, 2500);
+                                    }
+                                }
+                                    });
+                    }
+                }
+            });
+        }
+
+        function refreshCaptcha()
+        {
+            $("#imgcpatcha").attr('src', `@Url.Action("CaptchaImage", "Captcha")?${new Date().getTime()}`);
+            $("#inlineFormInputGroup").val('');
+            $("#inlineFormInputGroup").focus();
+            $('#captValidation').empty();
+        }
+            document.addEventListener("DOMContentLoaded", function () {
+                
+                const form = document.getElementById("register");
+                form.addEventListener("submit", async function (event) {
+                    event.preventDefault(); // Prevent default form submission
+                    const formData = new FormData(form);
+
+                    try {
+                        const response = await fetch('@Url.Action("Register", "Account")', {
+                            method: "POST",
+                            headers: {
+                                "X-Requested-With": "XMLHttpRequest" // Optional header for AJAX request
+                            },
+                            body: formData
+                        });
+                        
+                        if (response.ok) {
+                            // Handle success response (e.g., redirect or show success message)
+                            alert("Registration successful!");
+                        } else if (response.status === 401) {
+                            // Handle unauthorized error
+                            alert("Unauthorized access - please check your credentials.");
+                        } else {
+                            // Handle other errors
+                            alert("An error occurred during registration.");
+                        }
+                    } catch (error) {
+                        console.error("Error:", error);
+                        alert("Could not complete the registration.");
+                    }
+                });
+            });
+    </script>
+</body>
+</html>

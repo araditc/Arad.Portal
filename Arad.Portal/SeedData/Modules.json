@@ -1,0 +1,139 @@
+[
+  {
+    "Id": "db0ae375-278a-4fd3-b62b-5fd6cb13edd7",
+    "ModuleName": "ProductList",
+    "ModuleCategoryType": 0,
+    "IsActive": true,
+    "ComponentName": "SpecialProduct",
+    "ModuleParameters": {
+      "ProductTemplateDesign": 1,
+      "ProductOrContentType": 1,
+      "Count": 10
+    }
+  },
+  {
+    "Id": "f8865ffc-1563-41ba-a281-ee57fa7ffc09",
+    "ModuleName": "ContentList",
+    "ModuleCategoryType": 1,
+    "IsActive": true,
+    "ComponentName": "ContentTemplate",
+    "ModuleParameters": {
+      "ContentTemplateDesign": 1,
+      "ProductOrContentType": 1,
+      "Count": 10
+    }
+  },
+  {
+    "Id": "f8865ffc-1653-41ba-a281-ee57fa7ffc09",
+    "ModuleName": "HorizantalStoreMenu",
+    "ModuleCategoryType": 5,
+    "IsActive": true,
+    "ComponentName": "StoreMenu",
+    "ModuleParameters": {
+      "DomainId": "",
+      "LanguageId": ""
+    }
+  },
+  {
+    "Id": "f8854ffc-1653-41ba-a281-ee57fa7ffc09",
+    "ModuleName": "ImageTextSlider",
+    "ModuleCategoryType": 3,
+    "IsActive": true,
+    "ComponentName": "Slider",
+    "ModuleParameters": {
+      "SliderId": ""
+    }
+  },
+  {
+    "Id": "j6554ffc-1653-41ba-a281-ee57fa7ffc09",
+    "ModuleName": "LoginAndProfile",
+    "ModuleCategoryType": 4,
+    "IsActive": true,
+    "ComponentName": "LoginProfile",
+    "ModuleParameters": {
+      "DomainId": "",
+      "IsShop": false
+    }
+  },
+  {
+    "Id": "h7854ffc-1653-41ba-a281-ee57fa7ffc09",
+    "ModuleName": "MultiLingualFlags",
+    "ModuleCategoryType": 4,
+    "IsActive": true,
+    "ComponentName": "MultiLingual",
+    "ModuleParameters": {
+    }
+  },
+  {
+    "Id": "rs854ffc-1653-41ba-a281-ee57fa7ffc09",
+    "ModuleName": "GeneralSearch",
+    "ModuleCategoryType": 4,
+    "IsActive": true,
+    "ComponentName": "GeneralSearch",
+    "ModuleParameters": {
+    }
+  },
+  {
+    "Id": "f5f9d6e3-4c7d-4b28-8b57-f97afcd94d74",
+    "ModuleName": "SocialMedia",
+    "ModuleCategoryType": 4,
+    "IsActive": true,
+    "ComponentName": "SocialMedia",
+    "ModuleParameters": {
+    }
+  },
+  {
+    "Id": "123e4567-e89b-12d3-a456-426614174000",
+    "ModuleName": "FAQ",
+    "ModuleCategoryType": 4,
+    "IsActive": true,
+    "ComponentName": "FAQ",
+    "ModuleParameters": {
+    }
+  },
+  {
+    "Id": "ab2cf9e4-23ab-4647-aef6-b4be79065f3c",
+    "ModuleName": "ProgressBars",
+    "ModuleCategoryType": 4,
+    "IsActive": true,
+    "ComponentName": "ProgressBars",
+    "ModuleParameters": {
+    }
+  },
+  {
+    "Id": "42fc350d-7a21-467a-bdb8-cc1db1acee4a",
+    "ModuleName": "IconBlocks",
+    "ModuleCategoryType": 4,
+    "IsActive": true,
+    "ComponentName": "IconBlocks",
+    "ModuleParameters": {
+    }
+  },
+  {
+    "Id": "d3bba2a2-32c2-4c96-9b45-f72017480ab6",
+    "ModuleName": "PictureWithLabel",
+    "ModuleCategoryType": 4,
+    "IsActive": true,
+    "ComponentName": "PictureWithLabel",
+    "ModuleParameters": {
+    }
+  },
+  {
+    "Id": "f2e6f724-29b0-4ed7-8d3b-72e5b6c1b1ef",
+    "ModuleName": "Counter",
+    "ModuleCategoryType": 4,
+    "IsActive": true,
+    "ComponentName": "Counter",
+    "ModuleParameters": {
+    }
+  },
+  {
+    "Id": "f34d8655-f2c5-4e5d-88ed-bda7fe3dc5e1",
+    "ModuleName": "ContactUs",
+    "ModuleCategoryType": 4,
+    "IsActive": true,
+    "ComponentName": "ContactUs",
+    "ModuleParameters": {
+    }
+  }
+]

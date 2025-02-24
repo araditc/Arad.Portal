@@ -1,0 +1,188 @@
+﻿@using System.Web;
+@using Arad.Portal.Models.Shared.Role
+@model PagedItems<RoleListViewModel>
+@{
+    int i = ((Model.CurrentPage - 1) * Model.PageSize);
+    System.Collections.Specialized.NameValueCollection queryString = HttpUtility.ParseQueryString(Model.QueryString);
+    queryString.Remove("page");
+}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <h5 class="card-title">@UtilityLanguage.GetString("User_Roles")</h5>
+            </div>
+            <div class="col-12 col-md-3 offset-md-6">
+                <div class="card-tools float-end">
+                   
+                        <a asp-action="New" class="btn btn-success bg-gradient btn-sm">
+                            <i  class="fa fa-plus pt-1"></i>@UtilityLanguage.GetString("btn_Add")
+                        </a>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body table-responsive" id="roleListCard">
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>@UtilityLanguage.GetString("tbl_RowName")</th>
+                    <th>@UtilityLanguage.GetString("tbl_RoleName") </th>
+                    <th>@UtilityLanguage.GetString("Role_CreatorUserName")</th>
+                    <th>@UtilityLanguage.GetString("CreationDate")</th>
+                    <th>@UtilityLanguage.GetString("ActivationState")</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Items.Any())
+                {
+                    foreach (RoleListViewModel item in Model.Items)
+                    {
+                        <tr>
+                            <td class="ListCell">@(++i)</td>
+                            <td class="ListCell">@item.RoleName</td>
+                            <td class="ListCell">@item.CreatorUserName</td>
+                            <td class="ListCell ltr">@item.CreationDateTime</td>
+                            <td id="@("activation" + item.Id)" class="ListCell">
+                                @{
+                                    if (item.IsActive)
+                                    {
+                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success bg-gradient">@UtilityLanguage.GetString("Active")</button>
+                                    }
+                                    else
+                                    {
+                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger bg-gradient">@UtilityLanguage.GetString("InActive")</button>
+                                    }
+                                }
+                            </td>
+                            <td class="ListCell">
+                               
+                                    <a asp-action="Edit" asp-controller="Role" asp-route-id="@item.Id" class="btn btn-sm btn-warning bg-gradient">
+                                        <i  class="fa fa-edit"></i>@UtilityLanguage.GetString("btn_Edit")
+                                    </a>
+                              
+                                @if (!item.IsDeleted)
+                                {
+                                    <button onclick="RoleDelete('@item.Id')" class="btn btn-sm btn-danger bg-gradient">
+                                        <i  class="fa fa-trash"></i>@UtilityLanguage.GetString("btn_Delete")
+                                    </button>
+                                }
+                                @if (item.IsDeleted)
+                                {
+                                    <button id="restoreRecord" data-id="@item.Id" onclick="RoleRestore('@item.Id')" class="btn btn-sm btn-secondary bg-gradient">
+                                        <i  class="fa fa-refresh"></i>
+                                        @UtilityLanguage.GetString("btn_Restore")
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="ListCell">
+                            <h6>@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</h6>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card-footer">
+        @await Component.InvokeAsync("Arad.Portal.Areas.Shared.ViewComponents.Pagination", new PageViewModel
+      {
+          CurrentPage = Model.CurrentPage,
+          ItemsCount = Model.ItemsCount,
+          PageSize = Model.PageSize,
+          Navigation = Url.Action("List", "Role"),
+          QueryParams = Model.QueryString
+      })
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+
+      
+    function changeActivation(id) {
+            
+                $.ajax({
+                    type: 'Get',
+                    url: '@Url.Action("ChangeActivation", "Role")' + '?id=' + id,
+                    success: function(resultData) {
+                        if (resultData.status === "success") {
+                            
+                            var html = '';
+                            if (resultData.result == "True") {
+                                html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-success bg-gradient"> ' + '@UtilityLanguage.GetString("Active")' +' </button>';
+                            } else {
+                                html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-danger bg-gradient"> '+ '@UtilityLanguage.GetString("InActive")' +' </button>';
+                            }
+                            $('#activation' + id).html(html);
+                        window.location.reload();
+                        }
+
+                        if (resultData.status === "error") {
+                            
+                            showError(resultData.message);
+                        }
+                    }
+                });
+        }
+
+        function getLatestModifications(id) {
+            $.ajax({
+                type: 'Get',
+                url: '@Url.Action("GetLatestModifications", "Role")' + '?id=' + id,
+                beforeSend: function() {
+                   /* AddLoading($("#roleListCard"));*/
+                },
+                success: function (resultData) {
+                    document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> ' + resultData.message;
+                    $('#mainToastBody').removeClass("text-bg-danger");
+                    $('#mainToastBody').addClass("text-bg-success");
+                    $("#toastPanel").show();
+                    var bsAlert = new bootstrap.Toast($("#mainToast"));
+                    bsAlert.show();
+                    setTimeout(function(){
+                        $("#toastPanel").hide();
+                    }, 2500);
+                 },
+            });
+        }
+
+        function RoleDelete(id) {
+            
+             entityId = id;
+			typeOfRequest = 'Get';
+			confirmUrl = '@Url.Action("Delete", "Role")' + '/' + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Delete")';
+			document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_DeletionSureness")';
+			$('#confirmModal').modal('show');
+        }
+
+        function RoleRestore(id) {
+            
+              entityId = id;
+			typeOfRequest = 'Get';
+			confirmUrl = '@Url.Action("Restore", "Role")' + '/' + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Restore")';
+			document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_RestorationSureness")';
+			$('#confirmModal').modal('show');
+            }
+    </script>
+}
+
+
+
+
+

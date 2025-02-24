@@ -1,0 +1,109 @@
+﻿
+@using Arad.Portal.DataLayer.Models.Shared
+@model Arad.Portal.DataLayer.Models.Shared.CommentVm
+<div class="media my-4 ps-2">
+    <div class="media-body border-bottom">
+        <div class="row">
+            <div class="col-8 d-flex justify-content-between">
+                <span style="font-size:0.7rem;color:blue;">
+                    @Model.CreatorUserName
+                </span>
+                <span  style="font-size:0.7rem;color:blue;" >@(ViewBag.LanIcon == "fa-ir" ? @Model.PersianCreationDate : @Model.CreationDate )</span>
+            </div>
+            <div class="col-1 ps-2">
+                <div class="pull-right reply">
+                    <a data-bs-toggle="collapse" href="@($"#bx_{Model.Id}")"
+                       role="button" aria-expanded="false" aria-controls="@($"bx_{Model.Id}")"><i class="fa fa-reply"></i></a>
+                </div>
+            </div>
+            <div class="col-1">
+                <div class="d-flex flex-row">
+                    @if (Model.UserStatus != Arad.Portal.DataLayer.Models.Shared.UserStatus.UnAuthorized)
+                    {
+                        @if (Model.UserStatus != Arad.Portal.DataLayer.Models.Shared.UserStatus.Like)
+                        {
+                            <a href="#"
+                               role="button" aria-expanded="false" onclick="likeDisLike(this,  '@Model.Id', true, '@ViewBag.LanIcon');">
+                               <i class="far fa-thumbs-up"></i><i class="d-none fas fa-thumbs-up">
+                               </i>
+                           </a>
+                        }
+                        else//like
+                        {
+                            <a href="#"  role="button" aria-expanded="false">
+                                <i class="fas fa-thumbs-up"></i>
+                                </a>
+                        }
+                    }
+                    else //unauthorize
+                    {
+                        <a href="#" 
+                           role="button" aria-expanded="false" ><i class="far fa-thumbs-up"></i>
+                       </a>
+                    }
+
+                    <span class="statistics  ps-2">@Model.LikeCount</span>
+                </div>
+            </div>
+            <div class="col-1">
+                <div class="d-flex flex-row">
+                    @if (Model.UserStatus != Arad.Portal.DataLayer.Models.Shared.UserStatus.UnAuthorized)
+                    {
+                        @if (Model.UserStatus != Arad.Portal.DataLayer.Models.Shared.UserStatus.Dislike)
+                        {
+                            <a href="#"
+                               role="button" aria-expanded="false" onclick="likeDisLike(this, '@Model.Id', false, '@ViewBag.LanIcon');">
+                               <i class="far fa-thumbs-down"></i><i class="d-none fas fa-thumbs-down"></i>
+                           </a>
+                        }
+                        else//dislike
+                        {
+                            <a href="#" 
+                               role="button" aria-expanded="false" ><i class="fas fa-thumbs-down"></i>
+                           </a>
+
+                        }
+
+                    }
+                    else//unauthorize
+                    {
+                        <a href="#" 
+                           role="button" aria-expanded="false"><i class="far fa-thumbs-down"></i>
+                       </a>
+                    }
+                    <span class="statistics ps-2">@Model.DislikeCount</span>
+                </div>
+            </div>
+        </div>
+        <span style="font-size:0.8rem;">@Model.Content</span>
+        <div class="row collapse" id="@($"bx_{Model.Id}")">
+            <div class="col-md-10">
+                <input type="text" class="cmt form-control" style="font-size:0.8rem;" value="" />
+            </div>
+            <div class="col-md-2 px-0 pt-2">
+               @if(Model.ReferenceType == Arad.Portal.DataLayer.Entities.General.Comment.ReferenceType.Product)
+                {
+                     <a href="#"
+                   role="button" aria-expanded="false" onclick="submitComment(this, 'p*@Model.ReferenceId', '@User.Identity.IsAuthenticated', '@ViewBag.LanIcon');">
+                        <i class="fa fa-paper-plane"></i></a>
+                }else
+                {
+                    <a href="#"
+                   role="button" aria-expanded="false" onclick="submitComment(this, 'c*@Model.ReferenceId', '@User.Identity.IsAuthenticated', '@ViewBag.LanIcon');">
+                        <i class="fa fa-paper-plane"></i></a>
+                }
+
+            </div>
+            @foreach (CommentVm item in Model.Childrens)
+            {
+                <div class="ps-2">
+                   @await Component.InvokeAsync("CommentSection", item)
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@*<i class="far fa-thumbs-up"></i> empty
+  <i class="fas fa-thumbs-up"></i> full
+  <i class="far fa-thumbs-down"></i> empty
+  <i class="fas fa-thumbs-down"></i> full*@

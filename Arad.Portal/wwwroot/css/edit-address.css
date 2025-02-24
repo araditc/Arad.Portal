@@ -1,0 +1,52 @@
+.head-map-address h3{
+    font-size: 17px;
+}
+.head-map-address i{
+    color: rgb(232, 33, 107);
+}
+.form-address{
+    margin-top: 10px;
+}
+.btn-save{
+    float: left;
+    color: white;
+    background: rgb(232, 33, 107);
+}
+.btn-cancel{
+    float: left;
+    background: #979b9c;
+    color: white;
+    margin-left: 10px;
+}
+.btn-wrap{
+    margin-bottom: 20px;
+}
+@media (max-width:767px){
+    .code-city{
+        padding-right: 0;
+    }
+}
+
+.address{
+    background: #fbfbfb;
+    padding-bottom:30px;
+}
+.head-address {
+    background: #edebeb;
+    padding: 6px 9px;
+    text-align: right;
+}
+.head-address h3 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.select {
+    width: 100%;
+    border-color: #ced4da;
+    border-radius: 4px;
+}
+
+#HousePhoneNumber {
+    direction: ltr;
+}

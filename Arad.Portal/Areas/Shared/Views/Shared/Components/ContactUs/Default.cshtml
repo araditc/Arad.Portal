@@ -1,0 +1,30 @@
+﻿@model List<Arad.Portal.DataLayer.Models.Shared.ContactUs.ContactUs>
+
+<style>
+    body {
+        font-family: @ViewBag.FontFamily;
+        font-weight: bold;
+    }
+</style>
+
+<div id="iconSelector">
+    <h4>Contact Us</h4>
+    @if (Model != null && Model.Count > 0)
+    {
+        @foreach (var item in Model)
+        {
+            <a class="icon-option" href="@item.Link" target="_blank" data-icon="@item.IconName" style="display: inline-flex; align-items: center; padding: 5px; cursor: pointer; text-decoration: none; color: inherit;">
+                <i class="@item.IconName" style="color: black; font-size: 24px;" onmouseover="setHoverEffect(this, '#25D366')" onmouseout="resetHoverEffect(this)"></i>
+            </a>
+        }
+    }
+</div>
+<script>
+    function setHoverEffect(element, color) {
+        element.style.color = color;
+    }
+
+    function resetHoverEffect(element) {
+        element.style.color = '#000000'; // Black color by default
+    }
+</script>

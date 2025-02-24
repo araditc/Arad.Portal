@@ -1,0 +1,219 @@
+﻿@using Arad.Portal.GeneralLibrary.Utilities
+@using Arad.Portal.Models.Shared.SendMessage;
+@model SendMessageDto
+@{
+    string alert = UtilityLanguage.GetString("AlertAndMessage_GotIt");
+    string error = UtilityLanguage.GetString("AlertAndMessage_Error");
+    string baseAdd = Config["BaseAddress"];
+}
+@section Styles {
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+
+    </style>
+}
+
+<h4>@UtilityLanguage.GetString("Menu_SendMessageSetting")</h4>
+<hr />
+<div class="row">
+    <div class="col-12">
+        <div class="card" id="addContentCategoryCardTitle">
+            <div class="card-header">
+                <h5 class="card-title">@(!string.IsNullOrWhiteSpace(Model.Id) ? UtilityLanguage.GetString("Title_EditSendMessage") : UtilityLanguage.GetString("Title_AddSendMessage"))</h5>
+            </div>
+
+            <div class="card-body" id="addContentCategoryCardBody">
+                <input type="hidden" value="@Model.Id" asp-for="Id" />
+
+                @if (ViewBag.IsSysAcc)
+                {
+                    <div class="row">
+                        <div class="form-group col-12 col-md-3">
+                            <label asp-for="AssociatedDomainId" class="form-label">@UtilityLanguage.GetString("AssociatedDomain")</label>
+                            <select class="form-control selectpicker" data-live-search="true"
+                                    asp-for="@Model.AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text", Model.AssociatedDomainId))">
+                            </select>
+                            <span data-val-result="AssociatedDomainId" class="text-danger"></span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" value="@Model.AssociatedDomainId" asp-for="AssociatedDomainId" />
+                }
+
+                <div class="row">
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label" asp-for="SendType">@UtilityLanguage.GetString("SendType")</label>
+                        <select class="form-control selectpicker" asp-for="SendTypeId" asp-items="@(new SelectList(ViewBag.SendTypes,"Value","Text"))" data-live-search="true" onchange="toggleFields()">
+                        </select>
+                        <span data-val-result="SendType" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div id="emailFields" style="display:none;">
+                    <div class="row">
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="Server">@UtilityLanguage.GetString("SMTPServer")</label>
+                            <input type="text" class="form-control" asp-for="Server" />
+                            <span data-val-result="Server" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="Port">@UtilityLanguage.GetString("Port")</label>
+                            <input type="text" class="form-control" asp-for="Port" />
+                            <span data-val-result="Port" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="UserName">@UtilityLanguage.GetString("UserName")</label>
+                            <input type="text" class="form-control" asp-for="UserName" />
+                            <span data-val-result="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="Password">@UtilityLanguage.GetString("Password")</label>
+                            <input type="password" class="form-control" asp-for="Password" />
+                            <span data-val-result="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="smsFields" style="display:none;">
+                    <div class="row">
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="Provider">@UtilityLanguage.GetString("Enum_Provider")</label>
+                            <select class="form-control selectpicker" asp-for="ProviderId" asp-items="@(new SelectList(ViewBag.Providers,"Value","Text"))" data-live-search="true">
+                            </select>
+                            <span data-val-result="Provider" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="BaseAddress">@UtilityLanguage.GetString("BaseAddress")</label>
+                            <input type="text" class="form-control" asp-for="BaseAddress" />
+                            <span data-val-result="BaseAddress" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="SenderNumber">@UtilityLanguage.GetString("SenderNumber")</label>
+                            <input type="text" class="form-control" asp-for="SenderNumber" />
+                            <span data-val-result="SenderNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="ApiKey">@UtilityLanguage.GetString("ApiKey")</label>
+                            <input type="text" class="form-control" asp-for="ApiKey" />
+                            <span data-val-result="ApiKey" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12 col-md-4 offset-md-8">
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@UtilityLanguage.GetString("btn_Back")</a>
+                        <input type="button" id="btnAddSendMessage" value="@UtilityLanguage.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            toggleFields();
+
+            $("#btnAddSendMessage").click(function () {
+                
+                var dto = FillDataToSend();
+                
+                $.ajax({
+                    url: "@Model.Id" != "" ? '@Url.Action("Edit", "SendMessage")' : '@Url.Action("Add", "SendMessage")',
+                    contentType: 'application/json',
+                    data: JSON.stringify(dto),
+                    type: 'POST',
+                    success: function (result) {
+                        if (result.status === "Success") {
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + result.message;
+                            $('#mainToastBody').removeClass("text-bg-danger");
+                            $('#mainToastBody').addClass("text-bg-success");
+                            $("#toastPanel").show();
+                            var bsAlert = new bootstrap.Toast($("#mainToast"));
+                            bsAlert.show();
+                            setTimeout(function () {
+                                $("#toastPanel").hide();
+                                window.location.href = '@Url.Action("List")';
+                            },
+                                1500);
+                        }
+                        else
+                            if (result.status === "ModelError") {
+                                var spanErrorList = $('span[data-val-result]');
+                                if (spanErrorList.length > 1) {
+                                    spanErrorList.each(function () {
+                                        $(this).html("");
+                                        $(this).parent().removeClass("has-error");
+                                    });
+                                }
+                                else {
+                                    spanErrorList.html("");
+                                    spanErrorList.parent().removeClass("has-error");
+                                }
+                                if (result.modelStateErrors !== null && result.modelStateErrors.length > 0) {
+                                    result.modelStateErrors.forEach(function (value, index) {
+                                        $('[data-val-result=' + result.key + ']').html(result.errorMessage);
+                                        $('[data-val-result=' + result.key + ']').parent().addClass("has-error");
+                                    });
+                                }
+                            }
+                            else if (result.status === "Error") {
+                                showError(result.message);
+                            }
+                    }
+                });
+            });
+        });
+
+        function toggleFields() {
+            var sendTypeId = $("#SendTypeId").val();
+            
+            if (sendTypeId === "0") {
+                $("#emailFields").show();
+                $("#smsFields").hide();
+            } else if (sendTypeId === "1") {
+                $("#emailFields").hide();
+                $("#smsFields").show();
+            } else {
+                $("#emailFields").hide();
+                $("#smsFields").hide();
+            }
+        }
+
+        function FillDataToSend() {
+            var obj = {};
+            
+            obj.AssociatedDomainId = $("#AssociatedDomainId").val();
+            obj.Id = $("#Id").val();
+            obj.SendTypeId = $("#SendTypeId").val();
+            if (obj.SendTypeId == 0) {
+                obj.SMTPServer = $("#SMTPServer").val();
+                obj.Port = $("#Port").val();
+                obj.UserName = $("#UserName").val();
+                obj.Password = $("#Password").val();
+                return obj;
+            }
+            else {
+                obj.ProviderId = $("#ProviderId").val();
+                obj.BaseAddress = $("#BaseAddress").val();
+                obj.SenderNumber = $("#SenderNumber").val();
+                obj.ApiKey = $("#ApiKey").val();
+                return obj;
+            }
+           
+            return obj;
+        }
+    </script>
+}
+
+
+
+

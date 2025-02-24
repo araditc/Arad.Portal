@@ -1,0 +1,17 @@
+﻿@using Arad.Portal.Models.Shared.DesignStructure
+@model ModuleWithParametersValue;
+<div class="row mx-2">
+     <div class="col-12">
+          <input class="form-check-input par" type="checkbox" value="" @((Model != null && Model.ParametersValue.IsShop) ? "checked='checked'" : "") 
+          parid="isShop" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" >
+            <label class="form-check-label" for="IsShop">
+                @UtilityLanguage.GetString("design_IsShopDomain")
+            </label>
+    </div>
+    
+      <div class="col-12 text-center">
+           <button btnid="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1"
+            cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+                   onclick="addModulesWithParams(this);" type="button">@UtilityLanguage.GetString("btn_Add")</button>
+      </div>
+</div>

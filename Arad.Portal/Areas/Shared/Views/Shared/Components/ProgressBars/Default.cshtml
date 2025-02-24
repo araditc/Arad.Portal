@@ -1,0 +1,12 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.ProgressBar
+@model Arad.Portal.DataLayer.Models.Shared.ProgressBar.ProgressBarViewModel
+
+@foreach (ProgressBar p in Model.ProgressBars)
+{
+    <h6>@p.Title</h6>
+    <div class="progress mb-2">
+        <div class="progress-bar @p.Color" role="progressbar" style="width: @p.Percentage%" 
+             aria-valuenow="@p.Percentage" aria-valuemin="0" aria-valuemax="100">
+        </div>
+    </div>
+}

@@ -1,0 +1,20 @@
+﻿@using Arad.Portal.Models.Shared.Permission
+@model ListPermissions
+@{
+    Layout = null;
+}
+
+
+<ul >
+    @foreach (ListPermissions child in Model.Childrens)
+    {
+    <li data-value="@child.Id">
+        @UtilityLanguage.GetString($"PermissionTitle_{child.Title}")
+        @if (child.Childrens.Count != 0)
+        {
+            @await Component.InvokeAsync("InnerPermissions", child)
+        }
+        </li>
+    }
+</ul>
+

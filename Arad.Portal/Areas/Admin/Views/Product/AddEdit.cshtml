@@ -1,0 +1,2064 @@
+﻿@using Arad.Portal.DataLayer.Entities.Shop.Product
+@using Arad.Portal.DataLayer.Models.Shared.Product
+@using Newtonsoft.Json
+@inject IConfiguration Config;
+@model ProductOutputDto
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    string alert = UtilityLanguage.GetString("AlertAndMessage_GotIt");
+    string error = UtilityLanguage.GetString("AlertAndMessage_Error");
+    string lan = HelpersMethods.GetHtmlLang(CultureInfo.CurrentCulture);
+    string dir = HelpersMethods.GetDirection(CultureInfo.CurrentCulture);
+    int count = @Model.MultiLingualProperties.Count + 1;
+    string baseAdd = Config["BaseAddress"];
+    int index = 0; // Initialize the index variable
+}
+
+@section Styles {
+    <style type="text/css">
+        .text-danger {
+            font-size: 12px;
+        }
+
+        .removeImage {
+            display: inline-block;
+            position: absolute;
+            top: -7px;
+            right: -5px;
+            width: 20px;
+            height: 21px;
+            background: #dc3545;
+            text-align: center;
+            border-radius: 50%;
+            color: white !important;
+            cursor: pointer;
+        }
+
+        .divCenter {
+            text-align: center;
+            border: 1px solid;
+        }
+
+        table tr {
+            text-align: center;
+        }
+
+        tbody tr td {
+            vertical-align: middle;
+        }
+
+        .valign {
+            vertical-align: middle;
+        }
+
+        #specValuesFields {
+            font-weight: 600;
+        }
+    </style>
+
+    <link href="@Url.Content($"~/lib/cropperjs/cropper.css")" rel="stylesheet" />
+
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href="@Url.Content($"~/lib/datePicker/kamadatepicker.css")" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="@Url.Content($"~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
+    }
+}
+<h4>@UtilityLanguage.GetString("Menu_Products")</h4>
+
+<div aria-hidden="true" aria-labelledby="confirmLabel" class="modal fade" id="showModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onConfirmDialog();" type="button">
+                    @UtilityLanguage.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @UtilityLanguage.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content col-md-12">
+            <div class="modal-header">
+                <div class="col-md-1">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="col-md-11" style="text-align: center">
+                    <h5 class="modal-title align-content-center" id="exampleModalLongTitle">@UtilityLanguage.GetString("CropImage")</h5>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="upload-modal-body">
+                    <div id="rowContainer" class="row justify-content-center align-items-center">
+                        <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
+                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
+                                 alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center align-items-center">
+                <div>
+                    <button class="btn btn-success bg-gradient" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@UtilityLanguage.GetString("btn_Approve")</button>
+                    <button class="btn btn-primary bg-gradient" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@UtilityLanguage.GetString("btn_Crop")</button>
+                    <button class="btn btn-primary bg-gradient" onclick="rotatePic()"> <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @UtilityLanguage.GetString("btn_Rotate")</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card" id="addProductCard">
+            <div class="card-header">
+                <h5 class="card-title" data-toggle="tab">
+                    @(!string.IsNullOrWhiteSpace(Model.Id) ?
+                          UtilityLanguage.GetString("EditProductPart_Title") : UtilityLanguage.GetString("AddProductPart_Title"))
+                </h5>
+            </div>
+
+            <div class="card-body" id="addEditProductCard">
+                <input type="hidden" value="@Model.Id" asp-for="Id" />
+                @if (@ViewBag.IsSysAcc)
+                {
+                    <div class="row">
+                        <div class="form-group col-12 col-md-3">
+                            <label asp-for="AssociatedDomainId" class="form-label">@UtilityLanguage.GetString("AssociatedDomain")</label>
+                            <select class="form-control selectpicker" data-live-search="true"
+                                    asp-for="@Model.AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text", Model.AssociatedDomainId))">
+                            </select>
+                            <span data-val-result="AssociatedDomainId" class="text-danger"></span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" value="@Model.AssociatedDomainId" asp-for="AssociatedDomainId" />
+                }
+                <div class="row">
+                    <div class="form-group col-12 col-md-3">
+                        <label asp-for="ProductType" class="form-label">@UtilityLanguage.GetString("ProductType")</label>
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.ProductType" asp-items="@(new MultiSelectList(ViewBag.ProductType,"Value","Text"))">
+                        </select>
+                        <span data-val-result="ProductType" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-3 d-none fileSec downloadType">
+                        <label asp-for="DownloadLimitationType" class="form-label">@UtilityLanguage.GetString("DownloadLimitation")</label>
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.DownloadLimitationType" asp-items="@(new MultiSelectList(ViewBag.DownloadOptions,"Value","Text"))">
+                        </select>
+                        <span data-val-result="DownloadLimitationType" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-3 d-none fileSec timeDuration">
+                        <label asp-for="AllowedDownloadDurationDay" class="form-label">@UtilityLanguage.GetString("AllowedDownloadDuration")</label>
+                        <input type="number" min="1" class="form-control" asp-for="@Model.AllowedDownloadDurationDay" />
+                        <span data-val-result="AllowedDownloadDurationDay" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-3 d-none fileSec downloadCnt">
+                        <label asp-for="AllowedDownloadCount" class="form-label">@UtilityLanguage.GetString("AllowedDownloadNumber")</label>
+                        <input type="number" min="1" class="form-control" asp-for="@Model.AllowedDownloadCount" />
+                        <span data-val-result="AllowedDownloadCount" class="text-danger"></span>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-12 col-md-6 fileSec d-none productFileUpload">
+                        <label class="form-label">
+                            @UtilityLanguage.GetString("ProductFile")
+                        </label>
+                        <input accept=".zip,.rar" class="form-control" id="ProductFileContent" type="file" />
+                        <span data-val-result="ProductFileContent" class="text-danger"></span>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(Model.ProductFileName))
+                    {
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="@Model.ProductFileName">
+                                @UtilityLanguage.GetString("ProductFileName")
+                            </label>
+                            <input type="text" min="1" class="form-control" asp-for="@Model.ProductFileName" />
+                        </div>
+                    }
+
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-12 col-md-3">
+                        <label asp-for="@Model.GroupIds" class="form-label">@UtilityLanguage.GetString("tbl_ProductGroup")</label>
+                        <select class="form-control selectpicker" data-live-search="true" multiple asp-for="@Model.GroupIds" asp-items="@(new MultiSelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                        </select>
+                        <span data-val-result="GroupIds" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label asp-for="@Model.UniqueCode" class="form-label">@UtilityLanguage.GetString("tbl_UniqeCode")</label>
+                        <input type="text" class="form-control" asp-for="@Model.UniqueCode" value="@Model.UniqueCode" />
+                        <span data-val-result="UniqueCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label asp-for="@Model.Unit.Id" class="form-label">@UtilityLanguage.GetString("Menu_ProductUnit")</label>
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.Unit.Id" asp-items="@(new SelectList(ViewBag.ProductUnitList,"Value","Text"))">
+                        </select>
+                        <span data-val-result="productUnitId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-12 col-md-3">
+                        <lable asp-for="@Model.MinimumCount"> @UtilityLanguage.GetString("AlertAndMessage_NotifyWhenCountIsLessThan")</lable>
+                        <input type="number" class="form-control" asp-for="@Model.MinimumCount" value="@Model.MinimumCount" min="0" />
+
+                    </div>
+                    <div class="form-group col-12 col-md-3 pt-1 pb-2">
+                        <div class="form-check m-auto d-inline-block pt-3">
+                            <input class="form-check-input" type="checkbox" value="@Model.ShowInLackOfInventory" asp-for="@Model.ShowInLackOfInventory">
+                            <label class="form-check-label" asp-for="@Model.ShowInLackOfInventory">
+                                @UtilityLanguage.GetString("ShowInLackOfInventory")
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        @if (ViewBag.Vendors != "-1")
+                        {
+                            <label class="form-label" asp-for="@Model.SellerUserId">@UtilityLanguage.GetString("ProductVendor")</label>
+                            <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.SellerUserId" asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text"))">
+                            </select>
+                            <span data-val-result="sellerUserId" class="text-danger"></span>
+                        }
+                    </div>
+                    <div class="form-group col-12 col-md-3 pt-4 pb-2">
+                        <div class="form-check m-auto d-inline-block pt-3">
+                            <input class="form-check-input" type="checkbox" value="@Model.IsPublishedOnMainDomain" asp-for="@Model.IsPublishedOnMainDomain">
+                            <label class="form-check-label" asp-for="@Model.IsPublishedOnMainDomain">
+                                @UtilityLanguage.GetString("AlertAndMessage_IsPublishedOnMainDomain")
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-12 col-md-3">
+                        <label asp-for="@Model.ProductCode" class="form-label">@UtilityLanguage.GetString("tbl_ProductCode")</label>
+                        <input type="text" class="form-control" asp-for="@Model.ProductCode" value="@Model.ProductCode" placeholder=" " disabled>
+                        <span data-val-result="ProductCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label">@UtilityLanguage.GetString("Promotion")</label>
+                        <select class="form-control selectpicker" data-live-search="true" id="PromotionId" asp-items="@(new SelectList(ViewBag.PromotionList,"Value","Text"))">
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card border border-dark m-2">
+                            <div class="card-header">
+                                <div class="card-title">@UtilityLanguage.GetString("Menu_ProductSpecifications")</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="form-group col-12 col-md-2">
+                                        <label class="form-label">@UtilityLanguage.GetString("LanguageName")</label>
+                                        <select class="form-control selectpicker" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" data-live-search="true">
+                                        </select>
+                                        <span data-val-result="languageId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-12 col-md-3">
+                                        <label class="form-label">@UtilityLanguage.GetString("SpecificationGroup")</label>
+                                        <select class="form-control selectpicker" data-live-search="true" id="specGroupId" asp-items="@(new SelectList(ViewBag.SpecificationGroupList,"Value","Text"))" data-live-search="true">
+                                        </select>
+                                        <span data-val-result="specGroupId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-12 col-md-3">
+                                        <label class="form-label">@UtilityLanguage.GetString("tbl_SpecificationName")</label>
+                                        <select class="form-control selectpicker" data-live-search="true" id="specificationId">
+                                        </select>
+                                        <span data-val-result="specificationId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-11 col-md-3">
+                                        <label class="form-label">@UtilityLanguage.GetString("tbl_SpecificationValues")</label>
+                                        <select class="form-control selectpicker" multiple="multiple" id="specValues" data-live-search="true">
+                                        </select>
+                                        <span data-val-result="specValues" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-1 col-md-1" style="text-align:center;margin:auto;">
+                                        <div style="margin:auto;display:inline-block;">
+                                            <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addSpecToList();">
+                                                <i class="fa fa-plus pt-1"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-3 offset-md-3">
+                                        <span data-val-result="specifications" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:1%;">
+                                    <div class="col-12">
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr style="text-align:center;">
+                                                    <th>@UtilityLanguage.GetString("LanguageName")</th>
+                                                    <th style="display:none;"></th>
+                                                    <th>@UtilityLanguage.GetString("SpecificationGroup")</th>
+                                                    <th style="display:none;"></th>
+                                                    <th>@UtilityLanguage.GetString("tbl_SpecificationName")</th>
+                                                    <th style="display:none"></th>
+                                                    <th>@UtilityLanguage.GetString("tbl_SpecificationValues")</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="specificationList">
+                                                @if (Model.Specifications.Any())
+                                                {
+                                                    @foreach (ProductSpecificationValue item in Model.Specifications)
+                                                    {
+                                                        <tr style="text-align:center;">
+                                                            <td>@item.LanguageName</td>
+                                                            <td style="display:none;">@item.LanguageId</td>
+                                                            <td>@item.SpecificationGroupName</td>
+                                                            <td style="display:none;">@item.SpecificationGroupId</td>
+                                                            <td>@item.SpecificationName</td>
+                                                            <td style="display:none;">@item.SpecificationId</td>
+                                                            <td>@item.Values</td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-sm btn-danger bg-gradient" onclick="deleteFromSpecList(this)">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr style="text-align:center;">
+                                                        <td colspan="8">@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p class="m-2 col text-primary fs-6">
+                            <i class="fas fa-info-circle text-primary fs-6"></i>
+                            @UtilityLanguage.GetString("AlertAndMessage_SpecValuesInsertion")
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card border border-dark m-2">
+                            <div class="card-header">
+                                <div class="card-title"></div>
+                                <div class="card-title">
+                                    <a class="btn btn-success" data-bs-toggle="collapse" id="btnProductInventory" href="#specValueSection" role="button" aria-expanded="false" aria-controls="specValueSection">
+                                        @UtilityLanguage.GetString("Product_Inventories")
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row"><span data-val-result="specValues" class="text-danger"></span></div>
+                                <div class="row collapse gx-1" id="specValueSection">
+                                    <div class="row" id="specValuesFields"></div>
+                                    <div class="row py-2" id="specValuesTable">
+                                        <div class="col-12">
+                                            <table class="table table-hover table-bordered">
+                                                <thead>
+                                                    <tr style="text-align:center;">
+                                                        <th>@UtilityLanguage.GetString("Product_SpecificationsWithValues")</th>
+                                                        <th>@UtilityLanguage.GetString("Product_InventoryCount")</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="InventoryList">
+                                                    @if (Model.Inventory != null && Model.Inventory.Count != 0)
+                                                    {
+                                                        @foreach (InventoryDetail item in Model.Inventory)
+                                                        {
+                                                            <tr style="text-align:center;">
+                                                                <td>
+                                                                    @foreach (SpecValue spec in item.SpecValues)
+                                                                    {
+                                                                        <span class="specSpan" specName="@spec.SpecificationName" specid="@spec.SpecificationId" specVal="@spec.SpecificationValue">@spec.SpecificationName : @spec.SpecificationValue</span>  <br />
+                                                                    }
+
+                                                                </td>
+                                                                <td>@item.Count</td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-sm btn-danger btnDel bg-gradient" key="@item.SpecValuesId" onclick="deleteFromInventoryList(this);">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr style="text-align:center;">
+                                                            <td colspan="8">@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">@UtilityLanguage.GetString("MultiLingualProperty")</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <textarea id="product"></textarea>
+                                    </div>
+                                    <script src="@Url.Content("~/lib/tinymce/tinymce.min.js")"></script>
+                                    <script>
+                                        // Function to generate a random GUID
+                                        function generateGuid() {
+                                            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                                                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                                                return v.toString(16);
+                                            });
+                                        }
+
+                                        tinymce.init({
+                                            selector: 'textarea#product', // Ensure this matches your textarea's ID
+                                                                             license_key: 'gpl',
+                                                plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+                                                editimage_cors_hosts: ['picsum.photos'],
+                                                menubar: 'file edit view insert format tools table help',
+                                                toolbar: "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align numlist bullist | link image | table media | lineheight outdent indent | forecolor backcolor removeformat | charmap emoticons | code fullscreen preview | save print | pagebreak anchor codesample | ltr rtl",
+                                                autosave_ask_before_unload: true,
+                                                autosave_interval: '30s',
+                                                autosave_prefix: '{path}{query}-{id}-',
+                                                autosave_restore_when_empty: false,
+                                                autosave_retention: '2m',
+                                                image_advtab: true,
+
+                                                // ✅ Remove static contentId from here
+                                                // images_upload_url: '/Admin/File/UploadImage?contentId=' + encodeURIComponent(contentId),
+
+                                                        images_upload_handler: function (blobInfo, success, failure, progress) {
+                                            return new Promise((resolve, reject) => {
+                                                var contentId = generateGuid(); // ✅ Generate unique contentId per upload
+                                                var formData = new FormData();
+                                                formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+                                                var xhr = new XMLHttpRequest();
+                                                xhr.withCredentials = false;
+
+                                                // ✅ Send `contentId` as a query parameter
+                                                xhr.open('POST', `/Admin/File/UploadImage?contentId=${encodeURIComponent(contentId)}`);
+
+                                                xhr.upload.onprogress = function (e) {
+                                                    progress(e.loaded / e.total * 100);
+                                                };
+
+                                                xhr.onload = function () {
+                                                    if (xhr.status !== 200) {
+                                                        failure('HTTP Error: ' + xhr.status);
+                                                        reject(new Error('HTTP Error: ' + xhr.status));
+                                                        return;
+                                                    }
+
+                                                    try {
+                                                        var json = JSON.parse(xhr.responseText);
+                                                        if (!json || typeof json.location !== 'string') {
+                                                            throw new Error('Invalid response from server');
+                                                        }
+
+                                                        success(json.location); // Pass the uploaded image URL
+                                                        resolve(json.location);
+                                                    } catch (e) {
+                                                        failure('Invalid JSON: ' + xhr.responseText);
+                                                        reject(e);
+                                                    }
+                                                };
+
+                                                xhr.onerror = function () {
+                                                    failure('Image upload failed due to a network error.');
+                                                    reject(new Error('Image upload failed due to a network error.'));
+                                                };
+
+                                                xhr.send(formData);
+                                            });
+                                        },
+
+
+                                                file_picker_types: 'image',
+                                                file_picker_callback: function (callback, value, meta) {
+                                                    if (meta.filetype === 'image') {
+                                                        var input = document.createElement('input');
+                                                        input.setAttribute('type', 'file');
+                                                        input.setAttribute('accept', 'image/*');
+
+                                                        input.onchange = function () {
+                                                            var file = this.files[0];
+                                                            var reader = new FileReader();
+                                                            reader.onload = function () {
+                                                                callback(reader.result, {
+                                                                    alt: file.name
+                                                                });
+                                                            };
+                                                            reader.readAsDataURL(file);
+                                                        };
+
+                                                        input.click();
+                                                    }
+                                                },
+
+                                                importcss_append: true,
+                                                height: 600,
+                                                image_caption: true,
+                                                quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+                                                noneditable_class: 'mceNonEditable',
+                                                toolbar_mode: 'sliding',
+                                                contextmenu: 'link image table',
+                                                font_css: '/css/fonts.css',
+                                                font_family_formats: 'Arial=arial,helvetica,sans-serif; Montserrat=Montserrat,sans-serif; Roboto=Roboto,sans-serif; Source Sans Pro=Source Sans Pro,sans-serif; IBM Plex Sans=IBM Plex Sans,sans-serif; Ubuntu=Ubuntu,sans-serif;',
+                                                content_style: `
+                                                    body {
+                                                        font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+                                                    }
+                                                `,
+                                        });
+                                    </script>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-12 col-md-2">
+                                        <label class="form-label">@UtilityLanguage.GetString("LanguageName")</label>
+                                        <select class="form-control selectpicker" data-live-search="true" id="multiLangId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                                        </select>
+                                        <span data-val-result="multiLangId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-12 col-md-3">
+                                        <label class="form-label">@UtilityLanguage.GetString("tbl_ProductName")</label>
+                                        <input type="text" class="form-control" id="productName" placeholder="" />
+                                        <span data-val-result="productName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-12 col-md-3">
+                                        <label class="form-label">@UtilityLanguage.GetString("UrlFriend")</label>
+                                        <input type="text" class="form-control" dir="ltr" id="urlFriend" placeholder=" " />
+                                        <span data-val-result="urlFriend" class="text-danger"></span>
+
+                                    </div>
+                                    <div class="form-group col-12 col-md-3">
+                                        <label class="form-label">@UtilityLanguage.GetString("SeoTitle")</label>
+                                        <input type="text" class="form-control" id="seoTitle" placeholder=" " maxlength="70">
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-12 col-md-3">
+                                        <label class="form-label">@UtilityLanguage.GetString("SeoDescription")</label>
+                                        <input type="text" class="form-control" id="seoDescription" placeholder=" " maxlength="150">
+
+                                    </div>
+                                    <div class="form-group col-12 col-md-3">
+                                        <label class="form-label">@UtilityLanguage.GetString("Description")</label>
+                                        <input type="text" class="form-control" id="description" placeholder=" ">
+
+                                    </div>
+                                    <div class="form-group col-12 col-md-3">
+                                        <span data-val-result="multiLinguals" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-12 col-md-3" style="text-align:center;margin:auto;">
+                                        <div style="margin:auto;display:inline-block;">
+                                            <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addToTable();">
+                                                <i class="fa fa-plus pt-1"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr style="text-align:center;">
+                                                    <th>@UtilityLanguage.GetString("LanguageName")</th>
+                                                    <th style="display:none;"></th>
+                                                    <th>@UtilityLanguage.GetString("tbl_ProductName")</th>
+                                                    <th>@UtilityLanguage.GetString("SeoTitle")</th>
+                                                    <th>@UtilityLanguage.GetString("SeoDescription")</th>
+                                                    <th>@UtilityLanguage.GetString("Description")</th>
+                                                    <th>@UtilityLanguage.GetString("UrlFriend")</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="multiLingualList">
+                                                @if (Model.MultiLingualProperties.Count != 0)
+                                                {
+                                                    @foreach (MultiLingualProperty item in Model.MultiLingualProperties)
+                                                    {
+                                                        <tr style="text-align:center;">
+                                                            <td>@item.LanguageName</td>
+                                                            <td style="display:none;">@item.LanguageId</td>
+                                                            <td>@item.Name</td>
+                                                            <td>@item.SeoTitle</td>
+                                                            <td>@item.SeoDescription</td>
+                                                            <td>@item.Description</td>
+                                                            <td dir="ltr">@(!string.IsNullOrWhiteSpace(item.UrlFriend) ? item.UrlFriend.Replace("/product/", "") : item.UrlFriend)</td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-sm btn-danger btnDel bg-gradient" cnt="@item.Tag" onclick="deleteFromTable(this);">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr style="text-align:center;">
+                                                        <td colspan="8">@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                    </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">@UtilityLanguage.GetString("PriceHistory")</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="form-group col-12 col-md-3">
+                                        <label class="form-label">@UtilityLanguage.GetString("Currency")</label>
+                                        <select class="form-control selectpicker" data-live-search="true" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
+                                        </select>
+                                        <span data-val-result="currencyId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-12 col-md-2">
+                                        <label class="form-label">@UtilityLanguage.GetString("PriceValue")</label>
+                                        <input type="number" class="form-control" id="priceValue" />
+                                        <span data-val-result="priceValue" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-11 col-md-3">
+                                        <label class="form-label">@UtilityLanguage.GetString("StartDate")</label>
+
+                                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                                        {
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                                <input autocomplete="off" id="dtpStartDate" type="text" class="form-control" />
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="input-group date" data-provide="datepicker">
+                                                <input type="text" class="form-control datepicker" id="dtpStartDate">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+                                        }
+                                        <span data-val-result="startDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-1" style="text-align:center;margin:auto;">
+                                        <div style="margin:auto;display:inline-block;">
+                                            <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addPriceToList();">
+                                                <i class="fa fa-plus pt-1"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-12 col-md-3">
+                                        <span data-val-result="priceList" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr style="text-align:center;">
+                                                    <th>@UtilityLanguage.GetString("Currency")</th>
+                                                    <th style="display:none;"></th>
+                                                    <th>@UtilityLanguage.GetString("PriceValue")</th>
+                                                    <th>@UtilityLanguage.GetString("StartDate")</th>
+                                                    <th>@UtilityLanguage.GetString("EndDate")</th>
+                                                    <th>@UtilityLanguage.GetString("ActivationState")</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="priceList">
+                                                @if (Model.Prices.Count != 0)
+                                                {
+                                                    @foreach (Price price in Model.Prices)
+                                                    {
+                                                        <tr style="text-align:center;">
+                                                            <td>@price.CurrencyName</td>
+                                                            <td style="display:none;">@price.CurrencyId</td>
+                                                            <td>@($"{Convert.ToInt64(@price.PriceValue):n0}")</td>
+                                                            <td class="ltr">@price.StartDate.ToString().Split(" ")[0]</td>
+                                                            <td class="ltr">@(@price.EndDate != null ? price.EndDate.Value.ToString(CultureInfo.InvariantCulture).Split(" ")[0] : "")</td>
+                                                            <td>@(price.IsActive ? UtilityLanguage.GetString("Active") : UtilityLanguage.GetString("InActive")) </td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-sm btn-danger bg-gradient" onclick="deleteFromPriceList(this);">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr style="text-align:center;">
+                                                        <td colspan="6">@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                    </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">@UtilityLanguage.GetString("tbl_ProductImages")</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 border pt-3">
+                                        <label class="form-label custom-file-label float-start pt-2" for="image">@UtilityLanguage.GetString("btn_UploadImage")</label>
+                                        <input accept="image/x-png,image/jpeg"
+                                               type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)" />
+                                    </div>
+                                    <div class="col-12 col-md-2 mb-1">
+                                        <label class="form-label">@UtilityLanguage.GetString("tbl_AspectRatioImage")</label>
+                                        <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true"
+                                                asp-items="@(new SelectList(ViewBag.ImageRatio,"Value","Text"))"></select>
+                                    </div>
+                                </div>
+                                <div class="row" id="proGallery" style="padding:1%;">
+                                    <div class="col-12">
+                                         <table class="table table-hover table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>@UtilityLanguage.GetString("Image")</th>
+                                                <th class="d-none"></th>
+                                                <th>@UtilityLanguage.GetString("tbl_AspectRatioImage")</th>
+                                                <th class="d-none"></th>
+                                                <th>@UtilityLanguage.GetString("Title")</th>
+                                                <th>@UtilityLanguage.GetString("Description")</th>
+                                                <th>@UtilityLanguage.GetString("MainPhoto")</th>
+                                                <th>@UtilityLanguage.GetString("ImageTemplateType")</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="imageList">
+                                            @{
+                                                foreach (Image pic in Model.Images)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <img src="data:image/png;base64,@pic.Content" style="width: 120px;" alt="Image Preview" />
+                                                        </td>
+                                                        <td class="d-none">@pic.Counter</td>
+                                                        <td class="txtImageRatio">@pic.ImageRatio.GetDescription()</td>
+                                                        <td class="d-none txtImageRatioId">@((int)pic.ImageRatio)</td>
+                                                        <td>
+                                                            <input type="text" class="form-control txtTitle" value="@pic.Title" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control txtDesc" value="@pic.Description" />
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check d-flex justify-content-center p-0">
+                                                                <input class="form-check-input rdbIsMain" type="radio" checked="@pic.IsMain" name="isMainImage_@pic.ImageId" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check d-flex justify-content-center p-0">
+                                                                <select id="@($"select_{index}")" class="form-control selectpicker txtImageTemplate" data-live-search="true" asp-for="@pic.ImageTemplateTypes" multiple asp-items="@(new SelectList(ViewBag.ImageTemplate, "Value", "Text", pic.ImageTemplateTypes))">
+                                                                </select>
+                                                            </div>
+                                                        </td>
+                                                        <td class="d-none">@pic.ImageId</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-sm btn-danger bg-gradient" imgId="img_@pic.Counter" onclick="deleteFromImageList(this);">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-md-4 offset-md-8 col-12">
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@UtilityLanguage.GetString("btn_Back")</a>
+                        <input type="button" id="btnAddProduct" value="@UtilityLanguage.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content($"~/lib/cropperjs/cropper.js")"></script>
+@*<script src="~/plugins/select2/js/select2.js"></script>*@
+
+@if (CultureInfo.CurrentCulture.Name == "fa-IR")
+{
+    <script src="@Url.Content($"~/lib/datePicker/kamadatepicker.min.js")"></script>
+}
+else
+{
+    <script src="@Url.Content($"~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
+}
+<script src="@Url.Content($"~/js/character-counter.js")"></script>
+<script>
+    var fileName;
+    var fileContent;
+    var globalSender;
+    var cropper;
+    var productFileContent;
+    var currentFileSize;
+    var currentFileName;
+    var images = [];
+    var cnt = @count ;
+    var multiLingualArr = [];
+    var specIdValues = [];
+    var counter = 1000;
+    var active = '@UtilityLanguage.GetString("Active")';
+    var inActive = '@UtilityLanguage.GetString("InActive")';
+
+
+    $(document).ready(function () {
+        
+
+        $("#languageId").val("@ViewBag.LangId");
+        $("#languageId").selectpicker("refresh");
+
+        $("#seoTitle").characterCounter({
+            //opacity : ".8",
+            max: 70,
+            color: "red"
+        });
+        $("#seoDescription").characterCounter({
+            //opacity : ".8",
+            max: 150,
+            color: "red"
+        });
+
+        var multiLingualList = @Json.Serialize(@Model.MultiLingualProperties);
+
+        for (var i = 0; i < multiLingualList.length; i++) {
+
+            var obj = {};
+            obj.Tag = multiLingualList[i].tag;
+            obj.MultiLingualPropertyId = multiLingualList[i].multiLingualPropertyId;
+            obj.Name = multiLingualList[i].name;
+            obj.LanguageId = multiLingualList[i].languageId;
+            obj.LanguageName = multiLingualList[i].languageName;
+            obj.SeoTitle = multiLingualList[i].seoTitle;
+            obj.SeoDescription = multiLingualList[i].seoDescription;
+            obj.Description = multiLingualList[i].description;
+            obj.UrlFriend = multiLingualList[i].urlFriend;
+            obj.BodyContent = multiLingualList[i].bodyContent;
+
+            multiLingualArr.push(obj);
+        }
+
+
+        //datetimepicker
+        if ("@CultureInfo.CurrentCulture.Name" == "fa-IR") {
+            kamaDatepicker('dtpStartDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+        }
+        else {
+            $('.datepicker').datepicker();
+        }
+        //multiselect
+
+        if ('@Model.Images.Any()' == 'True') {
+
+            var serverImages = @Json.Serialize(@Model.Images);
+            for (var i = 0; i < serverImages.length; i++) {
+                var model = {};
+                model.Counter = serverImages[i].counter;
+                model.ImageId = serverImages[i].imageId
+                model.Title = serverImages[i].title;
+                model.Description = serverImages[i].description;
+                model.Content = serverImages[i].content;
+                model.IsMain = serverImages[i].isMain;
+                model.IsShowInHomePage = serverImages[i].isShowInHomePage;
+                model.IsShowInMainPage = serverImages[i].isShowInMainPage;
+                model.Url = serverImages[i].url;
+
+                images.push(model);
+            }
+        }
+
+        
+        if ('@Model.ProductType' == "File") {
+            $(".downloadType").removeClass("d-none");
+            $(".productFileUpload").removeClass("d-none");
+            switch ('@Model.DownloadLimitationType') {
+                case "NoLimitation": //nolimitation
+                    $(".timeDuration").addClass("d-none");
+                    $(".downloadCnt").addClass("d-none");
+                    break;
+                case "TimeDuration": //timeduration
+                    $(".timeDuration").removeClass("d-none");
+                    $(".downloadCnt").addClass("d-none");
+                    break;
+                case "TimeDurationWithCnt": //timedurationwithcount
+                    $(".timeDuration").removeClass("d-none");
+                    $(".downloadCnt").removeClass("d-none");
+                    break;
+                case "DownloadCount"://downloadedcount
+                    $(".timeDuration").addClass("d-none");
+                    $(".downloadCnt").removeClass("d-none");
+                    break;
+            }
+        }
+
+        $("#languageId").val('@ViewBag.LangId');
+        $("#languageId").selectpicker("refresh");
+        $("#multiLangId").val('@ViewBag.LangId');
+        $("#multiLangId").selectpicker("refresh");
+        $("#currencyId").val('@ViewBag.DefCurrency');
+        $("#currencyId").selectpicker("refresh");
+
+        if ("@ViewBag.ActivePromotionId" != "-1") {
+            $("#promotionId").val("@ViewBag.ActivePromotionId");
+            $("#promotionId").selectpicker("refresh");
+        }
+
+        $("#btnAddProduct").click(function () {
+            
+            var flag = false;
+
+
+            if ($("#GroupIds").val().length == 0) {
+                $("span[data-val-result='GroupIds']").html('@UtilityLanguage.GetString("AlertAndMessage_SelectAtLeastOneItem")');
+                flag = true;
+            }
+            if (($("#ProductType").val() == "1" && $("#Unit_Id").val() == "-1") || $("#Unit_Id").val() == "") {
+                $("span[data-val-result='productUnitId']").html('@UtilityLanguage.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ('@ViewBag.Vendors' != "-1" && $("#SellerUserId").val() == "-1") {
+
+                $("span[data-val-result='sellerUserId']").html('@UtilityLanguage.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#specificationList tr").length == 0 || ($("#specificationList tr").length == 1 && $("#specificationList tr")[0].children.length == 1)) {
+                $("span[data-val-result='specifications']").html('@UtilityLanguage.GetString("AlertAndMessage_Specifications")');
+                flag = true;
+            }
+            if ($("#multiLingualList tr").length == 0 || ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1)) {
+                $("span[data-val-result='multiLinguals']").html('@UtilityLanguage.GetString("AlertAndMessage_FillMultiLingualProperty")');
+                flag = true;
+            }
+            if ($("#priceList tr").length == 0 || ($("#priceList tr").length == 1 && $("#priceList tr")[0].children.length == 1)) {
+                $("span[data-val-result='priceList']").html('@UtilityLanguage.GetString("AlertAndMessage_FillPriceList")');
+                flag = true;
+            }
+
+            if ($("#ProductType").val() == "") {
+                $("span[data-val-result='ProductType']").html('@UtilityLanguage.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+
+            if ($("#ProductType").val() == "2" && $("#DownloadLimitationType").val() == "-1") {
+                $("span[data-val-result='DownloadLimitationType']").html('@UtilityLanguage.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#ProductType").val() == "2" && $("#DownloadLimitationType").val() == "2" && $("#AllowedDownloadDurationDay").val() == "") {
+                $("span[data-val-result='AllowedDownloadDurationDay']").html('@UtilityLanguage.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#ProductType").val() == "2" && $("#DownloadLimitationType").val() == "3" &&
+                ($("#AllowedDownloadDurationDay").val() == "" || $("#AllowedDownloadCount").val() == "")) {
+                $("span[data-val-result='AllowedDownloadCount']").html('@UtilityLanguage.GetString("AlertAndMessage_FillEssentialFields")');
+                $("span[data-val-result='AllowedDownloadDurationDay']").html('@UtilityLanguage.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+
+            if ($("#ProductType").val() == "2" && $("#DownloadLimitationType").val() == "4" && $("#AllowedDownloadCount").val() == "") {
+                $("span[data-val-result='AllowedDownloadCount']").html('@UtilityLanguage.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#ProductType").val() == "2" && !$("#ProductFileContent").prop("files")[0]) {
+                $("span[data-val-result='ProductFileContent']").html('@UtilityLanguage.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#AssociatedDomainId").val() == "") {
+                $("span[data-val-result='AssociatedDomainId']").html('@UtilityLanguage.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            
+            if (!flag) {
+                var dto = FillDataToSend();
+                
+                $.ajax({
+                    url: "@Model.Id" != "" ? '@Url.Action("Edit", "Product")' : '@Url.Action("Add", "Product")' + "?isFromContent=false",
+                    contentType: 'application/json',
+                    data: JSON.stringify(dto),
+                    type: 'Post',
+                    dataType: 'json',
+                    beforeSend: function () {
+                        /* AddLoading($("#addProductCard"));*/
+                    },
+                    success: function (result) {
+
+                        if (result.status === "Success") {
+                            
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + result.message;
+                            $('#mainToastBody').removeClass("text-bg-danger");
+                            $('#mainToastBody').addClass("text-bg-success");
+                            $("#toastPanel").show();
+                            var bsAlert = new bootstrap.Toast($("#mainToast"));
+                            bsAlert.show();
+                            setTimeout(function () {
+                                $("#toastPanel").hide();
+                                window.location.href = '@Url.Action("List")';
+                            },
+                                3000);
+                        }
+                        else
+                            if (result.status === "ModelError") {
+                                var spanErrorList = $('span[data-val-result]');
+                                if (spanErrorList.length > 1) {
+                                    spanErrorList.each(function () {
+                                        $(this).html("");
+                                        $(this).parent().removeClass("has-error");
+                                    });
+                                }
+                                else {
+                                    spanErrorList.html("");
+                                    spanErrorList.parent().removeClass("has-error");
+                                }
+
+                                if (result.modelStateErrors != null && result.modelStateErrors.length > 0) {
+                                    
+                                    result.modelStateErrors.forEach(function (value, index) {
+                                        $('[data-val-result=' + value.key + ']').append(value.errorMessage);
+                                        $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                    });
+                                }
+                                else {
+                                    showError(result.message);
+                                }
+                            }
+                            else
+                                if (result.status == "Error") {
+                                    showError(result.message);
+                                }
+                    },
+                    //error: function (xhr, ajaxOptions, thrownError) {
+                    //    alert("@error");
+                    //    alert(xhr.status);
+                    //    alert(thrownError);
+                    //},
+                    complete: function () {
+                        /* removeLoading($("#addProductCard"));*/
+                    }
+                });
+            }
+        });
+
+            $("#send_pic").click(function () {
+                
+                $("#uploadModal").modal("hide");
+
+                var url = $("#galleryPic").attr("src");
+                if (!url) {
+                    url = $('#croppedImg').attr('src');
+                }
+
+                var model = {};
+                model.Counter = counter;
+
+                var width = "";
+                var height = "";
+                var ratio = "";
+
+                switch ($("#imgAspectRatio").val()) {
+                    case "1":
+                        ratio = "1*1";
+                        width = 120;
+                        height = 120;
+                        break;
+                    case "2":
+                        ratio = "2*1";
+                        width = 120;
+                        height = 60;
+                        break;
+                    case "4":
+                        ratio = "4*1";
+                        width = 120;
+                        height = 30;
+                        break;
+                }
+
+                model.Content = url;
+                model.FileName = currentFileName;
+                images.push(model);
+
+                
+                // Deserialize the JSON from the server-side ViewBag.ImageTemplate
+                var jsonString = GetDecoded('@(JsonConvert.SerializeObject(ViewBag.ImageTemplate))');
+                var imageTemplates = JSON.parse(jsonString);
+
+                // Build the <select> options dynamically
+                var options = '';
+                imageTemplates.forEach(function (template) {
+                    options += "<option value='" + template.Value + "'>" + template.Text + "</option>";
+                });
+
+                // Use Razor syntax to inject the server-side index value
+                var currentIndex = @index; // This will embed the current value of 'index' into JavaScript
+
+                // Create the dynamic row with the generated options
+                var tr = "<tr>" +
+                    "<td><img imgId='img_" + counter + "' src='" + model.Content + "' width='" + width + "' height='" + height + "'/></td>" +
+                    "<td class='d-none'>" + model.Counter + "</td>" +
+                    "<td class='txtImageRatio'>" + ratio + "</td>" +
+                    "<td class='d-none txtImageRatioId'>" + $("#imgAspectRatio").val() + "</td>" +
+                    "<td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeholder='" + '@UtilityLanguage.GetString("Title")' + "'/></td>" +
+                    "<td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeholder='" + '@UtilityLanguage.GetString("Description")' + "'/></td>" +
+                    "<td style='vertical-align:middle;'>" +
+                    "<div class='form-check d-flex justify-content-center p-0'>" +
+                    "<input type='radio' name='isMainImage_" + counter + "' class='form-check-input rdbIsMain'>" +
+                    "</div>" +
+                    "</td>" +
+                    "<td>" +
+                    "<div class='form-check d-flex justify-content-center p-0'>" +
+                    "<select id='select_" + currentIndex + "' class='form-control selectpicker txtImageTemplate' multiple data-live-search='true'>" +
+                    options +
+                    "</select>" +
+                    "</div>" +
+                    "</td>" +
+                    "<td class='d-none'>" + model.ImageId + "</td>" +
+                    "<td style='vertical-align:middle;'>" +
+                    "<button type='button' class='btn btn-sm btn-danger bg-gradient' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'>" +
+                    "<i class='fa fa-trash'></i>" +
+                    "</button>" +
+                    "</td>" +
+                    "</tr>";
+
+                // Append the row to the table
+                $('#imageList').append(tr);
+                // Re-initialize the selectpicker to ensure the dropdown works
+                $('.selectpicker').selectpicker('refresh');
+
+                counter += 1;
+            });
+
+        $("#languageId").change(function () {
+
+            var langId = $("#languageId").val();
+            var did = $("#AssociatedDomainId").val();
+
+            $.ajax({
+                url: '@Url.Action("GetSpecificationGroupList", "ProductSpecificationGroup")' + "?lid=" + langId + "&did=" + did,
+                type: 'Get',
+                dataType: 'json',
+                success: function (result) {
+
+                    var options = "<option value='-1'> " + '@UtilityLanguage.GetString("AlertAndMessage_Choose")' + " </option>";
+                    if (result.status === "success") {
+
+                        if (result.data.length != 0) {
+                            (result.data).forEach(function (item) {
+                                var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                options += op;
+                            });
+
+                            $("#specGroupId").html(options);
+                            $("#specGroupId").selectpicker("refresh");
+                        }
+                    } else {
+                        showError(result.message);
+                    }
+                }//,
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    alert("@error");
+                //    alert(xhr.status);
+                //    alert(thrownError);
+                //}
+            });
+        });
+
+
+        $("#AssociatedDomainId").change(function () {
+            
+
+            var langId = $("#languageId").val();
+            var did = $("#AssociatedDomainId").val();
+            if (did != "" && langId != "") {
+                $.ajax({
+                    url: `@Url.Action("GetProductUnitList", "ProductUnit")?lid=${langId}&did=${did}`,
+                    type: 'Get',
+                    dataType: 'json',
+                    success: function (result) {
+                        
+                        var options = "";
+                        if (result.status === "success") {
+                            
+                            if (result.data.length != 0) {
+                                (result.data).forEach(function (item) {
+                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                    options += op;
+                                });
+
+                                $("#Unit_Id").html(options);
+                                $("#Unit_Id").selectpicker("refresh");
+                            }
+                        } else {
+                            showError(result.message);
+                        }
+                    }//,
+                    //error: function (xhr, ajaxOptions, thrownError) {
+                    //    alert("@error");
+                    //    alert(xhr.status);
+                    //    alert(thrownError);
+                    //}
+                });
+            }
+
+        })
+
+        $("#specGroupId").change(function () {
+            
+            var langId = $("#languageId").val();
+            var groupId = $("#specGroupId").val();
+            var domainId = $("#AssociatedDomainId").val();
+            if (groupId != "") {
+                $.ajax({
+                    url: '@Url.Action("GetSpecificationInGroupAndLang", "ProductSpecification")' + "?groupId=" + groupId + "&langId=" + langId + "&domainId=" + domainId,
+                    type: 'Get',
+                    dataType: 'json',
+                    success: function (result) {
+                        
+                        var options = "<option value='-1'> " + '@UtilityLanguage.GetString("AlertAndMessage_Choose")' + " </option>";
+                        if (result.status === "success") {
+
+                            if (result.data.length != 0) {
+                                (result.data).forEach(function (item) {
+                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                    options += op;
+                                });
+
+                                $("#specificationId").html(options);
+                                $("#specificationId").selectpicker('refresh');
+                            }
+                        } else {
+                            showError(result.message);
+                        }
+                    },
+                    error: function (xhr, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+            }
+        });
+
+        $("#specificationId").change(function () {
+            
+            var langId = $("#languageId").val();
+            var specId = $("#specificationId").val();
+            if (specId != "-1") {
+                $.ajax({
+                    url: '@Url.Action("GetSpecificationValuesInLanguage", "ProductSpecification")' + "?specId=" + specId + "&langId=" + langId,
+                    type: 'Get',
+                    dataType: 'json',
+                    success: function (result) {
+
+                        var options = "<option value='-1'> " + '@UtilityLanguage.GetString("AlertAndMessage_Choose")' + " </option>";
+                        if (result.status === "success") {
+
+                            if (result.data.length != 0) {
+                                (result.data).forEach(function (item) {
+                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                    options += op;
+                                });
+                                $("#specValues").empty();
+                                $("#specValues").html(options);
+                                $("#specValues").selectpicker('refresh');
+                            }
+                        } else {
+                            showError(result.message);
+                        }
+                    },
+                    error: function (xhr, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+            }
+        });
+
+        $("#ProductType").change(function () {
+
+            var typeId = $("#ProductType").val();
+            if (typeId == "2") //file
+            {
+                $(".downloadType").removeClass("d-none");
+                $(".productFileUpload").removeClass("d-none");
+            } else {
+                $(".fileSec").addClass("d-none");
+
+            }
+        });
+
+
+        $("#DownloadLimitationType").change(function () {
+            
+            var typeId = $("#DownloadLimitationType").val();
+            switch (typeId) {
+                case "1": //nolimitation
+                    $(".timeDuration").addClass("d-none");
+                    $(".downloadCnt").addClass("d-none");
+                    break;
+                case "2": //timeduration
+                    $(".timeDuration").removeClass("d-none");
+                    $(".downloadCnt").addClass("d-none");
+                    break;
+                case "3": //timedurationwithcount
+                    $(".timeDuration").removeClass("d-none");
+                    $(".downloadCnt").removeClass("d-none");
+                    break;
+                case "4"://downloadedcount
+                    $(".timeDuration").addClass("d-none");
+                    $(".downloadCnt").removeClass("d-none");
+                    break;
+            }
+        });
+    });
+
+    $('#ProductFileContent').on('change', function () {
+        
+        var fileReader = new FileReader();
+        fileReader.onload = function () {
+            productFileContent = fileReader.result;
+        };
+        fileReader.readAsDataURL($('#ProductFileContent').prop('files')[0]);
+    });
+
+
+    function onConfirmDialog() {
+        $(globalSender).parent().find("td:eq(5)").text(inActive);
+        appendToPriceList(tr);
+    }
+
+    function deleteFromImageList(sender) {
+
+        var id = $(sender).attr("imgId");
+        //removeFromArray
+        var item = images.find(_ => _.Counter === id);
+        var index = images.indexOf(item);
+        images.splice(index, 1);
+        //remove in view
+        $(sender).parent().parent().remove();
+    }
+
+    function addPriceToList() {
+
+        var flag = false;
+        $("span[data-val-result='priceValue']").html("");
+        $("span[data-val-result='startDate']").html("");
+        $("span[data-val-result='endDate']").html("");
+        if ($("#priceValue").val() == "") {
+            $("span[data-val-result='priceValue']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+            flag = true;
+        }
+        if ($("#dtpStartDate").val() == "") {
+            $("span[data-val-result='startDate']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+            flag = true;
+        }
+
+        if (!flag) {
+            var currencyId = $('#currencyId').val();
+
+            var tr = "";
+            if ($("#priceList").find("td:eq(1)").length > 0) {
+                $("#priceList").find("td:eq(1)").each(function () {
+
+                    if ($(this).text() == currencyId && $(this).parent().find("td:eq(4)").text() == "" &&
+                        $(this).parent().find("td:eq(5)").text().trim() == active) {
+                        /*confirm = false;*/
+
+                        globalSender = this;
+                        document.getElementById('confirmLabel').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_AreYouSure")';
+                        document.getElementById('confirmBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_PricePerCurrencyUniqueness")';
+                        $('#showModal').modal('show');
+
+                    }
+                });
+            } else {
+                appendToPriceList(tr);
+            }
+        }
+    }
+
+    function appendToPriceList(tr) {
+        tr = "<tr style='text-align:center;'><td>" + $("#currencyId option:selected").text() +
+            "</td><td style='display:none;'>" + $('#currencyId').val() +
+            "</td><td>" + $('#priceValue').val().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+            "</td><td style='direction:ltr;'>" + $("#dtpStartDate").val() +
+            "</td><td></td><td>" + active +
+            "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromPriceList(this);'>" +
+            "<i class='fa fa-trash' ></i></button></td></tr>";
+        if ($("#priceList tr").length == 1 && $("#priceList tr")[0].children.length == 1) {
+            $("#priceList tr")[0].remove();
+        }
+        $("#priceList").append(tr);
+        $("#currencyId").val('@ViewBag.DefCurrency');
+        $("#currencyId").selectpicker("refresh");
+        $("#priceValue").val("0");
+        $("#dtpStartDate").val("");
+    }
+
+    function deleteFromPriceList(sender) {
+        var tr = $(sender).parent().parent();
+        $(tr).remove();
+    }
+
+    function addSpecToList() {
+        
+        var selectedLang = $("#LanguageId").val();
+
+        var flag = false;
+        $("span[data-val-result='languageId']").html("");
+        $("span[data-val-result='specGroupId']").html("");
+        $("span[data-val-result='specificationId']").html("");
+        $("span[data-val-result='specValues']").html("");
+
+        if ($("#languageId").val() == "-1") {
+            $("span[data-val-result='languageId']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+            flag = true;
+        }
+        if ($("#specGroupId").val() == "-1") {
+            $("span[data-val-result='specGroupId']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+            flag = true;
+        }
+        if ($("#specificationId").val() == "-1") {
+            $("span[data-val-result='specificationId']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+            flag = true;
+        }
+        if ($("#specValues").val().length == 0) {
+            $("span[data-val-result='specValues']").html('@UtilityLanguage.GetString("AlertAndMessage_SelectAtLeastOneItem")');
+            flag = true;
+        }
+
+        if (!flag) {
+            var vals = "";
+            for (var i = 0; i < $("#specValues option:selected").length; i++) {
+
+                vals += $("#specValues option:selected")[i].innerText + "|";
+            }
+            //remove last '|'
+            vals = vals.substring(0, vals.length - 1);
+
+            var tr = "<tr style='text-align:center;'><td>" + $("#languageId option:selected").text() +
+                "</td><td style='display:none;'>" + $('#languageId').val() +
+                "</td><td>" + $('#specGroupId option:selected').text() +
+                "</td><td style='display:none;'>" + $('#specGroupId').val() +
+                "</td><td>" + $("#specificationId option:selected").text() +
+                "</td><td style='display:none;'>" + $("#specificationId").val() +
+                "</td><td>" + vals +
+                "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromSpecList(this)'>" +
+                "<i class='fa fa-trash'></i></button></td></tr>";
+
+
+            if ($("#specificationList tr").length == 1 && $("#specificationList tr")[0].children.length == 1) {
+                $("#specificationList tr")[0].remove();
+            }
+
+            $("#specificationList").append(tr);
+            $("#languageId").val("@ViewBag.LangId");
+            $("#languageId").selectpicker("refresh");
+            $("#specGroupId").val("-1");
+            $("#specGroupId").selectpicker("refresh");
+            $("#specificationId").val("-1");
+            $("#specificationId").selectpicker("refresh");
+
+            if ($("#InventoryList tr").length > 0 && $("#InventoryList tr")[0].children.length > 1 && $("#specValues option:selected").length > 1) {
+                document.getElementById('mainToastBody').innerHTML = "<i class='fas fa-exclamation-triangle'></i>" + '@UtilityLanguage.GetString("AlertAndMessage_UpdateProductInventory")';
+                $('#mainToastBody').removeClass('text-bg-success');
+                $('#mainToastBody').addClass('text-bg-danger');
+                $("#toastPanel").show();
+                var toast = new bootstrap.Toast($("#mainToast"));
+                toast.show();
+                setTimeout(function () {
+                    $("#toastPanel").hide();
+                }, 4000)
+                if (!$("#specValueSection").hasClass("collapse")) {
+                    $("#specValueSection").addClass("collapse");
+                }
+            }
+
+            $("#specValues").empty();
+            $("#specValues").selectpicker('refresh');
+
+
+
+        }
+    }
+
+    function deleteFromSpecList(sender) {
+        var tr = $(sender).parent().parent();
+        $(tr).remove();
+
+        document.getElementById('mainToastBody').innerHTML = "<i class='fas fa-exclamation-triangle'></i>" + '@UtilityLanguage.GetString("AlertAndMessage_UpdateProductInventory")';
+        $('#mainToastBody').removeClass('text-bg-success');
+        $('#mainToastBody').addClass('text-bg-danger');
+        $("#toastPanel").show();
+        var toast = new bootstrap.Toast($("#mainToast"));
+        toast.show();
+        setTimeout(function () {
+            $("#toastPanel").hide();
+        }, 4000)
+        if (!$("#specValueSection").hasClass("collapse")) {
+            $("#specValueSection").addClass("collapse");
+        }
+    }
+
+    function FillDataToSend() {
+        debugger
+        var dto = {};
+        dto.GroupNames = [];
+        dto.GroupIds = [];
+        dto.MultiLingualProperties = [];
+        dto.Specifications = [];
+        dto.Pictures = [];
+        dto.Prices = [];
+        dto.Inventory = [];
+        dto.Id = $("#Id").val();
+        dto.IsActive = true;
+        dto.ProductCode = Number($("#ProductCode").val());
+
+        //domainId
+        dto.AssociatedDomainId = $("#AssociatedDomainId").val();
+
+        //groupIds
+        for (var i = 0; i < $("#GroupIds").val().length; i++) {
+            
+            dto.GroupIds.push($("#GroupIds").val()[i]);
+        }
+
+        //GroupNames
+        for (var i = 0; i < $("#GroupIds option:selected").length; i++) {
+
+            dto.GroupNames.push($("#GroupIds option:selected")[i].innerText);
+        }
+
+        //multilingualProperties
+        
+        dto.MultiLingualProperties = multiLingualArr;
+
+
+        //downloadLimitation
+        
+        dto.ProductType = parseInt($("#ProductType").val());
+        if ($("#ProductType").val() == "2") {
+            dto.DownloadLimitationType = parseInt($("#DownloadLimitationType").val());
+        }
+
+        if ($("#DownloadLimitationType").val() == "2") {
+            dto.AllowedDownloadDurationDay = $("#AllowedDownloadDurationDay").val();
+        }
+        else
+            if ($("#DownloadLimitationType").val() == "3") {
+                dto.AllowedDownloadDurationDay = $("#AllowedDownloadDurationDay").val();
+                dto.AllowedDownloadCount = $("#AllowedDownloadCount").val();
+            }
+            else
+                if ($("#DownloadLimitationType").val() == "4") {
+                    dto.AllowedDownloadCount = $("#AllowedDownloadCount").val();
+                }
+
+        //ProductFile
+        var file = $("#ProductFileContent").prop("files")[0];
+        if (file != undefined) {
+            dto.ProductFileContent = productFileContent
+            dto.ProductFileName = file.name;
+        }
+
+
+        //prices
+        $("#priceList tr").each(function () {
+
+            var innerModel = {};
+            innerModel.CurrencyId = $(this).find("td:eq(1)").text();
+            innerModel.CurrencyName = $(this).find("td:eq(0)").text();
+            
+            innerModel.PriceValue = parseFloat($(this).find("td:eq(2)").text().replace(/,/g, ""));
+            innerModel.StartDate = $(this).find("td:eq(3)").text();//string
+            innerModel.EndDate = $(this).find("td:eq(4)").text(); //string
+
+            if ($(this).find("td:eq(5)").text().trim() == active)
+                innerModel.IsActive = true;
+            else
+                innerModel.IsActive = false;
+            innerModel.PriceId = "";
+            innerModel.Symbol = "";
+            innerModel.Prefix = "";
+
+            dto.Prices.push(innerModel);
+        });
+
+        //specifications
+        $("#specificationList tr").each(function () {
+            var innerModel = {};
+            innerModel.LanguageName = $(this).find("td:eq(0)").text();
+            innerModel.LanguageId = $(this).find("td:eq(1)").text();
+            innerModel.SpecificationGroupName = $(this).find("td:eq(2)").text();
+            innerModel.SpecificationGroupId = $(this).find("td:eq(3)").text();
+            innerModel.SpecificationName = $(this).find("td:eq(4)").text();
+            innerModel.SpecificationId = $(this).find("td:eq(5)").text();
+            innerModel.Values = $(this).find("td:eq(6)").text();
+
+            dto.Specifications.push(innerModel);
+        });
+
+        //inventory detail list
+        $("#InventoryList tr").each(function () {
+            var obj = {};
+            obj.SpecValues = [];
+            //obj.SpecValuesId ='@Guid.NewGuid()';
+            $(this).find("td:eq(0)").find("span.specSpan")
+                .each(function () {
+                    var innerObj = {};
+                    innerObj.SpecificationId = $(this).attr("specid");
+                    innerObj.SpecificationValue = $(this).attr("specVal");
+                    innerObj.SpecificationName = $(this).attr("specName");
+                    obj.SpecValues.push(innerObj);
+                });
+            obj.Count = parseInt($(this).find("td:eq(1)").text());
+            dto.Inventory.push(obj);
+        });
+
+
+
+        //pictures
+            $("#imageList tr").each(function () {
+                
+                var row = $(this);
+                var id = $(this).find("td:eq(1)").text();
+                var item = images.find(_ => _.Counter == id);
+                index = images.indexOf(item);
+                item.IsMain = row.find("td:eq(6) .rdbIsMain").is(":checked");
+                item.Title = row.find(".txtTitle").val();
+                // Get and trim Description
+                item.Description = row.find(".txtDesc").val();
+                var selectedValues = row.find(".txtImageTemplate option:selected").map(function () {
+                    return parseInt($(this).val());
+                }).get();
+
+                // Assuming item.ImageTemplateTypes is an array or can handle multiple values
+                item.ImageTemplateTypes = selectedValues;
+
+                item.ImageRatio = parseInt($(this).find(".txtImageRatio").text());
+                item.ImageRatioId = parseInt($(this).find(".txtImageRatioId").text());
+                item.Counter = item.Counter.toString();
+                item.FileName = currentFileName;
+                item.ImageId = $(this).find("td:eq(8)").text();
+                //images[index] = item;
+                dto.Pictures.push(images[index]);
+            });
+
+        dto.UniqueCode = $("#UniqueCode").val();
+
+        dto.MinimumCount = parseInt($("#MinimumCount").val());
+        dto.ShowInLackOfInventory = $("#ShowInLackOfInventory").is(":checked");
+        if ("@ViewBag.Vendors" != "-1") {
+            dto.SellerUserId = $("#SellerUserId").val();
+            dto.SellerUserName = $("#SellerUserId option:selected").text();
+        }
+        dto.UnitId = $("#Unit_Id").val();
+        dto.PromotionId = $("#PromotionId").val();
+        dto.IsPublishedOnMainDomain = $("#chbIsPublishedOnMainDomain").is(":checked");
+
+        return dto;
+    }
+
+    function deleteFromTable(sender) {
+        var tag = $(sender).attr("cnt");
+        var item = multiLingualArr.find(_ => _.Tag == tag);
+        var index = multiLingualArr.indexOf(item);
+        multiLingualArr.splice(index, 1);
+
+        var tr = $(sender).parent().parent();
+        $(tr).remove();
+    }
+
+    function addToTable() {
+        
+        var flag = false;
+        var selectedLang = $('#multiLangId').val();
+        if (isUnique(selectedLang, 'multiLingualList', 1, '@UtilityLanguage.GetString("AlertAndMessage_LangUniqueness")')) {
+            $("span[data-val-result='multiLangId']").html("");
+            $("span[data-val-result='productName']").html("");
+            $("span[data-val-result='urlFriend']").html("");
+
+            if ($("#multiLangId").val() == "") {
+                $("span[data-val-result='multiLangId']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if ($("#productName").val() == "") {
+                $("span[data-val-result='productName']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if ($("#urlFriend").val() == "") {
+                $("span[data-val-result='urlFriend']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+
+            if (!flag) {
+                var arr = $("#urlFriend").val().split(" ");
+                var url = arr.join("-");
+
+                $.ajax({
+                    url: '@Url.Action("CheckUrlFriendUniqueness", "Product")' + "?id=" + '@Model.Id' + "&url=" + url,
+                    type: 'Get',
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result.status == "Success") {
+                            
+                            var obj = {};
+                            var urlFriend = url;
+                            var finalUrl = "";
+                            obj.LanguageId = $('#multiLangId').val();
+                            obj.LanguageName = $("#multiLangId option:selected").text();
+                            obj.Name = $('#productName').val();
+                            obj.SeoTitle = $("#seoTitle").val();
+                            obj.SeoDescription = $("#seoDescription").val();
+                            obj.Description = $("#description").val();
+                            obj.BodyContent = tinymce.activeEditor.getContent();
+                            if (urlFriend != "") {
+                                obj.UrlFriend = `/product/${urlFriend}`;
+                                finalUrl = `/product/${urlFriend}`;
+                            }
+                            var dataToSend = JSON.stringify(tinymce.activeEditor.getContent());
+                            $.ajax({
+                                url: "@Url.Action("SanitizeContent", "Domain")",
+                                type: 'Post',
+                                data: dataToSend,
+                                contentType: "application/json; charset=utf-8",
+                                statusCode:
+                                {
+                                    200: function (data) {
+
+                                        //show whether this html is valid or not
+                                        if (!data.isvalid) {
+                                            $('#mainToastBody').html('<i class="fas fa-exclamation-triangle"></i>@UtilityLanguage.GetString("AlertAndMessage_InvalidEditorContent")');
+                                            $('#mainToastBody').removeClass("text-bg-success");
+                                            $('#mainToastBody').addClass('text-bg-danger');
+                                            var toastDiv = $("#mainToast");
+                                            $("#toastPanel").show();
+                                            var toast = new bootstrap.Toast(toastDiv);
+                                            toast.show();
+                                            setTimeout(function () {
+                                                tinymce.activeEditor.setContent(""), 3000
+                                            });
+                                        }
+                                        else //it is valid
+                                        {
+                                            obj.BodyContent = tinymce.activeEditor.getContent();
+                                            obj.Tag = cnt.toString();
+
+                                            multiLingualArr.push(obj);
+
+                                            var tr = "<tr style='text-align:center;'><td>" + $("#multiLangId option:selected").text() +
+                                                "</td><td style='display:none;'>" + $('#multiLangId').val() +
+                                                "</td><td>" + $('#productName').val() +
+                                                "</td><td>" + $("#seoTitle").val() +
+                                                "</td><td>" + $("#seoDescription").val() +
+                                                "</td><td>" + $("#description").val() +
+                                                "</td><td dir='ltr'>" + finalUrl +
+                                                "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
+                                                "<i class='fa fa-trash' ></i></button></td></tr>";
+
+                                            if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
+                                                $("#multiLingualList tr")[0].remove();
+                                            }
+                                            $("#multiLingualList").append(tr);
+                                            cnt = cnt + 1;
+                                            $("#multiLangId").val("@ViewBag.LangId");
+                                            $("#multiLangId").selectpicker("refresh");
+                                            $("#productName").val("");
+                                            $("#seoTitle").val("");
+                                            $("#seoDescription").val("");
+                                            $("#description").val("");
+                                            tinymce.activeEditor.setContent("");
+                                            $("#urlFriend").val("");
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            $("span[data-val-result='urlFriend']").html('@UtilityLanguage.GetString("AlertAndMessage_UrlFriendIsNotUnique")');
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        return false;
+                    }
+                });
+            }
+        }
+    }
+
+    $("#uploadModal").on("shown.bs.modal", function () {
+
+        var image = document.getElementById('croppedImg');
+        $("#send_pic").attr("disabled", true);
+        
+        if (currentFileName.slice(-3).toLowerCase() === "png") {
+            // Enable the button if the image content type is PNG
+            $("#send_pic").attr("disabled", false);
+
+        }
+
+        var ratio = $("#imgAspectRatio").val();
+        if (cropper !== null && cropper !== undefined) {
+            cropper.destroy();
+        }
+
+        cropper = new Cropper(image,
+            {
+                background: true,
+                aspectRatio: ratio,
+                viewMode: 1,
+                responsive: true,
+                rotatable: true
+
+            });
+    });
+
+    $('#uploadModal').on('hidden.bs.modal',
+        function () {
+
+            cropper.destroy();
+            document.getElementById("image").value = "";
+            $("#cropped_result").remove();
+        });
+
+    function rotatePic() {
+        cropper.rotate(90);
+    }
+
+    $(document).on("click", "#crop_button",
+        function () {
+            var imgUrl = cropper.getCroppedCanvas({
+                imageSmoothingEnabled: true,
+                imageSmoothingQuality: 'high'
+            }).toDataURL('image/jpeg', 1);
+            var img = document.createElement("img");
+            img.setAttribute("id", "galleryPic");
+            img.setAttribute("class", "img-fluid");
+            var height = $("#container").attr("height");
+            var croppedContainer = document.createElement("div");
+            croppedContainer.setAttribute("id", "cropped_result");
+            croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
+            document.getElementById("rowContainer").appendChild(croppedContainer);
+            img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
+            img.src = imgUrl;
+            document.getElementById("cropped_result").innerHTML = "";
+            document.getElementById("cropped_result").appendChild(img);
+            $("#send_pic").attr("disabled", false);
+        });
+
+    function getURL(input) {
+        $("#cropped_result").remove();
+        if (input.files && input.files[0]) {
+            var file = input.files[0];
+            currentFileName = file.name;
+            currentFileSize = file.size;
+
+            if (currentFileSize <= @ViewBag.PicSize) {
+                var reader = new FileReader();
+                try {
+                    reader.readAsDataURL(file);
+                } catch (e) {
+
+                }
+                reader.onload = function (e) {
+                    var content = e.target.result;
+                    //if file format is incorrect, then the 'content' won't have any src.
+                    if (content !== "data:") {
+                        var reducedContent = content.slice(5);
+
+                        if (reducedContent.startsWith("image")) {
+                            //setTimeout(upRiseModal, 100);
+                            //setTimeout(initCropper, 500);
+                            $('#croppedImg').attr('src', content);
+                            $("#uploadModal").modal("show");
+                        } else {
+                            showError('@UtilityLanguage.GetString("AlertAndMessage_InvalidFormat")');
+                            document.getElementById("image").value = "";
+                            $("#cropped_result").remove();
+                        }
+                    } else {
+
+                        showError('@UtilityLanguage.GetString("AlertAndMessage_InvalidFormat")');
+                        document.getElementById("image").value = "";
+                        $("#cropped_result").remove();
+                    }
+                };
+            }
+            else {
+
+                showError('@UtilityLanguage.GetString("AlertAndMessage_InvalidFileSize")');
+                document.getElementById("image").value = "";
+                $("#cropped_result").remove();
+            }
+        }
+    }
+
+
+    var CollapsibleSpecValuesSection = document.getElementById('specValueSection')
+    CollapsibleSpecValuesSection.addEventListener('show.bs.collapse', function () {
+        
+        var html = "";
+
+        var currentLangId = '@ViewBag.LangId';
+        specIdValues = [];
+        $("#specificationList tr").each(function () {
+            
+            var specValues = $(this).find("td:eq(6)").text();
+            var array = specValues.split("|");
+            if ($(this).find("td:eq(1)").text() == currentLangId && array.length > 1) {
+                var specId = $(this).find("td:eq(5)").text();
+                var specName = $(this).find("td:eq(4)").text();
+                specIdValues.push({ Id: specId, name: specName });
+
+                var temp = "<div class='row py-2 border border-top-1'><div class='col-4 col-md-2'><span>"
+                    + specName
+                    + "</span></div><div class='col-8 col-md-10'><div class='d-flex flex-row'>";
+
+
+                array.forEach(function (val, index) {
+                    temp += "<div><div class='form-check m-auto d-inline-block pe-3'><input class='form-check-input' type='radio' name='"
+                        + specId + "' value='" + val + "'><label class='form-check-label'>" + val + "</label></div></div>"
+                });
+                temp += "</div></div></div>";
+                html += temp;
+            }
+
+        });
+        html += "<div class='row py-2 border border-top-1'><div class='col-4 col-md-2'><label>"
+            + '@UtilityLanguage.GetString("Product_InventoryCount")'
+            + "</label></div><div class='col-4 col-md-2'><input type='number' id='specValuesInventory' class='form-control' /></div><div class='col-2'>"
+            + "<button type='button' class='btn btn-success bg-gradient btn-sm' onclick='addToInventoryList();'><i class='fa fa-plus pt-1'></i></button></div></div>";
+
+        $("#specValuesFields").html(html);
+
+    });
+
+    function addToInventoryList() {
+        
+        var flag = true;
+        specIdValues.forEach(function (obj, index) {
+            if ($("input[name='" + obj.Id + "']:checked").val() == "") {
+                $("span[data-val-result='specValues']").html('@UtilityLanguage.GetString("AlertAndMessage_FillSpecValues")');
+                flag = false;
+            }
+        });
+        if ($("#specValuesInventory").val() == "0" || $("#specValuesInventory").val() == "") {
+            var html = $("span[data-val-result='specValues']").html();
+            html += '@UtilityLanguage.GetString("AlertAndMessage_FillInventory")';
+            $("span[data-val-result='specValues']").html(html);
+            flag = false;
+        }
+        if (flag) {
+            var tr = "<tr style='text-align:center;'><td>";
+            var tempHtml = "";
+            specIdValues.forEach(function (obj, index) {
+                tempHtml += "<span class='specSpan' specName='" + obj.name + "'  specVal='" + $("input[name='" + obj.Id + "']:checked").val() + "' specid='" + obj.Id + "'>" + obj.name + ":" + $("input[name='" + obj.Id + "']:checked").val() + "</span><br/>"
+            });
+            tr += tempHtml + "</td><td>" + $("#specValuesInventory").val() + "</td><td>"
+                + "<button type='button' class='btn btn-sm btn-danger btnDel bg-gradient' key='-1'  onclick='deleteFromInventoryList(this);'><i class='fa fa-trash'></i></button>"
+                + "</td></tr>";
+
+            if ($("#InventoryList tr").length == 1 &&
+                $("#InventoryList tr")[0].children.length == 1) {
+                $("#InventoryList tr")[0].remove();
+            }
+
+            $("#InventoryList").append(tr);
+        }
+    }
+
+    function deleteFromInventoryList(sender) {
+        
+        var tr = $(sender).parent().parent();
+        $(tr).remove();
+    }
+</script>
+
+
+
+
+

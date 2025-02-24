@@ -1,0 +1,67 @@
+﻿@model List<Arad.Portal.DataLayer.Models.Shared.SocialMedia.SocialMedia>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Icon Selector</title>
+    <style>
+        .icon-option {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+            .icon-option i {
+                font-size: 24px;
+                color: black; /* Initial color */
+                transition: color 0.3s ease-in-out; /* Smooth transition */
+            }
+    </style>
+    <script>
+        function setHoverEffect(element) {
+            element.style.color = element.getAttribute("data-hover-color");
+        }
+
+        function resetHoverEffect(element) {
+            element.style.color = element.getAttribute("data-initial-color");
+        }
+    </script>
+</head>
+<body>
+    <div id="iconSelector">
+        @if (Model != null && Model.Count > 0)
+        {
+            @* Define colors for each icon (can be moved to backend if needed) *@
+            var iconColors = new Dictionary<string, string>
+        {
+        { "fa-brands fa-telegram", "#74C0FC" },
+        { "fa-brands fa-github", "#B197FC" },
+        { "fa-brands fa-linkedin", "#0091ff" },
+        { "fa-brands fa-instagram", "#ff0000" },
+        { "fa-brands fa-whatsapp", "#25D366" },
+        { "fa fa-envelope", "#0091ff" }
+        };
+
+            foreach (var socialMedia in Model)
+            {
+                var icon = socialMedia.IconName;
+                var url = socialMedia.Url;
+                var hoverColor = iconColors.ContainsKey(icon) ? iconColors[icon] : "#000000"; // Default black
+
+                <a class="icon-option" href="@url" target="_blank" data-icon="@icon">
+                    <i class="@icon"
+                       data-initial-color="black"
+                       data-hover-color="@hoverColor"
+                       onmouseover="setHoverEffect(this)"
+                       onmouseout="resetHoverEffect(this)"></i>
+                </a>
+            }
+        }
+    </div>
+</body>
+</html>

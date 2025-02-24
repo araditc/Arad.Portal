@@ -1,0 +1,3666 @@
+﻿
+<!DOCTYPE html>
+@using Arad.Portal.DataLayer.Models.Shared.DesignStructure
+@using Arad.Portal.Models.Admin
+@inject IConfiguration _configuration;
+@model List<PageDesignContent>;
+@{
+    Layout = null;
+    string direction = HelpersMethods.GetDirection(CultureInfo.CurrentCulture);
+    string lang = HelpersMethods.GetHtmlLang(CultureInfo.CurrentCulture);
+    dynamic domainId = ViewBag.DomainId;
+    int rowCount = Model.Count;
+    int pageType = (int)((Enums.PageType)ViewBag.PageType);
+    string baseAdd = _configuration["BaseAddress"];
+
+}
+
+@{
+    dynamic isWide = ViewBag.IsWideLayout != null && (bool)ViewBag.IsWideLayout;
+    string containerClass = isWide ? "container-fluid" : "container";
+}
+
+
+<html dir="@direction" lang="@lang">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="Arad Portal" name="description">
+    <title>@ViewData["Title"] - AradPortalDesignPage</title>
+
+    @if (direction == "ltr")
+    {
+        <link href="@Url.Content("~/lib/bootstrap5/css/bootstrap.min.css")" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="@Url.Content("~/lib/bootstrap5/css/bootstrap.rtl.min.css")" rel="stylesheet" />
+    }
+    @{
+        if (CultureInfo.CurrentCulture.Name.ToLower() == "fa-ir")
+        {
+            <link href="@Url.Content("~/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
+        }
+    }
+    <link href="@Url.Content("~/lib/font-awesome/css/all.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/lib/cropperjs/cropper.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/Menu/Bootstrap4MegaMenu.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/lib/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/lib/flag-icons/css/flag-icons.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/site.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/fonts.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/lib/owlCarousel/css/owl.carousel.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/lib/owlCarousel/css/owl.theme.default.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/lib/owlCarousel/css/CarouselCustomArrowKeys.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/SpecialProduct.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/siteTemplate/FirstContentTemplate.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/siteTemplate/ThirdContentTemplate.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/siteTemplate/SixthContentTemplate.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/siteTemplate/ForthContentTemplate.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/siteTemplate/FifthContentTemplate.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/header.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/lib/animate.css/animate.compat.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap5/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap-select/js/bootstrap-select.min.js")"></script>
+    <script src="@Url.Content($"~/lib/bootstrap-select/js/i18n/defaults-{CultureInfo.CurrentCulture.Name.Replace('-', '_')}.js")"></script>
+    <script src="@Url.Content("~/lib/tinymce/tinymce.min.js")"></script>
+
+    <script src="@Url.Content("~/lib/owlCarousel/js/owl.carousel.min.js")"></script>
+    <script src="@Url.Content("~/js/TemplateCreation.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap-colorpicker/js/bootstrap-colorpicker.js")"></script>
+    <script src="@Url.Content("~/lib/cropperjs/cropper.js")"></script>
+
+
+</head>
+<body>
+    <style>
+        .wrap {
+            margin: 0 auto;
+            width: 300px;
+            text-align: center;
+        }
+
+        .bgCover {
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center bottom;
+        }
+
+        html, body {
+            overflow-x: hidden;
+        }
+
+        .modal-dialog {
+            max-width: 100%;
+        }
+
+        #container {
+            position: relative;
+            display: inline-block;
+            height: 400px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .modal-header,
+        .modal-footer,
+        .modal-body {
+            width: 100%;
+        }
+    </style>
+    <div aria-hidden="true" aria-labelledby="confirmDesignModalLabel" class="modal fade" id="confirmDesignModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title" id="confirmDesignModalLabel">
+                    </h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body" id="confirmDesignModalBody">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" onclick="confirmation();" type="button">
+                        @UtilityLanguage.GetString("btn_Confirm")
+                    </button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                        @UtilityLanguage.GetString("btn_NotConfirm")
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content col-12">
+                <div class="modal-header">
+                    <div class="col-1">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="col-11" style="text-align: center">
+                        <h5 class="modal-title align-content-center" id="exampleModalLongTitle">@UtilityLanguage.GetString("CropImage")</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body" id="upload-modal-body">
+                        <div id="rowContainer" class="row justify-content-center align-items-center">
+                            <div id="container" style="max-width: 100%;">
+                                <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
+                                     alt="your image" style="max-width: 100%; width: 356px; height: 356px; border: 1px solid black" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center align-items-center">
+                    <div>
+                        <button class="btn btn-success bg-gradient" id="send_pic" type="button"><i style="margin-left: 5px; font-size:13px" class="fas fa-check"></i>@UtilityLanguage.GetString("btn_Approve")</button>
+                        <button class="btn btn-primary bg-gradient" id="crop_button"><i style="margin-left: 5px; font-size:13px" class="fas fa-cut"></i>@UtilityLanguage.GetString("btn_Crop")</button>
+                        <button class="btn btn-primary bg-gradient" onclick="rotatePic()"> <i style="margin-left: 5px; font-size:13px" class="fas fa-retweet"></i> @UtilityLanguage.GetString("btn_Rotate")</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row mt-3">
+            <div class="col-12 col-md-3">
+                <label class="form-label">@UtilityLanguage.GetString("LanguageName")</label>
+                <select class="form-control selectpicker" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" data-live-search="true">
+                </select>
+            </div>
+            <div class="col-12 col-md-3">
+                <label class="form-label">@UtilityLanguage.GetString("Anchor")</label>
+                <input class="form-check-input" id="anchor" type="checkbox" />
+            </div>
+            <div class="col-12 col-md-3 pt-3 pb-2 copySection d-none">
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input mt-1" id="copyDesignChb" type="checkbox" onchange="ChangeCopyDesignChb(this);">
+                    <label class="form-check-label fw-bolder lh-lg" for="copyDesignChb">
+                        @UtilityLanguage.GetString("AlertAndMessage_CopyDesigntFromOtherLanguage")
+                    </label>
+                </div>
+            </div>
+            <div class="col-12 col-md-3 languageSelection d-none">
+                <label class="form-label">@UtilityLanguage.GetString("LanguageToCopy")</label>
+                <select class="form-control selectpicker" data-live-search="true" id="languageForCopy" onchange="copydesignfromLanguage(this);">
+                </select>
+            </div>
+            <div class="col-12 col-md-3 float-end">
+                <button id="btnSave" class="btn btn-success bg-gradient btn-sm float-end m-2" type="button">@UtilityLanguage.GetString("btn_Save")</button>
+                <button id="btnPreview" class="btn btn-primary bg-gradient btn-sm float-end m-2" type="button">@UtilityLanguage.GetString("btn_Preview")</button>
+                <a id="btnBack" asp-action="List" asp-controller="Domain" class="btn btn-secondary bg-gradient btn-sm float-end m-2" type="button">@UtilityLanguage.GetString("btn_Back")</a>
+            </div>
+        </div>
+    </div>
+
+    <header class="headerPart m-2 container-fluid ps-0 pe-0" id="PrimaryTemplateHeaderPart">
+        <h3 class="text-center bg-secondary bg-opacity-10">Header</h3>
+        <input type="hidden" id="headerPartCurrentGuid" />
+        <div class="border border-3 border-secondary m-1" style="min-height: 150px;">
+            <div class="p-2 row justify-content-center">
+                <div class="col-1 text-center">
+                    <button class="btn btn-sm m-2 btn-success pt-2 btnHFStyle" data-bs-toggle="tooltip" data-bs-placement="top" title="@UtilityLanguage.GetString("design_RowStyle")" sec="header"><i class="fs-4 fa fa-cog"></i></button>
+                </div>
+                <div class="col-1 text-center">
+                    <button class="btn btn-sm btn-success btnResetSection p-2 m-2" sec="header" onclick="resetSection(this,'headerSection');">@UtilityLanguage.GetString("design_ResetSection")</button>
+                </div>
+                <div class="col-1 text-center">
+                    <button class="btn btn-sm btn-success btnNoColor p-2 m-2" sec="header" onclick="resetColor(this);">@UtilityLanguage.GetString("design_NoColor")</button>
+                </div>
+            </div>
+            <div class="border border-3 border-secondary m-1 mx-0 dynamicHeaderPart p-2" style="min-height: 150px;">
+                <partial name="_PageDesign.cshtml" model='new TemplateSectionPart {SectionTag = "headerSection", DomainId = @domainId}' />
+            </div>
+        </div>
+    </header>
+
+    <div class="container-fluid" id="PrimaryTemplateContainerPart">
+        <h3 class="text-center bg-secondary bg-opacity-10">Body</h3>
+        <input type="hidden" id="containerPartCurrentGuid" />
+        <div class="border border-3 border-secondary m-1" style="min-height: 150px;">
+            <div class="p-2 row justify-content-center">
+                <div class="col-1 text-center">
+                    <button class="btn btn-sm m-2 btn-success pt-2 btnHFStyle" data-bs-toggle="tooltip" data-bs-placement="top" title="@UtilityLanguage.GetString("design_RowStyle")" sec="container"><i class="fs-4 fa fa-cog"></i></button>
+                </div>
+                <div class="col-1 text-center">
+                    <button class="btn btn-sm btn-success btnResetSection p-2 m-2" sec="container" onclick="resetSection(this, 'containerSection');">@UtilityLanguage.GetString("design_ResetSection")</button>
+                </div>
+                <div class="col-1 text-center">
+                    <button class="btn btn-sm btn-success btnNoColor p-2 m-2" sec="container" onclick="resetColor(this, 'footerSection');">@UtilityLanguage.GetString("design_NoColor")</button>
+                </div>
+            </div>
+            <div class="border border-3 border-secondary m-1 dynamicContainerPart p-2" style="min-height: 150px;">
+                <partial name="_PageDesign.cshtml" model='new TemplateSectionPart { SectionTag = "containerSection", DomainId = @domainId }' />
+            </div>
+        </div>
+
+        <div class="position-fixed p-5 left-50 top-0" id="toastPanel" style="z-index: 11;">
+            <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
+                <div class="toast-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" id="mainToastBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footerPart m-2 container-fluid ps-0 pe-0" id="PrimaryTemplateFooterPart">
+        <h3 class="text-center bg-secondary bg-opacity-10">Footer</h3>
+        <input type="hidden" id="footerPartCurrentGuid" />
+        <div class="border border-3 border-secondary m-1" style="min-height: 150px;">
+            <div class="p-2 row justify-content-center">
+                <div class="col-1 text-center">
+                    <button class="btn btn-sm m-2 btn-success pt-2 btnHFStyle" data-bs-toggle="tooltip" data-bs-placement="top" title="@UtilityLanguage.GetString("design_RowStyle")" sec="footer"><i class="fs-4 fa fa-cog"></i></button>
+                </div>
+                <div class="col-1 text-center">
+                    <button class="btn btn-sm btn-success btnResetSection p-2 m-2" sec="header" onclick="resetSection(this, 'footerSection');">@UtilityLanguage.GetString("design_ResetSection")</button>
+                </div>
+                <div class="col-1 text-center">
+                    <button class="btn btn-sm btn-success btnNoColor p-2 m-2" sec="footer" onclick="resetColor(this);">@UtilityLanguage.GetString("design_NoColor")</button>
+                </div>
+            </div>
+            <div class="border border-3 border-secondary m-1 mx-0 dynamicFooterPart p-2" style="min-height: 150px;">
+                <partial name="_PageDesign.cshtml" model='new TemplateSectionPart {SectionTag = "footerSection", DomainId = @domainId}' />
+            </div>
+        </div>
+    </footer>
+
+
+    @*******row design offcanvas*******************@
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="styleDiv" aria-labelledby="offcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasLabel">@UtilityLanguage.GetString("design_RowStyles")</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+
+            <div class="row">
+
+                <div class="col">
+                    <label class="form-label">@UtilityLanguage.GetString("design_bgColor")</label>
+                    <input dir="ltr" type="text" id="rowBgcolor" name="rowBgcolor" class="form-control" onchange="rowBgColorChange();" placeholder=" ">
+                </div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col">@UtilityLanguage.GetString("design_VerticalPadding")</div>
+                <div class="col">
+                    <select id="verticalPaddingSelect" class="form-control selectpicker" onchange="addCustomClass('vp');" data-live-search="true">
+                        <option value="-1">@UtilityLanguage.GetString("AlertAndMessage_Choose")</option>
+                        <option value="py-0">py-0</option>
+                        <option value="py-2">py-2</option>
+                        <option value="py-4">py-4</option>
+                        <option value="py-5">py-5</option>
+                        <option value="py-10">py-10</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col">@UtilityLanguage.GetString("design_HorizantalPadding")</div>
+                <div class="col">
+                    <select id="horizantalPaddingSelect" class="form-control selectpicker" onchange="addCustomClass('hp');" data-live-search="true">
+                        <option value="-1">@UtilityLanguage.GetString("AlertAndMessage_Choose")</option>
+                        <option value="px-0">px-0</option>
+                        <option value="px-2">px-2</option>
+                        <option value="px-4">px-4</option>
+                        <option value="px-5">px-5</option>
+                        <option value="px-10">px-10</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col">@UtilityLanguage.GetString("design_HorizantalMargin")</div>
+                <div class="col">
+                    <select id="horizantalGutterSelect" class="form-control selectpicker" onchange="addCustomClass('hg');" data-live-search="true">
+                        <option value="-1">@UtilityLanguage.GetString("AlertAndMessage_Choose")</option>
+                        <option value="gx-0">gx-0</option>
+                        <option value="gx-2">gx-2</option>
+                        <option value="gx-4">gx-4</option>
+                        <option value="gx-5">gx-5</option>
+                        <option value="gx-10">gx-10</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col">@UtilityLanguage.GetString("design_VerticalMargin")</div>
+                <div class="col">
+                    <select id="verticalMarginSelect" class="form-control selectpicker" onchange="addCustomClass('vm');" data-live-search="true">
+                        <option value="-1">@UtilityLanguage.GetString("AlertAndMessage_Choose")</option>
+                        <option value="my-0">my-0</option>
+                        <option value="my-2">my-2</option>
+                        <option value="my-4">my-4</option>
+                        <option value="my-5">my-5</option>
+                        <option value="my-10">my-10</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input rowbd" type="checkbox" name="rowBorderDimension" value="border-top">
+                    <label class="form-check-label" for="border-top">
+                        border-top
+                    </label>
+                </div>
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input rowbd" type="checkbox" name="rowBorderDimension" value="border-start">
+                    <label class="form-check-label" for="border-start">
+                        border-start
+                    </label>
+                </div>
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input rowbd" type="checkbox" name="rowBorderDimension" value="border-bottom">
+                    <label class="form-check-label" for="border-bottom">
+                        border-bottom
+                    </label>
+                </div>
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input rowbd" type="checkbox" name="rowBorderDimension" value="border-end">
+                    <label class="form-check-label" for="border-end">
+                        border-end
+                    </label>
+                </div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col-12 bg-success bg-opacity-10 pt-2 mt-3">
+                    <label class="form-label fs-6">border thickness</label>
+                </div>
+                <div class="col-12">
+                    <select id="borderThicknessRow" class="form-control selectpicker" data-live-search="true" onchange="addRowBorderThickness()">
+                        <option value="-1">@UtilityLanguage.GetString("AlertAndMessage_Choose")</option>
+                        <option value="border-1">border-1</option>
+                        <option value="border-2">border-2</option>
+                        <option value="border-3">border-3</option>
+                        <option value="border-4">border-4</option>
+                        <option value="border-5">border-5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row my-2">
+                <label class="form-label fs-6">bootstrap 5.1  or customize class for this row</label>
+                <br />
+                <input class="form-control testRowCustClass" id="txtRowCustClass" />
+                <input type="button" value="@UtilityLanguage.GetString("btn_ClassApply")" class="btn btn-success" onclick="addRowCustomizeClass(this);" />
+            </div>
+
+            <div class="row border-top border-1">
+                <div class="col-12 border pt-3">
+                    <label class="form-label custom-file-label float-start pt-2" for="image">@UtilityLanguage.GetString("design_bgPhoto")</label>
+                    <input accept="image/x-png,image/jpeg"
+                           type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)" />
+                </div>
+
+
+                <div class="col-12">
+                    <input type="button" sec="row" class="deleteBgImage btn btn-danger btn-sm m-2" value="@UtilityLanguage.GetString("design_ImageDelete")" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    @*****************column design offca.nvas************************@
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="colStylesDiv" aria-labelledby="offcanvasCoLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasColLabel">borders</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="row my-2">
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input colBd" type="checkbox" name="colBorderDimension" value="border-top">
+                    <label class="form-check-label" for="border-top">
+                        border-top
+                    </label>
+                </div>
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input colBd" type="checkbox" name="colBorderDimension" value="border-start">
+                    <label class="form-check-label" for="border-start">
+                        border-start
+                    </label>
+                </div>
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input colBd" type="checkbox" name="colBorderDimension" value="border-bottom">
+                    <label class="form-check-label" for="border-bottom">
+                        border-bottom
+                    </label>
+                </div>
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input colBd" type="checkbox" name="colBorderDimension" value="border-end">
+                    <label class="form-check-label" for="border-end">
+                        border-end
+                    </label>
+                </div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col-12 bg-success bg-opacity-10 pt-2 mt-3">
+                    <label class="form-label fs-6">border thickness</label>
+                </div>
+                <select id="borderThicknessColumn" class="form-control selectpicker" data-live-search="true" onchange="addBorderThicknessForColumn()">
+                    <option value="0">@UtilityLanguage.GetString("AlertAndMessage_Choose")</option>
+                    <option value="border-1">border-1</option>
+                    <option value="border-2">border-2</option>
+                    <option value="border-3">border-3</option>
+                    <option value="border-4">border-4</option>
+                    <option value="border-5">border-5</option>
+                </select>
+            </div>
+            <div class="row my-2">
+                <label class="form-label fs-6">bootstrap 5.1  or customize class for this column</label>
+                <br />
+                <input class="form-control" value="" id="txtColumnCustClass" />
+                <button type="button" class="btn btn-success" onclick="addColumnCustomizeClass();">@UtilityLanguage.GetString("btn_ClassApply")</button>
+            </div>
+            <div class="row my-2">
+                <label class="form-label fs-6">Custom css</label>
+                <br />
+                <input class="form-control" value="" id="txtColumnCustCss" />
+                <button type="button" class="btn btn-success" onclick="addColumnCustomizeCss();">@UtilityLanguage.GetString("btn_ClassApply")</button>
+            </div>
+        </div>
+
+    </div>
+
+    @********************header and footer design offcanvas**************************@
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="styleHeaderFooterDiv" aria-labelledby="offcanvashfLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvashfLabel">@UtilityLanguage.GetString("design_bg")</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="row">
+
+                <div class="col">
+                    <label class="form-label">@UtilityLanguage.GetString("design_bgColor")</label>
+                    <input dir="ltr" type="text" sec="selected" value="" id="hFBgcolor" name="hFBgcolor" class="form-control" onchange="bgColorChange();" placeholder=" ">
+                </div>
+            </div>
+            <div class="row my-2 border-top">
+                <div class="col-12 border pt-3">
+                    <label class="form-label custom-file-label float-start pt-2" for="image">@UtilityLanguage.GetString("design_bgPhoto")</label>
+                    <input accept="image/x-png,image/jpeg"
+                           type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)" />
+                </div>
+
+                <div class="col-12 mt-2">
+                    <input type="button" sec="hf" class="deleteBgImage btn btn-danger btn-sm m-2" value="@UtilityLanguage.GetString("design_ImageDelete")" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+            const iconList = $("#iconList");
+
+            fetch("/lib/fontawesome.json")
+                .then(response => response.json())
+                .then(data => {
+
+                    for (const [category, icons] of Object.entries(data)) {
+                        
+                        iconList.append(`<li class="dropdown-header text-primary">${category.toUpperCase()}</li>`);
+
+                        icons.forEach(icon => {
+                            const iconClass = category === "brands" ? `fab ${icon}` : `fa ${icon}`;
+                            iconList.append(`
+                                                            <li>
+                                                                <button class="dropdown-item" type="button" data-icon="${iconClass}">
+                                                                    <i class="${iconClass}"></i> ${icon}
+                                                                </button>
+                                                            </li>
+                                                        `);
+                        });
+                    }
+
+                    $("#searchIcons").on("input", function () {
+                        
+                        const searchTerm = $(this).val().toLowerCase();
+                        $("#iconList li").each(function () {
+                            const iconName = $(this).find("button").data("icon") || "";
+                            if (iconName.toLowerCase().includes(searchTerm) || $(this).hasClass("dropdown-header")) {
+                                $(this).show();
+                            } else {
+                                $(this).hide();
+                            }
+                        });
+                    });
+
+                    iconList.on("click", ".dropdown-item", function () {
+                        
+                        const selectedIconClass = $(this).data("icon");
+                        $("#selectedIcon").attr("class", selectedIconClass);
+                        $("#iconPickerInput").val(selectedIconClass);
+                    });
+                })
+                .catch(err => console.error("Error loading icons:", err));
+            console.log(iconList);
+
+            ////////////load in edit mode//
+            var loadInEditMode = false;
+            let progressBars = [];
+            let counters = [];
+            let iconBlocks = [];
+            let pictureWithLabels = [];
+            //////////load in edit mode/////////
+            var ContentListForEdition;
+            var currentDesignForLanguage;
+            var cropper;
+            var headerFileContent;
+            var headerFileName;
+            var footerFileContent;
+            var footerFileName;
+            var rowFileContent;
+            var rowFileName;
+            var selectedRow;
+            var bgImagesInSelectedRows = [];
+            var bgColorsInSelectedRows = [];
+            var colSelectedRow;
+            var colSelectedNumber;
+            var selectedSection = "";
+            var footerBgColor = "";
+            var headerBgColor = "";
+            var containerBgColor = "";
+            var footerBgImage = {};
+            var headerBgImage = {};
+            var containerBgImage = {};
+            var offCanvasRows = document.getElementById('styleDiv');
+            var offvanvasCols = document.getElementById('colStylesDiv');
+            var offCanvasHeaderFooter = document.getElementById('styleHeaderFooterDiv');
+            offCanvasRows.addEventListener('hidden.bs.offcanvas', function () {
+                selectedRow = "";
+            });
+            offvanvasCols.addEventListener('hidden.bs.offcanvas', function () {
+                selectedRow = "";
+                colSelectedNumber = "";
+            });
+            offCanvasHeaderFooter.addEventListener('hidden.bs.offcanvas', function () {
+                selectedSection = "";
+            });
+            function validateEditors() {
+                
+                $(".txtEditorCK").each(function () {
+                    var id = $(this).attr("id");
+                    sanitize(id, false);
+                })
+            }
+            function addRowCustomizeClass(sender) {
+                
+                if ($(sender).val().trim() != "") {
+                    var customCls = $(".testRowCustClass").val();
+                    var precustClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
+                    if (!precustClass.includes(customCls)) {
+                        precustClass += ` ${customCls}`;
+                        $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", precustClass);
+                    }
+                }
+            }
+
+            function addColumnCustomizeClass(sender) {
+                
+                if ($(sender).val().trim() != "") {
+                    var inputCls = $(sender).val().trim();
+                    var custClass = $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
+                    var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
+                    if (!custClass.includes(inputCls)) {
+                        custClass = ` ${inputCls}`;
+                        pClass = ` ${inputCls}`;
+                        $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames", custClass);
+                        $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames", pClass);
+                    }
+                }
+            }
+
+                    function addColumnCustomizeCss(sender) {
+                
+                const inputCss = $(sender).val().trim();
+                if (inputCss === "") return; // Exit if input is empty
+
+                // Select the target elements
+                const finalColumnContent = $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`);
+                const previewColumnContent = $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`);
+
+                // Apply the CSS to both elements
+                finalColumnContent.each(function() {
+                    this.style.cssText = ` ${inputCss}`;
+                });
+                previewColumnContent.each(function() {
+                    this.style.cssText = ` ${inputCss}`;
+                });
+            }
+
+            function addRowBorderThickness() {
+                var cls = $("#borderThicknessRow").val();
+                var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
+                custClass = custClass.replace("border-1", "").replace("border-2", "").replace("border-3", "").replace("border-4", "").replace("border-5", "");
+                custClass += ` ${cls}`;
+                $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", custClass);
+            }
+
+            function addBorderThicknessForColumn() {
+                var cls = $("#borderThicknessColumn").val();
+                var custClass = $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
+                var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
+
+                //$(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).removeClass("border-1").removeClass("border-2").removeClass("border-3").removeClass("border-4").removeClass("border-5");
+                custClass = custClass.replace("border-1", "").replace("border-2", "").replace("border-3", "").replace("border-4", "").replace("border-5", "");
+                pClass = pClass.replace("border-1", "").replace("border-2", "").replace("border-3", "").replace("border-4", "").replace("border-5", "");
+
+
+                $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).addClass(cls);
+
+                custClass += ` ${cls}`;
+                $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames", custClass);
+
+                pClass += ` ${cls}`;
+                $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames", pClass);
+
+            }
+
+            function bgColorChange() {
+                
+                var color = $("#hFBgcolor").val();
+                if (selectedSection == "container") {
+                    containerBgColor = color;
+                    $(".dynamicContainerPart").css("background-color", containerBgColor);
+                } else if (selectedSection == "footer") {
+                    footerBgColor = color;
+                    $(".dynamicFooterPart").css("background-color", footerBgColor);
+                } else if (selectedSection == "header") {
+                    headerBgColor = color;
+                    $(".dynamicHeaderPart").css("background-color", headerBgColor);
+                }
+            }
+
+            function rowBgColorChange() {
+                
+                if ($("#rowBgcolor").val() != "") {
+                    var color = $("#rowBgcolor").val();
+                    $(`.row.sectionRow[guid='${selectedRow}']`).css("background-color", color);
+                    $(`.row.sectionRow[guid='${selectedRow}']`).attr("bgtype", "1");
+                }
+
+
+            }
+
+            function resetColor(sender) {
+                
+                var sec = $(sender).attr("sec");
+                if (sec == "container") {
+                    containerBgColor = "";
+                    $(".dynamicContainerPart").css("background-color", containerBgColor);
+                } else if (sec == "header") {
+                    headerBgColor = "";
+                    $(".dynamicHeaderPart").css("background-color", headerBgColor);
+                } else if (sec == "footer") {
+                    footerBgColor = "";
+                    $(".dynamicFooterPart").css("background-color", "");
+                }
+            }
+            var headerRowNumber2 = 1000;
+            var containerRowNumber2 = 2000;
+            var footerRowNumber2 = 3000;
+
+            function resetSection(sender, tag) {
+                
+                const divId = `${tag}_paramSection`;
+                var div = document.getElementById(divId);
+
+                if (div) {
+                    div.innerHTML = '';
+                } else {
+                    console.error("Div not found with ID: " + divId);
+                }
+            }
+
+            function doAnimations(elems) {
+                var animEndEv = "webkitAnimationEnd animationend";
+
+                elems.each(function () {
+                    var $this = $(this),
+                        $animationType = $this.data("animation");
+                    $this.addClass($animationType).one(animEndEv, function () {
+                        $this.removeClass($animationType);
+                    });
+                });
+            }
+
+            function addCustomClass(type) {
+                var cls = "";
+                //var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
+                //var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
+
+                var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
+                switch (type) {
+                    case "vp":
+                        cls = $("#verticalPaddingSelect").val();
+                        custClass = custClass.replace("py-0", "").replace("py-2", "").replace("py-4", "").replace("py-5", "").replace("py-10", "");
+                        break;
+                    case "hp":
+                        cls = $("#horizantalPaddingSelect").val();
+                        custClass = custClass.replace("px-0", "").replace("px-2", "").replace("px-4", "").replace("px-5", "").replace("px-10", "");
+                        break;
+                    case "hg":
+                        cls = $("#horizantalGutterSelect").val();
+                        custClass = custClass.replace("gx-0", "").replace("gx-2", "").replace("gx-4", "").replace("gx-5", "").replace("gx-10", "");
+                        break;
+                    case "vm":
+                        cls = $("#verticalMarginSelect").val();
+                        custClass = custClass.replace("my-0", "").replace("my-2", "").replace("my-4", "").replace("my-5", "").replace("my-10", "");
+                        break;
+                }
+                if (cls != "-1") {
+                    custClass += ` ${cls}`;
+                    $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", custClass);
+                }
+            }
+
+            function addPhotoInput() {
+                const photoGrid = document.getElementById("photoGrid");
+
+                const newPhotoItem = document.createElement("div");
+                newPhotoItem.className = "col-md-3 photo-item";
+
+                const fileInput = document.createElement("input");
+                fileInput.type = "file";
+                fileInput.name = "photos";
+                fileInput.className = "form-control mb-2";
+                fileInput.accept = "image/*";
+                fileInput.required = true;
+                newPhotoItem.appendChild(fileInput);
+
+                const subtitleInput = document.createElement("input");
+                subtitleInput.type = "text";
+                subtitleInput.name = "subtitles";
+                subtitleInput.className = "form-control mb-2";
+                subtitleInput.placeholder = "Enter subtitle";
+                subtitleInput.required = true;
+                newPhotoItem.appendChild(subtitleInput);
+
+                // Width input field
+                const widthInput = document.createElement("input");
+                widthInput.type = "number";
+                widthInput.name = "width";
+                widthInput.className = "form-control mb-2";
+                widthInput.placeholder = "Width (px)";
+                widthInput.required = true;
+                newPhotoItem.appendChild(widthInput);
+
+                // Height input field
+                const heightInput = document.createElement("input");
+                heightInput.type = "number";
+                heightInput.name = "height";
+                heightInput.className = "form-control mb-2";
+                heightInput.placeholder = "Height (px)";
+                heightInput.required = true;
+                newPhotoItem.appendChild(heightInput);
+
+                const removeButton = document.createElement("button");
+                removeButton.type = "button";
+                removeButton.className = "btn btn-danger btn-sm";
+                removeButton.textContent = "Remove";
+                removeButton.onclick = function () { removePhotoItem(removeButton); };
+                newPhotoItem.appendChild(removeButton);
+
+                photoGrid.appendChild(newPhotoItem);
+            }
+
+            function removePhotoItem(button) {
+                button.parentElement.remove();
+            }
+
+
+
+            function addFaqButton(sender) {
+                var faqCount = document.querySelectorAll('.form-group').length;
+
+                var faqHtml = `
+                                                                <div class="form-group" id="faq-item-${faqCount}">
+                                                                    <label>@UtilityLanguage.GetString("Question")</label>
+                                                                    <input type="text" name="ParametersValue.FAQViewModel.FAQItems[${faqCount}].Question" class="form-control question" />
+                                                                    <label>@UtilityLanguage.GetString("Answer")</label>
+                                                                    <textarea name="ParametersValue.FAQViewModel.FAQItems[${faqCount}].Answer" class="form-control answer"></textarea>
+
+                                                                    <button type="button" class="btn btn-danger mt-2" onclick="deleteFaqItem(this, ${faqCount});">@UtilityLanguage.GetString("btn_Remove")</button>
+                                                                </div>
+                                                            `;
+
+                var faqContainer = document.getElementById('faq-container');
+                if (faqContainer) {
+                    faqContainer.insertAdjacentHTML('beforeend', faqHtml);
+                } else {
+                    console.error('FAQ container not found!');
+                }
+            }
+
+            function deleteFaqItem(button, index) {
+                // Find the parent FAQ item container and remove it
+                var faqItem = document.getElementById('faq-item-' + index);
+                if (faqItem) {
+                    faqItem.remove();
+                } else {
+                    console.error('FAQ item not found!');
+                }
+            }
+            function getsURL(input) {
+                
+                $("#cropped_result").remove();
+                if (input.files && input.files[0]) {
+                    var file = input.files[0];
+                    currentFileName = file.name;
+                    currentFileSize = file.size;
+
+                    if (currentFileSize <= @ViewBag.PicSize) {
+                        var reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = function (e) {
+                            var content = e.target.result;
+                            if (content && content.startsWith("data:image")) {
+                                $('#croppedImg').attr('src', content);
+                                $("#uploadsModal").modal("show");
+                            } else {
+                                showError('@UtilityLanguage.GetString("AlertAndMessage_InvalidFormat")');
+                                document.getElementById("image").value = "";
+                                $("#cropped_result").remove();
+                            }
+                        };
+                        reader.onerror = function () {
+                            console.error("Error reading file:", reader.error);
+                        };
+                    } else {
+                        showError('@UtilityLanguage.GetString("AlertAndMessage_InvalidFileSize")');
+                        document.getElementById("image").value = "";
+                        $("#cropped_result").remove();
+                    }
+                }
+            }
+
+            $("#sends_pic").click(function () {
+                $("#uploadsModal").modal("hide");
+
+                var url = $('#croppedImg').attr('src');
+                if (!url) {
+                    showError('@UtilityLanguage.GetString("AlertAndMessage_InvalidFormat")');
+                    return;
+                }
+
+                var model = {
+                    Counter: counter,
+                    Content: url,
+                    FileName: currentFileName
+                };
+
+                images.push(model);
+
+                var tr = "<tr>" +
+                    "<td><img imgId='img_" + counter + "' src='" + model.Content + "' width='" + 120 + "' height='" + 30 + "'/></td>" +
+                    "<td class='d-none'>" + model.Counter + "</td>" +
+                    "<td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeholder='" + '@UtilityLanguage.GetString("Title")' + "'/></td>" +
+                    "<td style='vertical-align:middle;'>" +
+                    "<div class='form-check d-flex justify-content-center p-0'>" +
+                    "</div>" +
+                    "</td>" +
+                    "<td style='vertical-align:middle;'>" +
+                    "<button type='button' class='btn btn-sm btn-danger bg-gradient' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'>" +
+                    "<i class='fa fa-trash'></i>" +
+                    "</button>" +
+                    "</td>" +
+                    "</tr>";
+
+                $('#imageList').append(tr);
+                $('.selectpicker').selectpicker('refresh');
+                counter += 1;
+            });
+
+            $("#uploadsModal").on("shown.bs.modal", function () {
+                
+                var image = document.getElementById('croppedImg');
+                $("#sends_pic").attr("disabled", true);
+
+                if (currentFileName.toLowerCase().endsWith("png")) {
+                    $("#sends_pic").attr("disabled", false);
+                }
+
+                var ratio = 4;
+                if (cropper) {
+                    cropper.destroy();
+                }
+                cropper = new Cropper(image, {
+                    background: true,
+                    aspectRatio: ratio,
+                    viewMode: 1,
+                    responsive: true,
+                    rotatable: true
+                });
+            });
+
+            $('#uploadsModal').on('hidden.bs.modal', function () {
+                if (cropper) cropper.destroy();
+                document.getElementById("image").value = "";
+                $("#cropped_result").remove();
+            });
+
+            function addCounterItem() {
+                const title = document.getElementById('CounterTitle').value;
+                const number = parseInt(document.getElementById('CounterNumber').value, 10);
+                const icon = document.getElementById('CounterIcon').value;
+                const shape = document.getElementById('CounterShape').value;
+                const color = document.getElementById('CounterColor').value;
+                if (!title || isNaN(number) || number < 0) {
+                    alert("Please enter a valid title and a non-negative number.");
+                    return;
+                }
+
+                counters.push({
+                    title: title,
+                    number: number,
+                    icon: icon,
+                    shape: shape,
+                    color: color
+                });
+
+                const id = `item-${Date.now()}`;
+
+                // HTML for the item
+                const itemHtml = `
+                                        <div class="item" id="${id}">
+                                            <div class="feature-icon" style="position: relative; text-align: center;">
+                                                <div class="${shape} icon-container" style="background-color: ${color}; padding: 20px; margin: 20px auto; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                                    <i class="${icon}" style="font-size: 40px; color: white;"></i>
+                                                </div>
+                                            </div>
+                                            <h4>${title}</h4>
+                                            <p><span class="number" data-target="${number}">0</span></p>
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteCounterItem('${id}')">Delete</button>
+                                        </div>
+                                    `;
+
+                document.getElementById('items-container').insertAdjacentHTML('beforeend', itemHtml);
+
+                // Clear form inputs
+                document.getElementById('CounterTitle').value = '';
+                document.getElementById('CounterNumber').value = '';
+                document.getElementById('CounterIcon').value = '';
+                document.getElementById('CounterShape').value = '';
+                document.getElementById('CounterColor').value = '';
+
+                // Start the number animation
+                animateNumber(id);
+            }
+
+            function deleteCounterItem(id) {
+                const item = document.getElementById(id);
+                if (item) {
+                    item.remove();
+                }
+            }
+
+            function animateNumber(id) {
+                const item = document.getElementById(id);
+                const numberElement = item.querySelector('.number');
+                const targetNumber = parseInt(numberElement.getAttribute('data-target'), 10);
+
+                let currentNumber = 0;
+                const increment = Math.ceil(targetNumber / 100); // Increment value based on the target number
+
+                function updateNumber() {
+                    currentNumber += increment;
+                    if (currentNumber > targetNumber) {
+                        currentNumber = targetNumber;
+                    }
+                    numberElement.innerText = currentNumber;
+
+                    if (currentNumber < targetNumber) {
+                        requestAnimationFrame(updateNumber);
+                    }
+                }
+
+                updateNumber();
+            }
+
+
+            function addProgressBar() {
+                const title = document.getElementById('title').value;
+                const percentage = document.getElementById('percentage').value;
+                const color = document.getElementById('color').value;
+
+                if (!title || percentage < 0 || percentage > 100) {
+                    alert("Please enter a valid title and percentage (0-100).");
+                    return;
+                }
+
+                const id = `progress-${progressBars.length}`;
+
+                // Add the progress bar data to the array
+                progressBars.push({
+                    id: id,
+                    title: title,
+                    percentage: percentage,
+                    color: color
+                });
+
+                const progressBarHtml = `
+                                                                <div class="progress-bar-item" id="${id}">
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar ${color}" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                    </div>
+                                                                    <p>${title}: ${percentage}%</p>
+                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteProgressBar('${id}')">Delete</button>
+                                                                </div>
+                                                            `;
+
+                document.getElementById('progress-bars-container').insertAdjacentHTML('beforeend', progressBarHtml);
+
+                // Clear form inputs
+                document.getElementById('title').value = '';
+                document.getElementById('percentage').value = '';
+            }
+
+            function deleteProgressBar(id) {
+                // Find the progress bar by id and remove it from the DOM
+                const progressBarItem = document.getElementById(id);
+                if (progressBarItem) {
+                    progressBarItem.remove();
+                }
+
+                // Optionally, remove the progress bar from the array (if needed for further logic)
+                progressBars = progressBars.filter(bar => bar.id !== id);
+            }
+
+            function addFeature() {
+                
+                const title = document.getElementById('iconBlocksTitle').value;
+                const description = document.getElementById('description').value;
+                const icon = document.getElementById('iconPickerInput').value;
+                const color = document.getElementById('iconBlocksColor').value;
+                const shape = document.getElementById('shape').value;
+
+                // Ensure inputs are valid
+                if (!title || !description || !icon) {
+                    alert("Please fill out all fields.");
+                    return;
+                }
+
+                // Create the data object for the feature
+                const featureData = {
+                    title: title,
+                    description: description,
+                    icon: icon,
+                    color: color,
+                    shape: shape
+                };
+
+                // Add the feature data to the iconBlocks array
+                iconBlocks.push(featureData);
+
+                // Create the feature block
+                const featureBlock = `
+                                                            <div class="feature-item" style="background-color: #f9f9f9; padding: 20px; text-align: center; position: relative;">
+                                                                <div class="${shape}" style="background-color: ${color}; padding: 20px;">
+                                                                    <i class="${icon}" style="font-size: 40px; color: white;"></i>
+                                                                </div>
+                                                                <h5>${title}</h5>
+                                                                <p>${description}</p>
+                                                                <button class="btn btn-danger btn-sm" style="position: absolute; top: 10px; right: 10px;" onclick="removeFeature(this)">Remove</button>
+                                                            </div>
+                                                        `;
+
+                // Add it to the preview section
+                document.getElementById('feature-preview').insertAdjacentHTML('beforeend', featureBlock);
+
+                // Clear the form
+                document.getElementById('iconBlocksTitle').value = '';
+                document.getElementById('description').value = '';
+                document.getElementById('icon').value = '';
+            }
+
+            function removeFeature(button) {
+                // Remove the parent feature item
+                const featureItem = button.parentElement;
+                featureItem.remove();
+
+                // Optionally, you can also remove the item from iconBlocks here if needed
+                // Find the index of the feature block to remove from iconBlocks based on the content
+                const title = featureItem.querySelector('h5').textContent;
+                const description = featureItem.querySelector('p').textContent;
+
+                const index = iconBlocks.findIndex(item => item.title === title && item.description === description);
+                if (index !== -1) {
+                    iconBlocks.splice(index, 1); // Remove the item from the array
+                }
+            }
+            function getColTemplate(id, tag) {
+                
+                let colTemplate = "<div class='col-12 col-md-3 p-2'>" +
+                    "<label class='lblAlert form-label'>" + '@UtilityLanguage.GetString("AlertAndMessage_HowManyColumns")' + "</label><br />" +
+                    "<select class='form-control selectpicker colCnt' onchange='selectColumns(this, \"" + id + "\" );' id='" + id + "' data-live-search='true'>" +
+                    "<option value='0'>" + '@UtilityLanguage.GetString("AlertAndMessage_Choose")' + "</option>" +
+                    "<option value='1'>" + '@UtilityLanguage.GetString("Template_OneCol")' + "</option>" +
+                    "<option value='2'>" + '@UtilityLanguage.GetString("Template_TwoCol")' + "</option>" +
+                    "<option value='3'>" + '@UtilityLanguage.GetString("Template_ThreeCol")' + "</option>" +
+                    "<option value='4'>" + '@UtilityLanguage.GetString("Template_FourCol")' + "</option>" +
+                    "<option value='6'>" + '@UtilityLanguage.GetString("Template_SixCol")' + "</option>" +
+                    "<option value='8'>" + '@UtilityLanguage.GetString("Template_EightCol")' + "</option> + </select></div>" +
+                    "<div class='col-12 col-md-3 p-2'>" +
+                    "<label class='lblAlert form-label'>" + '@UtilityLanguage.GetString("design_ColSizeRatio")' + "</label><br />" +
+                    "<select class='form-control selectpicker colWidth' onchange='selectColumnsWidthRatio(this, \"" + tag + "\" );' colwidthid='" + id + "' data-live-search='true'></select></div>" +
+                    "<div class='p-2 row justify-content-center'>" +
+                    "<div class='col-2 text-center'>" +
+                    "<button class='btn btn-sm m-2 pt-2 btn-dark btnRowStyle' guid='" + id + "' data-bs-toggle='tooltip' data-bs-placement='top' title='" +
+                    '@UtilityLanguage.GetString("design_RowStyles")' + "'>" +
+                    "<i class='fs-4 fa fa-cog'></i></button></div>" +
+                    "<div class='ps-4 col-12 contentColumns' guid='" + id + "'></div>";
+
+                return colTemplate;
+            }
+
+
+            function AfterCarouselLoad() {
+
+                var $myCarousel = $("#sliderCarousel");
+                $firstAnimatingElems = $myCarousel
+                    .find(".carousel-item:first")
+                    .find("[data-animation ^= 'animated']");
+
+                var carousel = new bootstrap.Carousel($myCarousel);
+                doAnimations($firstAnimatingElems);
+
+                var myCarousel = document.getElementById('sliderCarousel');
+                myCarousel.addEventListener("slide.bs.carousel", function (e) {
+                    var $animatingElems = $(e.relatedTarget).find(
+                        "[data-animation ^= 'animated']"
+                    );
+                    doAnimations($animatingElems);
+                });
+            }
+
+            $(document).ready(function () {
+                
+                initEditors();
+
+
+                $("#hFBgcolor").colorpicker();
+                $("#rowBgcolor").colorpicker();
+                $(window).resize(changeScreen);
+
+                $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@UtilityLanguage.GetString("AlertAndMessage_FirstChooseLanguage")');
+                $('#mainToastBody').removeClass("alert-danger");
+                $('#mainToastBody').addClass('alert-success');;
+
+                var toastDiv = $("#mainToast");
+                $("#toastPanel").show();
+                var toast = new bootstrap.Toast(toastDiv);
+                toast.show();
+
+                if (parseInt('@rowCount') > 0) {
+                    ContentListForEdition = @Json.Serialize(Model);
+                }
+
+                $("#languageId").change(function () {
+                    
+                    if ($("#languageId").val() != "-1") {
+
+                        if (@ViewBag.IsAnchor.ToString().ToLower()) {
+                            $("#anchor").prop("checked", true); // Explicitly check the checkbox
+                        } else {
+                            $("#anchor").prop("checked", false); // Uncheck if IsAnchor is false
+                        }
+                        if (ContentListForEdition != undefined) {
+                            loadDataForEdition();
+                        }
+                    }
+                });
+
+
+                changeScreen();
+
+                $(document).on("change", "select.selectionType", function () {
+
+                    var selectedVal = $(this).val();
+                    var parent = $(this).closest(".row");
+                    var categorylist = $(parent).find(".categoryListSection");
+                    var contentList = $(parent).find(".contentListSection");
+                    switch (selectedVal) {
+                        case "1"://LatestFromProductOrContentTypeInAllCategories
+                            $(categorylist).addClass("d-none");
+                            $(contentList).addClass("d-none");
+                            break
+                        case "2"://LatestFromProductOrContentTypeSelectedCategory
+                            $(categorylist).removeClass("d-none");
+                            $(contentList).addClass("d-none");
+                            break;
+                        case "3"://CustomizedSelection
+                            $(categorylist).addClass("d-none");
+                            $(contentList).removeClass("d-none");
+                            break;
+                    }
+                });
+
+                $(document).on("change", "input[name='rdbContentTemplateList']", function () {
+                    if ($(this).is(":checked")) {
+                        var parent = $(this).closest(".row.par").parent();
+                        var val = $(this).val();
+                        switch (val) {
+                            case "First":
+                            case "Second":
+                            case "Third":
+                                $(parent).find(".countSection").addClass("d-none");
+                                break;
+                            case "Forth":
+                            case "Fifth":
+                            case "Sixth":
+                            case "Seventh":
+                            case "SliderWithSubtitle":
+                                $(parent).find(".countSection").removeClass("d-none");
+                                break;
+                        }
+                    }
+                });
+
+                $(".menu-area").mouseover(function () {
+                    var windowSize = $(window).width();
+                    if (windowSize > 975) {
+                        $(this).addClass("show");
+                        $(this).find(".dropdown-toggle").addClass("text-primary");
+                        $(this).find(".mega-area").addClass("show");
+                    }
+                });
+
+                $(".menu-area").mouseleave(function () {
+                    var windowSize = $(window).width();
+                    if (windowSize > 975) {
+                        $(this).removeClass("show");
+                        $(this).find(".dropdown-toggle").removeClass("text-primary");
+                        $(this).find(".mega-area").removeClass("show");
+                    }
+                });
+
+                $(".nav-item .nav-link").mouseover(function () {
+                    $(this).addClass("text-primary");
+                });
+                $(".nav-item .nav-link").mouseleave(function () {
+                    $(this).removeClass("text-primary");
+                });
+
+                $(".custmDrp").click(function () {
+
+                    var item = $(this).parent().parent().siblings(".mega-area")
+                    if (item.hasClass("show")) {
+                        item.removeClass("show");
+                    } else {
+                        item.addClass("show");
+                    }
+                });
+
+
+                $(".btnHFStyle").click(function () {
+                    
+                    selectedSection = $(this).attr("sec");
+                    var offcanvas = $("#styleHeaderFooterDiv");
+                    var off = new bootstrap.Offcanvas(offcanvas);
+                    off.show();
+                });
+
+                $(document).on("click", ".columnStyles", function () {
+                    
+                    selectedRow = $(this).attr("guid");
+                    colSelectedNumber = $(this).attr("cn");
+                    var columnClassNames = $(this).attr("classNames");
+                    var ofCanvas = $("#colStylesDiv");
+
+                    //////////Border dimensions/////////////
+                    if (columnClassNames.includes("border-top")) {
+                        $("input[type='checkbox'][name='colBorderDimension'][value='border-top']").prop("checked", true);
+                        columnClassNames = columnClassNames.replace("border-top", "");
+                    }
+                    if (columnClassNames.includes("border-bottom")) {
+                        $("input[type='checkbox'][name='colBorderDimension'][value='border-bottom']").prop("checked", true);
+                        columnClassNames = columnClassNames.replace("border-bottom", "");
+                    }
+                    if (columnClassNames.includes("border-start")) {
+                        $("input[type='checkbox'][name='colBorderDimension'][value='border-start']").prop("checked", true);
+                        columnClassNames = columnClassNames.replace("border-start", "");
+                    }
+                    if (columnClassNames.includes("border-end")) {
+                        $("input[type='checkbox'][name='colBorderDimension'][value='border-end']").prop("checked", true);
+                        columnClassNames = columnClassNames.replace("border-end", "");
+                    }
+
+                    ///////////////border-thickness///////////////
+                    if (columnClassNames.includes("border-")) {
+                        borderThicknessClasses = ["border-1", "border-2", "border-3", "border-4", "border-5"];
+                        var classes = columnClassNames.trim().split(" ");
+                        var selectedClass = "";
+                        for (i = 0; i < classes.length; i++) {
+                            if (borderThicknessClasses.includes(classes[i])) {
+                                selectedClass = classes[i];
+                                break;
+                            }
+                        }
+                        if (selectedClass != "") {
+                            $("#borderThicknessColumn").selectpicker("val", selectedClass);
+                            columnClassNames = columnClassNames.replace(selectedClass, "");
+                        }
+                    }
+                    else {
+                        $("#borderThicknessColumn").selectpicker("val", "-1");
+                    }
+
+                    ////////////bootstrap custom classes////////
+                    classes = columnClassNames.trim().split(" ");
+                    var customClasses = "";
+                    for (i = 0; i < classes.length; i++) {
+                        if (!classes[i].startsWith("col-")) {
+                            customClasses += ` ${classes[i]}`;
+                        }
+                    }
+                    $("#txtColumnCustClass").val(customClasses);
+
+
+                    var of = new bootstrap.Offcanvas(ofCanvas);
+                    of.show();
+
+                });
+                $(document).on("click", ".btnRowStyle", function () {
+                    
+                    selectedRow = $(this).attr("guid");
+                    var siblingContentColumns = $(this).parent().next(); //class ='contentColumns'
+                    var rowExtraClasses = siblingContentColumns.find(".row.sectionRow").attr("rowCustomClasses");
+                    var offcanvas = $("#styleDiv");
+
+                    ///////////////////////////py////////////////
+                    if (rowExtraClasses.includes("py-")) {
+                        var classes = rowExtraClasses.trim().split(" ");
+                        var selectedClass = "";
+                        for (i = 0; i < classes.length; i++) {
+                            if (classes[i].startsWith("py-")) {
+                                selectedClass = classes[i];
+                                break;
+                            }
+                        }
+                        if (selectedClass != "") {
+                            $("#verticalPaddingSelect").selectpicker("val", selectedClass);
+                            rowExtraClasses = rowExtraClasses.replace(selectedClass, "");
+                        }
+
+                    }
+                    else {
+                        $("#verticalPaddingSelect").selectpicker("val", "-1");
+                    }
+                    //////////////////hp////////////
+                    if (rowExtraClasses.includes("px-")) {
+                        var classes = rowExtraClasses.trim().split(" ");
+                        var selectedClass = "";
+                        for (i = 0; i < classes.length; i++) {
+                            if (classes[i].startsWith("px-")) {
+                                selectedClass = classes[i];
+                                break;
+                            }
+                        }
+                        if (selectedClass != "") {
+                            $("#horizantalPaddingSelect").selectpicker("val", selectedClass);
+                            rowExtraClasses = rowExtraClasses.replace(selectedClass, "");
+                        }
+                    }
+                    else {
+                        $("#horizantalPaddingSelect").selectpicker("val", "-1");
+                    }
+
+                    /////////////////////hg///////////////////
+                    if (rowExtraClasses.includes("gx-")) {
+                        var classes = rowExtraClasses.trim().split(" ");
+                        var selectedClass = "";
+                        for (i = 0; i < classes.length; i++) {
+                            if (classes[i].startsWith("gx-")) {
+                                selectedClass = classes[i];
+                                break;
+                            }
+                        }
+                        if (selectedClass != "") {
+                            $("#horizantalGutterSelect").selectpicker("val", selectedClass);
+                            rowExtraClasses = rowExtraClasses.replace(selectedClass, "");
+                        }
+                    }
+                    else {
+                        $("#horizantalGutterSelect").selectpicker("val", "-1");
+                    }
+
+                    /////////////////////vm///////////
+                    if (rowExtraClasses.includes("my-")) {
+                        var classes = rowExtraClasses.trim().split(" ");
+                        var selectedClass = "";
+                        for (i = 0; i < classes.length; i++) {
+                            if (classes[i].startsWith("my-")) {
+                                selectedClass = classes[i];
+                                break;
+                            }
+                        }
+                        if (selectedClass != "") {
+                            $("#verticalMarginSelect").selectpicker("val", selectedClass);
+                            rowExtraClasses = rowExtraClasses.replace(selectedClass, "");
+                        }
+                    }
+                    else {
+                        $("#verticalMarginSelect").selectpicker("val", "-1");
+                    }
+
+                    //////////Border dimensions/////////////
+                    if (rowExtraClasses.includes("border-top")) {
+                        $("input[type='checkbox'][name='rowBorderDimension'][value='border-top']").prop("checked", true);
+                        rowExtraClasses = rowExtraClasses.replace("border-top", "");
+                    }
+                    if (rowExtraClasses.includes("border-bottom")) {
+                        $("input[type='checkbox'][name='rowBorderDimension'][value='border-bottom']").prop("checked", true);
+                        rowExtraClasses = rowExtraClasses.replace("border-bottom", "");
+                    }
+                    if (rowExtraClasses.includes("border-start")) {
+                        $("input[type='checkbox'][name='rowBorderDimension'][value='border-start']").prop("checked", true);
+                        rowExtraClasses = rowExtraClasses.replace("border-start", "");
+                    }
+                    if (rowExtraClasses.includes("border-end")) {
+                        $("input[type='checkbox'][name='rowBorderDimension'][value='border-end']").prop("checked", true);
+                        rowExtraClasses = rowExtraClasses.replace("border-end", "");
+                    }
+
+                    ///////////////border-thickness///////////////
+                    if (rowExtraClasses.includes("border-")) {
+                        borderThicknessClasses = ["border-1", "border-2", "border-3", "border-4", "border-5"];
+                        var classes = rowExtraClasses.trim().split(" ");
+                        var selectedClass = "";
+                        for (i = 0; i < classes.length; i++) {
+                            if (borderThicknessClasses.includes(classes[i])) {
+                                selectedClass = classes[i];
+                                break;
+                            }
+                        }
+                        if (selectedClass != "") {
+                            $("#borderThicknessRow").selectpicker("val", selectedClass);
+                            rowExtraClasses = rowExtraClasses.replace(selectedClass, "");
+                        }
+                    }
+                    else {
+                        $("#borderThicknessRow").selectpicker("val", "-1");
+                    }
+
+                    ////////////bootstrap custom classes////////
+                    classes = rowExtraClasses.trim().split(" ");
+                    var customClasses = "";
+                    for (i = 0; i < classes.length; i++) {
+                        if (!classes[i].startsWith("col-")) {
+                            customClasses += ` ${classes[i]}`;
+                        }
+                    }
+                    $("#txtRowCustClass").val(customClasses);
+
+                    var off = new bootstrap.Offcanvas(offcanvas);
+                    off.show();
+                });
+
+                $(".rowbd").change(function () {
+
+                    var cls = $(this).val();
+                    var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
+                    if ($(this).is(':checked')) {
+                        if (!custClass.includes(cls))  //prevent adding double classes
+                        {
+                            custClass += ` ${cls}`;
+                        }
+                    } else {
+                        custClass = custClass.replace(cls, "").trimEnd();
+                    }
+                    $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", custClass);
+                });
+
+                $(".colBd").change(function () {
+
+                    var cls = $(this).val();
+                    var custClass = $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
+                    var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
+                    if ($(this).is(':checked')) {
+                        if (!custClass.includes(cls)) //prevent adding double classes
+                        {
+                            custClass += ` ${cls}`;
+                        }
+                        if (!pClass.includes(cls)) //prevent adding double classes
+                        {
+                            pClass += ` ${cls}`;
+                        }
+                    } else {
+                        custClass = custClass.replace(cls, "").trimEnd();
+                        pClass = pClass.replace(cls, "").trimEnd();
+                    }
+
+                    $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames", custClass);
+                    $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames", pClass);
+                });
+
+                $(".deleteBgImage").click(function () {
+                    
+                    var sec = $(this).attr("sec");
+                    if (sec == "hf") {
+                        if (selectedSection == "container") {
+                            containerBgImage.base64ImageContent = "";
+                            $(".dynamicContainerPart").addClass("bgCover");
+                            $(".dynamicContainerPart").css("background-image", 'none');
+                        } else if (selectedSection == "header") {
+                            headerBgImage.base64ImageContent = "";
+                            $(".dynamicHeaderPart").addClass("bgCover");
+                            $(".dynamicHeaderPart").css("background-image", 'none');
+
+                        } else if (selectedSection == "footer") {
+                            footerBgImage.base64ImageContent = "";
+                            $(".dynamicFooterPart").removeClass("bgCover");
+                            $(".dynamicHeaderPart").css("background-image", 'none');
+                        }
+                    } else if (sec == "row") {
+                        $(`.row.sectionRow[guid='${selectedRow}']`).removeAttr("bgtype");
+                        $(`.row.sectionRow[guid='${selectedRow}']`).removeAttr("bgurl");
+                        $(`.row.sectionRow[guid='${selectedRow}']`).css("background-image", "none !important");
+                        const index = bgImagesInSelectedRows.findIndex(item => item.selectedRowGuid);
+
+                        if (index !== -1) {
+                            bgImagesInSelectedRows.splice(index, 1);
+                        }
+                    }
+                });
+
+                $("#send_pic").click(function () {
+                    
+                    $("#uploadModal").modal("hide");
+                    var url = $("#galleryPic").attr("src");
+                    var model = {};
+                    var ratio = 1;
+                    var width = "";
+                    var height = "";
+                    width = 120;
+                    height = 120;
+
+
+                    var model = {} //an instance of BgImage
+                    model.base64ImageContent = url;
+                    model.SelectedRowGuid = selectedRow;
+                    model.SelectedSection = selectedSection;
+                    model.ImageFileName = "";
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("SaveBackgroundImageToServer", "Domain")',
+                        contentType: 'application/json',
+                        data: JSON.stringify(model),
+                        success: function (result) {
+                            
+                            if (result.status === "success") {
+                                const url = result.bgImage.base64ImageContent;
+
+                                if (selectedSection) {
+                                    if (selectedSection === "container") {
+                                        containerBgImage = result.bgImage;
+                                        $(".dynamicContainerPart").addClass("bgCover").css("background-image", `url(${url})`);
+                                    } else if (selectedSection === "footer") {
+                                        footerBgImage = result.bgImage;
+                                        $(".dynamicFooterPart").addClass("bgCover").css("background-image", `url(${url})`);
+                                    } else if (selectedSection === "header") {
+                                        headerBgImage = result.bgImage;
+                                        $(".dynamicHeaderPart").addClass("bgCover").css("background-image", `url(${url})`);
+                                    }
+                                } else {
+                                    $(`.row.sectionRow[guid='${selectedRow}']`)
+                                        .attr("bgurl", url)
+                                        .attr("bgtype", "2")
+                                        .addClass("bgCover")
+                                        .css("background-image", `url(${url})`);
+                                    result.bgImage.selectedRowGuid = selectedRow;
+                                    const index = bgImagesInSelectedRows.findIndex(item => item.selectedRowGuid == selectedRow);
+
+                                    if (index !== -1) {
+                                        bgImagesInSelectedRows.splice(index, 1); // Removes the element at the found index
+                                    }
+
+                                    bgImagesInSelectedRows.push(result.bgImage);
+                                }
+                            } else {
+                                showError('@UtilityLanguage.GetString("AlertAndMessage_ErrorInLoadingImage")');
+                            }
+                        },
+                    });
+
+                });
+
+                $("#removeFlagPart").click(function () {
+                    $('#confirmDesignModalLabel').text('@UtilityLanguage.GetString("btn_Delete")');
+                    $('#confirmDesignModalBody').html('@UtilityLanguage.GetString("AlertAndMessage_RemoveBoxConfrim")');
+                    $('#confirmDesignModal').modal('show');
+                });
+
+
+                $(".owl-carousel").owlCarousel({
+                    loop: true,
+                    rewind: false,
+                    rtl: true,
+                    navigation: true,
+                    autoplay: true,
+                    margin: 5,
+                    animateOut: 'fadeOut',
+                    animateIn: 'fadeIn',
+                    responsiveClass: true,
+                    nav: true,
+                    dots: false,
+                    autoplayHoverPause: false,
+                    items: 7,
+                    navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
+                        "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        600: {
+                            items: 5
+                        },
+                        1000: {
+                            items: 7
+                        }
+                    }
+                });
+                $("#btnDefault").click(function () {
+                    $.ajax({
+                        type: "Post",
+                        url: '@Url.Action("DefaultPageDesign", "Domain")',
+                        contentType: 'application/json',
+                        success: function (result) {
+                            
+                            $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@UtilityLanguage.GetString("AlertAndMessage_EditionDoneSuccessfully")');
+                            $('#mainToastBody').removeClass("alert-danger");
+                            $('#mainToastBody').addClass('alert-success');;
+
+                            var toastDiv = $("#mainToast");
+                            $("#toastPanel").show();
+                            var toast = new bootstrap.Toast(toastDiv);
+                            toast.show();
+                            setTimeout(function () {
+                                window.location.href = '@Url.Action("List", "Domain")';
+                            }, 2000);
+                        },
+
+                    });
+
+
+                });
+
+
+                $("#btnSave").click(function () {
+                    
+                    validateEditors();
+
+                    //start of header section
+                    var header = {}; //an instance of headerPart
+                    header.CustomizedContent = [];
+
+                    if (headerBgColor != "") {
+                        header.BGType = 1;
+                        header.CodeColor = headerBgColor;
+                    }
+                    else
+                        if (headerBgImage != "") {
+                            header.BGType = 2;
+                            header.BgImage = headerBgImage;
+                        }
+                    var i = 1;
+                    var rn = "";
+                    $(".dynamicHeaderPart .firstLevel .contentColumns").each(function () {
+                        
+                        rn = $(this).find(".row.sectionRow").attr("rn");
+
+                        var obj = {}; //an instance of RowContent
+                        obj.RowNumber = parseInt(rn);
+                        obj.RowGuid = $(this).find(".row.sectionRow").attr("guid");
+                        obj.OrderInRow = i;
+                        obj.EnumColsId = $(this).find(".row.sectionRow").attr("enumcolid");
+                        obj.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+
+                        if ($(this).find(".row.sectionRow").attr("bgtype") != undefined) {
+                            if ($(this).find(".row.sectionRow").attr("bgtype") == "1") {
+                                obj.BGType = 1;
+                                obj.BgCodeColor = $(this).find(`[guid='${obj.RowGuid}']`).css("background-color");
+
+                            } else //== 2
+                            {
+                                obj.BGType = 2;
+                                obj.BgImage = bgImagesInSelectedRows.find(item => item.selectedRowGuid === $(this).find(".row.sectionRow").attr("guid"));
+
+                            }
+                        }
+
+
+
+                        const colorValue = document.getElementById("rowBgcolor").value;
+                        if (colorValue != null && colorValue != undefined) {
+                            obj.ExtraClassNames += ` ${colorValue}`;
+                        }
+                        obj.ColsContent = [];
+                        $(this).find(".row.parent .finalColumnContent").each(function () {
+                            
+                            var colContent = {}; //an instance of ColContent
+                            colContent.Section = "headerSection";
+                            colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+
+                            var tmp = "";
+                            if (!$(this).closest(".row.parent").find(".editorPart").hasClass("d-none") ||
+                                !$(this).closest(".row.parent").find(".modulePart").hasClass("d-none")) {
+                                if (!$(this).closest(".row.parent").find(".modulePart").hasClass("d-none")) //module
+                                {
+                                    if ($(this).text().trim().includes('<div target="module">')) {
+                                        tmp = $(this).text().trim();
+                                    }
+                                    else {
+                                        tmp = '<div target="module">' + $(this).text().trim() + "</div>";
+                                    }
+
+                                } else {
+                                    tmp = $(this).html().toString().trim();
+                                }
+                            }
+
+                            if (tmp.substring(0, 1) == "\n") {
+                                tmp = tmp.substring(1);
+                            }
+                            colContent.ColData = tmp;
+                            colContent.ColumnClassNames = $(this).attr("classNames")?.trim() || "";
+                            colContent.ColumnCssNames = $(this).attr("style")?.trim() || "";
+                            colContent.RowGuid = obj.RowGuid;
+
+                            obj.ColsContent.push(colContent);
+                        });
+                        i++;
+                        header.CustomizedContent.push(obj);
+                    });
+                    //end of header section
+
+
+                    //start of container section
+                    i = 1;
+                    var bodyContainer = {}; //an instance of MainPageContentPart
+                    if (containerBgColor != "") {
+                        bodyContainer.BGType = 1;
+                        bodyContainer.CodeColor = containerBgColor;
+                    } else if (containerBgImage != "") {
+                        bodyContainer.BGType = 2;
+                        bodyContainer.BgImage = containerBgImage;
+                    }
+                    bodyContainer.RowContents = [];
+                    $(".dynamicContainerPart .firstLevel .contentColumns").each(function () {
+                        
+                        rn = $(this).find(".row.sectionRow").attr("rn");
+
+                        var bodyRowContent = {}; //an instance of RowContent
+                        bodyRowContent.RowNumber = parseInt(rn);
+                        bodyRowContent.RowGuid = $(this).find(".row.sectionRow").attr("guid");
+                        bodyRowContent.OrderInRow = i;
+                        bodyRowContent.EnumColsId = $(this).find(".row.sectionRow").attr("enumcolid");
+                        bodyRowContent.ColsContent = [];
+                        bodyRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+
+                        if ($(this).find(".row.sectionRow").attr("bgtype") != undefined) {
+                            if ($(this).find(".row.sectionRow").attr("bgtype") == "1") {
+                                bodyRowContent.BGType = 1;
+                                bodyRowContent.BgCodeColor = $(this).find(`[guid='${bodyRowContent.RowGuid}']`).css("background-color");
+
+                            } else //== 2
+                            {
+                                bodyRowContent.BGType = 2;
+                                bodyRowContent.BgImage = bgImagesInSelectedRows.find(item => item.selectedRowGuid === $(this).find(".row.sectionRow").attr("guid"));
+
+                            }
+                        }
+                        $(this).find(".row.parent .finalColumnContent").each(function () {
+                            var colContent = {}; //an instance of ColContent
+                            colContent.Section = "containerSection";
+                            colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                            
+                            var tmp = "";
+                            if (!$(this).closest(".row.parent").find(".editorPart").hasClass("d-none") ||
+                                !$(this).closest(".row.parent").find(".modulePart").hasClass("d-none")) {
+                                if (!$(this).closest(".row.parent").find(".modulePart").hasClass("d-none")) //module
+                                {
+                                    if ($(this).text().trim().includes('<div target="module">')) {
+                                        tmp = $(this).text().trim();
+                                    }
+                                    else {
+                                        tmp = '<div target="module">' + $(this).text().trim() + "</div>";
+                                    }
+
+                                } else {
+                                    tmp = $(this).html().toString().trim();
+                                }
+                            }
+
+                            if (tmp.substring(0, 1) == "\n") {
+                                tmp = tmp.substring(1);
+                            }
+                            colContent.ColData = tmp;
+                            colContent.ColumnClassNames = $(this).attr("classNames")?.trim() || "";
+                            colContent.ColumnCssNames = $(this).attr("style")?.trim() || "";
+                            colContent.RowGuid = bodyRowContent.RowGuid;
+                            bodyRowContent.ColsContent.push(colContent);
+                        });
+                        i++;
+                        bodyContainer.RowContents.push(bodyRowContent);
+                    });
+                    //end of container section
+
+                    //start of footerSection
+                    i = 1;
+                    var footerPart = {}; //an instance of footerPart
+
+                    if (footerBgColor != "") {
+                        footerPart.BGType = 1;
+                        footerPart.CodeColor = footerBgColor;
+                    } else if (footerBgImage != "") {
+                        footerPart.BGType = 2;
+                        footerPart.BgImage = footerBgImage;
+                    }
+
+
+                    footerPart.CustomizedContent = [];
+                    $(".dynamicFooterPart .firstLevel .contentColumns").each(function () {
+                        
+                        rn = $(this).find(".row.sectionRow").attr("rn");
+                        var footerRowContent = {}; //an instance of RowContent
+                        footerRowContent.RowNumber = parseInt(rn);
+                        footerRowContent.RowGuid = $(this).find(".row.sectionRow").attr("guid");
+                        footerRowContent.OrderInRow = i;
+                        footerRowContent.EnumColsId = $(this).find(".row.sectionRow").attr("enumcolid");
+                        footerRowContent.ColsContent = [];
+                        footerRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                        footerRowContent.BgImage = bgImagesInSelectedRows.find(item => item.selectedRowGuid === $(this).find(".row.sectionRow").attr("guid"));
+
+                        if ($(this).find(".row.sectionRow").attr("bgtype") != undefined) {
+                            if ($(this).find(".row.sectionRow").attr("bgtype") == "1") {
+                                footerRowContent.BGType = 1;
+                                footerRowContent.BgCodeColor = $(this).find(`[guid='${footerRowContent.RowGuid}']`).css("background-color");
+
+                            } else //== 2
+                            {
+                                footerRowContent.BGType = 2;
+                                footerRowContent.BgImage = bgImagesInSelectedRows.find(item => item.selectedRowGuid === $(this).find(".row.sectionRow").attr("guid"));
+                            }
+                        }
+
+                        $(this).find(".row.parent .finalColumnContent").each(function () {
+                            
+                            var colContent = {}; //an instance of ColContent
+                            colContent.Section = "footerSection"
+                            colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+
+                            var tmp = "";
+                            if (!$(this).closest(".row.parent").find(".editorPart").hasClass("d-none") ||
+                                !$(this).closest(".row.parent").find(".modulePart").hasClass("d-none")) {
+                                if (!$(this).closest(".row.parent").find(".modulePart").hasClass("d-none")) //module
+                                {
+                                    if ($(this).text().trim().includes('<div target="module">')) {
+                                        tmp = $(this).text().trim();
+                                    }
+                                    else {
+                                        tmp = '<div target="module">' + $(this).text().trim() + "</div>";
+                                    }
+
+                                } else {
+                                    tmp = $(this).html().toString().trim();
+                                }
+                            }
+
+                            if (tmp.substring(0, 1) == "\n") {
+                                tmp = tmp.substring(1);
+                            }
+                            colContent.ColData = tmp;
+                            colContent.ColumnClassNames = $(this).attr("classNames")?.trim() || "";
+                            colContent.ColumnCssNames = $(this).attr("style")?.trim() || "";
+                            colContent.RowGuid = footerRowContent.RowGuid;
+                            footerRowContent.ColsContent.push(colContent);
+                        });
+                        i++;
+                        footerPart.CustomizedContent.push(footerRowContent);
+                    });
+                    //end of footer section
+
+                    var model = {}; //an instance of DomainPageModel
+
+                    if ($("#languageId").val() != "-1") {
+                        
+                        model.HeaderPart = header;
+                        model.MainPageContainerPart = bodyContainer;
+                        model.FooterPart = footerPart;
+                        model.DomainId = '@ViewBag.DomainId';
+                        model.LanguageId = $("#languageId").val();
+                        model.IsAnchor = $("#anchor").is(":checked");
+                        model.LanguageName = $("#languageId  option:selected").text();
+                        model.PageType = @pageType;
+                        $("#PrimaryTemplateHeaderPart textarea").each(function () {
+                            var id = $(this).attr("id");
+                            $(`div#${id}`)
+                        })
+
+                        $.ajax({
+                            type: "Post",
+                            url: '@Url.Action("SavePageContent", "Domain")',
+                            contentType: 'application/json',
+                            data: JSON.stringify(model),
+                            success: function (result) {
+                                
+                                $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@UtilityLanguage.GetString("AlertAndMessage_EditionDoneSuccessfully")');
+                                $('#mainToastBody').removeClass("alert-danger");
+                                $('#mainToastBody').addClass('alert-success');
+
+                                var toastDiv = $("#mainToast");
+                                $("#toastPanel").show();
+                                var toast = new bootstrap.Toast(toastDiv);
+                                toast.show();
+                                setTimeout(function () {
+                                    window.location.href = '@Url.Action("List", "Domain")';
+                                }, 2000);
+                            },
+
+                        });
+                    }
+                    else {
+                        showError('@UtilityLanguage.GetString("AlertAndMessage_FillLangId")');
+                    }
+
+                });
+
+                $("#btnPreview").click(function () {
+                    
+                    validateEditors();
+                    var header = "";
+                    var container = "";
+                    var footer = "";
+
+                    if ($("#languageId").val() != "-1") {
+                        var headerImg = "";
+                        var headerColor = "";
+                        if ($(".dynamicHeaderPart").css("background-color") != undefined && $(".dynamicHeaderPart").css("background-color") != "") {
+                            var color = $(".dynamicHeaderPart").css("background-color");
+                            headerColor = `background-color:${color};`;
+
+                        }
+                        else if ($(".dynamicHeaderPart").css("background-image") != undefined && $(".dynamicHeaderPart").css("background-image") != "") {
+                            var img = $(".dynamicHeaderPart").css("background-image");
+                            headerImg = `background-image:${img};`;
+                        }
+                        var header = `<div class="dynamicHeaderPart" style="${headerColor}${headerImg}">`;
+
+
+                        //header
+                        $(".dynamicHeaderPart .firstLevel .contentColumns").each(function () {
+
+                            var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                            header += `<div class='row firstLevel ${extraClasses}'>`;
+                            $(this).find(".row.parent .htmlColumnContentPreview").each(function () {
+                                var classNames = $(this).attr("classNames")?.trim() || "";
+                                var cssName = $(this).attr("style")?.trim() || "";
+                                var columnContent = $(this).html();
+
+                                header += `<div style='${cssName}' class='${classNames}'>${columnContent}</div>`;
+                            });
+                            header += "</div>";
+                        });
+
+                        //container
+                        $(".dynamicContainerPart .firstLevel .contentColumns").each(function () {
+                            
+                            var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                            var bgColor = "";
+                            var bgImage = "";
+                            if ($(this).find(".row.sectionRow").attr("bgtype") != undefined) {
+                                if ($(this).find(".row.sectionRow").attr("bgtype") == "1") {
+                                    var color = $(this).find(".row.sectionRow").css("background-color");
+                                    bgColor = `background-color:${color};`;
+                                } else
+                                    if ($(this).find(".row.sectionRow").attr("bgtype") == "2") {
+                                        var image = $(this).find(".row.sectionRow").css("background-image");
+                                        bgImage = `background-image:${image};`;
+                                    }
+                            }
+                            container += `<div class='row firstLevel ${extraClasses}' style='${bgColor}${bgImage}'>`;
+                            $(this).find(".row.parent .htmlColumnContentPreview").each(function () {
+
+                                var classNames = $(this).attr("classNames")?.trim() || "";
+                                var cssName = $(this).attr("style")?.trim() || "";
+                                var columnContent = $(this).html();
+                                container += `<div style='${cssName}' class='${classNames}'>${columnContent}</div>`;
+                            });
+                            container += "</div>";
+                        });
+
+                        var footerImg = "";
+                        var footerColor = "";
+                        if ($(".dynamicFooterPart").css("background-color") != undefined && $(".dynamicFooterPart").css("background-color") != "") {
+                            var color = $(".dynamicFooterPart").css("background-color");
+                            footerColor = `background-color:${color};`;
+
+                        }
+                        else if ($(".dynamicFooterPart").css("background-image") != undefined && $(".dynamicFooterPart").css("background-image") != "") {
+                            var img = $(".dynamicFooterPart").css("background-image");
+                            footerImg = `background-image:${img};`;
+                        }
+                        footer = `<div class="dynamicFooterPart" style="${footerColor}${footerImg}">`;
+
+                        //start of footerSection
+                        $(".dynamicFooterPart .firstLevel .contentColumns").each(function () {
+                            var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                            footer += `<div class='row firstLevel ${extraClasses}'>`;
+                            $(this).find(".row.parent .htmlColumnContentPreview").each(function () {
+                                var classNames = $(this).attr("classNames")?.trim() || "";
+                                var cssName = $(this).attr("style")?.trim() || "";
+                                var columnContent = $(this).html();
+                                footer += `<div style='${cssName}' class= '${classNames}' > ${columnContent} </div>`;
+                            });
+                            footer += "</div>";
+
+                        });
+                        //end of footer section
+
+                        
+                        var model = {}; //an instance of TemplateDesign
+                        model.HeaderContent = header;
+                        model.ContainerContent = container;
+                        model.FooterContent = footer;
+                        model.DomainId = '@domainId';
+                        model.LanguageId = $("#languageId").val();
+
+                        $.ajax({
+                            url: '@Url.Action("StoreDesignPreview")',
+                            data: JSON.stringify(model),
+                            contentType: 'application/json',
+                            type: 'Post',
+                            dataType: 'json',
+                            success: function (result) {
+                                if (result != "") {
+                                    window.open('@Url.Action("DesignPreview")' + '?key=' + result.key, '_blank');
+                                }
+                            }
+                        });
+
+                    }
+                    else {
+                        showError('@UtilityLanguage.GetString("AlertAndMessage_FillLangId")');
+                    }
+                });
+
+            })
+            // function addRowCustomizeClass(sender) {
+            //     
+            //     if ($(sender).val().trim() != "") {
+            //         var customCls = $(sender).val().trim();
+            //         var precustClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
+            //         if (!precustClass.includes(customCls)) {
+            //             precustClass += ` ${customCls}`;
+            //             $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", precustClass);
+            //         }
+            //     }
+            // }
+
+            function addColumnCustomizeClass() {
+                
+                var inputCls = $("#txtColumnCustClass").val().trim();
+                if (inputCls !== "") {
+                    var custClass = $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
+                    var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
+                    if (!custClass.includes(inputCls)) {
+                        custClass = ` ${inputCls}`;
+                        pClass = ` ${inputCls}`;
+                        $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames", custClass);
+                        $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames", pClass);
+                    }
+                }
+            }
+
+            function addColumnCustomizeCss() {
+                
+                var inputCss = $("#txtColumnCustCss").val().trim();
+                if (inputCss === "") return; // Exit if input is empty
+
+                // Select the target elements
+                var finalColumnContent = $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`);
+                var previewColumnContent = $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`);
+
+                // Add the custom CSS class to both elements
+                finalColumnContent.each(function() {
+                    this.style.cssText = ` ${inputCss}`;
+                });
+                previewColumnContent.each(function() {
+                    this.style.cssText = ` ${inputCss}`;
+                });
+            }
+
+            function confirmation() {
+                $(".flagPartDiv").addClass("d-none");
+                $("#restoreRecord").removeClass("d-none");
+            }
+
+            function flagRestoration() {
+                $(".flagPartDiv").removeClass("d-none");
+                $("#restoreRecord").addClass("d-none");
+            }
+            function setLang(lang) {
+                var currentCulture = '@CultureInfo.CurrentCulture.Name';
+                if (currentCulture !== lang) {
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("changeLang", "Account")' + "?langId=" + lang,
+                        success: function () {
+                            window.location.reload();
+                        }
+                    });
+                }
+            }
+            function setProductCountInCart(number) {
+                $("#userBasketId .notifyBadge").html(number);
+            }
+
+            function changeScreen() {
+                var windowSize = $(window).width();
+                console.log(windowSize);
+                if (windowSize <= 974) {
+                    $(".nascr").removeClass("d-none").addClass("d-block");
+                    $(".wiscr").removeClass("d-block").addClass("d-none");
+                } else {
+                    $(".nascr").removeClass("d-block").addClass("d-none");
+                    $(".wiscr").removeClass("d-none").addClass("d-block");
+                }
+            }
+            function loadWithOneLanguage(currentDesignForLanguage) {
+                var lan = "";
+                if ($("#languageId option:selected").text() == "فارسی") {
+                    lan = "fa";
+                } else {
+                    lan = "en";
+                }
+                
+                $(".txtEditorCK").each(function () {
+                    
+                    var editorId = $(this).attr("id");
+                    var config = ckConfig(editorId);
+                    tinymce.init(config);
+                });
+
+                loadInEditMode = true;
+
+                //headerPart
+                //image and color for header//
+                if (currentDesignForLanguage.headerPart.bgType != null) {
+                    if (currentDesignForLanguage.headerPart.bgType == 1) //color
+                    {
+                        headerBgColor = currentDesignForLanguage.headerPart.codeColor;
+                        $(".dynamicHeaderPart").css("background-color", headerBgColor);
+                    } else //image
+                    {
+                        $(".dynamicHeaderPart").css("background-image", `url(${currentDesignForLanguage.headerPart.bgImage.base64ImageContent})`)
+                            .addClass("bgCover");
+                    }
+                }
+
+                var senderHeaderCaller = $(".div_headerSection .addNewRow");
+                currentDesignForLanguage.headerPart.customizedContent.forEach(function (element, index) {
+                    
+                    addNewRow(senderHeaderCaller, "headerSection", element.rowGuid);
+                    var colCount = element.colsContent.length;
+                    var enumColsId = element.enumColsId;
+                    //var currentGuid = $("#headerPartCurrentGuid").val();
+                    $(`#${element.rowGuid}`).val(colCount);
+                    $(`#${element.rowGuid}`).selectpicker("refresh");
+                    
+                    if (element.bgType == 2) {
+
+                        const targetDiv = document.querySelector(`div[guid='${element.rowGuid}']`);
+
+                        if (targetDiv) {
+                            targetDiv.style.backgroundImage = `url(${element.bgImage.base64ImageContent})`;
+                            targetDiv.classList.add("bgCover");
+                            bgImagesInSelectedRows.push(element.bgImage)
+                        }
+                    }
+
+                    if (element.ExtraClassNames) {
+                        
+                        // Check if ExtraClassNames contains a '#' character (indicating color code)
+                        if (element.ExtraClassNames.includes('#')) {
+                            // Extract the color code manually
+                            const colorCodeMatch = element.ExtraClassNames.split(' ').find(className => /^#[0-9A-Fa-f]{3,6}$/i.test(className));
+
+                            if (colorCodeMatch) {
+                                const colorCode = colorCodeMatch; // The matched color code
+
+                                // Set the rowBgcolor input value
+                                document.getElementById("rowBgcolor").value = colorCode;
+
+                            }
+                        }
+                    }
+                    $.ajax({
+                        url: "@Url.Action("GetRelatedColsTemplateWidths", "Domain")" + "?count=" + colCount,
+                        type: 'Get',
+                        async: false,
+                        statusCode:
+                        {
+                            200: function (result) {
+                                
+                                if (result.status == "success") {
+                                    var options = "";
+                                    if (result.data.length != 0) {
+                                        (result.data).forEach(function (item) {
+                                            var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                            options += op;
+                                        });
+                                    }
+                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).html(options);
+                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).selectpicker();
+                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).val(enumColsId);
+                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).selectpicker("refresh");
+
+
+                                    var selectedElement = $(`.colWidth[colwidthid='${element.rowGuid}']`);
+
+                                    var id = $(selectedElement).attr("colwidthid");
+                                    var count = parseInt($(`.colCnt[id='${id}']`).val());
+
+                                    var rowNumber = $(selectedElement).closest(".row.firstLevel").attr("rn");
+                                    //var guid = $(selectedElement).closest(".row.firstLevel").attr("guid");
+                                    var colWidthEnumId = parseInt($(selectedElement).val());
+
+                                    var obj = {}; //an instance of RowSelectedColumnsModel
+                                    obj.Count = count;
+                                    obj.ColumnWidth = colWidthEnumId;
+                                    obj.RowNumber = rowNumber;
+                                    obj.DomainId = '@ViewBag.DomainId';
+                                    obj.RowGuid = element.rowGuid;
+                                    obj.RowData = element;
+
+                                    $.ajax({
+                                        url: "@Url.Action("GetRowWithSelectedColumns", "Domain")",
+                                        type: 'Post',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(obj),
+                                        async: false,
+                                        dataType: "html",
+
+                                        success: function (data) {
+                                            
+                                            var tag = "headerSection";
+                                            var divId = `#${tag}_paramSection`;
+                                            $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns`).html(data);
+                                            var buttonDivClass = `.row.div_${tag}`;
+                                            $(buttonDivClass).find(".addNewRow").removeAttr("disabled");
+                                            
+                                            var editorelements = $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns .txtEditorCK`);
+                                            editorelements.each(function (index, elem) {
+                                                
+
+                                                var editorId = $(this).attr("id");
+                                                var config = ckConfig(editorId);
+                                                tinymce.init(config);
+                                            });
+
+
+                                        },
+                                        error: function (xhr, ajaxOptions, thrownError) {
+                                            
+                                            alert(xhr.status);
+                                        },
+
+
+                                    });
+
+                                }
+                            }
+                        }
+                    });
+                });
+
+                //bodyPart
+                
+                if (currentDesignForLanguage.mainPageContainerPart.bgType != null) {
+                    if (currentDesignForLanguage.mainPageContainerPart.bgType == 1) //color
+                    {
+                        containerBgColor = currentDesignForLanguage.mainPageContainerPart.codeColor;
+                        $(".dynamicContainerPart").css("background-color", containerBgColor);
+
+                    } else //image
+                    {
+                        $(".dynamicContainerPart").css("background-image", `url(${currentDesignForLanguage.mainPageContainerPart.bgImage.base64ImageContent})`)
+                            .addClass("bgCover");
+                    }
+                }
+
+                var senderBodyCaller = $(".div_containerSection .addNewRow");
+                currentDesignForLanguage.mainPageContainerPart.rowContents.forEach(function (element, index) {
+                    
+                    addNewRow(senderBodyCaller, "containerSection", element.rowGuid);
+                    var colCount = element.colsContent.length;
+                    var enumColsId = element.enumColsId;
+                    //var currentGuid = $("#containerPartCurrentGuid").val();
+                    $(`#${element.rowGuid}`).val(colCount);
+                    $(`#${element.rowGuid}`).selectpicker("refresh");
+
+                    if (element.bgType == 2) {
+
+                        const targetDiv = document.querySelector(`div[guid='${element.rowGuid}']`);
+
+                        if (targetDiv) {
+                            targetDiv.style.backgroundImage = `url(${element.bgImage.base64ImageContent})`;
+                            targetDiv.classList.add("bgCover");
+                        }
+                    }
+
+                    $.ajax({
+                        url: "@Url.Action("GetRelatedColsTemplateWidths", "Domain")" + "?count=" + colCount,
+                        type: 'Get',
+                        async: false,
+                        statusCode:
+                        {
+                            200: function (result) {
+                                
+                                if (result.status == "success") {
+                                    var options = "";
+                                    if (result.data.length != 0) {
+                                        (result.data).forEach(function (item) {
+                                            var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                            options += op;
+                                        });
+                                    }
+                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).html(options);
+                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).selectpicker();
+                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).val(enumColsId);
+                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).selectpicker("refresh");
+
+
+                                    var selectedElement = $(`.colWidth[colwidthid='${element.rowGuid}']`);
+
+                                    var id = $(selectedElement).attr("colwidthid");
+                                    var count = parseInt($(`.colCnt[id='${id}']`).val());
+
+                                    var rowNumber = $(selectedElement).closest(".row.firstLevel").attr("rn");
+                                    var colWidthEnumId = parseInt($(selectedElement).val());
+
+
+                                    var obj = {}; //an instance of RowSelectedColumnsModel
+                                    obj.Count = count;
+                                    obj.ColumnWidth = colWidthEnumId;
+                                    obj.RowNumber = rowNumber;
+                                    obj.DomainId = '@ViewBag.DomainId';
+                                    obj.RowGuid = element.rowGuid;
+                                    obj.RowData = element;
+
+                                    $.ajax({
+                                        url: "@Url.Action("GetRowWithSelectedColumns", "Domain")",
+                                        type: 'Post',
+                                        async: false,
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(obj),
+                                        dataType: "html",
+                                        statusCode:
+                                        {
+                                            200: function (data) {
+                                                
+                                                var tag = "containerSection";
+                                                var divId = `#${tag}_paramSection`;
+                                                $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns`).html(data);
+                                                var buttonDivClass = `.row.div_${tag}`;
+                                                $(buttonDivClass).find(".addNewRow").removeAttr("disabled");
+
+                                                var editorelements = $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns .txtEditorCK`);
+                                                editorelements.each(function (elem) {
+                                                    
+                                                    var editorId = $(this).attr("id");
+                                                    var config = ckConfig(editorId);
+                                                    tinymce.init(config);
+
+                                                });
+                                            }
+                                        }
+                                    });
+
+                                }
+                            }
+                        }
+                    });
+                });
+
+
+                //footerPart
+                //image and color for footer//
+                
+                if (currentDesignForLanguage.footerPart.bgType != null) {
+                    if (currentDesignForLanguage.footerPart.bgType == 1) //color
+                    {
+                        footerBgColor = currentDesignForLanguage.footerPart.codeColor
+                        $(".dynamicFooterPart").css("background-color", footerBgColor);
+                    } else //image
+                    {
+                        $(".dynamicFooterPart")
+                            .css("background-image", `url(${currentDesignForLanguage.footerPart.bgImage.base64ImageContent})`)
+                            .addClass("bgCover");
+                    }
+                }
+                var senderFooterCaller = $(".div_footerSection .addNewRow");
+                currentDesignForLanguage.footerPart.customizedContent.forEach(function (element, index) {
+                    
+                    addNewRow(senderFooterCaller, "footerSection", element.rowGuid);
+                    var colCount = element.colsContent.length;
+                    var enumColsId = element.enumColsId;
+                    //var currentGuid = $("#footerPartCurrentGuid").val();
+                    $(`#${element.rowGuid}`).val(colCount);
+                    $(`#${element.rowGuid}`).selectpicker("refresh");
+
+                    if (element.bgType == 2) {
+
+                        const targetDiv = document.querySelector(`div[guid='${element.rowGuid}']`);
+
+                        if (targetDiv) {
+                            targetDiv.style.backgroundImage = `url(${element.bgImage.base64ImageContent})`;
+                            targetDiv.classList.add("bgCover");
+                        }
+                    }
+
+                    $.ajax({
+                        url: "@Url.Action("GetRelatedColsTemplateWidths", "Domain")" + "?count=" + colCount,
+                        type: 'Get',
+                        async: false,
+                        statusCode:
+                        {
+                            200: function (result) {
+                                
+                                if (result.status == "success") {
+                                    var options = "";
+                                    if (result.data.length != 0) {
+                                        (result.data).forEach(function (item) {
+                                            var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                            options += op;
+                                        });
+                                    }
+                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).html(options);
+                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).selectpicker();
+                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).val(enumColsId);
+                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).selectpicker("refresh");
+
+
+                                    var selectedElement = $(`.colWidth[colwidthid='${element.rowGuid}']`);
+
+                                    var id = $(selectedElement).attr("colwidthid");
+                                    var count = parseInt($(`.colCnt[id='${id}']`).val());
+
+                                    var rowNumber = $(selectedElement).closest(".row.firstLevel").attr("rn");
+                                    var colWidthEnumId = parseInt($(selectedElement).val());
+
+
+                                    var obj = {}; //an instance of RowSelectedColumnsModel
+                                    obj.Count = count;
+                                    obj.ColumnWidth = colWidthEnumId;
+                                    obj.RowNumber = rowNumber;
+                                    obj.DomainId = '@ViewBag.DomainId';
+                                    obj.RowGuid = element.rowGuid;
+                                    obj.RowData = element;
+
+                                    $.ajax({
+                                        url: "@Url.Action("GetRowWithSelectedColumns", "Domain")",
+                                        type: 'Post',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(obj),
+                                        dataType: "html",
+                                        async: false,
+                                        statusCode:
+                                        {
+                                            200: function (data) {
+                                                
+                                                var tag = "footerSection";
+                                                var divId = `#${tag}_paramSection`;
+                                                $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns`).html(data);
+
+                                                var buttonDivClass = `.row.div_${tag}`;
+                                                $(buttonDivClass).find(".addNewRow").removeAttr("disabled");
+
+                                                var editorelements = $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns .txtEditorCK`);
+                                                editorelements.each(function (elem) {
+                                                    
+                                                    var editorId = $(this).attr("id");
+                                                    var config = ckConfig(editorId);
+                                                    tinymce.init(config);
+
+                                                });
+                                            }
+                                        }
+                                    });
+
+                                }
+                            }
+                        }
+                    });
+                });
+
+                loadInEditMode = false;
+                $(".row.firstLevel .selectpicker").each(function () {
+                    var sel = $(this).attr("sel");
+                    $(this).selectpicker("val", sel);
+                });
+            }
+            function initEditors() {
+                $(".txtEditorCK").each(function () {
+                    
+                    var editorId = $(this).attr("id");
+                    var config = ckConfig(editorId);
+                    tinymce.init({
+                        selector: `#${editorId}`,
+                        ...config // Spread the properties from your config object
+                    });
+                });
+            }
+            function loadDataForEdition() {
+                
+
+                currentDesignForLanguage = ContentListForEdition.find(_ => _.languageId == $("#languageId").val());
+                if (currentDesignForLanguage != undefined) {
+                    loadWithOneLanguage(currentDesignForLanguage);
+                }
+                else {
+                    designedLangList = [];
+                    var options = "";
+                    if (ContentListForEdition.length > 0) {
+                        ContentListForEdition.forEach(function (item, index) {
+                            designedLangList.push([item.languageId, item.languageName]);
+                        });
+                        var options = "<option value='-1'> " + '@UtilityLanguage.GetString("AlertAndMessage_Choose")' + " </option>";
+                        designedLangList.forEach(function (item) {
+                            var op = "<option value='" + item[0] + "'>" + item[1] + "</option>";
+                            options += op;
+                        });
+                        
+                        $("#languageForCopy").html(options);
+                        $("#languageForCopy").selectpicker("refresh");
+                        $(".copySection").removeClass("d-none");
+
+                    }
+
+                }
+            }
+
+
+            function ChangeCopyDesignChb(sender) {
+                
+                if ($(sender).is(":checked")) {
+                    $(".languageSelection").removeClass("d-none");
+                }
+                else {
+                    $(".languageSelection").addClass("d-none");
+                }
+            }
+            function copydesignfromLanguage(sender) {
+                
+                if ($(sender).val() != "-1") {
+                    var lanId = $(sender).val();
+                    currentDesignForLanguage = ContentListForEdition.find(_ => _.languageId == lanId);
+                    if (currentDesignForLanguage != undefined) {
+                        loadWithOneLanguage(currentDesignForLanguage);
+                    }
+                }
+            }
+
+
+            function addToTable() {
+                
+                var flag = false;
+                var selectedLang = $('#multiLangId').val();
+                if (isUnique(selectedLang, 'multiLingualList', 1, '@UtilityLanguage.GetString("AlertAndMessage_LangUniqueness")')) {
+                    $("span[data-val-result='multiLangId']").html("");
+                    $("span[data-val-result='productName']").html("");
+
+                    if ($("#multiLangId").val() == "") {
+                        $("span[data-val-result='multiLangId']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+                        flag = true;
+                    }
+                    if ($("#productName").val() == "") {
+                        $("span[data-val-result='productName']").html('@UtilityLanguage.GetString("AlertAndMessage_FieldEssential")');
+                        flag = true;
+                    }
+                    if (!flag) {
+
+                        var obj = {};
+                        obj.LanguageId = $('#multiLangId').val();
+                        obj.LanguageName = $("#multiLangId option:selected").text();
+                        obj.Name = $('#productName').val();
+                        obj.SeoTitle = $("#seoTitle").val();
+                        obj.SeoDescription = $("#seoDescription").val();
+                        obj.Description = $("#description").val();
+                        obj.UrlFriend = $("#urlFriend").val();
+                        obj.BodyContent = tinymce.activeEditor.getContent();
+                        obj.Tag = cnt.toString();
+
+                        multiLingualArr.push(obj);
+
+                        var tr = "<tr style='text-align:center;'><td>" + $("#multiLangId option:selected").text() +
+                            "</td><td style='display:none;'>" + $('#multiLangId').val() +
+                            "</td><td>" + $('#productName').val() +
+                            "</td><td>" + $("#seoTitle").val() +
+                            "</td><td>" + $("#seoDescription").val() +
+                            "</td><td>" + $("#description").val() +
+                            "</td><td>" + $("#urlFriend").val() +
+                            "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
+                            "<i class='fa fa-trash' ></i></button></td></tr>";
+
+                        if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
+                            $("#multiLingualList tr")[0].remove();
+                        }
+
+                        $("#multiLingualList").append(tr);
+                        cnt = cnt + 1;
+                        $("#multiLangId").val("@ViewBag.LangId");
+                        $("#multiLangId").selectpicker("refresh");
+                        $("#productName").val("");
+                        $("#seoTitle").val("");
+                        $("#seoDescription").val("");
+                        $("#description").val("");
+                        tinymce.activeEditor.setContent("");
+                        /* $("#urlFriend").val("");*/
+                    }
+                }
+            }
+            $("#uploadModal").on("shown.bs.modal", function () {
+                
+                var image = document.getElementById('croppedImg');
+                $("#send_pic").attr("disabled", true);
+
+
+                if (cropper !== null && cropper !== undefined) {
+                    cropper.destroy();
+                }
+
+                cropper = new Cropper(image,
+                    {
+                        background: true,
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        responsive: true,
+                        rotatable: true
+
+                    });
+            });
+            $('#uploadModal').on('hidden.bs.modal',
+                function () {
+                    
+                    cropper.destroy();
+                    document.getElementById("image").value = "";
+                    $("#cropped_result").remove();
+                });
+
+            function rotatePic() {
+                cropper.rotate(90);
+            }
+            $(document).on("click", "#crop_button",
+                function () {
+                    
+                    var imgUrl = cropper.getCroppedCanvas({
+                        imageSmoothingEnabled: true,
+                        imageSmoothingQuality: 'high'
+                    }).toDataURL('image/jpeg', 1);
+                    var img = document.createElement("img");
+                    img.setAttribute("id", "galleryPic");
+                    img.setAttribute("class", "img-fluid");
+                    var height = $("#container").attr("height");
+                    var croppedContainer = document.createElement("div");
+                    croppedContainer.setAttribute("id", "cropped_result");
+                    croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
+                    document.getElementById("rowContainer").appendChild(croppedContainer);
+                    img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
+                    img.src = imgUrl;
+                    document.getElementById("cropped_result").innerHTML = "";
+                    document.getElementById("cropped_result").appendChild(img);
+                    $("#send_pic").attr("disabled", false);
+                });
+
+
+            function getURL(input) {
+                
+                $("#cropped_result").remove();
+                if (input.files && input.files[0]) {
+                    var file = input.files[0];
+                    currentFileName = file.name;
+                    currentFileSize = file.size;
+
+                    if (currentFileSize <= @ViewBag.PicSize) {
+                        var reader = new FileReader();
+                        try {
+                            reader.readAsDataURL(file);
+                        } catch (e) {
+
+                        }
+                        reader.onload = function (e) {
+                            var content = e.target.result;
+                            //if file format is incorrect, then the 'content' won't have any src.
+                            if (content !== "data:") {
+                                var reducedContent = content.slice(5);
+
+                                if (reducedContent.startsWith("image")) {
+                                    $('#croppedImg').attr('src', content);
+                                    $("#uploadModal").modal("show");
+                                } else {
+                                    showError('@UtilityLanguage.GetString("AlertAndMessage_InvalidFormat")');
+                                    document.getElementById("image").value = "";
+                                    $("#cropped_result").remove();
+                                }
+                            } else {
+
+                                showError('@UtilityLanguage.GetString("AlertAndMessage_InvalidFormat")');
+                                document.getElementById("image").value = "";
+                                $("#cropped_result").remove();
+                            }
+                        };
+                    }
+                    else {
+
+                        showError('@UtilityLanguage.GetString("AlertAndMessage_InvalidFileSize")');
+                        document.getElementById("image").value = "";
+                        $("#cropped_result").remove();
+                    }
+                }
+            }
+
+            function showError(msg) {
+
+                document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
+                $('#mainToastBody').removeClass("text-bg-success");
+                $('#mainToastBody').addClass("text-bg-danger");
+                $("#toastPanel").show();
+                var toast = new bootstrap.Toast($("#mainToast"));
+                toast.show();
+            }
+
+            ////////////////////_pagedesign.cshtml codes////////////////////
+            var headerRowNumber = 1000;
+            var contentRowNumber = 2000;
+            var footerRowNumber = 3000;
+
+            function addNewRow(sender, tag, previousGuid = "") {
+                // Debugging line, remove in production
+                
+
+                let guid = "";
+                const divId = `#${tag}_paramSection`;
+                $(divId).find(".row.firstLevel").removeClass("active");
+                let currentRowNumber;
+
+                if (previousGuid !== "") {
+                    guid = previousGuid;
+                } else {
+                    guid = createGuid(); // Ensure createGuid() is defined
+                }
+
+                switch (tag) {
+                    case "headerSection":
+                        currentRowNumber = headerRowNumber;
+                        headerRowNumber += 1;
+                        break;
+                    case "containerSection":
+                        currentRowNumber = contentRowNumber;
+                        contentRowNumber += 1;
+                        break;
+                    case "footerSection":
+                        currentRowNumber = footerRowNumber;
+                        footerRowNumber += 1;
+                        break;
+                    default:
+                        console.error("Unknown tag:", tag);
+                        return;
+                }
+
+                const template = getColTemplate(guid, tag); // Ensure getColTemplate is defined and working
+
+                $(divId).append(`<div rn='${currentRowNumber}' guid='${guid}' class='row ${currentRowNumber} firstLevel align-middle active'></div>`);
+                $(`.firstLevel.active.${currentRowNumber}`).append(template);
+                const parentDivClass = `.div_${tag}`;
+                $(`#${guid}`).selectpicker(); // Ensure selectpicker plugin is loaded
+
+                $(parentDivClass).find(".lblAlertFirstRow").addClass("d-none");
+                $(sender).attr("disabled", true);
+            }
+
+
+            function selectColumns(sender, id) {
+                if (!loadInEditMode) {
+                    let col = parseInt($(sender).val());
+
+                    $.ajax({
+                        url: `@Url.Action("GetRelatedColsTemplateWidths", "Domain")?count=${col}`,
+                        type: 'GET',
+                        statusCode: {
+                            200: function (result) {
+                                if (result.status === "success") {
+                                    let options = "";
+                                    if (result.data.length !== 0) {
+                                        result.data.forEach(function (item) {
+                                            options += `<option value='${item.value}'>${item.text}</option>`;
+                                        });
+                                    }
+
+                                    const colWidthSelector = `.colWidth[colwidthid='${id}']`;
+                                    $(colWidthSelector).html(options);
+                                    $(colWidthSelector).selectpicker('refresh');
+                                }
+                            },
+                        }
+                    });
+                }
+
+            }
+
+            function selectColumnsWidthRatio(sender, tag) {
+
+                if (!loadInEditMode) {
+                    var id = $(sender).attr("colwidthid");
+                    var count = parseInt($(`.colCnt[id='${id}']`).val());
+
+                    var rowNumber = $(sender).closest(".row.firstLevel").attr("rn");
+                    var guid = $(sender).closest(".row.firstLevel").attr("guid");
+                    var colWidthEnumId = parseInt($(sender).val());
+
+                    var obj = {}; //an instance of RowSelectedColumnsModel
+                    obj.Count = count;
+                    obj.ColumnWidth = colWidthEnumId;
+                    obj.RowNumber = rowNumber;
+                    obj.DomainId = '@ViewBag.DomainId';
+                    obj.RowGuid = guid;
+
+                    $.ajax({
+                        url: "@Url.Action("GetRowWithSelectedColumns", "Domain")",
+                        type: 'Post',
+                        contentType: 'application/json',
+                        data: JSON.stringify(obj),
+                        dataType: "html",
+                        statusCode: {
+                            200: function (data) {
+
+                                var divId = `#${tag}_paramSection`;
+                                $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns`).html(data);
+                                $(".drpContentType").selectpicker();
+                                $(".moduleList").selectpicker();
+                                var buttonDivClass = `.row.div_${tag}`;
+                                $(buttonDivClass).find(".addNewRow").removeAttr("disabled");
+
+                                var lan = "";
+                                if ($("#languageId option:selected").text() == "فارسی") {
+                                    btnDefault
+                                    lan = "fa";
+                                } else {
+                                    lan = "en";
+                                }
+                                
+
+                                var editorelements = $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns .txtEditorCK`);
+                                editorelements.each(function () {
+                                    
+                                    var editorId = $(this).attr("id");
+                                    var config = ckConfig(editorId);
+                                    tinymce.init(config);
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+
+
+            /////////////////////////InnerSection.cshtml codes ///////////
+            function addModule(sender) {
+                
+                var rowNumber = $(sender).attr("rn");
+                var colNumber = $(sender).attr("cn");
+                var sec = $(sender).attr("sec");
+
+
+                var parentDiv = $(sender).closest(".parent");
+                var cnt = $(sender).closest(`div[colnum='${colNumber}']`).attr("cnt");
+
+                var selectedModuleName = $(parentDiv).find(".moduleList").find("option:selected").text();
+                var selectedModuleId = $(parentDiv).find(".moduleList").find("option:selected").val();
+                var paramDiv = $(parentDiv).find(".paramsDiv");
+                $.ajax({
+                    url: "@Url.Action("GetSpecificModule", "Domain")" + "?moduleName=" + selectedModuleName + "&id=" +
+                        '@ViewBag.DomainId' + "&colCount=" + cnt + "&rn=" + rowNumber + "&cn=" + colNumber + "&sec=" + sec + "&langId=" + $("#languageId").val(),
+                    type: 'Get',
+                    statusCode:
+                    {
+                        200: function (data) {
+                            $(paramDiv).html(data);
+                            $(paramDiv).find("[parid='typeList']").selectpicker();
+                            $(paramDiv).find("[parid='loadAnimation']").selectpicker();
+                            $(paramDiv).find("[parid='loadAnimationType']").selectpicker();
+                            $(paramDiv).find("[parid='sliderList']").selectpicker();
+                            $(paramDiv).find("[parid='sliderType']").selectpicker();
+                            $(paramDiv).find("[parid='selectionType']").selectpicker();
+                            $(paramDiv).find("[parid='categoryList']").selectpicker();
+                            $(paramDiv).find("[parid='contentList']").selectpicker();
+                        }
+                    }
+                });
+            }
+
+            function sanitize(sender, flag) {
+                editorId = "";
+                if (flag) {
+                    editorId = $(sender).attr("editorId");
+                } else {
+                    editorId = sender;
+                }
+                
+                var editorInstance = tinymce.get(editorId);
+                var htmlData = "";
+                if (editorInstance) {
+                    htmlData = editorInstance.getContent().trim();
+                } else {
+                    console.warn("Editor not found with id:", editorId);
+                }
+                if (htmlData != "") {
+                    var dataToSend = JSON.stringify(htmlData);
+                    $.ajax({
+                        url: "@Url.Action("SanitizeContent", "Domain")",
+                        type: 'Post',
+                        data: dataToSend,
+                        async: false,
+                        contentType: "application/json; charset=utf-8",
+                        statusCode: {
+                            200: function (data) {
+                                //show whether this html is valid or not
+                                if (!data.isvalid) {
+                                    $('#mainToastBody').html('<i class="fas fa-exclamation-triangle"></i>@UtilityLanguage.GetString("AlertAndMessage_InvalidEditorContent")');
+                                    $('#mainToastBody').removeClass('text-bg-success');
+                                    $('#mainToastBody').addClass('text-bg-danger');
+                                    var toastDiv = $("#mainToast");
+                                    $("#toastPanel").show();
+                                    var toast = new bootstrap.Toast(toastDiv);
+                                    toast.show();
+                                    setTimeout(function () {
+                                        tinymce.activeEditor.setContent(""), 3000
+                                    });
+                                } else //it is valid
+                                {
+                                    $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@UtilityLanguage.GetString("AlertAndMessage_ValidEditorContent")');
+                                    $('#mainToastBody').removeClass("text-bg-danger");
+                                    $('#mainToastBody').addClass('text-bg-success');
+                                    var toast = new bootstrap.Toast($("#mainToast"));
+                                    toast.show();
+
+                                    var res = `<div target='editor'>${htmlData}</div>`;
+                                    if (flag) {
+                                        $(sender).closest(".parent").find(".finalColumnContent").html(res);
+                                        $(sender).closest(".parent").find(".htmlColumnContentPreview").html(htmlData);
+                                    } else {
+                                        $(`#${sender}`).closest(".parent").find(".finalColumnContent").html(res);
+                                        $(`#${sender}`).closest(".parent").find(".htmlColumnContentPreview").html(htmlData);
+                                    }
+
+                                }
+                            }
+                        }
+                    });
+                }
+
+            }
+
+            function selectDrpContentType(sender) {
+
+                var colnumber = $(sender).attr("cn");
+                domainId = $(sender).closest(`div[colnum='${colnumber}']`).attr("did");
+                cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
+
+                var val = $(sender).val();
+                var targetDiv = $(sender).closest(".row").siblings(".row.parent");
+
+                switch (val) {
+                    case "1":
+                        $(targetDiv).find(".modulePart").removeClass("d-none");
+                        $(targetDiv).find(".editorPart").addClass("d-none");
+                        break;
+                    case "2":
+                        $(targetDiv).find(".editorPart").removeClass("d-none");
+                        $(targetDiv).find(".modulePart").addClass("d-none");
+                        break;
+                }
+            }
+
+            function byteArrayToBase64(byteArray) {
+                
+                const binaryString = byteArray.reduce((acc, byte) => acc + String.fromCharCode(byte), "");
+                return btoa(binaryString);
+
+            }
+
+
+            async function fetchBlobAsByteArray(blobUrl) {
+                
+                if (!blobUrl) {
+                    throw new Error("Blob URL cannot be null or empty.");
+                }
+
+                // Fetch the blob from the URL
+                const response = await fetch(blobUrl);
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch blob data. Status: ${response.status}`);
+                }
+
+                // Convert the response to a blob
+                const blob = await response.blob();
+
+                // Convert the blob to an ArrayBuffer
+                const arrayBuffer = await blob.arrayBuffer();
+
+                // Convert ArrayBuffer to Uint8Array (byte array)
+                const byteArray = new Uint8Array(arrayBuffer);
+
+                return byteArray;
+            }
+
+            async function addModulesWithParams(sender) {
+                
+                var dataToSend;
+                var ajaxType = "GET";
+                var moduleParameter = {}; //an Instance of ModuleParameter
+                var obj = {};//an instance of ModuleWithParametersValue
+                obj.ParametersValue = {};
+                obj.ParametersValue.FAQViewModel = {};
+                obj.ParametersValue.FAQViewModel.FAQItems = [];
+                obj.ParametersValue.ProgressBarViewModel = {};
+                obj.ParametersValue.ProgressBarViewModel.ProgressBars = [];
+                obj.ParametersValue.IconBlocks = [];
+                obj.ParametersValue.Counters = [];
+                obj.ParametersValue.PictureWithLabels = [];
+                obj.ParametersValue.ContactUsList = [];
+                var targetParamsDiv = $(sender).closest(".paramsDiv");
+                var count = 0;
+                var loadAnimation;
+                var selectedTemplate = "";
+                var isShop = false;
+                var loadAnimationType;
+                var sliderId = "";
+                var sliderType = 0;
+                var domainId = "@ViewBag.DomainId";
+                var languageId = $("#languageId").val();
+                var parent = $(sender).closest(".parent");
+                var targetDivId = "";
+                var selectionType = "";
+                var catId = "";
+                var selectedIds = [];
+                var appUrls = [];
+                let questionsAndAnswers = [];
+                obj.ModuleId = $(sender).closest(".modulePart").find(".moduleList option:selected").val()
+                obj.ModuleName = $(sender).closest(".modulePart").find(".moduleList option:selected").text();
+
+                $(targetParamsDiv).find(".par").each(function () {
+                    
+                    var parid = $(this).attr("parid");
+
+                    switch (obj.ModuleName) {
+                        case "ProductList":
+                            switch (parid) {
+                                case "templateSection":
+                                    selectedTemplate = $("input[name='rdbProductTemplateList']:checked").val();
+                                    break;
+                                case "typeList":
+                                    selectedType = $(this).val();
+                                    break;
+                                case "countToShow":
+                                    count = parseInt($(this).val());
+                                    break;
+                                case "loadAnimation":
+                                    loadAnimation = $(this).val();
+                                    break;
+                                case "loadAnimationType":
+                                    loadAnimationType = $(this).val();
+                                    break;
+                            }
+                            break;
+
+                        case "ContentList":
+                            ajaxType = "POST";
+                            switch (parid) {
+                                case "templateSection":
+                                    selectedTemplate = $("input[name='rdbContentTemplateList']:checked").val();
+                                    switch (selectedTemplate) {
+                                        case "First":
+                                            count = 6;
+                                            break;
+                                        case "Second":
+                                            count = 4;
+                                            break;
+                                        case "Third":
+                                            count = 8;
+                                            break;
+                                    }
+                                    break;
+                                case "typeList":
+                                    selectedType = $(this).val();
+                                    break;
+                                case "countToShow":
+                                    var parent = $(this).parent();
+                                    if (!$(parent).hasClass("d-none"))
+                                        count = parseInt($(this).val());
+                                    break;
+                                case "loadAnimation":
+                                    loadAnimation = $(this).val();
+                                    break;
+                                case "loadAnimationType":
+                                    loadAnimationType = $(this).val();
+                                    break;
+                                case "selectionType":
+                                    selectionType = $(this).val();
+                                    break;
+                                case "categoryList":
+                                    var parent = $(this).closest(".categoryListSection");
+                                    if (!$(parent).hasClass("d-none")) {
+                                        catId = $(this).val();
+                                    }
+                                    break;
+                                case "contentList":
+                                    var parent = $(this).closest(".contentListSection");
+                                    if (!$(parent).hasClass("d-none")) {
+                                        //multiselect
+                                        for (var i = 0; i < $(this).val().length; i++) {
+                                            
+                                            selectedIds.push($(this).val()[i]);
+                                        }
+                                    }
+                                    break;
+                            }
+                            break;
+
+                        case "ImageTextSlider":
+                        
+
+                        const row = $(sender).closest(".myrow");
+                        if(parid === "sliderList")
+                        {
+                            sliderId = $(this).val();
+                        }
+                        if(parid === "sliderType")
+                        {
+                           sliderType = $(this).val();
+                        }
+                            break;
+
+                        case "LoginAndProfile":
+                            if (parid === "isShop") {
+                                
+                                isShop = $(this).is(":checked");
+                            }
+                            break;
+
+                        case "SocialMedia":
+                            document.querySelectorAll('.icon-url').forEach(function (input) {
+                                
+                                var url = input.value.trim();
+                                if (url) {
+                                    appUrls.push(url); // Add the URL to the array
+                                }
+                            });
+                            break;
+
+                        case "FAQ":
+                            ajaxType = "POST";
+                            document.querySelectorAll('.form-group').forEach(function (group) {
+                                
+                                const question = group.querySelector('.question').value.trim();
+                                const answer = group.querySelector('.answer').value.trim();
+                                if (question && answer) {
+                                    questionsAndAnswers.push({
+                                        question: question,
+                                        answer: answer
+                                    });
+                                }
+                            });
+                            dataToSend = JSON.stringify(questionsAndAnswers);
+                            break;
+
+                        case "ProgressBars":
+                            
+                            ajaxType = "POST";
+                            if (progressBars.length === 0) {
+                                alert("No progress bars to send.");
+                                return;
+                            }
+                            dataToSend = JSON.stringify(progressBars);
+                            break;
+                        case "IconBlocks":
+                            ajaxType = "POST";
+                            const data = {
+                                title: document.getElementById('title').value,
+                                description: document.getElementById('description').value,
+                                icon: document.getElementById('icon').value,
+                                color: document.getElementById('color').value,
+                                shape: document.getElementById('shape').value
+                            };
+                            dataToSend = JSON.stringify(data);
+                            break;
+                        case "PictureWithLabel":
+                            
+                            if (progressBars.length === 0) {
+                                alert("No PictureWithLabel bars to send.");
+                                return;
+                            }
+                            dataToSend = JSON.stringify(progressBars);
+                            break;
+                        case "Counter":
+                            
+                            ajaxType = "POST";
+                            if (progressBars.length === 0) {
+                                alert("No Counter bars to send.");
+                                return;
+                            }
+                            dataToSend = JSON.stringify(progressBars);
+                            break;
+                    }
+                });
+                var url = "";
+
+                switch (obj.ModuleName.toLowerCase()) {
+                    case "productlist":
+                        url = "@Url.Action("GetProductModuleViewComponent", "Domain")" + "?productType=" + selectedType
+                            + "&selectionTemplate=" + selectedTemplate + "&count=" + count + "&loadAnimation=" + loadAnimation + "&loadAnimationType=" + loadAnimationType + "&di=" + '@domainId';
+
+                        obj.ParametersValue.ProductTemplateDesign = selectedTemplate;
+                        obj.ParametersValue.Count = count;
+                        obj.ParametersValue.ProductOrContentType = selectionType;
+                        obj.ParametersValue.LoadAnimation = loadAnimation;
+                        obj.ParametersValue.loadAnimationType = loadAnimationType;
+                        obj.ParametersValue.DomainId = domainId;
+                        break;
+                    case "contentlist":
+
+                        url = "@Url.Action("GetContentModuleViewComponent", "Domain")" + "?contentType=" + selectedType
+                            + "&selectionTemplate=" + selectedTemplate + "&count=" + count + "&loadAnimation=" + loadAnimation +
+                            "&loadAnimationType=" + loadAnimationType + "&selectionType=" + selectionType + "&catId=" + catId + "&di=" + '@domainId';
+                        dataToSend = JSON.stringify(selectedIds);
+
+
+                        obj.ParametersValue.ProductOrContentType = selectedType;
+                        obj.ParametersValue.ContentTemplateDesign = selectedTemplate;
+                        obj.ParametersValue.Count = count;
+                        obj.ParametersValue.LoadAnimation = loadAnimation;
+                        obj.ParametersValue.LoadAnimationType = loadAnimationType;
+                        obj.ParametersValue.SelectionType = selectionType;
+                        obj.ParametersValue.CatId = catId;
+                        obj.ParametersValue.SelectedIds = selectedIds;
+                        obj.ParametersValue.DomainId = domainId;
+
+                        break;
+                    case "imagetextslider":
+                    
+
+                        url = "@Url.Action("GetSliderViewComponent", "Domain")" + "?sliderId=" + sliderId + "&sliderType=" + sliderType;
+                        obj.ParametersValue.SliderId = sliderId;
+                        obj.ParametersValue.SliderType = sliderType;
+                        break;
+                    case "horizantalstoremenu":
+                        url = "@Url.Action("GetStoreMenuViewComponent", "Domain")" + "?domainId=" + domainId + "&languageId=" + languageId;
+                        obj.ParametersValue.DomainId = domainId;
+                        obj.ParametersValue.languageId = languageId;
+                        break;
+                    case "loginandprofile":
+                        url = "@Url.Action("GetLoginProfileModuleViewComponent", "Domain")" + "?domainId=" + domainId + "&isShop=" + isShop;
+                        obj.ParametersValue.DomainId = domainId;
+                        obj.ParametersValue.IsShop = isShop;
+                        break;
+                    case "multilingualflags":
+                        url = "@Url.Action("GetMultiLingualModuleViewComponent", "Domain")";
+                        break;
+                    case "generalsearch":
+                        url = "@Url.Action("GetGeneralSearchViewComponent", "Domain")";
+                        break;
+            case "socialmedia":
+        ajaxType = "POST";
+        var socialMediaData = []; // Array to store icon names and URLs
+
+        // Get the closest container relative to the clicked button
+        var container = event.target.closest(".row.mx-2");
+
+        if (container) {
+            container.querySelectorAll('.icon-option').forEach(function (option) {
+                
+                var iconName = option.getAttribute('data-icon'); // Get the icon name
+                var input = option.querySelector('.icon-url'); // Get the input field inside the div
+                var url = input.value.trim(); // Get the trimmed value of input
+
+                if (url) {
+                    socialMediaData.push({ iconName: iconName, url: url }); // Store both icon and URL
+                    input.value = ""; // Clear the input field
+                }
+            });
+        }
+
+        if (socialMediaData.length > 0) {
+            url = "@Url.Action("GetSocialMediaViewComponent", "Domain")" + "?socialMedias=" + encodeURIComponent(JSON.stringify(socialMediaData));
+            dataToSend = JSON.stringify(socialMediaData);
+            obj.ParametersValue.SocialMedias = socialMediaData;
+        }
+        break;
+                    case "faq":
+                        ajaxType = "POST";
+                        document.querySelectorAll('.form-group').forEach(function (group) {
+                            
+                            const question = group.querySelector('.question').value.trim();
+                            const answer = group.querySelector('.answer').value.trim();
+                            if (question && answer) {
+                                questionsAndAnswers.push({
+                                    question: question,
+                                    answer: answer
+                                });
+                            }
+                            obj.ParametersValue.FAQViewModel.FAQItems = questionsAndAnswers;
+                        });
+                        url = "@Url.Action("GetFAQViewComponent", "Domain")?faqItems=" + questionsAndAnswers;
+                        dataToSend = JSON.stringify(questionsAndAnswers);
+                        break;
+                    case "progressbars":
+                        
+                        ajaxType = "POST";
+                        if (progressBars.length === 0) {
+                            alert("No progress bars to send.");
+                            return;
+                        }
+                        obj.ParametersValue.ProgressBarViewModel.ProgressBars = progressBars;
+                        url = "@Url.Action("GetProgressBarsViewComponent", "Domain")" + "?progressBars=" + progressBars;
+                        dataToSend = JSON.stringify(progressBars);
+                        break;
+                    case "iconblocks":
+                        ajaxType = "POST";
+                        if (iconBlocks.length === 0) {
+                            alert("No icon blocks to send.");
+                            return;
+                        }
+                        obj.ParametersValue.IconBlocks = iconBlocks;
+                        url = "@Url.Action("GetIconBlocksViewComponent", "Domain")" + "?iconBlocks=" + iconBlocks;
+                        dataToSend = JSON.stringify(iconBlocks);
+
+                        break;
+                    case "picturewithlabel":
+                        
+                        const photoItems = document.querySelectorAll('.photo-item');
+
+                        pictureWithLabels = [];
+
+                        for (const item of photoItems) {
+                            const fileInput = item.querySelector('input[type="file"]');
+                            const subtitleInput = item.querySelector('input[name="subtitles"]');
+                            const widthInput = item.querySelector('input[name="width"]');
+                            const heightInput = item.querySelector('input[name="height"]');
+
+                            if (fileInput.files.length > 0 && subtitleInput.value && widthInput.value && heightInput.value) {
+                                const file = fileInput.files[0];
+                                var blob = URL.createObjectURL(file);
+                                let byteArray = await fetchBlobAsByteArray(blob);
+                                // Use await here since fetchBlobAsByteArray is async
+                                const image = {
+                                    ImageId: generateGuid(),
+                                    FileName: file.name,
+                                    Title: file.name.split('.')[0],
+                                    Content: byteArrayToBase64(byteArray)
+                                };
+
+                                const pictureWithLabel = {
+                                    ImageWidth: parseInt(widthInput.value),
+                                    ImageHeight: parseInt(heightInput.value),
+                                    Image: image,
+                                    SubTitle: subtitleInput.value
+                                };
+
+                                pictureWithLabels.push(pictureWithLabel);
+                            }
+                        }
+
+                        obj.ParametersValue.PictureWithLabels = pictureWithLabels;
+                        url = "@Url.Action("GetPictureWithLabelViewComponent", "Domain")" + "?pictureWithLabels=" + encodeURIComponent(JSON.stringify(pictureWithLabels));
+                        dataToSend = JSON.stringify(pictureWithLabels);
+
+                        fetch("/fa-ir/Admin/Domain/GetPictureWithLabelViewComponent", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: dataToSend // Ensure you're sending JSON
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok: ' + response.statusText);
+                                }
+                                return response.text(); // Use response.json() if expecting JSON
+                            })
+                            .then(result => {
+                                
+                                // Use the result (HTML or JSON) to update your UI
+                                $(parent).find(".moduleDataPreview").html(result).removeClass("d-none");
+                                $(parent).find(".htmlColumnContentPreview").html(result);
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+
+                        break;
+                    case "counter":
+                        
+                        ajaxType = "POST";
+                        if (counters.length === 0) {
+                            alert("No Counter to send.");
+                            return;
+                        }
+                        obj.ParametersValue.Counters = counters;
+                        url = "@Url.Action("GetCounterViewComponent", "Domain")" + "?counters=" + counters;
+                        dataToSend = JSON.stringify(counters);
+                        break;
+                        case "contactus":
+                        
+                        ajaxType = "POST";
+                        var iconClasses = document.querySelectorAll("input[name='IconClass[]']");
+                        var urls = document.querySelectorAll("input[name='Url[]']");
+
+            var iconsList = [];
+
+            for (var i = 0; i < iconClasses.length; i++) {
+                iconsList.push({
+                    iconName: iconClasses[i].value,
+                    link: urls[i].value,
+                });
+            }
+            obj.ParametersValue.ContactUsList = iconsList;
+                        url = "@Url.Action("GetContactUsViewComponent", "Domain")" + "?contactUsList=" + iconsList;
+                         dataToSend = JSON.stringify(iconsList);
+                        break;
+                }
+
+                var data = JSON.stringify(obj);
+                data = `<div target='module'>${data}</div>`;
+                var finalData = $(parent).find(".finalColumnContent").append(data);
+
+                if (ajaxType == "GET") {
+                    $.ajax({
+                        type: ajaxType,
+                        dataType: "html",
+                        //contentType : "'application/json",
+                        //data : dataToSend,
+                        url: url,
+                        success: function (result) {
+                            
+                            if (result != "") {
+                                $(parent).find(".moduleDataPreview").html(result).removeClass("d-none");
+                                $(parent).find(".htmlColumnContentPreview").html(result);
+                                if (obj.ModuleName.toLowerCase() == "productlist") {
+                                    
+                                    $(".owl-carousel").owlCarousel({
+                                        loop: true,
+                                        rewind: false,
+                                        rtl: true,
+                                        navigation: true,
+                                        autoplay: true,
+                                        margin: 5,
+                                        animateOut: 'fadeOut',
+                                        animateIn: 'fadeIn',
+                                        responsiveClass: true,
+                                        nav: true,
+                                        dots: false,
+                                        autoplayHoverPause: false,
+                                        items: 7,
+                                        navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
+                                            "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+                                        responsive: {
+                                            0: {
+                                                items: 1
+                                            },
+                                            600: {
+                                                items: 5
+                                            },
+                                            1000: {
+                                                items: 7
+                                            }
+                                        }
+                                    });
+                                }
+                                else if (obj.ModuleName.toLowerCase() == "imagetextslider") {
+                                    AfterCarouselLoad();
+                                }
+                            }
+                        },
+                    });
+                } if (ajaxType == "POST") //contentTemplateModule
+                {
+                    $.ajax({
+                        type: ajaxType,
+                        dataType: "html",
+                        contentType: "application/json",
+                        data: dataToSend,
+                        url: url,
+                        success: function (result) {
+
+                            if (result != "") {
+                                $(parent).find(".moduleDataPreview").html(result).removeClass("d-none");
+                                $(parent).find(".htmlColumnContentPreview").html(result);
+                            }
+                        },
+                    });
+
+                }
+
+            }
+            function generateGuid() {
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+              function ckConfig(editorId) {
+                return {
+                    selector: `textarea#${editorId}`,
+                    license_key: 'gpl',
+                    plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+                    editimage_cors_hosts: ['picsum.photos'],
+                    menubar: 'file edit view insert format tools table help',
+                    toolbar: "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align numlist bullist | link image | table media | lineheight outdent indent | forecolor backcolor removeformat | charmap emoticons | code fullscreen preview | save print | pagebreak anchor codesample | ltr rtl",
+                    autosave_ask_before_unload: true,
+                    autosave_interval: '30s',
+                    autosave_prefix: '{path}{query}-{id}-',
+                    autosave_restore_when_empty: false,
+                    autosave_retention: '2m',
+                    image_advtab: true,
+
+                    // ✅ Remove static contentId from here
+                    // images_upload_url: '/Admin/File/UploadImage?contentId=' + encodeURIComponent(contentId),
+
+                            images_upload_handler: function (blobInfo, success, failure, progress) {
+                return new Promise((resolve, reject) => {
+                    var contentId = generateGuid(); // ✅ Generate unique contentId per upload
+                    var formData = new FormData();
+                    formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.withCredentials = false;
+
+                    // ✅ Send `contentId` as a query parameter
+                    xhr.open('POST', `/Admin/File/UploadImage?contentId=${encodeURIComponent(contentId)}`);
+
+                    xhr.upload.onprogress = function (e) {
+                        progress(e.loaded / e.total * 100);
+                    };
+
+                    xhr.onload = function () {
+                        if (xhr.status !== 200) {
+                            failure('HTTP Error: ' + xhr.status);
+                            reject(new Error('HTTP Error: ' + xhr.status));
+                            return;
+                        }
+
+                        try {
+                            var json = JSON.parse(xhr.responseText);
+                            if (!json || typeof json.location !== 'string') {
+                                throw new Error('Invalid response from server');
+                            }
+
+                            success(json.location); // Pass the uploaded image URL
+                            resolve(json.location);
+                        } catch (e) {
+                            failure('Invalid JSON: ' + xhr.responseText);
+                            reject(e);
+                        }
+                    };
+
+                    xhr.onerror = function () {
+                        failure('Image upload failed due to a network error.');
+                        reject(new Error('Image upload failed due to a network error.'));
+                    };
+
+                    xhr.send(formData);
+                });
+            },
+
+
+                    file_picker_types: 'image',
+                    file_picker_callback: function (callback, value, meta) {
+                        if (meta.filetype === 'image') {
+                            var input = document.createElement('input');
+                            input.setAttribute('type', 'file');
+                            input.setAttribute('accept', 'image/*');
+
+                            input.onchange = function () {
+                                var file = this.files[0];
+                                var reader = new FileReader();
+                                reader.onload = function () {
+                                    callback(reader.result, {
+                                        alt: file.name
+                                    });
+                                };
+                                reader.readAsDataURL(file);
+                            };
+
+                            input.click();
+                        }
+                    },
+
+                    importcss_append: true,
+                    height: 600,
+                    image_caption: true,
+                    quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+                    noneditable_class: 'mceNonEditable',
+                    toolbar_mode: 'sliding',
+                    contextmenu: 'link image table',
+                    font_css: '/css/fonts.css',
+                    font_family_formats: 'Arial=arial,helvetica,sans-serif; Montserrat=Montserrat,sans-serif; Roboto=Roboto,sans-serif; Source Sans Pro=Source Sans Pro,sans-serif; IBM Plex Sans=IBM Plex Sans,sans-serif; Ubuntu=Ubuntu,sans-serif;',
+                    content_style: `
+                        body {
+                            font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+                        }
+                    `,
+                };
+            }
+
+
+    </script>
+
+</body>
+</html>

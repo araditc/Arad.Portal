@@ -1,0 +1,227 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.DesignStructure
+@using Arad.Portal.Models.Shared.DesignStructure
+@using Serilog;
+@model MainPageContentPart
+@{
+    ViewData["Title"] = UtilityLanguage.GetString("design_Articles");
+}
+@using HtmlAgilityPack
+@using Newtonsoft.Json
+
+@if (Model != null && Model.RowContents.Any())
+{
+    @foreach (RowContent row in Model.RowContents.OrderBy(c => c.RowNumber))
+    {
+        <div class="row gx-0 @row.ExtraClassNames" @(row.BGType != null ? ((int)row.BGType.Value == 1 ? $"style:background-color:{row.BgCodeColor};" : $"style=background-image:url({row.BgImage});") : "")>
+            @foreach (ColContent column in row.ColsContent.OrderBy(c => c.ColNumber))
+            {
+                <div class="@column.ColumnClassNames">
+                    @{
+                        HtmlDocument htmlDoc = new();
+                        htmlDoc.LoadHtml(column.ColData);
+                        HtmlNode div = htmlDoc.DocumentNode.Element("div");
+
+                        switch (div.Attributes["target"].Value)
+                        {
+                            case "module":
+                                {
+                                    ModuleWithParametersValue module = null;
+                                    try
+                                    {
+                                        module = JsonConvert
+                                        .DeserializeObject<ModuleWithParametersValue>(column.ColData.Replace("<div target=\"module\">", "")
+                                        .Replace("</div>", ""));
+                                    }
+                                    catch (Exception)
+                                    {
+                                        Log.Fatal($"error in deserializing module div to module-with-parameters-value={column.ColData}");
+                                    }
+                                    if (module != null)
+                                    {
+                                        switch (module.ModuleName)
+                                        {
+                                            case "ProductList":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("SpecialProduct",
+                                                         new
+                                                         {
+                                                             productType = module.ParametersValue.ProductOrContentType,
+                                                             selectionTemplate = module.ParametersValue.ProductTemplateDesign,
+                                                             count = module.ParametersValue.Count,
+                                                             loadAnimation = module.ParametersValue.LoadAnimation,
+                                                             loadAnimationType = module.ParametersValue.LoadAnimationType
+                                                         })
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("error in loading product Module");
+                                                }
+
+                                                break;
+                                            case "ContentList":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("error in loading content module");
+                                                }
+
+                                                break;
+                                            case "HorizantalStoreMenu":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("StoreMenu")
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("error in loading menu module");
+                                                }
+
+                                                break;
+                                            case "ImageTextSlider":
+                                                try
+                                                {
+                                                    Log.Fatal("before invoke imageSlider");
+                                                    @await Component.InvokeAsync("SliderModule", new { sliderId = module.ParametersValue.SliderId, sliderType = module.ParametersValue.SliderType })
+                                                    Log.Fatal("after invoke imageSlider");
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    Log.Fatal($"error in loading image slide module={ex}");
+                                                }
+
+                                                break;
+                                            case "LoginAndProfile":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop })
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("error in loading login and profile");
+                                                }
+
+                                                break;
+                                            case "MultiLingualFlags":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("MultiLingual")
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("error in loading multilingual flags");
+                                                }
+                                                break;
+                                            case "GeneralSearch":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("GeneralSearch")
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("error in loading generalSearch view component");
+                                                }
+                                                break;
+                                            case "SocialMedia":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("SocialMedia", module.ParametersValue)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("error in loading SocialMedia view component");
+                                                }
+                                                break;
+                                            case "FAQ":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("FAQ", module.ParametersValue.FAQViewModel.FAQItems)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("error in loading FAQ view component");
+                                                }
+                                                break;
+                                            case "ProgressBars":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("ProgressBars", module.ParametersValue.ProgressBarViewModel.ProgressBars)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("error in loading ProgressBars view component");
+                                                }
+                                                break;
+                                            case "IconBlocks":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("IconBlocks", module.ParametersValue.IconBlocks)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("error in loading IconBlocks view component");
+                                                }
+                                                break;
+                                            case "PictureWithLabel":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("PictureWithLabel", module.ParametersValue.PictureWithLabels)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("error in loading PictureWithLabel view component");
+                                                }
+                                                break;
+                                            case "Counter":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("Counter", module.ParametersValue.Counters)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("error in loading Counter view component");
+                                                }
+                                                break;
+                                            case "ContactUs":
+                                                try
+                                                {
+                                                    @await Component.InvokeAsync("ContactUs", module.ParametersValue.ContactUsList)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    Log.Fatal("error in loading ContactUs view component");
+                                                }
+                                                break;
+                                        }
+                                    }
+
+                                    break;
+                                }
+
+                            case "editor":
+                                try
+                                {
+                                    int index = column.ColData.LastIndexOf("</div>", StringComparison.Ordinal);
+                                    string data = column.ColData[..index];
+                                    string htmlRaw = data.Replace("<div target=\"editor\">", "");
+                                    @Html.Raw(htmlRaw)
+                                }
+                                catch (Exception)
+                                {
+                                    Log.Fatal("error in loading editor module");
+                                }
+
+                                break;
+                        }
+                    }
+                </div>
+            }
+        </div>
+    }
+}
+
+
+

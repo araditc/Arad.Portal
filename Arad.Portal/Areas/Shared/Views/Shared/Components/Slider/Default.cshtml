@@ -1,0 +1,101 @@
+﻿@using Arad.Portal.DataLayer.Entities.General.SliderModule
+@model Slider
+@{
+    int i = 1;
+
+}
+
+<style>
+    .carousel-container {
+        position: relative;
+        width: 1000px; /* Same as the width of the images */
+        margin: 0 auto;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 50px;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+    }
+
+    .carousel-control-prev {
+        left: -60px; /* Adjust the distance from the slider */
+    }
+</style>
+<div class="carousel slide" id="sliderCarousel">
+    @if (Model != null)
+    {
+        @*style="object-fit: @slide.ImageFit"*@
+
+
+        <div class="carousel-inner">
+            @foreach (Slide slide in Model.Slides)
+            {
+                if (slide.IsActive && slide.IsDeleted != 1)
+                {
+                    string itemBackground = string.IsNullOrEmpty(slide.ColoredBackground) ? "transparent" : slide.ColoredBackground;
+
+                    if (string.IsNullOrWhiteSpace(slide.Link))
+                    {
+                        <div class='carousel-item @(i == 1 ? "active" : "")'
+                             style="background-color: @itemBackground;position: relative; z-index:0;" data-bs-interval="slide.IntervalTime">
+                            <img data-animation="animated @($"{slide.TransActionType}")"
+                                 src="data:image/jpeg;base64,@slide.ImageUrl" style="width:1000px"
+                                 class="w-100" alt="@slide.Alt" title="@slide.Title" />
+                            @if (slide.Layers.Count > 0)
+                            {
+                                foreach (Layer layer in slide.Layers)
+                                {
+                                    if (layer.IsDeleted != 1)
+                                    {
+                                        @await Component.InvokeAsync("SliderLayer", layer)
+                                    }
+
+                                }
+                            }
+
+                        </div>
+                    }
+                    else
+                    {
+                        <a href="@slide.Link" target="@slide.Target" class="carousel-item @(i == 1 ? "active" : "")"
+                           style="background-color: @itemBackground;position: relative; z-index:0;">
+                            <img data-animation="animated @($"{slide.TransActionType}")"
+                                 src="data:image/jpeg;base64,@slide.ImageUrl" style="width:1000px"
+                                 class="w-100" alt="@slide.Alt" title="@slide.Title" />
+                            @if (slide.Layers.Count > 0)
+                            {
+                                foreach (Layer layer in slide.Layers)
+                                {
+                                    if (layer.IsDeleted != 1)
+                                    {
+                                        @await Component.InvokeAsync("SliderLayer", layer)
+                                    }
+                                }
+                            }
+                        </a>
+                    }
+                }
+                i += 1;
+            }
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#sliderCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#sliderCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    }
+</div>

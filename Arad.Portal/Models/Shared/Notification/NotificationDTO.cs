@@ -1,0 +1,49 @@
+﻿using Arad.Portal.DataLayer.Models.Shared.Attachment;
+using System;
+using System.Collections.Generic;
+using static Arad.Portal.DataLayer.Models.Shared.Enums;
+
+namespace Arad.Portal.Models.Shared.Notification;
+
+public class NotificationDto
+{
+    public NotificationDto()
+    {
+        Attachments = new();
+        ExtraData = new();
+    }
+
+    public string Id { get; set; }
+
+    public NotificationType Type { get; set; }
+
+    public ActionType ActionType { get; set; }
+
+    public DateTime ScheduleDate { get; set; }
+
+    public string To { get; set; }
+
+    public string From { get; set; }
+
+    public string Title { get; set; }
+
+    public string MessageText { get; set; }
+
+    public string UpStreamGatewayId { get; set; }
+
+    public List<Attachment> Attachments { get; set; }
+
+    public NotificationSendStatus SendStatus { get; set; }
+
+    public DateTime SentDate { get; set; }
+
+    public string TemplateName { get; set; }
+
+    public DateTime CreationDate { get; set; }
+
+    public string CreatorUserId { get; set; }
+
+    public string CreatorUserName { get; set; }
+
+    public List<(string, string)> ExtraData { get; set; }
+}

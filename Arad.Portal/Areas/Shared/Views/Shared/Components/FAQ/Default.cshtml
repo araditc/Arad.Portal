@@ -1,0 +1,22 @@
+﻿@model Arad.Portal.DataLayer.Models.Shared.FAQ.FAQViewModel
+
+<div class="accordion" id="accordionExample">
+    @for (int i = 0; i < Model.FAQItems.Count; i++)
+    {
+        string collapseId = $"collapse{i}";
+        string headingId = $"heading{i}";
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="@headingId">
+                <button class="accordion-button @((i == 0 ? "" : "collapsed"))" type="button" data-bs-toggle="collapse" data-bs-target="#@collapseId" aria-expanded="@(i == 0)" aria-controls="@collapseId">
+                    @Model.FAQItems[i].Question
+                </button>
+            </h2>
+            <div id="@collapseId" class="accordion-collapse collapse @(i == 0 ? "show" : "")" aria-labelledby="@headingId" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    @Model.FAQItems[i].Answer
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,44 @@
+﻿.input-group-text {
+    height: 100%
+}
+
+.form-validation-alert {
+    font-size: 13px;
+    margin-top: 0;
+}
+
+.btn-outline-secondary {
+    border-color: lightgrey !important
+}
+
+.loginSignUpSeparator .textInSeparator {
+    background-color: #fff;
+    color: #6c7378;
+    padding: 0 .5em;
+    position: relative;
+    top: -.7em;
+}
+
+.btn-outline-primary {
+    color: #0d6efd;
+    border-color: #adb5bd;
+}
+
+.loginSignUpSeparator {
+    border-top: 1px solid #cbd2d6;
+    margin: 25px 0 -10px;
+    position: relative;
+    text-align: center;
+}
+
+@media screen and (max-device-width: 578px) {
+    #Captcha {
+        font-size: smaller
+    }
+}
+
+@media screen and (min-device-width: 578px) {
+    #Captcha {
+        font-size: initial
+    }
+}

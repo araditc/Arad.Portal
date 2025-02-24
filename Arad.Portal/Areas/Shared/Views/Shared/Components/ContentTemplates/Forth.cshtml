@@ -1,0 +1,45 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared
+@using Arad.Portal.DataLayer.Models.Shared.DesignStructure
+@using Arad.Portal.Models.Shared.Content
+@model List<ContentGlance>
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    string outerElementAtr ="";
+    string innerElementsAtr = "";
+    LoadAnimationType animationTarget = (LoadAnimationType)ViewBag.LoadAnimationType;
+    if(animationTarget == LoadAnimationType.OuterElement)
+    {
+        outerElementAtr = $"data-animation='animated {ViewBag.LoadAnimation}'";
+    }else
+    {
+        innerElementsAtr = $"data-animation='animated {ViewBag.LoadAnimation}'";
+    }
+     string baseAdd = Config["BaseAddress"];
+}
+
+
+
+<ul class="list-group" @outerElementAtr>
+    @foreach (ContentGlance item in Model)
+    {
+        <li class="list-group-item border-0 contentForth" @innerElementsAtr>
+            <div class="row">
+                <div class="col-3 col-md-2 col-lg-1">
+                    <a href="@Url.Content(!string.IsNullOrWhiteSpace(item.UrlFriend) ? $"~/{item.UrlFriend}" : $"~/blog/{item.ContentCode}")">
+                        <img src="data:image/png;base64,@item.DesiredImageUrl"
+                             class="img-fluid rounded-circle"
+                             alt="@item.Images.FirstOrDefault(i => i.ImageRatio == ImageRatio.Square)?.Title ?? "No Image Available""
+                             style="width: 35px; height: auto;" />
+                    </a>
+                </div>
+                <div class="col-9 col-md-10 col-lg-11">
+                    <a href="@Url.Content(!string.IsNullOrWhiteSpace(item.UrlFriend) ? $"~/{item.UrlFriend}" : $"~/blog/{item.ContentCode}")">
+                        <span>@item.Title</span>
+                        <br />
+                        <span style="font-size:small;">@item.ContentProviderName</span>
+                    </a>
+                </div>
+            </div>
+        </li>
+    }
+</ul>

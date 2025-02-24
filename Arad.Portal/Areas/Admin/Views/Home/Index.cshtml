@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@UtilityLanguage.GetString("AutoReloader")</title>
+    <style>
+        #mainContent {
+            background-color: #e1eded30;
+        }
+    </style>
+</head>
+<body>
+    <div class="text-center" style="background-color:azure">
+        <h1>@UtilityLanguage.GetString("AutoReloader")</h1>
+       <label for="reloadTime">@UtilityLanguage.GetString("ReloadIntervalSelection")</label>
+    <select id="reloadTime">
+        <option value="0">@UtilityLanguage.GetString("Disable")</option>
+        <option value="30">30 @UtilityLanguage.GetString("Second")</option>
+        <option value="60">1 @UtilityLanguage.GetString("Minute")</option>
+        <option value="300">5 @UtilityLanguage.GetString("Minute")</option>
+    </select>
+        <script src="script.js"></script>
+    </div>    
+</body>
+
+<script>
+   document.addEventListener('DOMContentLoaded', (event) => {
+    let reloadInterval;
+    const reloadTimeSelect = document.getElementById('reloadTime');
+
+    const startReloading = (interval) => {
+        reloadInterval = setInterval(() => {
+            location.reload();
+        }, interval);
+    };
+
+    reloadTimeSelect.addEventListener('change', () => {
+        const reloadTime = parseInt(reloadTimeSelect.value);
+
+        // Clear any existing intervals
+        if (reloadInterval) {
+            clearInterval(reloadInterval);
+        }
+
+        if (reloadTime === 0) {
+            localStorage.removeItem('reloadInterval');
+            return;
+        }
+
+        // Set the interval to reload the page
+        const interval = reloadTime * 1000;
+        localStorage.setItem('reloadInterval', interval);
+        startReloading(interval);
+    });
+
+    // Check if there is a reload interval set in localStorage
+    const storedInterval = localStorage.getItem('reloadInterval');
+    if (storedInterval) {
+        const interval = parseInt(storedInterval);
+        startReloading(interval);
+
+        // Set the dropdown to the appropriate value based on stored interval
+        reloadTimeSelect.value = interval / 1000;
+    }
+});
+
+</script>

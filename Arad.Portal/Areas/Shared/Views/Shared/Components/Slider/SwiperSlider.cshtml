@@ -1,0 +1,200 @@
+﻿@using Arad.Portal.DataLayer.Entities.General.SliderModule
+@model Arad.Portal.DataLayer.Entities.General.SliderModule.Slider
+@{
+    Layout = null;
+    var activeSlideCount = Model?.Slides?.Count(s => s.IsActive && s.IsDeleted != 1) ?? 0;
+}
+
+<head>
+    <link rel="stylesheet" href="@Url.Content("~/lib/swiper/swiper-bundle.min.css")" />
+    <style>
+        html,
+        body {
+            position: relative;
+            height: 100%;
+        }
+
+        body {
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .swiper {
+            width: 80%;
+            height: 100%;
+            margin: 0 auto;
+        }
+
+        @@media (max-width: 768px) {
+            .swiper {
+                width: 100%;
+                height: 130%;
+            }
+        }
+
+        @@media (max-width: 768px) {
+            .button-container {
+                display: none !important;
+            }
+        }
+
+        @@media (max-width: 768px) {
+            .swiper-slide {
+                flex-direction: column; 
+            }
+
+                .swiper-slide img {
+                    width: 100%;
+                    height: auto;
+                }
+
+                .swiper-slide > div[data-animation] {
+                    position: relative !important; 
+                    top: auto !important;
+                    right: auto !important;
+                    bottom: auto !important;
+                    left: auto !important;
+                    margin-top: 10px; 
+                    text-align: center; 
+                    width: 100%;
+                }
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+            .swiper-slide img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .button-next,
+        .button-prev {
+            cursor: pointer;
+            padding: 10px 20px;
+            text-align: center;
+            margin: 0 5px;
+            position: static;
+            width: 40px;
+            height: 40px;
+            background-size: contain;
+        }
+
+        .button-next {
+            background-image: url('@Url.Content("~/sliderArrowIcons/arrow_forward_ios_24dp_UNDEFINED_FILL0_wght400_GRAD0_opsz24.png")');
+        }
+
+        .button-prev {
+            background-image: url('@Url.Content("~/sliderArrowIcons/arrow_back_ios_24dp_UNDEFINED_FILL0_wght400_GRAD0_opsz24.png")');
+        }
+    </style>
+</head>
+<body>
+    @if (Model?.Slides?.Any() == true)
+    {
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                @foreach (var slide in Model.Slides.Where(s => s.IsActive && s.IsDeleted != 1))
+                {
+                    string itemBackground = string.IsNullOrEmpty(slide.ColoredBackground) ? "transparent" : slide.ColoredBackground;
+
+                    <div class="swiper-slide" style="background-color: @itemBackground;">
+                        @if (!string.IsNullOrWhiteSpace(slide.Link))
+                        {
+                            <a href="@slide.Link" target="@slide.Target">
+                                <img src="data:image/jpeg;base64,@slide.ImageUrl" alt="@slide.Alt" title="@slide.Title">
+                            </a>
+                        }
+                        else
+                        {
+                            <img src="data:image/jpeg;base64,@slide.ImageUrl" alt="@slide.Alt" title="@slide.Title">
+                        }
+
+                        @if (slide.Layers?.Any() == true)
+                        {
+
+                            @foreach (var layer in slide.Layers.Where(l => l.IsDeleted != 1))
+                            {
+                                @await Component.InvokeAsync("SliderLayer", layer)
+                            }
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="button-container">
+            <div class="button-prev"></div>
+            <div class="button-next"></div>
+        </div>
+    }
+
+    <script src="@Url.Content("~/lib/swiper/swiper-bundle.min.js")"></script>
+    <script>
+        // Use the Razor value to determine the number of slides.
+        var totalSlides = @activeSlideCount;
+        // Pick a random slide index (0-based) from your active slides.
+        var randomSlide = Math.floor(Math.random() * totalSlides);
+
+        var swiper = new Swiper(".mySwiper", {
+            loop: true,               // Enables infinite loop
+            initialSlide: randomSlide, // Sets a random slide on refresh
+            centeredSlides: true,      // Centers the active slide
+            slidesPerView: 1.25,       // Displays a portion of the next slide
+            spaceBetween: 14,          // Adjusts spacing between slides
+            navigation: {
+                nextEl: ".button-next", // Custom Next button
+                prevEl: ".button-prev", // Custom Previous button
+            },
+            // Remove any initialization that overrides the initialSlide.
+            // If you had an on.init callback forcing slideToLoop(0, 0), remove it.
+        });
+
+        // Add a click listener on the Swiper container to mimic navigation when clicking on the visible adjacent slides.
+        document.querySelector('.mySwiper').addEventListener('click', function(e) {
+            // Prevent interference with interactive elements like links:
+            if (e.target.tagName.toLowerCase() === 'a' || e.target.closest('a')) {
+                return;
+            }
+
+            // Optionally, if you want to ignore clicks on the active slide:
+            var clickedSlide = e.target.closest('.swiper-slide');
+            if (clickedSlide && clickedSlide.classList.contains('swiper-slide-active')) {
+                return;
+            }
+
+            // Determine the click position relative to the container.
+            var containerRect = this.getBoundingClientRect();
+            var clickX = e.clientX - containerRect.left;
+            var containerCenter = containerRect.width / 2;
+
+            // If clicked on left half, go to previous slide; otherwise, go to next.
+            if (clickX < containerCenter) {
+                swiper.slidePrev();
+            } else {
+                swiper.slideNext();
+            }
+        });
+
+        // Update Swiper layout on page load
+        window.onload = function () {
+            swiper.update();
+        };
+    </script>
+</body>

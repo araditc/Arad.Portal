@@ -1,0 +1,53 @@
+﻿@using Arad.Portal.Models.Shared.Permission
+@model PermissionTreeViewDto
+@{
+    Layout = null;
+}
+
+@if (Model.Children != null && Model.Children.Any())
+{
+    <h2 class="accordion-header py-2"
+        id="@($"heading{Model.Id}")">
+        <button aria-controls="@($"collapse{Model.Id}")"
+                aria-expanded="false"
+                class="accordion-button collapsed py-2 px-2"
+                data-bs-target="@($"#collapse{Model.Id}")"
+                data-bs-toggle="collapse"
+                type="button">
+            <i class="@Model.Icon"></i>
+           @UtilityLanguage.GetString($"PermissionTitle_{Model.Title}") 
+        </button>
+    </h2>
+
+    <div aria-labelledby="@($"heading{Model.Id}")"
+         class="accordion-collapse collapse"
+         id="@($"collapse{Model.Id}")">
+
+        <div class="accordion-body">
+
+            <div class="accordion"
+                 id="@($"subMenu{Model.Id}")">
+
+                @foreach (PermissionTreeViewDto child in Model.Children.OrderBy(c => c.Priority))
+                {
+                    <div class="accordion-item border-0">
+                        @await Component.InvokeAsync("InnerMenu", child)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="accordion-item  border-0">
+        <h2 class="accordion-header py-1 px-2"
+            id="@($"heading{Model.Id}")">
+            <a href="@Url.Content($"~{Model.ClientAddress}")"
+               class="btn btn-sm bg-gradient text-start @(Model.IsActive ? "text-primary" : "")">
+                <i class="@Model.Icon"></i>
+               @UtilityLanguage.GetString($"PermissionTitle_{Model.Title}") 
+            </a>
+        </h2>
+    </div>
+}

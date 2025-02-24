@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewData["Title"] = "PaymentSuccess";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+<div class="card-header">
+    عملیات پرداخت با موفقیت انجام شد.
+</div>
+<div class="card-body">
+    <p>درگاه پرداخت :</p><span>@ViewBag.Psp</span>
+    <p>شماره سفارش :</p><span>@ViewBag.OrderId</span>
+    <p>شماره تراکنش :</p><span>@ViewBag.InvoiceNumber</span>
+    <p>کد رهگیری پرداخت :</p><span>@ViewBag.ReferenceNumber</span>
+</div>
+</div>
+

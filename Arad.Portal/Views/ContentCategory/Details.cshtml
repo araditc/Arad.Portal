@@ -1,0 +1,125 @@
+﻿@model CommonViewModel
+@using Arad.Portal.Models.UI;
+
+@{
+    var random = new Random();
+    var images = Model.CategorySection.Images?.ToList();
+    var randomImage = (images != null && images.Any()) ? images[random.Next(images.Count)] : null;
+}
+
+@section Styles {
+    <style>
+        .breadcrumb {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .bbb_deals {
+            box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .bbb_deals_item_name,
+        .bbb_deals_item_price {
+            font-size: 16px;
+        }
+
+        .breadcrumb-item a.no-underline {
+            text-decoration: none;
+        }
+
+        .pagination {
+            margin-top: 20px;
+        }
+    </style>
+}
+
+<div class="container-fluid">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="~/Home/Index" class="no-underline">Home</a>
+            </li>
+            <li class="breadcrumb-item active" >@ViewBag.Slug</li>
+        </ol>
+    </nav>
+
+    <!-- Image Section -->
+    <div class="row">
+        @if (randomImage != null)
+        {
+            <div class="col-12 text-center">
+                <img src="@(!string.IsNullOrEmpty(randomImage.Content) ? $"data:image/png;base64,{randomImage.Content}" : Url.Content("~/imgs/NoImage21.jpg"))"
+                     alt="Category Image" class="img-fluid rounded" loading="lazy">
+            </div>
+        }
+    </div>
+    <br />
+
+    <!-- Content Section -->
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mt-2 border-0">
+                    <div class="card-body">
+                        <div id="contentSection">
+                            @await Component.InvokeAsync("ContentsInCategorySection", Model.ContentsInCategorySection)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav>
+        <ul class="pagination justify-content-center" id="pagination"></ul>
+    </nav>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                setupPagination();
+                showPage(1);
+            }, 500);
+        });
+
+        const itemsPerPage = 10;
+        let items = [];
+
+        function showPage(pageNumber) {
+            if (items.length === 0) return;
+
+            const startIndex = (pageNumber - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+
+            items.forEach((item, index) => {
+                item.style.display = index >= startIndex && index < endIndex ? 'block' : 'none';
+            });
+        }
+
+        function setupPagination() {
+            items = document.querySelectorAll('.item');
+            const pagination = document.getElementById('pagination');
+            const totalPages = Math.ceil(items.length / itemsPerPage);
+
+            pagination.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const li = document.createElement('li');
+                li.classList.add('page-item');
+                li.innerHTML = `<a class="page-link" href="#" onclick="changePage(${i})">${i}</a>`;
+                pagination.appendChild(li);
+            }
+        }
+
+        function changePage(pageNumber) {
+            showPage(pageNumber);
+        }
+    </script>
+}

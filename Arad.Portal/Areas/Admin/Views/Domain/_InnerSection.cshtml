@@ -1,0 +1,309 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.DesignStructure;
+@using Arad.Portal.Models.Shared.DesignStructure
+@using HtmlAgilityPack;
+@using Newtonsoft.Json;
+@model ColContent
+@{
+
+    ModuleWithParametersValue module = new();
+    string contentType = "";
+    string modulePartClass = "d-none";
+    string editorPartClass = "d-none";
+    string htmlRaw = "";
+    if (!string.IsNullOrWhiteSpace(Model.ColData))
+    {
+        HtmlDocument htmlDoc = new();
+
+        htmlDoc.LoadHtml(Model.ColData);
+        IEnumerable<HtmlNode> divs = htmlDoc.DocumentNode.Elements("div");//divs in first level
+
+        foreach (HtmlNode div in divs) //surely it is one
+        {
+            if (div.Attributes["target"].Value == "module")
+            {
+                try
+                {
+                    module = JsonConvert
+                      .DeserializeObject<ModuleWithParametersValue>(Model.ColData.Replace("<div target=\"module\">", "").Replace("</div>", ""));
+                    contentType = "module";
+                    modulePartClass = "";
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
+            else
+            {
+                int index = Model.ColData.LastIndexOf("</div>", StringComparison.Ordinal);
+                string data = Model.ColData[..index];
+                htmlRaw = data.Replace("<div target=\"editor\">", "");
+                contentType = "editor";
+                editorPartClass = "";
+            }
+        }
+    }
+}
+
+<div class="row justify-content-center">
+    <div class="offset-8 col-4 offset-md-10 col-md-2">
+        <button class="btn btn-sm m-2 pt-2 btn-primary columnStyles float-end" style="@Model.ColumnCssNames" data-bs-toggle="tooltip" data-bs-placement="top" classNames="@Model.ColumnClassNames"
+                title="@UtilityLanguage.GetString("design_ColumnStyles")" sec="@Model.Section" cn="@Model.ColNumber" guid="@Model.RowGuid" rn="@ViewBag.RowNumber">
+            <i class="fs-6 fa fa-cog"></i>
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <label class="form-label">@UtilityLanguage.GetString("Template_ContentType")</label>
+        <br />
+        <select class="form-control selectpicker drpContentType" onchange="selectDrpContentType(this);"
+                cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section" data-live-search="true" sel=@(contentType == "module" ? "1" :(contentType == "editor" ? "2" : "0"))>
+            <option value="0">@UtilityLanguage.GetString("AlertAndMessage_Choose")</option>
+            <option value="1">@UtilityLanguage.GetString("Template_SystemModules")</option>
+            <option value="2">@UtilityLanguage.GetString("Template_Editor")</option>
+        </select>
+    </div>
+</div>
+
+<div class="row parent" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section" style="min-height:300px;">
+    <div class="col-12 modulePart @modulePartClass" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section">
+        <select class="form-control selectpicker moduleList" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section" sel="@module.ModuleId"
+                data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
+        </select>
+        <br />
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-success bg-gradient btn-sm float-end btnAddModule m-1" onclick="addModule(this);" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section"
+                    type="button">
+                @UtilityLanguage.GetString("btn_Select")
+            </button>
+        </div>
+        <br />
+        <div class="paramsDiv" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section">
+            @{
+                if (contentType == "module")
+                {
+                    switch (module.ModuleName)
+                    {
+                        case "ProductList":
+                            <partial name="_ProductList.cshtml" model="@module" />
+                            break;
+                        case "ContentList":
+                            <partial name="_ContentList.cshtml" model="@module" />
+                            break;
+                        case "HorizantalStoreMenu":
+                            <partial name="_HorizantalStoreMenu.cshtml" model="@module" />
+                            break;
+                        case "ImageTextSlider":
+                            <partial name="_ImageTextSlider.cshtml" model="@module" />
+                            break;
+                        case "LoginAndProfile":
+                            <partial name="_LoginAndProfile.cshtml" model="@module" />
+                            break;
+                        case "MultiLingualFlags":
+                            <partial name="_MultiLingualFlags.cshtml" model="@module" />
+                            break;
+                        case "GeneralSearch":
+                            <partial name="_GeneralSearch.cshtml" model="@module" />
+                            break;
+                        case "SocialMedia":
+                            <partial name="_SocialMedia.cshtml" model="@module" />
+                            break;
+                        case "FAQ":
+                            <partial name="_FAQ.cshtml" model="@module" />
+                            break;
+                        case "ProgressBars":
+                            <partial name="_ProgressBars.cshtml" model="@module" />
+                            break;
+                        case "IconBlocks":
+                            <partial name="_IconBlocks.cshtml" model="@module" />
+                            break;
+                        case "PictureWithLabel":
+                            <partial name="_PictureWithLabel.cshtml" model="@module" />
+                            break;
+                        case "Counter":
+                            <partial name="_Counter.cshtml" model="@module" />
+                            break;
+                        case "ContactUs":
+                            <partial name="_ContactUs.cshtml" model="@module" />
+                            break;
+                    }
+                }
+            }
+        </div>
+    </div>
+    @{
+        // Generate a GUID on the server-side
+        var guid = Guid.NewGuid();
+    }
+    <div class="col-12 editorPart @editorPartClass" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section">
+        <textarea id="@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}_{guid}")"
+                  name="@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")"
+                  class="form-control txtEditorCK" rows="40">
+            @if (contentType != "" && contentType == "editor")
+            {
+                @Html.Raw(htmlRaw)
+            }
+</textarea>
+
+        <button class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" onclick="sanitize(this, true);" editorid='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section"
+                type="button">
+            @UtilityLanguage.GetString("btn_Validation")
+        </button>
+    </div>
+    <div class="row finalColumnContent d-none" style="@Model.ColumnCssNames" classNames="@Model.ColumnClassNames" guid="@Model.RowGuid" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section">
+        @{
+            if (contentType != "")
+            {
+                @Model.ColData.Trim()
+                ;
+            }
+        }
+    </div>
+    <div class="row htmlColumnContentPreview d-none mx-2" style="@Model.ColumnCssNames" classNames="@Model.ColumnClassNames" guid="@Model.RowGuid" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section">
+        @{
+            if (contentType != "")
+            {
+                if (contentType == "editor")
+                {
+                    @htmlRaw.Trim()
+                    ;
+                }
+                else
+                {
+                    switch (module.ModuleName)
+                    {
+                        case "ProductList":
+                            @await Component.InvokeAsync("SpecialProduct", module.ParametersValue)
+                            break;
+                        case "ContentList":
+                            @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
+                            ;
+                            break;
+                        case "HorizantalStoreMenu":
+                            @await Component.InvokeAsync("StoreMenu")
+                            ;
+                            break;
+                        case "ImageTextSlider":
+                            @await Component.InvokeAsync("Slider", new { sliderId = module.ParametersValue.SliderId, sliderType = module.ParametersValue.SliderType })
+                            ;
+                            break;
+                        case "LoginAndProfile":
+                            @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop })
+                            ;
+                            break;
+                        case "MultiLingualFlags":
+                            @await Component.InvokeAsync("MultiLingual")
+                            ;
+                            break;
+                        case "GeneralSearch":
+                            @await Component.InvokeAsync("GeneralSearch")
+                            ;
+                            break;
+                        case "SocialMedia":
+                            @await Component.InvokeAsync("SocialMedia", module.ParametersValue)
+                            ;
+                            break;
+                        case "FAQ":
+                            @await Component.InvokeAsync("FAQ", module.ParametersValue.FAQViewModel.FAQItems)
+                            ;
+                            break;
+                        case "ProgressBars":
+                            @await Component.InvokeAsync("ProgressBars", module.ParametersValue.ProgressBarViewModel.ProgressBars)
+                            ;
+                            break;
+                        case "IconBlocks":
+                            @await Component.InvokeAsync("IconBlocks", module.ParametersValue.IconBlocks)
+                            ;
+                            break;
+                        case "PictureWithLabel":
+                            @await Component.InvokeAsync("PictureWithLabel", module.ParametersValue.PictureWithLabels)
+                            ;
+                            break;
+                        case "Counter":
+                            @await Component.InvokeAsync("Counter", module.ParametersValue.Counters)
+                            ;
+                            break;
+                        case "ContactUs":
+                            @await Component.InvokeAsync("ContactUs", module.ParametersValue.ContactUsList)
+                            ;
+                            break;
+                    }
+                }
+            }
+
+        }
+    </div>
+
+    @*difference between these finalColumnContent and htmlColumnContentPreview is about modules the first one store with parameters and second one render html of executed module*@
+    @*difference between moduleDatePreview and htmlColumnContentPreview is if we have more than one module in a column then mouleDataPreview is for the last module to show but htmlColumnContentPreview is all data of this columns*@
+    <div class="row moduleDataPreview mx-2 @(contentType != "" && contentType == "module" ? "" : "d-none")" guid="@Model.RowGuid" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section">
+        @{
+            if (contentType != "" && contentType == "module")
+            {
+                switch (module.ModuleName)
+                {
+                    case "ProductList":
+                        @await Component.InvokeAsync("SpecialProduct", module.ParametersValue)
+                        ;
+                        break;
+                    case "ContentList":
+                        @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
+                        ;
+                        break;
+                    case "HorizantalStoreMenu":
+                        @await Component.InvokeAsync("StoreMenu")
+                        ;
+                        break;
+                    case "ImageTextSlider":
+                        @await Component.InvokeAsync("Slider", new { sliderId = module.ParametersValue.SliderId, sliderType = module.ParametersValue.SliderType })
+                        ;
+                        break;
+                    case "LoginAndProfile":
+                        @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop })
+                        ;
+                        break;
+                    case "MultiLingualFlags":
+                        @await Component.InvokeAsync("MultiLingual")
+                        ;
+                        break;
+                    case "GeneralSearch":
+                        @await Component.InvokeAsync("GeneralSearch")
+                        ;
+                        break;
+                    case "SocialMedia":
+                        @await Component.InvokeAsync("SocialMedia", module.ParametersValue)
+                        ;
+                        break;
+                    case "FAQ":
+                        @await Component.InvokeAsync("FAQ", module.ParametersValue.FAQViewModel.FAQItems)
+                        ;
+                        break;
+                    case "ProgressBars":
+                        @await Component.InvokeAsync("ProgressBars", module.ParametersValue.ProgressBarViewModel.ProgressBars)
+                        ;
+                        break;
+                    case "IconBlocks":
+                        @await Component.InvokeAsync("IconBlocks", module.ParametersValue.IconBlocks)
+                        ;
+                        break;
+                    case "PictureWithLabel":
+                        @await Component.InvokeAsync("PictureWithLabel", module.ParametersValue.PictureWithLabels)
+                        ;
+                        break;
+                    case "Counter":
+                        @await Component.InvokeAsync("Counter", module.ParametersValue.Counters)
+                        ;
+                        break;
+                    case "ContactUs":
+                        @await Component.InvokeAsync("ContactUs", module.ParametersValue.ContactUsList)
+                        ;
+                        break;
+                }
+            }
+        }
+    </div>
+</div>
+
+

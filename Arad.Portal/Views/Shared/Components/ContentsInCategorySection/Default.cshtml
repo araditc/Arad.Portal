@@ -1,0 +1,92 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared
+@using Arad.Portal.Models.Shared.Content
+<style>
+    .proImg {
+        max-height: 150px;
+        width: auto;
+    }
+
+    .bbb_deals {
+        padding: 10px;
+        margin-bottom: 10px;
+        max-height: 250px;
+        overflow: hidden;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    .bbb_deals_info_line a {
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .bbb_deals_content, .bbb_deals_description {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    /* Media query for mobile view */
+    @@media (max-width: 767.98px) {
+        .bbb_deals {
+            flex-direction: column;
+            max-height: none;
+        }
+
+        .proImg {
+            max-height: 100px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .bbb_deals_content, .bbb_deals_description {
+            padding: 5px;
+            font-size: 12px;
+        }
+
+        .bbb_deals_info_line a {
+            font-size: 14px;
+        }
+
+        .flex-shrink-0.me-3 {
+            margin-right: 0 !important;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
+<div class="row" id="itemContainer">
+    @foreach (ContentViewModel item in Model.ContentList)
+    {
+        Image mainImage = item.Images.FirstOrDefault(i => i.IsMain);
+        string imageUrl = mainImage?.Content;
+        string imageTitle = mainImage?.Title ?? "Content Image";
+
+            <div class="col-12 mb-4 item">
+                <a href="@item.UrlFriend">
+                    <div class="bbb_deals w-100 d-flex align-items-center">
+                        <!-- Image on the left -->
+                        <div class="flex-shrink-0 me-3">
+                            <img class="proImg rounded"
+                                 src="@(!string.IsNullOrEmpty(imageUrl) ? $"data:image/png;base64,{imageUrl}" : Url.Content("~/imgs/NoImage21.jpg"))"
+                                 alt="@imageTitle"
+                                 loading="lazy" />
+                        </div>
+                        <!-- Content on the right -->
+                        <div class="flex-grow-1">
+                            <div class="bbb_deals_content">
+                                <a class="text-decoration-none text-dark fw-bold">
+                                @(!string.IsNullOrEmpty(item.Title) ? item.Title : "")
+                                </a>
+                            </div>
+
+                            <div class="bbb_deals_description">
+                                <p>@(!string.IsNullOrEmpty(item.Description) ? item.Description : "")</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+    }
+</div>

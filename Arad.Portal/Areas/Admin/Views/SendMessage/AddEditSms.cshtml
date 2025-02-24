@@ -1,0 +1,89 @@
+﻿@using Arad.Portal.Models.Shared.SendMessage
+@model SmsDto
+@{
+    string alert = UtilityLanguage.GetString("AlertAndMessage_GotIt");
+    string error = UtilityLanguage.GetString("AlertAndMessage_Error");
+    string baseAdd = Config["BaseAddress"];
+}
+@section Styles {
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+    </style>
+}
+
+<h4>@UtilityLanguage.GetString("Menu_SendMessageSetting")</h4>
+<hr />
+<div class="row">
+    <div class="col-12">
+        <div class="card" id="addContentCategoryCardTitle">
+            <div class="card-header">
+                <h5 class="card-title">@(!string.IsNullOrWhiteSpace(Model.Id) ? UtilityLanguage.GetString("Title_EditSendMessage") : UtilityLanguage.GetString("Title_AddSendMessage"))</h5>
+            </div>
+            <form asp-action="AddSms" method="post" class="form-horizontal">
+                @Html.AntiForgeryToken()
+                <div class="card-body">
+                    <input type="hidden" asp-for="Id" />
+
+                    @if (ViewBag.IsSysAcc)
+                    {
+                        <div class="row">
+                            <div class="form-group col-12 col-md-3">
+                                <label asp-for="AssociatedDomainId" class="form-label">@UtilityLanguage.GetString("AssociatedDomain")</label>
+                                <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.AssociatedDomainId" asp-items="@(new SelectList(ViewBag.Domains, "Value", "Text", Model.AssociatedDomainId))">
+                                </select>
+                                <span asp-validation-for="AssociatedDomainId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <input type="hidden" asp-for="AssociatedDomainId" />
+                    }
+
+                    <div class="row">
+                        <div class="form-group col-12 col-md-3">
+                            <label class="form-label" asp-for="Provider">@UtilityLanguage.GetString("Enum_Provider")</label>
+                            <select class="form-control selectpicker" asp-for="Provider" asp-items="@(new SelectList(ViewBag.Providers, "Value", "Text"))" data-live-search="true">
+                            </select>
+                            <span asp-validation-for="Provider" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-12 col-md-3">
+                            <label asp-for="BaseAddress" class="form-label"></label>
+                            <input asp-for="BaseAddress" class="form-control" />
+                            <span asp-validation-for="BaseAddress" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-12 col-md-3">
+                            <label asp-for="SenderNumber" class="form-label"></label>
+                            <input asp-for="SenderNumber" class="form-control" />
+                            <span asp-validation-for="SenderNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-12 col-md-3">
+                            <label asp-for="ApiKey" class="form-label"></label>
+                            <input asp-for="ApiKey" class="form-control" />
+                            <span asp-validation-for="ApiKey" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="form-group col-12 col-md-4 offset-md-8">
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@UtilityLanguage.GetString("btn_Back")</a>
+                        <input type="submit" value="@UtilityLanguage.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Add any JavaScript code needed for client-side validation or other features
+    </script>
+}

@@ -1,0 +1,45 @@
+﻿@using Arad.Portal.Models.Shared.Permission
+
+@model List<ListPermissions>
+@{
+    Layout = null;
+}
+
+<ul class="tree col-md-6">
+    @foreach (ListPermissions item in Model)
+    {
+        if (item.Childrens.Count != 0)
+        {
+            <li class="custom-control custom-checkbox checbox-right custom-control-inline">
+                <span class="caret"></span>
+                <input type="checkbox" class="custom-control-input checkbox" name="@item.Id" id="p@(item.Id)" @(item.IsSelected ? "checked" : "") />
+                <label class="custom-control-label" for="p@(item.Id)">@item.Title</label>
+                @if (item.Childrens.Count != 0)
+                {
+                    <ul class="nested">
+
+                        @foreach (ListPermissions child in item.Childrens)
+                        {
+                            <li class="custom-control custom-checkbox checbox-right custom-control-inline">
+                                @await Component.InvokeAsync("InnerPermissions", child);
+
+                            </li>
+                        }
+                    </ul>
+                }
+
+            </li>
+        }
+        else
+        {
+            <li class="custom-control custom-checkbox checbox-right custom-control-inline">
+                <span class="caret"></span>
+                <input type="checkbox" class="custom-control-input checkbox" name="@item.Id" id="p@(item.Id)" @(item.IsSelected ? "checked" : "") />
+                <label class="custom-control-label" for="p@(item.Id)">@item.Title</label>
+            </li>
+        }
+
+    }
+</ul>
+
+

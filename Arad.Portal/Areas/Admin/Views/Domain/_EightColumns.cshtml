@@ -1,0 +1,148 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.DesignStructure
+
+@model RowContent;
+@{
+    string section = "";
+    if (@ViewBag.RowNumber.ToString().StartsWith("1"))
+    {
+        section = "headerSection";
+    }
+    else if (@ViewBag.RowNumber.ToString().StartsWith("2"))
+    {
+        section = "containerSection";
+    }
+    else if (@ViewBag.RowNumber.ToString().StartsWith("3"))
+    {
+        section = "footerSection";
+    }
+    dynamic guid = @ViewBag.Guid;
+    ColContent firstColContent = null;
+    ColContent secondColContent = null;
+    ColContent thirdColContent = null;
+    ColContent forthColContent = null;
+    ColContent fifthColContent = null;
+    ColContent sixthColContent = null;
+    ColContent seventhColContent = null;
+    ColContent eighthColContent = null;
+    if (Model != null)
+    {
+        firstColContent = Model.ColsContent.Count() > 0 ? Model.ColsContent.FirstOrDefault(c => c.ColNumber == 1) : null;
+        secondColContent = Model.ColsContent.Count() > 1 ? Model.ColsContent.FirstOrDefault(c => c.ColNumber == 2) : null;
+        thirdColContent = Model.ColsContent.Count() > 2 ? Model.ColsContent.FirstOrDefault(c => c.ColNumber == 3) : null;
+        forthColContent = Model.ColsContent.Count() > 3 ? Model.ColsContent.FirstOrDefault(c => c.ColNumber == 4) : null;
+        fifthColContent = Model.ColsContent.Count() > 4 ? Model.ColsContent.FirstOrDefault(c => c.ColNumber == 5) : null;
+        sixthColContent = Model.ColsContent.Count() > 5 ? Model.ColsContent.FirstOrDefault(c => c.ColNumber == 6) : null;
+        seventhColContent = Model.ColsContent.Count() > 6 ? Model.ColsContent.FirstOrDefault(c => c.ColNumber == 7) : null;
+        eighthColContent = Model.ColsContent.Count() > 7 ? Model.ColsContent.FirstOrDefault(c => c.ColNumber == 8) : null;
+    }
+    string first = "";
+    string second = "";
+    string third = "";
+    string forth = "";
+    string fifth = "";
+    string sixth = "";
+    string seventh = "";
+    string eighth = "";
+    switch ((Enums.EightColsTemplateWidth)@ViewBag.ColWidth)
+    {
+        case Enums.EightColsTemplateWidth.OneOneOneOneOneOneOneOne:
+            first = "col border border-1";
+            second = "col border border-1";
+            third = "col border border-1";
+            forth = "col border border-1";
+            fifth = "col border border-1";
+            sixth = "col border border-1";
+            seventh = "col border border-1";
+            eighth = "col border border-1";
+            break;
+        case Enums.EightColsTemplateWidth.OneTwoThreeTwoThreeOneOneOne:
+            first = "col-4 col-md-1 border border-1";
+            second = "col-8 col-md-2 border border-1";
+            third = "col-12 col-md-3 border border-1";
+            forth = "col-8 col-md-2 border border-1";
+            fifth = "col-12 col-md-3 border border-1";
+            sixth = "col-6 col-md-1 border border-1";
+            seventh = "col-6 col-md-1 border border-1";
+            eighth = "col-6 col-md-1 border border-1";
+            break;
+        case Enums.EightColsTemplateWidth.TwoOneThreeThreeTwoOneOneTwo:
+            first = "col-8 col-md-2 border border-1";
+            second = "col-4 col-md-1 border border-1";
+            third = "col-12 col-md-3 border border-1";
+            forth = "col-12 col-md-3 border border-1";
+            fifth = "col-8 col-md-2 border border-1";
+            sixth = "col-4 col-md-1 border border-1";
+            seventh = "col-6 col-md-1 border border-1";
+            eighth = "col-6 col-md-2 border border-1";
+            break;
+        case Enums.EightColsTemplateWidth.ThreeOneTwoTwoOneThreeTwoOne:
+            first = "col-12 col-md-3 border border-1";
+            second = "col-4 col-md-1 border border-1";
+            third = "col-8 col-md-2 border border-1";
+            forth = "col-8 col-md-2 border border-1";
+            fifth = "col-4 col-md-1 border border-1";
+            sixth = "col-12 col-md-3 border border-1";
+            seventh = "col-8 col-md-2 border border-1";
+            eighth = "col-4 col-md-1 border border-1";
+            break;
+        case Enums.EightColsTemplateWidth.OneOneTwoThreeTwoThreeTwoOne:
+            first = "col-6 col-md-1 border border-1";
+            second = "col-6 col-md-1 border border-1";
+            third = "col-8 col-md-2 border border-1";
+            forth = "col-12 col-md-3 border border-1";
+            fifth = "col-8 col-md-2 border border-1";
+            sixth = "col-12 col-md-3 border border-1";
+            seventh = "col-8 col-md-2 border border-1";
+            eighth = "col-6 col-md-1 border border-1";
+            break;
+    }
+}
+<style>
+    .col-1-5 {
+        flex: 0 0 12.5%; /* 12.5% = 100% / 8 */
+        max-width: 12.5%;
+    }
+</style>
+<div class="row sectionRow mx-2" rn="@ViewBag.RowNumber" enumcolid="@ViewBag.ColWidth" rowCustomClasses="@(Model != null ? Model.ExtraClassNames : "")"
+     guid="@guid" @(Model != null && Model.BGType != null ? ((int)Model.BGType.Value == 1 ? $"style=background-color:{Model.BgCodeColor}" : $"style=background-image:url('{Model.BgImage}')") : "")>
+    <div class="col border border-1" colnum="1" did="@ViewBag.DomainId" cnt="8" colClassNames="@(firstColContent != null ? firstColContent.ColumnClassNames : "" )">
+        <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section,
+                   ColumnClassNames = firstColContent != null ? firstColContent.ColumnClassNames : first.Replace("border-1", "").Replace("border", ""),
+                   RowGuid = guid , ColData = firstColContent != null ? firstColContent.ColData : ""}' />
+    </div>
+    <div class="col border" colnum="2" did="@ViewBag.DomainId" cnt="8" colClassNames="@(secondColContent != null ? secondColContent.ColumnClassNames : "")">
+        <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section,
+                 ColumnClassNames = secondColContent != null ? secondColContent.ColumnClassNames : second.Replace("border-1", "").Replace("border", ""),
+                 RowGuid = guid , ColData = secondColContent != null ? secondColContent.ColData : ""}' />
+    </div>
+    <div class="col border" colnum="3" did="@ViewBag.DomainId" cnt="8" colClassNames="@(thirdColContent != null ? thirdColContent.ColumnClassNames : "")">
+        <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 3, Section = section,
+                ColumnClassNames = thirdColContent != null ? thirdColContent.ColumnClassNames : third.Replace("border-1", "").Replace("border", ""),
+                RowGuid = guid, ColData = thirdColContent != null ? thirdColContent.ColData : "" }' />
+    </div>
+    <div class="col border" colnum="4" did="@ViewBag.DomainId" cnt="8" colClassNames="@(forthColContent != null ? forthColContent.ColumnClassNames : "")">
+        <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 4, Section = section,
+                 ColumnClassNames = forthColContent != null ? forthColContent.ColumnClassNames : forth.Replace("border-1", "").Replace("border", ""),
+                 RowGuid = guid , ColData = forthColContent != null ? forthColContent.ColData : ""}' />
+    </div>
+    <div class="col border" colnum="5" did="@ViewBag.DomainId" cnt="8" colClassNames="@(fifthColContent != null ? fifthColContent.ColumnClassNames : "")">
+        <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 5, Section = section,
+                 ColumnClassNames = fifthColContent != null ? fifthColContent.ColumnClassNames : fifth.Replace("border-1", "").Replace("border", ""),
+                 RowGuid = guid , ColData = fifthColContent != null? fifthColContent.ColData : ""}' />
+    </div>
+    <div class="col border" colnum="6" did="@ViewBag.DomainId" cnt="8" colClassNames="@(sixthColContent != null ? sixthColContent.ColumnClassNames : "")">
+        <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 6, Section = section,
+                 ColumnClassNames = sixthColContent != null ? sixthColContent.ColumnClassNames : sixth.Replace("border-1", "").Replace("border", ""),
+                 RowGuid = guid, ColData = sixthColContent != null ? sixthColContent.ColData : "" }' />
+    </div>
+    <div class="col border" colnum="7" did="@ViewBag.DomainId" cnt="8" colClassNames="@(seventhColContent != null ? seventhColContent.ColumnClassNames : "")">
+        <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 7, Section = section,
+                 ColumnClassNames = seventhColContent != null ? seventhColContent.ColumnClassNames : seventh.Replace("border-1", "").Replace("border", ""),
+                 RowGuid = guid, ColData = seventhColContent != null ? seventhColContent.ColData : "" }' />
+    </div>
+    <div class="col border" colnum="8" did="@ViewBag.DomainId" cnt="8" colClassNames="@(eighthColContent != null ? eighthColContent.ColumnClassNames : "")">
+        <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 8, Section = section,
+                 ColumnClassNames = eighthColContent != null ? eighthColContent.ColumnClassNames : eighth.Replace("border-1", "").Replace("border", ""),
+                 RowGuid = guid, ColData = eighthColContent != null ? eighthColContent.ColData : "" }' />
+    </div>
+</div>

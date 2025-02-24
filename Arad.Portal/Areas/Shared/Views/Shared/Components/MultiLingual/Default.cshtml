@@ -1,0 +1,35 @@
+﻿@using Arad.Portal.Models.Shared.Multilingual
+@{
+    List<CultureInfoModel>? countryCodes = ViewBag.CountryCodes as List<CultureInfoModel>;
+}
+
+<div class="col-4 col-md-2 col-lg-1">
+    <div class="ms-2">
+        @if (countryCodes == null || !countryCodes.Any())
+        {
+            <p>No supported cultures available.</p>
+        }
+        else
+        {
+            <ul class="langUl list-group list-group-horizontal">
+                @foreach (CultureInfoModel code in countryCodes)
+                {
+                    <li class="list-group-item lan border-0 pt-2 px-1">
+                        <a aria-label="@code.DisplayName" data-bs-placement="bottom" data-bs-toggle="tooltip" role="button" title="@code.DisplayName">
+                            <span class="flagIcon fi fi-@code.RegionCode" onclick="setLang('@code.CultureCode')"></span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>
+
+<script defer>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>

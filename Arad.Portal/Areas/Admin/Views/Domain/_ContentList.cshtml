@@ -1,0 +1,113 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.DesignStructure
+@using Arad.Portal.Models.Admin
+@using Arad.Portal.Models.Shared.DesignStructure
+@model ModuleWithParametersValue;
+@{
+    string countSectionClass;
+    if(string.IsNullOrWhiteSpace(Model.ModuleId))
+    {
+        countSectionClass = "d-none";
+    }else
+    {
+        if(Model.ParametersValue.ContentTemplateDesign.ToString() == "Forth" || Model.ParametersValue.ContentTemplateDesign.ToString() == "Fifth" )
+        {
+            countSectionClass = "d-block";
+        }else
+        {
+            countSectionClass = "d-none";
+        }
+
+    }
+
+    string selcontentType = "";
+    string selLoadAnimation ="";
+    string selloadAnimationType = "";
+    string selectedType = "";
+    string selectedCategoryId = "";
+    List<string> selectedContentIds = [];
+    string cnt = "";
+    string categoryListSectionClass = "d-none";
+    string contentListSectionClass = "d-none";
+    if (!string.IsNullOrWhiteSpace(Model.ModuleId))
+    {
+        selcontentType = ((int)@Model.ParametersValue.ProductOrContentType).ToString();
+        selLoadAnimation = ((int)@Model.ParametersValue.LoadAnimation).ToString();
+        selloadAnimationType = ((int)@Model.ParametersValue.LoadAnimationType).ToString();
+        cnt = @Model.ParametersValue.Count.ToString();
+        selectedType = ((int)@Model.ParametersValue.SelectionType).ToString();
+        if(@Model.ParametersValue.SelectionType == SelectionType.LatestFromProductOrContentTypeSelectedCategory)
+        {
+            selectedCategoryId = @Model.ParametersValue.CatId;
+            categoryListSectionClass = "";
+        }
+        else
+        if(@Model.ParametersValue.SelectionType == SelectionType.LatestFromProductOrContentTypeInAllCategories)
+        {
+            selectedContentIds = @Model.ParametersValue.SelectedIds;
+            contentListSectionClass = "";
+        }
+    }
+}
+<div class="row par mx-2" parid="templateSection">
+     <label class="form-label" >@UtilityLanguage.GetString("ViewTemplate")</label><br/>
+    @foreach(SelectImageListModel option in ViewBag.ContentTemplateList)
+    {
+        <div class="col-12 @(@ViewBag.ColCnt == 1 || @ViewBag.ColCnt == 2 ? "col-md-3" : "")">
+            <input class="form-check-input" name="rdbContentTemplateList" type="radio" 
+           @((Model != null && Model.ParametersValue.ContentTemplateDesign.ToString() == option.Text) ? "checked='checked'" : "" )
+            value="@(option.Text)" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" /><br/>
+            <img class="img-fluid m-2" src="@Url.Content(option.ImageUrl)" style="width:180px;" alt=""/>
+        </div>
+    }
+</div>
+<div class="row mx-2">
+    <div class="col-12">
+          <label class="form-label" >@UtilityLanguage.GetString("Type")</label><br/>
+          <select class="form-control selectpicker par typeList" cn="@ViewBag.ColNumber" 
+             rn="@ViewBag.RowNumber" sec="@ViewBag.Section" data-live-search="true" parid="typeList" sel="@selcontentType"
+             asp-items ="@(new SelectList(ViewBag.ProductOrContentTypeList,"Value","Text"))" >
+          </select>
+    </div>
+    <div class="col-12 countSection @countSectionClass" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" >
+          <label class="form-label" >@UtilityLanguage.GetString("CountToShow")</label><br/>
+          <input type="number" parid="countToShow" class="form-control par" value="@cnt" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" />
+    </div>
+    <div class="col-12 text-center loadAnimate">
+        <label class="form-label" for="loadAnimation">@UtilityLanguage.GetString("design_loadAnimation")</label>
+        <select parid="loadAnimation" class="form-control selectpicker mt-2 par" sel = "@selLoadAnimation"
+         cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" asp-items="@(new SelectList(ViewBag.TransactionType, "Value", "Text"))"></select>
+        <span class="field-validation-error" data-val-result="LoadAnimation"></span>
+    </div>
+     <div class="col-12 text-center loadAnimationType">
+          <label class="form-label" for="loadAnimationType">@UtilityLanguage.GetString("design_loadAnimationType")</label>
+           <select parid="loadAnimationType" class="form-control selectpicker mt-2 par" sel ="@selloadAnimationType"
+           cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" 
+           asp-items="@(new SelectList(ViewBag.LoadAnimationType, "Value", "Text"))"></select>
+        <span class="field-validation-error" data-val-result="LoadAnimation"></span>
+     </div>
+     <div class="col-12 text-center selectionType">
+          <label class="form-label" for="selectionType">@UtilityLanguage.GetString("design_SelectionType")</label>
+          <select parid="selectionType" class="form-control selectpicker mt-2 par selectionType" sel="@selectedType"
+             cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+             asp-items="@(new SelectList(ViewBag.SelectionType, "Value", "Text"))"></select>
+     </div>
+    <div class="col-12 text-center categoryListSection @categoryListSectionClass">
+         <label class="form-label" for="categoryList">@UtilityLanguage.GetString("design_CategoryList")</label>
+          <select parid="categoryList" class="form-control selectpicker mt-2 par" sel="@selectedCategoryId"
+             cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+             asp-items="@(new SelectList(ViewBag.CategoryList, "Value", "Text"))"></select>
+    </div>
+    <div class="col-12 text-center contentListSection @contentListSectionClass">
+         <label class="form-label" for="selectionType">@UtilityLanguage.GetString("design_ContentList")</label>
+        <select parid="contentList" multiple class="form-control selectpicker mt-2 par"
+                cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+             asp-items="@(new MultiSelectList(ViewBag.ContentList, "Value", "Text", selectedContentIds))"></select>
+    </div>
+    <div class="col-12">
+        <button btnid="btnAddModuleWithParameters" onclick="addModulesWithParams(this);" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+        class="btn btn-success bg-gradient btn-sm float-end m-1" type="button">@UtilityLanguage.GetString("btn_Add")</button>
+    </div>
+    
+</div>
+
+

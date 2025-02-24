@@ -1,0 +1,30 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.PictureWithLabel
+@model Arad.Portal.Models.Shared.DesignStructure.ModuleWithParametersValue
+
+<div class="container mt-4">
+    <h3>@UtilityLanguage.GetString("UploadPhotoWithSubtitles")</h3>
+
+    <form id="photoForm">
+        <div class="row" id="photoGrid">
+            <div class="col-md-3 photo-item">
+                <input type="hidden" id="fileContent" />
+                <input type="file" name="photos" id="LogoImage" class="form-control mb-2" accept="image/*" required />
+                <input type="text" name="subtitles" class="form-control mb-2" placeholder="@UtilityLanguage.GetString("EnterSubtitle")" required />
+                <input type="number" name="width" class="form-control mb-2" placeholder="Width (px)" required />
+                <input type="number" name="height" class="form-control mb-2" placeholder="Height (px)" required />
+
+                <button type="button" class="btn btn-danger btn-sm" onclick="removePhotoItem(this)">@UtilityLanguage.GetString("btn_Remove")</button>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-secondary mt-3" onclick="addPhotoInput()">@UtilityLanguage.GetString("btn_AddAnotherPhoto")</button>
+    </form>
+
+    <div class="col-12 text-center">
+        <button id="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1"
+                cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+                onclick="addModulesWithParams(this);" type="button">
+            @UtilityLanguage.GetString("btn_Add")
+        </button>
+    </div>
+</div>

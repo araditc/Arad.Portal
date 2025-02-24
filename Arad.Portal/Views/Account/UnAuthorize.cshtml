@@ -1,0 +1,28 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Config
+@{
+    Layout = null;
+   string dir = HelpersMethods.GetDirection(CultureInfo.CurrentCulture);
+    string lang = HelpersMethods.GetHtmlLang(CultureInfo.CurrentCulture);
+     string baseAdd = Config["BaseAddress"];
+
+}
+
+<!DOCTYPE html>
+
+<html style="height: auto;"  dir="@dir" lang="@lang">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@UtilityLanguage.GetString("UnAuthorize")</title>
+    <style>
+        body {
+            background: url(/imgs/401-Error.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+    </style>
+</head>
+<body >
+<div></div>
+</body>
+</html>

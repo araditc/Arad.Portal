@@ -1,0 +1,110 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared
+@using Arad.Portal.DataLayer.Models.Shared.DesignStructure
+@using Arad.Portal.Models.Shared.Content
+@model List<ContentGlance>
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string outerElementAtr = "";
+    string innerElementsAtr = "";
+    LoadAnimationType animationTarget = (LoadAnimationType)ViewBag.LoadAnimationType;
+    if (animationTarget == LoadAnimationType.OuterElement)
+    {
+        outerElementAtr = $"data-animation='animated {ViewBag.LoadAnimation}'";
+    }
+    else
+    {
+        innerElementsAtr = $"data-animation='animated {ViewBag.LoadAnimation}'";
+    }
+    string baseAdd = Config["BaseAddress"];
+
+}
+
+@if (Model.Count == 6)
+{
+    <div class="row firstTemp m-10" @outerElementAtr>
+        <div class="col-12 col-md-9 col-lg-4 g-1 ">
+            <a href="@Url.Content(!string.IsNullOrWhiteSpace(Model[0].UrlFriend) ? $"~/{Model[0].UrlFriend}" :  $"~/blog/{Model[0].ContentCode}")" role="button">
+                <picture>
+                    <source media="(max-width: 767px)" srcset="@Model[0].DesiredImageUrl" style="width:535px;"/>
+                    <source media="(min-width: 768px)" srcset="@Model[0].DesiredImageUrl" style="width:550px;">
+                    <source media="(min-width: 992px)" srcset="@Model[0].DesiredImageUrl" style="width:440px;">
+                    <img class="imgBig rounded-3 ps-lg-1 pt-lg-1 ps-sm-0 p-sm-1"
+                         src="@Model[0].DesiredImageUrl"
+                         style="width:440px;"
+                    @($" {@innerElementsAtr} ")
+                         alt="@(Model[0].Images.Any(i => i.ImageRatio == ImageRatio.Square) ? Model[0].Images.FirstOrDefault(i => i.ImageRatio == ImageRatio.Square).Title : "")">
+                </picture>
+            </a>
+
+        </div>
+        <div class="col-12 col-md-3 col-lg-2 g-1">
+            <a href="@Url.Content(!string.IsNullOrWhiteSpace(Model[1].UrlFriend) ? $"~/{Model[1].UrlFriend}" :  $"~/blog/{Model[1].ContentCode}")" role="button">
+                <picture>
+                    <source media="(max-width: 767px)" srcset="@Model[1].DesiredImageUrl" style="width:260px;" />
+                    <source media="(min-width: 768px)" srcset="@Model[1].DesiredImageUrl" style="width:190px;">
+                    <source media="(min-width: 992px)" srcset="@Model[1].DesiredImageUrl" style="width:230px;">
+                    <img class="pt-lg-1 ps-lg-1 mb-lg-0  ps-md-1 imgSmall mb-sm-1 ms-sm-0 me-sm-0 rounded-3"
+                         src="@Model[1].DesiredImageUrl"
+                         style="width:230px;"
+                    @($" {@innerElementsAtr} ")
+                         alt="@(Model[1].Images.Any(i => i.ImageRatio == ImageRatio.Square) ? Model[1].Images.FirstOrDefault(i => i.ImageRatio == ImageRatio.Square).Title : "")">
+                </picture>
+            </a>
+
+            <a href="@Url.Content(!string.IsNullOrWhiteSpace(Model[2].UrlFriend) ? $"~/{Model[2].UrlFriend}" :  $"~/blog/{Model[2].ContentCode}")" role="button">
+                <picture>
+                    <source media="(max-width: 767px)" srcset="@Model[2].DesiredImageUrl" style="width:260px;" />
+                    <source media="(min-width: 768px)" srcset="@Model[2].DesiredImageUrl" style="width:190px;">
+                    <source media="(min-width: 992px)" srcset="@Model[2].DesiredImageUrl" style="width:230px;">
+                    <img class="pt-lg-1 ps-lg-1 mb-lg-0  ps-md-1 imgSmall mb-sm-1 ms-sm-0 me-sm-0 rounded-3"
+                         src="@Model[2].DesiredImageUrl"
+                         style="width:230px;"
+                    @($" {@innerElementsAtr} ")
+                         alt="@(Model[2].Images.Any(i => i.ImageRatio == ImageRatio.Square) ? Model[2].Images.FirstOrDefault(i => i.ImageRatio == ImageRatio.Square).Title : "")">
+                </picture>
+            </a>
+
+        </div>
+        <div class="col-12 col-md-9 col-lg-4 g-1">
+            <a href="@Url.Content(!string.IsNullOrWhiteSpace(Model[3].UrlFriend) ? $"~/{Model[3].UrlFriend}" :  $"~/blog/{Model[3].ContentCode}")" role="button">
+                <picture>
+                    <source media="(max-width: 767px)" srcset="@Model[3].DesiredImageUrl" style="width:535px;" />
+                    <source media="(min-width: 768px)" srcset="@Model[3].DesiredImageUrl" style="width:550px;">
+                    <source media="(min-width: 992px)" srcset="@Model[3].DesiredImageUrl" style="width:440px;">
+                    <img class="imgBig rounded-3 ps-lg-1 pt-lg-1 ps-sm-0 p-sm-1"
+                         src="@Model[3].DesiredImageUrl"
+                         style="width:440px;"
+                    @($" {@innerElementsAtr} ")
+                         alt="@(Model[3].Images.Any(i => i.ImageRatio == ImageRatio.Square) ? Model[3].Images.FirstOrDefault(i => i.ImageRatio == ImageRatio.Square).Title : "")">
+                </picture>
+            </a>
+        </div>
+        <div class="col-12 col-md-3 col-lg-2 g-1">
+            <a href="@Url.Content(!string.IsNullOrWhiteSpace(Model[4].UrlFriend) ? $"~/{Model[4].UrlFriend}" :  $"~/blog/{Model[4].ContentCode}")" role="button">
+                <picture>
+                    <source media="(max-width: 767px)" srcset="@Model[4].DesiredImageUrl" style="width:260px;" />
+                    <source media="(min-width: 768px)" srcset="@Model[4].DesiredImageUrl" style="width:190px;">
+                    <source media="(min-width: 992px)" srcset="@Model[4].DesiredImageUrl" style="width:230px;">
+                    <img class="pt-lg-1 ps-lg-1 mb-lg-0  ps-md-1 imgSmall mb-sm-1 ms-sm-0 me-sm-0 rounded-3"
+                         src="@Model[4].DesiredImageUrl"
+                         style="width:230px;"
+                    @($" {@innerElementsAtr} ")
+                         alt="@(Model[4].Images.Any(i => i.ImageRatio == ImageRatio.Square) ? Model[4].Images.FirstOrDefault(i => i.ImageRatio == ImageRatio.Square).Title : "")">
+                </picture>
+            </a>
+            <a href="@Url.Content(!string.IsNullOrWhiteSpace(Model[5].UrlFriend) ? $"~/{Model[5].UrlFriend}" :  $"~/blog/{Model[5].ContentCode}")" role="button">
+                <picture>
+                    <source media="(max-width: 767px)" srcset="@Model[5].DesiredImageUrl" style="width:260px;" />
+                    <source media="(min-width: 768px)" srcset="@Model[5].DesiredImageUrl" style="width:190px;">
+                    <source media="(min-width: 992px)" srcset="@Model[5].DesiredImageUrl" style="width:230px;">
+                    <img class="pt-lg-1 ps-lg-1 mb-lg-0  ps-md-1 imgSmall mb-sm-1 ms-sm-0 me-sm-0 rounded-3"
+                         src="@Model[5].DesiredImageUrl"
+                         style="width:230px;"
+                    @($" {@innerElementsAtr} ")
+                         alt="@(Model[5].Images.Any(i => i.ImageRatio == ImageRatio.Square) ? Model[5].Images.FirstOrDefault(i => i.ImageRatio == ImageRatio.Square).Title : "")">
+                </picture>
+            </a>
+        </div>
+    </div>
+}

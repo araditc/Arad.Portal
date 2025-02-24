@@ -1,0 +1,34 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.DesignStructure
+@using Arad.Portal.Models.Shared.Content
+
+@model List<ContentGlance>
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    string outerElementAtr ="";
+    string innerElementsAtr = "";
+    LoadAnimationType animationTarget = (LoadAnimationType)ViewBag.LoadAnimationType;
+    if(animationTarget == LoadAnimationType.OuterElement)
+    {
+        outerElementAtr = $"data-animation='animated {ViewBag.LoadAnimation}'";
+    }else
+    {
+        innerElementsAtr = $"data-animation='animated {ViewBag.LoadAnimation}'";
+    }
+     string baseAdd = Config["BaseAddress"];
+}
+
+
+<ul class="list-group" @outerElementAtr>
+    @foreach (ContentGlance item in Model)
+    {
+         <li class="list-group-item  fifthContent" @innerElementsAtr>
+             <div class="row">
+               <div class="col-12 text-center">
+                   <a href="@Url.Content(!string.IsNullOrWhiteSpace(item.UrlFriend) ? $"~/{item.UrlFriend}" :  $"~/blog/{item.ContentCode}"))">
+                       <span>@item.Title</span>
+                   </a>
+               </div>
+            </div>
+         </li>
+    }
+</ul>

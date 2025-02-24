@@ -1,0 +1,505 @@
+﻿@using Arad.Portal.Models.Shared.Product
+@inject IConfiguration Config;
+@model PagedItems<ProductViewModel>
+@{
+    int i = ((Model.CurrentPage - 1) * Model.PageSize);
+    bool isSearch = false;
+    System.Collections.Specialized.NameValueCollection queryString = null;
+    string langId = "";
+    string name ="";
+    string desc = "";
+    string groupIds ="";
+    string code ="";
+    string from ="";
+    string to ="";
+    string inventory ="";
+    string promotion ="";
+    string exist = "";
+    if (!string.IsNullOrWhiteSpace(Model.QueryString))
+    {
+        queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
+        isSearch = !string.IsNullOrWhiteSpace(queryString["LanguageId"]) ||
+       !string.IsNullOrWhiteSpace(queryString["groupIds"]) ||
+       !string.IsNullOrWhiteSpace(queryString["name"]) ||
+       !string.IsNullOrWhiteSpace(queryString["desc"]) ||
+       !string.IsNullOrWhiteSpace(queryString["code"]) ||
+       !string.IsNullOrWhiteSpace(queryString["from"]) ||
+       !string.IsNullOrWhiteSpace(queryString["to"]) ||
+       !string.IsNullOrWhiteSpace(queryString["inventory"]) ||
+       !string.IsNullOrWhiteSpace(queryString["promotion"]) ||
+       !string.IsNullOrWhiteSpace(queryString["exist"]);
+        if (isSearch)
+        {
+            if(queryString["LanguageId"] != null)
+            langId = queryString["LanguageId"];
+
+            if(queryString["name"] != null)
+            name = queryString["name"];
+
+            if(queryString["groupIds"] != null)
+            groupIds = queryString["groupIds"];
+
+            if(queryString["desc"] != null)
+            desc = queryString["desc"];
+
+            if(queryString["code"] != null)
+            code = queryString["code"];
+
+            if(queryString["from"] != null)
+            from = queryString["from"];
+
+            if(queryString["to"] != null)
+            to = queryString["to"];
+
+            if(queryString["inventory"] != null)
+            inventory = queryString["inventory"];
+
+            if(queryString["promotion"] != null)
+            promotion = queryString["promotion"];
+
+            if(queryString["exist"] != null)
+            exist = queryString["exist"];
+        }
+        queryString.Remove("page");
+    }
+    if (string.IsNullOrEmpty(langId))
+    {
+        langId = ViewBag.DefLangId;
+    }
+    string searchCollapseClass = isSearch ? "collapse show" : "collapse";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+     string baseAdd = Config["BaseAddress"];
+}
+@section Styles
+{
+    <style>
+
+        .contentDiv {
+            margin: auto;
+        }
+    </style>
+
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href = "@Url.Content($"~/lib/datePicker/kamadatepicker.css")" rel="stylesheet" />
+    }
+    else
+    {
+        <link href = "@Url.Content($"~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
+    }
+}
+
+<div class="card card-dark">
+    <a data-bs-toggle="collapse" role="button" href="#searchCollapse"
+       aria-expanded="@(!isSearch ? "false" : "true" )" class="@(!isSearch ? " collapsed" : null)">
+
+        <div class="card-header">
+            <h5 class="card-title">
+                <i class="fas fa-search">
+                    <span>@UtilityLanguage.GetString("btn_Search")</span>
+                </i>
+            </h5>
+        </div>
+    </a>
+
+    <div id="searchCollapse" class="@searchCollapseClass">
+        <div class="card-body">
+
+            <div class="row">
+                @if (ViewBag.IsSystemAccount)
+                {
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label">@UtilityLanguage.GetString("AssociatedDomain")</label>
+                        <select class="form-control selectpicker" data-live-search="true" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text"))">
+                        </select>
+                    </div>
+                }
+                <div class="form-group col-12 col-md-3">
+                    <label class="form-label">@UtilityLanguage.GetString("tbl_ProductGroup")</label>
+                    <select class="form-control selectpicker" data-live-search="true" id="cmbProductGroupFilter" asp-items="@(new SelectList(ViewBag.ProductGroupList, "Value", "Text"))">
+                    </select>
+                </div>
+                <div class="form-group col-12 col-md-3">
+                    <label class="form-label">@UtilityLanguage.GetString("tbl_ProductName")</label>
+                    <input type="text" class="form-control" id="txtProductNameFilter" />
+                </div>
+                <div class="form-group col-12 col-md-2">
+                    <label class="form-label">@UtilityLanguage.GetString("tbl_UniqeCode")</label>
+                    <input type="text" class="form-control" id="txtUniqueCodeFilter" />
+                </div>
+                <div class="form-group col-12 col-md-4">
+                    <label class="form-label">@UtilityLanguage.GetString("Description")</label>
+                    <input type="text" class="form-control" id="txtDescriptionFilter" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-12 col-md-3">
+                    <label class="form-label">@UtilityLanguage.GetString("fromCreationDate")</label>
+                    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                    {
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                            <input autocomplete="off" id="dtpFromCreationDate" type="text" class="form-control" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control datepicker" id="dtpFromCreationDate">
+                            <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                    }
+                </div>
+                <div class="form-group col-12 col-md-3">
+                    <label class="form-label">@UtilityLanguage.GetString("toCreationDate")</label>
+                    
+                    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                    {
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                            <input autocomplete="off" id="dtpToCreationDate" type="text" class="form-control" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control datepicker" id="dtpToCreationDate">
+                            <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                    }
+
+                </div>
+                <div class="form-group col-12 col-md-2">
+                    <label class="form-label">@UtilityLanguage.GetString("ProductInventoryLessThan")</label>
+                    <input type="number" id="txtLeastProduct" class="form-control" min="0" />
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="form-group col-12 col-md-3 pt-1 pb-2 contentDiv">
+                    <div class="form-check m-auto d-inline-block pt-3">
+                        <input class="form-check-input" type="checkbox" id="chbExistentProducts">
+                        <label class="form-check-label" for="chbExistentProducts">
+                            @UtilityLanguage.GetString("ExistentProducts")
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group col-12 col-md-3 pt-1 pb-2 contentDiv">
+                    <div class="form-check m-auto d-inline-block pt-3">
+                        <input class="form-check-input" type="checkbox" id="chbProductsOnPromotion">
+                        <label class="form-check-label" for="chbProductsOnPromotion">
+                            @UtilityLanguage.GetString("ProductsOnPromotion")
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-6"></div>
+            </div>
+
+        </div>
+        <div class="card-footer">
+            <button id="btnSearch" class="btn btn-sm btn-primary bg-gradient float-end" type="submit">
+                <i style="position: relative; left: 5px; top: 1px;" class="fa fa-search"></i>
+                @UtilityLanguage.GetString("btn_Search")
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="card" id="productListCard">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <h5 class="card-title">@UtilityLanguage.GetString("Menu_Products")</h5>
+            </div>
+            <div class="col-12 col-md-3 offset-md-6">
+                <div class="card-tools float-end">
+                   
+                        <a asp-action="ImportProductFromExcel" asp-controller="Excel" class="btn btn-success btn-sm bg-gradient">
+                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-file-excel"></i>&nbsp; @UtilityLanguage.GetString("btn_ExcelImport")
+                        </a>
+
+                        <a asp-action="AddEdit" asp-controller="Product" class="btn btn-success btn-sm bg-gradient">
+                            <i class="fa fa-plus pt-1"></i>&nbsp; @UtilityLanguage.GetString("btn_Add")
+                        </a>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body table-bordered  p-0">
+        <div class="row m-2">
+            <div class="col-4 col-md-1 offset-md-1 pt-2 text-center">
+                <label class="form-label float-end">@UtilityLanguage.GetString("LanguageName")</label>
+            </div>
+            <div class="col-4 col-md-2">
+                <select class="form-control border float-start" data-live-search="true" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                </select>
+            </div>
+            
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+                <thead>
+                    <tr style="text-align:center;">
+                        <th>@UtilityLanguage.GetString("tbl_RowName")</th>
+                        <th>@UtilityLanguage.GetString("tbl_MainImage")</th>
+                        <th>@UtilityLanguage.GetString("tbl_ProductName")</th>
+                        <th>@UtilityLanguage.GetString("tbl_ProductUnit")</th>
+                        <th>@UtilityLanguage.GetString("tbl_GroupNames")</th>
+                        <th>@UtilityLanguage.GetString("tbl_UniqeCode")</th>
+                        <th>@UtilityLanguage.GetString("tbl_Inventory")</th>
+                        <th>@UtilityLanguage.GetString("tbl_Price")</th>
+                        <th>@UtilityLanguage.GetString("CreationDate")</th>
+                        <th>@UtilityLanguage.GetString("UrlFriend")</th>
+                        <th>@* with urFriends goes to the related link in shop *@</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Items.Any())
+                    {
+
+                        @foreach (ProductViewModel item in Model.Items)
+                        {
+                            string src = item.Images.Any(x => x.IsMain) ?
+                                             item.Images.FirstOrDefault(x => x.IsMain).Content : @Url.Content($"~/imgs/NoImage.png");
+                           
+                            <tr class="ListCell">
+                                <td>@(++i)</td>
+                                <td><img src="data:image/jpeg;base64,@src" style="width: 120px;" /></td>
+                                <td>@(item.MultiLingualProperties.Any(p => p.LanguageId == langId) ? item.MultiLingualProperties.First(p => p.LanguageId == langId).Name : "")</td>
+                                <td>@(item.Unit != null && item.Unit.UnitNames.Any(p => p.LanguageId == langId) ? item.Unit.UnitNames.First(p => p.LanguageId == langId).Name : "")</td>
+                                <td>@(string.Join("|", item.GroupNames))</td>
+                                <td>@item.UniqueCode</td>
+                                <td>@(@item.Inventory != null ? @item.Inventory.Sum(d=>d.Count) : 0)</td>
+                                <td>
+                                    @{
+                                        decimal price = item.Prices.Any(p => p.StartDate <= DateTime.UtcNow && p.IsActive && DateTime.Now >= p.StartDate && (p.EndDate == null || DateTime.Now < p.EndDate))
+                                                            ? item.Prices.First(p => p.StartDate <= DateTime.UtcNow && p.IsActive && DateTime.Now >= p.StartDate && (p.EndDate == null || DateTime.Now < p.EndDate)).PriceValue : 0;
+                                        string currencyName = item.Prices.Any(p => p.StartDate <= DateTime.UtcNow && p.IsActive && DateTime.Now >= p.StartDate && (p.EndDate == null || DateTime.Now < p.EndDate))
+                                                                  ? item.Prices.First(p => p.StartDate <= DateTime.UtcNow && p.IsActive && DateTime.Now >= p.StartDate && (p.EndDate == null || DateTime.Now < p.EndDate)).CurrencyName : "";
+
+                                        string final = $"{Convert.ToInt64(price):n0} {currencyName}";
+                                    }
+                                    @(final)
+                                </td>
+                                <td class="ltr">@item.CreationDate</td>
+                                <td dir="ltr">@(item.MultiLingualProperties.Any(p => p.LanguageId == langId) ? item.MultiLingualProperties.First(p => p.LanguageId == langId).UrlFriend : "")</td>
+                                <td>
+                                    <button class="btn btn-sm btn-dark bg-gradient" 
+                                    data-code = "@item.ProductCode"
+                                    data-url="@(item.MultiLingualProperties.Any(p=>p.LanguageId == langId) ? item.MultiLingualProperties.First(p => p.LanguageId == langId).UrlFriend : "")"
+                                    onclick="ShowProduct(this)">
+                                        <i class="fa fa-eye"></i>@UtilityLanguage.GetString("btn_Show")
+                                    </button>
+                                </td>
+                                <td>
+                                    
+                                    <a asp-action="AddEdit" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-warning bg-gradient">
+                                        <i class="fa fa-edit"></i>@UtilityLanguage.GetString("btn_Edit")
+                                    </a>
+                                   
+                                    @if (!item.IsDeleted)
+                                    {
+                                        <button onclick="EntityDelete('@item.ProductId')" class="btn btn-sm btn-danger bg-gradient">
+                                            <i class="fa fa-trash"></i>@UtilityLanguage.GetString("btn_Delete")
+                                        </button>
+                                    }
+                                    @if (item.IsDeleted)
+                                    {
+                                        <button id="restoreRecord" onclick="EntityRestore('@item.ProductId')" class="btn btn-sm btn-secondary bg-gradient">
+                                            <i class="fa fa-refresh"></i>
+                                            @UtilityLanguage.GetString("btn_Restore")
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="11" class="ListCell">
+                                <h6>@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</h6>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer">
+        @await Component.InvokeAsync("Arad.Portal.Areas.Shared.ViewComponents.Pagination", new PageViewModel
+        {
+            CurrentPage = Model.CurrentPage,
+            ItemsCount = Model.ItemsCount,
+            PageSize = Model.PageSize,
+            Navigation = Url.Action("List", "Product"),
+            QueryParams = Model.QueryString
+        })
+    </div>
+
+</div>
+
+
+
+@section Scripts{
+
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <script src="@Url.Content($"~/lib/datePicker/kamadatepicker.min.js")"></script>
+    }
+    else
+    {
+       <script src="@Url.Content($"~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
+    }
+
+
+    <script>
+        $(document).ready(function () {
+
+            //datetimepicker
+            if ("@CultureInfo.CurrentCulture.Name" == "fa-IR") {
+                kamaDatepicker('dtpFromCreationDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+                kamaDatepicker('dtpToCreationDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+            } else {
+                $('.datepicker').datepicker();
+            }
+          
+            if ("@langId" != "") {
+                $("#cmbLangIdFilter").val("@langId");
+                $("#cmbLangIdFilter").selectpicker("refresh");
+            }
+            //
+            if("@groupIds" != "")
+            {
+                $("#cmbProductGroupFilter").val("@groupIds");
+                $("#cmbProductGroupFilter").selectpicker("refresh");
+            }
+
+            if("@name" != "")
+            {
+                $("#txtProductNameFilter").val("@name");
+            }
+
+            if("@desc" != "")
+            {
+                $("#txtDescriptionFilter").val("@desc");
+            }
+
+            if("@code" != "")
+            {
+                $("#txtUniqueCodeFilter").val("@code");
+            }
+
+            if("@from" != "")
+            {
+               $("#dtpFromCreationDate").val("@from");
+            }
+
+            if("@to" != "")
+            {
+                $("#dtpToCreationDate").val("@to");
+            }
+
+            if("@inventory" != "")
+            {
+                $("#txtLeastProduct").val("@inventory");
+            }
+
+            if("@promotion" != "")
+            {
+                $("#chbProductsOnPromotion").prop("checked", true);
+            }
+
+            if("@exist" != "")
+            {
+                $("#chbExistentProducts").prop("checked", true);
+            }
+            
+           $("#cmbLangIdFilter").change(function () {
+            
+               var queryString = '?LanguageId=' + $("#cmbLangIdFilter").val();
+               window.location.href = '@Url.Action("List", "Product")' + queryString;
+           });
+
+            $("#btnSearch").click(function () {
+                
+                var queryString = "?";
+                if ($("#cmbProductGroupFilter").val() != "-1") {
+                    var groupIds = $("#cmbProductGroupFilter").val();
+                    queryString += queryString == "?" ? "groupIds=" + groupIds : "&groupIds=" + groupIds;
+                }
+                if ($("#txtProductNameFilter").val() != "") {
+                    queryString += queryString == "?" ? "name=" + $("#txtProductNameFilter").val().trim() : "&name=" + $("#txtProductNameFilter").val().trim();
+                }
+                if ($("#txtDescriptionFilter").val() != "") {
+                    queryString += queryString == "?" ? "desc=" + $("#txtDescriptionFilter").val().trim() : "&desc=" + $("#txtDescriptionFilter").val().trim();
+                }
+                if ($("#txtUniqueCodeFilter").val() != "") {
+                    queryString += queryString == "?" ? "code=" + $("#txtUniqueCodeFilter").val().trim() : "&code=" + $("#txtUniqueCodeFilter").val().trim();
+                }
+                if ($("#dtpFromCreationDate").val() != "") {
+                    queryString += queryString == "?" ? "from=" + $("#dtpFromCreationDate").val().trim() : "&from=" + $("#dtpFromCreationDate").val().trim();
+                }
+                if ($("#dtpToCreationDate").val() != "") {
+                    queryString += "&to=" + $("#dtpToCreationDate").val().trim();
+                }
+                if ($("#txtLeastProduct").val() != "0" && $("#txtLeastProduct").val() != "") {
+                    queryString += queryString == "?" ? "inventory=" + $("#txtLeastProduct").val() : "&inventory=" + $("#txtLeastProduct").val();
+                }
+                if ($("#chbProductsOnPromotion").is(":checked")) {
+                    queryString += queryString == "?" ? "promotion=true" : "&promotion=true";
+                }
+                if ($("#chbExistentProducts").is(":checked")) {
+                    queryString += queryString == "?" ? "exist=true" : "&exist=true" ;
+                }
+                window.location.href = '@Url.Action("List", "Product")' + queryString;
+            });
+        });
+
+        function ShowProduct(sender)
+        {
+            
+            var urlFriend = $(sender).attr("data-url");
+            var code = $(sender).attr("data-code");
+            var final = "";
+            if(urlFriend != "")
+            {
+                final = `${'@ViewBag.ShopUrl'}${urlFriend}`;
+            }else
+            {
+                final = `${'@ViewBag.ShopUrl'}/product/${code}`;
+            }
+            window.open(final);
+        }
+        function EntityDelete(id) {
+            
+             entityId = id;
+			typeOfRequest = 'Get';
+			confirmUrl = '@Url.Action("Delete", "Product")' + "/" + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Delete")';
+			document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_DeletionSureness")';
+			$('#confirmModal').modal('show');
+        }
+
+        function EntityRestore(id) {
+             entityId = id;
+			typeOfRequest = 'Get';
+			confirmUrl = '@Url.Action("Restore", "Product")' + '/' + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Restore")';
+			document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_RestorationSureness")';
+            $('#confirmModal').modal('show');
+
+            }
+    </script>
+}

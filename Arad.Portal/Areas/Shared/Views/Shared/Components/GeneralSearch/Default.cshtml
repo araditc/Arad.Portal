@@ -1,0 +1,144 @@
+﻿@using Arad.Portal.Models.Shared
+@model Arad.Portal.Models.Shared.Filter
+
+<div class="search-wrapper w-100 m-2">
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+            <div class="search-container">
+                <!-- Search Icon -->
+                <button class="search-icon" id="toggleSearchButton" aria-label="Toggle Search">
+                    <img src="~/img/searchbar/icons8-search.svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"/>
+                </button>
+                <!-- Search Input -->
+                <div class="search-input-container">
+                    <input type="text" class="search-input" id="txtSearch" name="key" placeholder="@UtilityLanguage.GetString("btn_Search")" value="@Model.Keyword" aria-label="Search" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="suggestion-list" class="suggestion-list"></div> <!-- Suggestions container -->
+
+<script>
+    $(document).ready(function () {
+        let searchTimeout;
+        let isSearchVisible = false;
+        const searchInput = $("#txtSearch");
+        const searchInputContainer = $(".search-input-container");
+        const suggestionList = $("#suggestion-list");
+
+        function triggerSearch() {
+            const filter = searchInput.val().trim();
+            if (filter !== "") {
+                $.ajax({
+                    url: "@Url.Action("Index2", "Search")",
+                    type: "GET",
+                    data: { key: filter },
+                    success: handleSearchResult,
+                    error: (xhr) => console.error("Search failed:", xhr.responseText),
+                });
+            }
+        }
+
+        function handleSearchResult(result) {
+            suggestionList.empty();
+            if (result.status === "success" && result.data.length > 0) {
+                const container = $("<div class='container'><div class='row'></div></div>");
+                result.data.forEach(item => {
+                    const suggestion = `
+                        <div class='col-12 col-md-3'>
+                            <div class='border rounded suggest-item' onclick='SelPhrase(this)'>
+                                <span>${item.phrase}</span>
+                            </div>
+                            <input type='hidden' class='isProduct' value='${item.isProduct}'/>
+                            <input type='hidden' class='params' value='${item.urlParameter}'/>
+                        </div>`;
+                    container.find(".row").append(suggestion);
+                });
+                suggestionList.append(container);
+            } else {
+                suggestionList.append("<p class='text-muted text-center'>No results found</p>");
+            }
+        }
+
+        $("#toggleSearchButton").on("click", function () {
+            if (isSearchVisible) {
+                searchInputContainer.removeClass("active");
+                searchInput.val(""); // Clear input on close
+                suggestionList.empty(); // Clear suggestions
+            } else {
+                searchInputContainer.addClass("active");
+                searchInput.focus();
+            }
+            isSearchVisible = !isSearchVisible;
+        });
+
+        searchInput.on("input", function () {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(triggerSearch, 1000);
+        });
+
+        searchInput.on("keypress", function (e) {
+            if (e.which === 13) { // Enter key
+                e.preventDefault();
+                triggerSearch();
+            }
+        });
+    });
+</script>
+
+<style>
+    .search-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .search-icon {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        transition: transform 0.2s ease;
+    }
+
+        .search-icon:hover {
+            transform: scale(1.1);
+        }
+
+    .search-input-container {
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        width: 0;
+        transition: width 0.3s ease-in-out;
+    }
+
+        .search-input-container.active {
+            width: 250px;
+        }
+
+    .search-input {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    .suggestion-list {
+        margin-top: 10px;
+    }
+
+    .suggest-item {
+        padding: 10px;
+        background-color: #f8f9fa;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+        .suggest-item:hover {
+            background-color: #e9ecef;
+        }
+</style>

@@ -1,0 +1,288 @@
+﻿@using Arad.Portal.Models.Shared.Content
+@using Serilog
+@model PagedItems<ContentViewModel>
+@{
+    int i = ((Model.CurrentPage - 1) * Model.PageSize);
+    bool isSearch = false;
+    string langId = "";
+    string filter = "";
+    string catId = "";
+    string searchCollapseClass = "";
+    string error = "";
+    try
+    {
+        error = UtilityLanguage.GetString("AlertAndMessage_Error");
+        if (!string.IsNullOrWhiteSpace(Model.QueryString))
+        {
+            System.Collections.Specialized.NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
+            isSearch = !string.IsNullOrWhiteSpace(queryString["LanguageId"])
+                       || !string.IsNullOrWhiteSpace(queryString["filter"])
+                       || !string.IsNullOrWhiteSpace(queryString["catId"]);
+            if (isSearch)
+            {
+                Log.Information("6");
+                if (queryString["LanguageId"] != null)
+                    langId = queryString["LanguageId"];
+                if (queryString["filter"] != null)
+                    filter = queryString["filter"];
+                if (queryString["catId"] != null)
+                    catId = queryString["catId"];
+            }
+            queryString.Remove("page");
+        }
+        if (langId == "")
+        {
+            langId = ViewBag.DefLangId;
+        }
+        searchCollapseClass = isSearch ? "collapse show" : "collapse";
+        string baseAdd = Config["BaseAddress"];
+    }
+    catch (Exception e)
+    {
+        Log.Error(e.Message);
+    }
+
+}
+
+<div class="card card-dark">
+    <a data-bs-toggle="collapse" role="button" href="#searchCollapse" aria-expanded="@(!isSearch ? "false" : "true" )" class="@(!isSearch ? " collapsed" : null)">
+
+        <div class="card-header">
+            <h5 class="card-title">
+                <i class="fas fa-search">
+                    <span>@UtilityLanguage.GetString("btn_Search")</span>
+                </i>
+            </h5>
+        </div>
+    </a>
+
+    <div id="searchCollapse" class="@searchCollapseClass">
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="form-group col-12 col-md-3">
+                    <label class="form-label">@UtilityLanguage.GetString("LanguageName")</label>
+                    <select class="form-control selectpicker" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" data-live-search="true">
+                    </select>
+                </div>
+                @if (ViewBag.IsSystemAccount)
+                {
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label">@UtilityLanguage.GetString("AssociatedDomain")</label>
+                        <select class="form-control selectpicker" data-live-search="true" asp-items="@(new SelectList(ViewBag.Domains,"Value","Text"))">
+                        </select>
+                    </div>
+                }
+                <div class="form-group col-12 col-md-3">
+                    <label class="form-label">@UtilityLanguage.GetString("Menu_ContentCategory")</label>
+                    <select class="form-control data-live-search=" id="contentCategoryId" asp-items="@(new SelectList(ViewBag.CatList,"Value","Text"))" data-live-search="true">
+                    </select>
+                </div>
+                <div class="form-group col-12 col-md-3">
+                    <label class="form-label">@UtilityLanguage.GetString("Filter")</label>
+                    <input type="text" class="form-control" id="filter" />
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer">
+            <button id="btnSearch" class="btn btn-sm btn-primary bg-gradient float-end" type="button">
+                <i style="position: relative; left: 5px; top: 1px;" class="fa fa-search"></i>
+                @UtilityLanguage.GetString("btn_Search")
+            </button>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <h5 class="card-title">@UtilityLanguage.GetString("Menu_Content")</h5>
+            </div>
+            <div class="col-6 col-md-3  offset-md-6">
+                <div class="card-tools float-end">
+                    <a asp-action="AddEdit" asp-controller="Content" class="btn btn-sm btn-success bg-gradient btn-sm">
+                        <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @UtilityLanguage.GetString("btn_Add")
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body table-responsive" id="contentListCard">
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>@UtilityLanguage.GetString("tbl_RowName")</th>
+                    <th>@UtilityLanguage.GetString("Menu_ContentCategory")</th>
+                    <th>@UtilityLanguage.GetString("RelatedLanguage")</th>
+                    <th>@UtilityLanguage.GetString("Entities_Title")</th>
+                    <th>@UtilityLanguage.GetString("Entities_SubTitle")</th>
+                    <th>@UtilityLanguage.GetString("SeoTitle")</th>
+                    <th>@UtilityLanguage.GetString("SeoDescription")</th>
+                    <th>@UtilityLanguage.GetString("UrlFriend")</th>
+                    <th>@UtilityLanguage.GetString("SourceType")</th>
+                    @* <th>@UtilityLanguage.GetString("StartShowDate")</th>
+                    <th>@UtilityLanguage.GetString("EndShowDate")</th>*@
+                    <th>@UtilityLanguage.GetString("ContentProviderName")</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Items.Any())
+                {
+                    
+                    @foreach (ContentViewModel item in Model.Items)
+                    {
+
+                        <tr>
+                            <td class="ListCell">@(++i)</td>
+                            <td class="ListCell">@item.ContentCategoryName</td>
+                            <td class="ListCell">@item.LanguageName</td>
+                            <td class="ListCell">@item.Title</td>
+                            <td class="ListCell">@item.SubTitle</td>
+                            <td class="ListCell">@item.SeoTitle</td>
+                            <td class="ListCell">@item.SeoDescription</td>
+                            <td class="ListCell">@item.UrlFriend</td>
+                            <td class="ListCell">@item.SourceType</td>
+                            @* <td class="ListCell" dir="ltr">@item.StartShowDate</td>
+                    <td class="ListCell" dir="ltr">@item.EndShowDate</td>*@
+                            <td class="ListCell">@item.ContentProviderName</td>
+                            <td>
+
+                                <a asp-action="AddEdit" asp-controller="Content" asp-route-id="@item.Id" class="btn btn-sm btn-warning bg-gradient">
+                                    <i class="fa fa-edit"></i>@UtilityLanguage.GetString("btn_Edit")
+                                </a>
+
+                                @if (!item.IsDeleted)
+                                {
+                                    <button onclick="EntityDelete('@item.Id')" class="btn btn-sm btn-danger bg-gradient">
+                                        <i class="fa fa-trash"></i>@UtilityLanguage.GetString("btn_Delete")
+                                    </button>
+                                }
+                                @if (item.IsDeleted)
+                                {
+                                    <button id="restoreRecord" data-id="@item.Id" onclick="EntityRestore('@item.Id')" class="btn btn-sm btn-secondary bg-gradient">
+                                        <i class="fa fa-refresh"></i>
+                                        @UtilityLanguage.GetString("btn_Restore")
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                        
+                    }
+                }
+                else
+                {
+
+                    <tr>
+                        <td colspan="13" class="ListCell">
+                            <h6>@UtilityLanguage.GetString("AlertAndMessage_NoDataToShow")</h6>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        @await Component.InvokeAsync(typeof(PaginationViewComponent), new PageViewModel
+                                                                      {
+                                                                          CurrentPage = Model.CurrentPage,
+                                                                          ItemsCount = Model.ItemsCount,
+                                                                          PageSize = Model.PageSize,
+                                                                          Navigation = Url.Action("List", "Content"),
+                                                                          QueryParams = Model.QueryString
+                                                                      })
+    </div>
+
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            if ("@langId" != "") {
+                $("#cmbLangIdFilter").val("@langId");
+                $("#cmbLangIdFilter").selectpicker("refresh");
+            }
+            if ('@filter' != "") {
+                $("#filter").val("@filter");
+            }
+
+            if ("@catId" != "") {
+                $("#contentCategoryId").val("@catId");
+                $("#contentCategoryId").selectpicker("refresh");
+            }
+
+            $("#cmbLangIdFilter").change(function () {
+                
+                var langId = $("#cmbLangIdFilter").val();
+                if (langId != "-1") {
+                    $.ajax({
+                        url: `@Url.Action("GetContentCategoryList", "ContentCategory")/${langId}`,
+                        type: 'Get',
+                        dataType: 'json',
+                        success: function (result) {
+                            
+                            var options = "<option value='-1'> " + '@UtilityLanguage.GetString("AlertAndMessage_Choose")' + " </option>";
+                            if (result.status === "success") {
+                                
+                                if (result.data.length != 0) {
+                                    (result.data).forEach(function (item) {
+                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                        options += op;
+                                    });
+
+                                    $("#contentCategoryId").html(options);
+                                }
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        }
+                    });
+                }
+            });
+
+            $("#btnSearch").click(function () {
+                
+                var queryString = "?LanguageId=" + $("#cmbLangIdFilter").val();
+                if ($("#contentCategoryId").val() != "-1") {
+                    if (queryString != "") {
+                        queryString += "&catId=" + $("#contentCategoryId").val();
+                    } else {
+                        queryString += "?catId=" + $("#contentCategoryId").val();
+                    }
+                }
+                if ($("#filter").val() != "") {
+                    if (queryString != "") {
+                        queryString += "&filter=" + $("#filter").val();
+                    }
+                    else {
+                        queryString += "?filter=" + $("#filter").val();
+                    }
+                }
+                window.location.href = '@Url.Action("List", "Content")' + queryString;
+            });
+        });
+        function EntityDelete(id) {
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = `@Url.Action("Delete", "Content")/${id}`,
+                document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Delete")';
+            document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_DeletionSureness")';
+            $('#confirmModal').modal('show');
+        }
+        function EntityRestore(id) {
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = `@Url.Action("Restore", "Content")/${id}`,
+                document.getElementById('confirmModalLabel').innerHTML = '@UtilityLanguage.GetString("btn_Restore")';
+            document.getElementById('confirmModalBody').innerHTML = '@UtilityLanguage.GetString("AlertAndMessage_RestorationSureness")';
+            $('#confirmModal').modal('show');
+        }
+    </script>
+}

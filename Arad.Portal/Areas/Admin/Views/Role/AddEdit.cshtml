@@ -1,0 +1,200 @@
+﻿@using Arad.Portal.Models.Shared.Role
+@model RoleDto;
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    string alert = UtilityLanguage.GetString("AlertAndMessage_GotIt");
+    string error = UtilityLanguage.GetString("AlertAndMessage_Error");
+    string baseAdd = Config["BaseAddress"];
+   
+}
+
+
+<link href="@Url.Content($"~/css/jquerysctipttop.css")" rel="stylesheet" />
+
+<link href="@Url.Content($"~/css/jqueryTreeview/jquery.treeview.css")" rel="stylesheet" />
+<script src="@Url.Content($"~/js/jqueryTreeview/jquery.treeview.js")" ></script>
+
+<style>
+    .text-danger {
+        font-size: 12px;
+    }
+    p.group {
+        padding-right: @(ViewBag.dir == "rtl" ? "3%" : "0%");
+
+    }
+    .treeview .item i{
+        margin : 10px;
+    }
+</style>
+
+
+<h4>  @UtilityLanguage.GetString("Menu_Roles") </h4>
+<hr />
+@*<div class="row">
+    <div class="col-md-12 col-12">
+        <div class="card" id="addPermissionCard">
+            <div class="card-header">
+                <h5 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.RoleId) ? Language.GetString("EditRolePart_Title") : Language.GetString("AddRolePart_Title"))</h5>
+            </div>
+            <form asp-controller="Role" role="form" asp-action="Save" id="addEditRoleFrm" method="post">
+                <input type="hidden" value="@Model.RoleId" data-val="true" asp-for="@Model.RoleId">
+                <div class="card-body" id="addEditPermissionCard">
+                    <div class="row">
+                        <div class="form-group col-md-4 col-12">
+
+                            <label class="form-label" asp-for="RoleName">@UtilityLanguage.GetString("Role_Name")</label>
+                            <input type="text" class="form-control" asp-for="RoleName" placeholder=" ">
+                            <span data-val-result="RoleName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-4">
+                            <div class="row p-2">
+                                <label asp-for="IsActive" class="form-label">@UtilityLanguage.GetString("ActivationState")</label>
+                                <div class="form-check col-4">
+                                    <input class="form-check-input" type="radio" asp-for="IsActive" value="true">
+                                    <label class="form-check-label" asp-for="IsActive">
+                                        @UtilityLanguage.GetString("Active")
+                                    </label>
+                                </div>
+                                <div class="form-check col-12 col-md-4">
+                                    <input class="form-check-input" type="radio" asp-for="IsActive" value="false">
+                                    <label class="form-check-label" asp-for="IsActive">
+                                        @UtilityLanguage.GetString("InActive")
+                                    </label>
+                                </div>
+                                <span data-val-result="IsActive" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="permissionTreeView">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-4 offset-md-8 col-12">
+                            <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@UtilityLanguage.GetString("btn_Back")</a>
+                            <input type="submit" id="savebtn" value="@UtilityLanguage.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>*@
+
+
+@section Scripts
+{
+
+    <script>
+
+                $(document).ready(function () {
+                  
+                 $.ajax({
+                url: '@Url.Action("ListPermissions")' + "/" + "@Model.Id",
+                     type: 'Get',
+                     success: function (result) {
+                         
+                         var tw = new TreeView(
+                             result,
+                             { showAlwaysCheckBox: true, fold: false });
+                         document.getElementById("permissionTreeView").appendChild(tw.root);
+                     },
+                     error: function (xhr, ajaxOptions, thrownError) {
+                         alert(xhr.status);
+                         alert(thrownError);
+                     }
+                 });
+
+                 $("#addEditRoleFrm").submit(function (e) {
+                        
+                        e.preventDefault();
+                            /* var form = $(this).serialize();*/
+                        var myform = document.getElementById('addEditRoleFrm');
+                            var form = new FormData(myform);
+                            var PermissionIds = [];
+                            $("#permissionTreeView span.item").each(function () {
+                                var data = $(this).attr("check-value");
+                                var num = parseInt(data);
+                                if (num > 0) {
+                                    PermissionIds.push($(this).attr("data-id"));
+                                }
+                            });
+                    form.append('PermissionIds', PermissionIds);
+                    form.append('IsActive', $("input[name='IsActive']:checked").val());
+                    
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            data: form,
+                            /* dataType : "json",*/
+                            type: 'Post',
+                            processData: false,
+                            contentType:false,
+                            /* contentType: "application/json; charset=utf-8",*/
+
+                            beforeSend: function () {
+                                
+                            /*    AddLoading($("#addEditPermissionCard"));*/
+                            },
+                            success: function (result) {
+                                
+
+                                if (result.status === "Success") {
+                                    
+                                        document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>)'+result.message;
+                            $('#mainToastBody').removeClass("text-bg-danger");
+                            $('#mainToastBody').addClass("text-bg-success");
+                                        $("#toastPanel").show();
+                                         var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                        bsAlert.show();
+                                        setTimeout(function()
+                                        {
+                                            $("#toastPanel").hide();
+                                             window.location.href = '@Url.Action("List")';
+                                        },
+                                        3000);
+                                }else
+                                if (result.status === "ModelError")
+                                {
+                                    var spanErrorList = $('span[data-val-result]');
+                                    if (spanErrorList.length > 1) {
+                                        spanErrorList.each(function() {
+                                            $(this).html("");
+                                            $(this).parent().removeClass("has-error");
+                                        });
+                                    } else {
+                                        spanErrorList.html("");
+                                        spanErrorList.parent().removeClass("has-error");
+                                    }
+
+                                    if (result.modelStateErrors !== null) {
+                                        result.modelStateErrors.forEach(function(value, index) {
+
+                                            $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                            $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                        });
+                                    }
+                                }else
+                                {
+                                    showError(result.message);
+                                }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                alert("@error");
+                                alert(xhr.status);
+                                alert(thrownError);
+                            },
+                            complete: function () {
+                                //removeLoading($("#addEditPermissionCard"));
+                            }
+                        });
+                    });
+                });
+    </script>
+}
+
+

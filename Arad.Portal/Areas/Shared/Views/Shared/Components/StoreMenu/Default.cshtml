@@ -1,0 +1,120 @@
+﻿@using Arad.Portal.Models.Shared;
+@model List<StoreMenuVm>
+@{
+    Layout = null;
+}
+<style>
+    <style>
+    .myfont {
+        font-family: 'IBM Plex Sans';
+        font-weight: 300;
+        font-style: normal;
+    }
+
+    body {
+        font-family: 'IBM Plex Sans', sans-serif;
+    }
+
+    .all {
+        color: darkblue;
+    }
+
+    #mynavbar {
+        z-index: 1000;
+        pointer-events: auto;
+        transition: all 0.3s ease;
+        margin: 0;
+        padding: 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+    }
+
+    .sticky {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        background-color: #fff; /* Add background to avoid overlap issues */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        font-family: 'IBM Plex Sans', sans-serif;
+    }
+
+    .bold-text {
+        font-weight: bold;
+    }
+</style>
+
+<div class="border-top-0 w-100 mx-2 myfont" id="mynavbar">
+    <div class="row gx-0">
+        <div class="col-12">
+            <nav class="navbar navbar-expand-lg rounded navbar-light mt-0">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarMenu">
+                    <ul class="navbar-nav me-auto">
+                        @foreach (var item in Model.Where(v => v.ParentId == null && v.IsFull).OrderBy(v => v.Order))
+                        {
+                            if (item.Childrens is { Count: 0 })
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link bold-text" href="@item.MenuTitle.UrlFriend">@item.MenuTitle?.Name</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle bold-text" href="@item.MenuTitle?.UrlFriend" id="@($"st_mn_{item.MenuCode}")" data-bs-toggle="dropdown">
+                                        @item.MenuTitle?.Name
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="@($"st_mn_{item.MenuCode}")">
+                                        @foreach (var child in item.Childrens)
+                                        {
+                                            <div>
+                                                <a class="dropdown-item bold-text" href="@child.MenuTitle?.UrlFriend">@child.MenuTitle?.Name</a>
+                                                @if (child.Childrens?.Count > 0)
+                                                {
+                                                    @foreach (var subChild in child.Childrens.Take(3))
+                                                    {
+                                                        <a class="dropdown-item ms-3 bold-text" href="@subChild.MenuTitle?.UrlFriend">@subChild.MenuTitle?.Name</a>
+                                                    }
+                                                    @if (child.Childrens.Count > 3)
+                                                    {
+                                                        <a class="dropdown-item link-primary bold-text" href="@child.MenuTitle?.UrlFriend">View All</a>
+                                                    }
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const navbar = document.getElementById("mynavbar");
+    const navbarPlaceholder = document.createElement("div");
+    navbarPlaceholder.style.height = navbar.offsetHeight + "px";
+
+    const toggleStickyClass = () => {
+        if (window.pageYOffset > navbar.offsetTop) {
+            if (!navbar.nextElementSibling || navbar.nextElementSibling !== navbarPlaceholder) {
+                navbar.parentNode.insertBefore(navbarPlaceholder, navbar.nextSibling);
+            }
+            navbar.classList.add("sticky");
+        } else {
+            if (navbar.nextElementSibling === navbarPlaceholder) {
+                navbarPlaceholder.remove();
+            }
+            navbar.classList.remove("sticky");
+        }
+    };
+
+    window.addEventListener("scroll", toggleStickyClass);
+});
+</script>

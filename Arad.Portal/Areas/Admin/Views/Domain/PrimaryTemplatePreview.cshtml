@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+@model TemplateDesign
+@inject IConfiguration _configuration;
+@using Arad.Portal.Models.Admin;
+@{
+    Layout = null;
+    string direction = HelpersMethods.GetDirection(CultureInfo.CurrentCulture);
+    string baseAdd = _configuration["BaseAddress"];
+}
+<html dir="@direction" lang="@Model.LangSymbol">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="Arad Portal" name="description">
+    <title>@ViewData["Title"] - Arad.Portal.UI.Shop</title>
+    <link href="@Url.Content($"~/lib/font-awesome/css/all.css")" rel="stylesheet" />
+    @if (direction == "ltr")
+    {
+        <link href="@Url.Content($"~/lib/bootstrap/css/bootstrap.min.css")" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="@Url.Content($"~/lib/bootstrap/css/bootstrap.rtl.min.css")" rel="stylesheet" />
+        <link href="@Url.Content($"~/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
+    }
+    <link href="@Url.Content($"~/css/Menu/Bootstrap4MegaMenu.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/lib/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/css/site.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/lib/owlCarousel/css/owl.carousel.min.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/lib/owlCarousel/css/owl.theme.default.min.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/lib/owlCarousel/css/CarouselCustomArrowKeys.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/css/SpecialProduct.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/css/siteTemplate/FirstContentTemplate.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/css/siteTemplate/ThirdContentTemplate.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/css/siteTemplate/ForthContentTemplate.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/css/siteTemplate/FifthContentTemplate.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/css/siteTemplate/SixthContentTemplate.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/css/header.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/lib/animate.css/animate.compat.css")" rel="stylesheet" />
+    <script src="@Url.Content($"~/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content($"~/lib/bootstrap/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content($"~/lib/bootstrap-select/js/bootstrap-select.min.js")"></script>
+    <script src="@Url.Content($"~/lib/bootstrap-select/js/i18n/defaults-{CultureInfo.CurrentCulture.Name.Replace('-', '_')}.js")"></script>
+    <script src="@Url.Content($"~/lib/owlCarousel/js/owl.carousel.min.js")"></script>
+    <script src="@Url.Content($"~/js/TemplateCreation.js")"></script>
+    <script src="@Url.Content($"~/js/StickyNavbar.js")"></script>
+
+</head>
+<body>
+    <style type="text/css">
+        .bgCover{
+            background-size : cover;
+            background-attachment: fixed;
+            background-position: center bottom;
+        }
+    </style>
+    <div id="loading" class="text-center">
+        <div class="spinner-border text-danger" style="width: 4rem; height: 4rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <header>
+
+        @if (!string.IsNullOrEmpty(Model.HeaderContent))
+        {
+            @Html.Raw(Model.HeaderContent);
+        }
+    </header>
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            @if (!string.IsNullOrEmpty(Model.ContainerContent))
+            {
+                @Html.Raw(Model.ContainerContent)
+            }
+        </main>
+    </div>
+    <footer>
+        @if (!string.IsNullOrEmpty(Model.FooterContent))
+        {
+            @Html.Raw(Model.FooterContent);
+            
+        }
+    </footer>
+    <script>
+          function doAnimations(elems) {
+            var animEndEv = "webkitAnimationEnd animationend";
+
+            elems.each(function () {
+                var $this = $(this),
+                    $animationType = $this.data("animation");
+                $this.addClass($animationType).one(animEndEv, function () {
+                    $this.removeClass($animationType);
+                });
+            });
+        }
+
+        function AfterCarouselLoad()
+        {
+            
+              var $myCarousel = $("#sliderCarousel");
+              $firstAnimatingElems = $myCarousel
+                      .find(".carousel-item:first")
+                     .find("[data-animation ^= 'animated']");
+
+            var carousel = new bootstrap.Carousel($myCarousel);
+            doAnimations($firstAnimatingElems);
+
+            var myCarousel = document.getElementById('sliderCarousel');
+            myCarousel.addEventListener("slide.bs.carousel", function (e) {
+                var $animatingElems = $(e.relatedTarget).find(
+                    "[data-animation ^= 'animated']"
+                );
+                doAnimations($animatingElems);
+            });
+        }
+
+            $(document).ready(function(){
+
+                    $(".menu-area").mouseover(function () {
+                            var windowSize = $(window).width();
+                            if (windowSize > 975) {
+                                $(this).addClass("show");
+                                $(this).find(".dropdown-toggle").addClass("text-primary");
+                                $(this).find(".mega-area").addClass("show");
+                            }
+                    });
+
+                    $(".menu-area").mouseleave(function () {
+                        var windowSize = $(window).width();
+                        if (windowSize > 975) {
+                            $(this).removeClass("show");
+                            $(this).find(".dropdown-toggle").removeClass("text-primary");
+                            $(this).find(".mega-area").removeClass("show");
+                        }
+                    });
+
+                    $(".nav-item .nav-link").mouseover(function () {
+                            $(this).addClass("text-primary");
+                    });
+                    $(".nav-item .nav-link").mouseleave(function () {
+                            $(this).removeClass("text-primary");
+                    });
+                if('@Model.IsShop' == "True")
+                {
+                    $("#btnIsShop").parent().removeClass("border").removeClass("border-1");
+                    $("#btnIsShop").remove();
+                }else
+                {
+                    $("#btnIsShop").parent().remove();
+                }
+
+                if('@Model.IsMultiLinguals' == "True")
+                {
+                    $("#btnFlags").parent().removeClass("border").removeClass("border-1");
+                    $("#btnFlags").remove();
+                }else
+                {
+                     $("#btnFlags").parent().remove();
+                }
+
+
+                $(".owl-carousel").owlCarousel({
+                    loop: true,
+                    rewind: false,
+                    rtl: true,
+                    navigation : true,
+                    autoplay: true,
+                    margin: 3,
+                    animateOut: 'fadeOut',
+                    animateIn: 'fadeIn',
+                    responsiveClass: true,
+                    nav: true,
+                    dots: false,
+                    autoplayHoverPause: false,
+                    items: 7,
+                    navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
+                    "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        600: {
+                            items: 5
+                        },
+                        1000: {
+                            items: 7
+                        }
+                    }
+                });
+
+
+            });
+    </script>
+</body>
+</html>

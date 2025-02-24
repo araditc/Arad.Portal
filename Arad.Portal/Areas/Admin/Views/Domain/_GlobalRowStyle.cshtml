@@ -1,0 +1,20 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.DesignStructure;
+@using Arad.Portal.Models.Shared.DesignStructure
+@model GlobalStyle
+@{
+
+    ModuleWithParametersValue module = new();
+    string contentType = "";
+    string modulePartClass = "d-none";
+    string editorPartClass = "d-none";
+    string htmlRaw = "";
+}
+
+<div class="row justify-content-center">
+    <div class="offset-8 col-4 offset-md-10 col-md-2">
+        <button class="btn btn-sm m-2 pt-2 btn-primary columnStyles float-end" data-bs-toggle="tooltip" data-bs-placement="top"
+                title="@UtilityLanguage.GetString("design_ColumnStyles")">
+            <i class="fs-6 fa fa-cog"></i>
+        </button>
+    </div>
+</div>

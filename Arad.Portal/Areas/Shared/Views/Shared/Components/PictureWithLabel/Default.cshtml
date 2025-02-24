@@ -1,0 +1,27 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared.PictureWithLabel
+@model List<Arad.Portal.DataLayer.Models.Shared.PictureWithLabel.PictureWithLabel>
+
+<div class="row">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        var item = Model[i];
+        <div class="col-md-3 mb-4">
+            <!-- Each item takes 3 columns, 4 items in total (12/3 = 4) -->
+            <div class="card">
+                <img src="data:image/png;base64,@item.Image.Content"
+                     class="card-img-top"
+                     alt="@item.Image.Title"
+                     style="width:@($"{item.ImageWidth}px;") height:@($"{item.ImageHeight}px;")" />
+                <div class="card-body">
+                    <h5 class="card-title">@item.SubTitle</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add a break after every 4 items -->
+        @if ((i + 1) % 4 == 0 && (i + 1) < Model.Count)
+        {
+            <div class="w-100"></div> <!-- Force a new row -->
+        }
+    }
+</div>
